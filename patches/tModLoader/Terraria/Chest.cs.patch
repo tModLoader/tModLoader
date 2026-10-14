@@ -224,7 +224,7 @@
 +					if (!ItemLoader.TryStackItems(Main.chest[i].item[j], item, out int numTransfered))
 +						continue;
 +
-+					if(numTransfered > 0)
++					if (numTransfered > 0)
 +						VisualizeChestTransfer(position, vector, item, numTransfered);
 +
 +					if (item.stack <= 0) {

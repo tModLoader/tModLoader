@@ -132,9 +132,11 @@ public abstract class ModTileEntity : TileEntity, IModType, ILoadable
 		Point16 pos = new Point16(i, j);
 		if (ByPosition.TryGetValue(pos, out var tileEntity)) {
 			if (tileEntity.type == Type) {
-				((ModTileEntity)tileEntity).OnKill();
-				ByID.Remove(tileEntity.ID);
-				ByPosition.Remove(pos);
+				lock (EntityCreationLock) {
+					((ModTileEntity)tileEntity).OnKill();
+					ByID.Remove(tileEntity.ID);
+					ByPosition.Remove(pos);
+				}
 			}
 		}
 	}

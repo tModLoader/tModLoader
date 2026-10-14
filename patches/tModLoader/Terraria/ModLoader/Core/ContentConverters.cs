@@ -23,7 +23,7 @@ internal static class ContentConverters
 
 	internal static bool Reverse(ref string resourceName, out Action<Stream, Stream> converter)
 	{
-		if(resourceName == "Info") {
+		if (resourceName == "Info") {
 			resourceName = "build.txt";
 			converter = BuildProperties.InfoToBuildTxt;
 			return true;

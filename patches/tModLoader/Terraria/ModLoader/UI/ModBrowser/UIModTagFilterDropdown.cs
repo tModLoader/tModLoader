@@ -157,7 +157,7 @@ internal class UIModTagFilterDropdown : UIPanel
 				UICommon.TooltipMouseText(Language.GetTextValue(SteamedWraps.ModTags[item.OptionValue].NameKey + "Description"));
 			}
 		}
-		if(clearTagsButton.IsMouseHovering)
+		if (clearTagsButton.IsMouseHovering)
 			UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.MBTagsClear"));
 	}
 }

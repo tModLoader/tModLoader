@@ -455,7 +455,8 @@ public partial class WorkshopSocialModule
 	{
 		private string publisherkey;
 
-		private string GetMetadataWeb(string webKey, string publishFileId) {
+		private string GetMetadataWeb(string webKey, string publishFileId)
+		{
 			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
 
 			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";

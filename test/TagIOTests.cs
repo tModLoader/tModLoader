@@ -868,7 +868,7 @@ namespace Terraria.ModLoader
 				Assert.AreEqual(e.Message, @"NBT Deserialization (type=Terraria.ModLoader.TagIOTests+A,entry=object ""a"" {
   string ""<type>"" = ""Terraria.ModLoader.TagIOTests+A""
 })".ReplaceLineEndings());
-				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'.");
+				Assert.AreEqual(e.InnerException.Message, "Missing deserializer for type 'Terraria.ModLoader.TagIOTests+A'");
 			}
 		}
 

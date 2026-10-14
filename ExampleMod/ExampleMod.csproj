@@ -10,4 +10,7 @@
     <EmbeddedResource Remove="Old\**" />
     <None Remove="Old\**" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ExampleLibraryMod\ExampleLibraryMod.csproj" />
+  </ItemGroup>
 </Project>

@@ -13,7 +13,7 @@
  		}
  
 +		if (player.hair >= HairID.Count) {
-+		    player.Male = HairLoader.GetHair(player.hair).RandomizedCharacterCreationGender switch {
++			player.Male = HairLoader.GetHair(player.hair).RandomizedCharacterCreationGender switch {
 +				Gender.Male => true,
 +				Gender.Female => false,
 +				Gender.Unspecified => Main.rand.NextBool(),

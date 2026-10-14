@@ -22,7 +22,7 @@ internal class UIHoverImage : UIImage
 			var bounds = Parent.GetDimensions().ToRectangle();
 			bounds.Y = 0;
 			bounds.Height = Main.screenHeight;
-			if(UseTooltipMouseText)
+			if (UseTooltipMouseText)
 				UICommon.TooltipMouseText(HoverText);
 			else
 				UICommon.DrawHoverStringInBounds(spriteBatch, HoverText, bounds);

@@ -14,7 +14,7 @@ public class EntitySource_Misc : IEntitySource
 {
 	// Unlike every other Context implementation, this one wants non-null values.
 	public string Context { get; }
-	
+
 	public EntitySource_Misc(string context)
 	{
 		Context = context ?? throw new ArgumentNullException(nameof(context), $"The {nameof(EntitySource_Misc)} type always expects a context string to be present.");

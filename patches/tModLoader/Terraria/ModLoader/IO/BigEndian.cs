@@ -20,7 +20,7 @@ public class BigEndianWriter : BinaryWriter
 
 public class BigEndianReader : BinaryReader
 {
-	public BigEndianReader(Stream input) : base(input) {}
+	public BigEndianReader(Stream input) : base(input) { }
 
 	public override short ReadInt16() => BinaryPrimitives.ReadInt16BigEndian(BaseStream.ReadByteSpan(2));
 	public override ushort ReadUInt16() => BinaryPrimitives.ReadUInt16BigEndian(BaseStream.ReadByteSpan(2));

@@ -107,7 +107,7 @@ public abstract class ModAchievement : ModType<Achievement, ModAchievement>, ILo
 	public NPCKilledCondition AddNPCKilledCondition(string key, int npcID) => AddCondition(new NPCKilledCondition((short)npcID, key));
 
 	/// <inheritdoc cref="NPCKilledCondition"/>
-	public NPCKilledCondition AddNPCKilledCondition(int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x=>(short)x).ToArray()));
+	public NPCKilledCondition AddNPCKilledCondition(int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x => (short)x).ToArray()));
 
 	/// <inheritdoc cref="NPCKilledCondition"/>
 	public NPCKilledCondition AddNPCKilledCondition(string key, int[] npcIDs) => AddCondition(new NPCKilledCondition(npcIDs.Select(x => (short)x).ToArray(), key));

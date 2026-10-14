@@ -55,14 +55,15 @@ public static class MapLayerLoader
 
 					sortingSlots[beforeIndex].Add(layer);
 					break;
-				}	
+				}
 				default: {
 					var ex = new ArgumentException($"ModMapLayer {layer} has unknown Position {position}");
 					throw BlameMapLayerException(ex);
 				}
 			}
 
-			Exception BlameMapLayerException(Exception ex) {
+			Exception BlameMapLayerException(Exception ex)
+			{
 				if (layer is ModMapLayer moddedLayer)
 					ex.Data["mod"] = moddedLayer.Mod.Name;
 				return ex;

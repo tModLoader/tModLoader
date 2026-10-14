@@ -78,7 +78,7 @@ public abstract class TEModdedPylon : ModTileEntity, IPylonTileEntity
 			return -1;
 		}
 
-		return Place(topLeftX,  topLeftY);
+		return Place(topLeftX, topLeftY);
 	}
 
 	public int PlacementPreviewHook_CheckIfCanPlace(int x, int y, int type, int style = 0, int direction = 1, int alternate = 0)

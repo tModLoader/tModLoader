@@ -34,6 +34,48 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
+@@ -176,10 +_,13 @@
+ 			}
+ 		}
+ 
++		// 1.4.5 backport (#5485)
++		/*
+ 		if (FindNextOpenClientSlot() == -1) {
+ 			StopListening();
+ 			IsListening = false;
+ 		}
++		*/
+ 	}
+ 
+ 	private static void KickClient(ISocket client, NetworkText kickMessage)
+@@ -218,6 +_,8 @@
+ 		return TcpListener.StartListening(OnConnectionAccepted);
+ 	}
+ 
++	// 1.4.5 backport (#5485)
++	/*
+ 	private static void StopListening()
+ 	{
+ 		if (SocialAPI.Network != null)
+@@ -225,6 +_,7 @@
+ 
+ 		TcpListener.StopListening();
+ 	}
++	*/
+ 
+ 	public static void StartServer()
+ 	{
+@@ -283,7 +_,10 @@
+ 		int num = 0;
+ 		StartBroadCasting();
+ 		while (!Disconnect) {
++			// 1.4.5 backport (#5485)
++			/*
+ 			StartListeningIfNeeded();
++			*/
+ 			UpdateConnectedClients();
+ 			num = (num + 1) % 10;
+ 			Thread.Sleep((num == 0) ? 1 : 0);
 @@ -298,8 +_,13 @@
  		for (int i = 0; i < 256; i++) {
  			if (Clients[i].PendingTermination) {
@@ -58,6 +100,23 @@
  				Clients[i].PendingTerminationApproved = true;
  				continue;
  			}
+@@ -329,6 +_,8 @@
+ 		HasClients = num != 0;
+ 	}
+ 
++	// 1.4.5 backport (#5485)
++	/*
+ 	private static void StartListeningIfNeeded()
+ 	{
+ 		if (IsListening || !Clients.Any((RemoteClient client) => !client.IsConnected()))
+@@ -343,6 +_,7 @@
+ 				throw;
+ 		}
+ 	}
++	*/
+ 
+ 	private static void UpdateClientInMainThread()
+ 	{
 @@ -413,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)

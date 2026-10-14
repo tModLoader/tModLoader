@@ -204,7 +204,7 @@
  				if (_frameState == 4)
  					num += 5;
  				break;
-+			// Extra patch context.
++				// Extra patch context.
  		}
  
  		if (_shouldSuperCart)
@@ -225,7 +225,7 @@
  				if (_frameState == 4)
  					num += 2.5f;
  				break;
-+			// Extra patch context.
++				// Extra patch context.
  		}
  
  		if (_shouldSuperCart)

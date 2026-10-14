@@ -34,21 +34,25 @@ public static class BuilderToggleLoader
 
 	// internal static readonly IList<GlobalBuilderToggle> globalBuilderToggles = new List<GlobalBuilderToggle>();
 
-	static BuilderToggleLoader() {
+	static BuilderToggleLoader()
+	{
 		RegisterDefaultToggles();
 	}
 
-	internal static int Add(BuilderToggle builderToggle) {
+	internal static int Add(BuilderToggle builderToggle)
+	{
 		BuilderToggles.Add(builderToggle);
 		return BuilderToggles.Count - 1;
 	}
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		BuilderToggles.RemoveRange(DefaultDisplayCount, BuilderToggles.Count - DefaultDisplayCount);
 		// globalBuilderToggles.Clear();
 	}
 
-	internal static void ResizeArrays() {
+	internal static void ResizeArrays()
+	{
 		IEnumerable<BuilderToggle> moddedToggles = BuilderToggles.TakeLast(BuilderToggles.Count - DefaultDisplayCount);
 		List<BuilderToggle> sortedToggles = BuilderToggles.Take(DefaultDisplayCount).ToList();
 		foreach (BuilderToggle toggle in moddedToggles) {
@@ -85,8 +89,9 @@ public static class BuilderToggleLoader
 		_drawOrder = sortedToggles;
 	}
 
-	internal static void RegisterDefaultToggles() {
-		int[] defaultTogglesShowOrder = new[] {10, 11, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7};
+	internal static void RegisterDefaultToggles()
+	{
+		int[] defaultTogglesShowOrder = new[] { 10, 11, 8, 9, 0, 1, 2, 3, 4, 5, 6, 7 };
 		int i = 0;
 		foreach (var builderToggle in BuilderToggles) {
 			builderToggle.Type = defaultTogglesShowOrder[i++];
@@ -95,7 +100,8 @@ public static class BuilderToggleLoader
 		}
 	}
 
-	internal static List<BuilderToggle> ActiveBuilderTogglesList() {
+	internal static List<BuilderToggle> ActiveBuilderTogglesList()
+	{
 		List<BuilderToggle> activeToggles = new List<BuilderToggle>(_drawOrder.Count);
 		for (int i = 0; i < _drawOrder.Count; i++) {
 			if (_drawOrder[i].Active())
@@ -115,7 +121,8 @@ public static class BuilderToggleLoader
 	}
 	*/
 
-	public static bool Active(BuilderToggle builderToggle) {
+	public static bool Active(BuilderToggle builderToggle)
+	{
 		bool active = builderToggle.Active();
 		/*
 		foreach (GlobalBuilderToggle global in globalBuilderToggles) {

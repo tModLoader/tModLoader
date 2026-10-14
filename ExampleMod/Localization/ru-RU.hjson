@@ -1265,9 +1265,13 @@ Mods: {
 				// Tooltip: ""
 			}
 
+			ExampleSpecialGlideWings: {
+				// DisplayName: Example Special Glide Wings
+				// Tooltip: ""
+			}
+			
 			ExampleGrassSeeds: {
 				// DisplayName: Example Grass Seeds
-				// Tooltip: ""
 			}
 		}
 

@@ -958,6 +958,21 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to modify the speeds at which you fall when gliding with wings.
+	/// <para/> Called on local, server, and remote clients.
+	/// <para/> Return false to prevent vanilla gliding behavior
+	/// </summary>
+	/// <param name="item">The wings.</param>
+	/// <param name="player">The player.</param>
+	/// <param name="gravityMultiplier">The multiplier applied to <see cref="Player.gravity"/>.</param>
+	/// <param name="maxSpeedMultiplier">The multiplier applied to <see cref="Player.maxFallSpeed"/>.</param>
+	/// <param name="prevented">Whether or not vanilla behavior has been prevented, this will usually indicate that some modded behavior has already run.</param>
+	public virtual bool WingGlidingSpeeds(Item item, Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier, bool prevented)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows you to modify the horizontal flight speed and acceleration of wings.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>

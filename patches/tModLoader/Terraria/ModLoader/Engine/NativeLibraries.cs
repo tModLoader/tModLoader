@@ -38,7 +38,7 @@ internal class NativeLibraries
 			ErrorReporting.FatalExit(WindowsVersionNUrl + "\n\nIf this doesn't work try Search \"MFPlat.DLL is either not designed to run on Windows\" and follow those instructions");
 		}
 		catch (Exception e) {
-			ErrorReporting.FatalExit("mfplat.dll: "+ FailedDependency, e);
+			ErrorReporting.FatalExit("mfplat.dll: " + FailedDependency, e);
 		}
 	}
 

@@ -254,7 +254,7 @@
 +				if ((i + additionalIOffset) % num != 0) {
 +					additionalIOffset += 3;
 +					num5++;
-+			    }
++				}
 +				additionalIOffset += 3 - ((i + additionalIOffset) % num);
 +				AddHorizontalSeparator(entirePanel, 44 + num5 * heightPerRow, 4);
 +				UIText uIText = new UIText(Language.GetText("tModLoader.TagsCategoryRating")) {
@@ -264,7 +264,7 @@
 +					Height = StyleDimension.FromPixelsAndPercent(44, 0f),
 +					Top = StyleDimension.FromPixelsAndPercent(5f + num5 * heightPerRow, 0f)
 +				};
-+				
++
 +				uIText.PaddingLeft = 20f;
 +				uIText.PaddingRight = 20f;
 +				uIText.PaddingTop = 6f;

@@ -19,7 +19,7 @@ public sealed class PylonShopNPC : GlobalNPC
 
 		if (NPCShopDatabase.NoPylons.Contains(shop.FullName))
 			return;
-		
+
 		foreach (var entry in _pylonEntries) {
 			shop.Add(entry);
 		}
@@ -50,7 +50,7 @@ public sealed class PylonShopNPC : GlobalNPC
 		foreach (var entry in _pylonEntries) {
 			if (entry.Disabled || !entry.ConditionsMet())
 				continue;
-			
+
 			items[slot] = entry.Item.Clone();
 			entry.OnShopOpen(items[slot], npc);
 

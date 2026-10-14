@@ -29,7 +29,7 @@ public class MissingResourceException : Exception
 
 	public static string ProcessMessage(List<string> reasons, string assetPath, ICollection<string> keys)
 	{
-		if(reasons.Count > 0) {
+		if (reasons.Count > 0) {
 			reasons.Insert(0, $"Failed to load asset: \"{assetPath}\"");
 			if (reasons.Any(x => x.Contains("Texture2D creation failed! Error Code: The parameter is incorrect."))) {
 				reasons.Insert(1, "The most common reason for this \"Texture2D creation failed!\" error is a malformed .png file. Make sure you are saving textures in the .png format and are not just renaming the file extension of your texture files to .png, that does not work.");
@@ -61,7 +61,8 @@ static class LevenshteinDistance
 
 	internal static string FolderAwareEditDistance(string source, string[] targets)
 	{
-		if (targets.Length == 0) return null;
+		if (targets.Length == 0)
+			return null;
 		var separator = '/';
 		var sourceParts = source.Split(separator);
 		var sourceFolders = sourceParts.Reverse().Skip(1).ToList();

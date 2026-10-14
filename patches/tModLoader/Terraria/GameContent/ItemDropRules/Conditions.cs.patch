@@ -13,7 +13,6 @@
  			return false;
  
  		switch (info.npc.type) {
-+			case int _ when ID.NPCID.Sets.CannotDropSouls[info.npc.type]:
 +			/*
  			case 1:
  			case 13:
@@ -22,6 +21,7 @@
  			case 121:
  			case 535:
 +			*/
++			case int _ when ID.NPCID.Sets.CannotDropSouls[info.npc.type]:
  				return false;
  			default:
 +				// Extra patch context.

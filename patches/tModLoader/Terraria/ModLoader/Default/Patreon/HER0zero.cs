@@ -6,54 +6,60 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-    [AutoloadEquip(EquipType.Head)]
-    internal class HER0zero_Head : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	[AutoloadEquip(EquipType.Head)]
+	internal class HER0zero_Head : PatreonItem
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 30;
 			Item.height = 20;
-        }
-    }
+		}
+	}
 
-    [AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class HER0zero_Body : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 32;
 			Item.height = 20;
-        }
+		}
 
-		public override bool IsVanitySet(int head, int body, int legs) {
+		public override bool IsVanitySet(int head, int body, int legs)
+		{
 			return head == EquipLoader.GetEquipSlot(Mod, "HER0zero_Head", EquipType.Head)
 				&& body == EquipLoader.GetEquipSlot(Mod, "HER0zero_Body", EquipType.Body)
 				&& legs == EquipLoader.GetEquipSlot(Mod, "HER0zero_Legs", EquipType.Legs);
 		}
 
-		public override void UpdateVanitySet(Player player) {
+		public override void UpdateVanitySet(Player player)
+		{
 			player.GetModPlayer<HER0zeroPlayer>().glowEffect = true;
 		}
 	}
 
-    [AutoloadEquip(EquipType.Legs)]
+	[AutoloadEquip(EquipType.Legs)]
 	internal class HER0zero_Legs : PatreonItem
-    {
-		public override void SetDefaults() {
-            base.SetDefaults();
+	{
+		public override void SetDefaults()
+		{
+			base.SetDefaults();
 
 			Item.width = 24;
 			Item.height = 16;
-        }
+		}
 	}
 
 	internal class HER0zeroPlayer : ModPlayer
 	{
 		public bool glowEffect = false;
 
-		public override void ResetEffects() {
+		public override void ResetEffects()
+		{
 			glowEffect = false;
 		}
 	}
@@ -62,11 +68,13 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		private Asset<Texture2D>? textureAsset;
 
-		public override Position GetDefaultPosition() {
+		public override Position GetDefaultPosition()
+		{
 			return new BeforeParent(PlayerDrawLayers.JimsCloak); // Preferably before everything
 		}
 
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+		{
 			return drawInfo.drawPlayer.TryGetModPlayer(out HER0zeroPlayer modPlayer) && modPlayer.glowEffect;
 		}
 

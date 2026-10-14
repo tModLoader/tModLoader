@@ -447,7 +447,8 @@ public static class ModContent
 				loadAction(mod);
 			}
 			catch (Exception e) {
-				e.Data["mod"] = mod.Name;
+				if (!e.Data.Contains("mod"))
+					e.Data["mod"] = mod.Name;
 				throw;
 			}
 			finally {

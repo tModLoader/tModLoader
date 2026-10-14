@@ -5,7 +5,7 @@ import os.path
 
 # This file formats the json files and notifies if any have changed. The files downloaded from steam are not indented and are hard to diff.
 
-steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish']
+steamLanguages = ['english', 'german', 'italian', 'french', 'spanish', 'russian', 'schinese', 'brazilian', 'polish', 'japanese', 'koreana', 'tchinese']
 
 missings = []
 anyFileNeedsUploading = False

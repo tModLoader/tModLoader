@@ -158,10 +158,12 @@ partial class ItemID
 		/// </summary>
 		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
 		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
+#pragma warning disable format
 			CopperCoin,   1,
 			SilverCoin,	  100,
 			GoldCoin,	  10000,
 			PlatinumCoin, 1000000
+#pragma warning restore format
 		);
 
 		/// <summary>

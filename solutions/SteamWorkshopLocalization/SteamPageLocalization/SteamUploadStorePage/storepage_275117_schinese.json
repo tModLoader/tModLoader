@@ -3,16 +3,16 @@
     "language": "schinese",
     "app[content][about]": "挖掘、战斗、建造，用 tModLoader 在玩家制作的模组世界中杀出一条血路——这个 DLC 将泰拉瑞亚模组带进现实！\n\ntModLoader（TML）是一个开源的，社区驱动的泰拉瑞亚修改器，使得制作与游玩模组成为可能。TML 用即待发掘的新内容扩展你泰拉瑞亚冒险的边界，而它们由泰拉瑞亚社区制作！TML 允许玩家创建并游玩模组，且在设计上可以让你自己玩，和朋友一起玩——玩一个或者很多个模组，想玩什么选什么！\n\n提示：与你同乐的玩家也需要安装 TML；原版玩家不可能和 TML 玩家联机。\n\n---\n\n[b][u][h2]获取帮助[/h2][/u][/b]\n正在寻求帮助？你可以从我们的泰拉瑞亚社区论坛（Terraria Community Forums）或 Discord 服务器获得帮助！这些是最好获得帮助的地方，我们 Steam 商店页面右下方的官网“访问网站”有它们的链接。\n\ntModLoader 是一个开源项目。这意味着它的源码是公开的，任何人都可以贡献自己的一份力量。我们的项目可以在官网中链接到的 GitHub 上找到。\n\n你想知道 tModLoader 怎样运作吗？也许你现在就想开玩？你可以从阅读我们的玩家指南开始，就从右下方的 “查看手册” 链接过去吧。那里也有为模组开发者和 TML 贡献者准备的页面。我们的 wiki 充满了关于如何用 tModLoader 制作模组的指南。\n\n---\n\n[b][u][h2]常见问题[/h2][/u][/b]\n当你安装 tModLoader 并准备开始玩的时候，有一些重要的事情需要你知道：\n\n[b][list][*]你不必做任何（tModLoader的）备份\n[*]只需要将泰拉瑞亚更新到1.4，再在 Steam 上安装 tModLoader\n[*]你既可以玩原版泰拉瑞亚，也可以玩 TML，从 Steam 安装的 tModLoader 被视为一个单独的游戏（游玩1.4的 TML 时，泰拉瑞亚也会启动）\n[*]tModLoader 支持1.3和1.4版本的泰拉瑞亚\n[*]tModLoader 支持 Steam 创意工坊（但不必要，我们有一个游戏内的模组浏览器）\n[*]经由此次发布，tModLoader 可以被安装在任何地方，也不必从 Steam 安装\n[*]tModLoader 支持 Windows、Mac 和 Linux[/list][/b]\n\n[b]1.4的更新会怎样影响我？1.3的模组能在1.4玩吗？[/b]\n由于1.3→1.4的更新带来了许多改动，所有未更新的模组都不会适配1.4.即便模组制作者们可能有时间更新他们的模组，有的模组永远也不会更新到1.4。所以请注意，不是所有的模组都能在1.4玩。\n\n[b]也就是说，tModLoader 已经更新到了1.4？[/b]\n是，Steam 上的 tModLoader 支持1.3.5和1.4的泰拉瑞亚。\n\n[b]我能不能用创意工坊安装模组？[/b]\n能，1.4的 tModLoader 支持创意工坊。\n如果要玩1.3的模组，你仍然需要到别处找。\n",
     "app[content][short_description]": "挖掘、战斗、建造，用 tModLoader 在玩家制作的模组世界中杀出一条血路——这个 DLC 将泰拉瑞亚模组带进现实！",
-    "app[content][sysreqs][mac][min][osversion]": "OSX 10.15 Catalina",
+    "app[content][sysreqs][mac][min][osversion]": "(1.4.4) OSX 12 Monterey; (1.4.3) OSX 10.15 Catalina",
     "app[content][sysreqs][mac][min][processor]": "2.0 Ghz",
-    "app[content][sysreqs][mac][min][graphics]": "FNA要求: https://github.com/FNA-XNA/FNA/wiki/3:-Distributing-FNA-Games",
-    "app[content][sysreqs][mac][min][notes]": "tModLoader依赖于NET 6.0运行时，NET 6.0要求: https://github.com/dotnet/core/blob/main/release-notes/6.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异",
+    "app[content][sysreqs][mac][min][graphics]": "FNA要求: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][mac][min][notes]": "tModLoader依赖于NET 8.0运行时，NET 8.0要求: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异",
     "app[content][sysreqs][windows][min][osversion]": "Windows 7 x64, 8/8.1 x64, 10, 11",
     "app[content][sysreqs][windows][min][processor]": "2.0 Ghz",
-    "app[content][sysreqs][windows][min][graphics]": "FNA要求: https://github.com/FNA-XNA/FNA/wiki/3:-Distributing-FNA-Games",
-    "app[content][sysreqs][windows][min][notes]": "tModLoader依赖于NET 6.0运行时，NET 6.0要求: https://github.com/dotnet/core/blob/main/release-notes/6.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异",
+    "app[content][sysreqs][windows][min][graphics]": "FNA要求: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][windows][min][notes]": "tModLoader依赖于NET 8.0运行时，NET 8.0要求: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异",
     "app[content][sysreqs][linux][min][osversion]": "Ubuntu 16.04 LTS或更高版本",
     "app[content][sysreqs][linux][min][processor]": "2.0 Ghz",
-    "app[content][sysreqs][linux][min][graphics]": "FNA要求: https://github.com/FNA-XNA/FNA/wiki/3:-Distributing-FNA-Games",
-    "app[content][sysreqs][linux][min][notes]": "tModLoader依赖于NET 6.0运行时，NET 6.0要求: https://github.com/dotnet/core/blob/main/release-notes/6.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异"
+    "app[content][sysreqs][linux][min][graphics]": "FNA要求: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][linux][min][notes]": "tModLoader依赖于NET 8.0运行时，NET 8.0要求: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. 附加要求可能会因已安装的创意工坊物品而异"
 }

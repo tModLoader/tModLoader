@@ -110,7 +110,7 @@
  		if (NPC.downedMartians)
  			list.Add(71);
  
-+			list.AddEmotesToCategory(EmoteID.Category.CrittersAndMonsters);
++		list.AddEmotesToCategory(EmoteID.Category.CrittersAndMonsters);
  		return list;
  	}
  

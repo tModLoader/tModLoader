@@ -1527,7 +1527,8 @@ public static class PlayerLoader
 
 	private static HookList HookDrawPlayer = AddHook<Action<Camera>>(p => p.DrawPlayer);
 
-	public static void DrawPlayer(Player player, Camera camera) {
+	public static void DrawPlayer(Player player, Camera camera)
+	{
 		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
 			modPlayer.DrawPlayer(camera);
 		}

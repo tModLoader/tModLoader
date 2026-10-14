@@ -85,7 +85,7 @@ public partial class TileObjectData
 		alternate = num6;
 
 		return;
- 	}
+	}
 
 	/// <summary>
 	/// Returns true if the <see cref="Tile"/> at the location provided has a placed tile and is the top left tile of a multitile (supports alternate placements and states as well). Returns false otherwise.
@@ -99,13 +99,11 @@ public partial class TileObjectData
 	/// </summary>
 	public static bool IsTopLeft(Tile tile)
 	{
-		if (!tile.HasTile)
-		{
+		if (!tile.HasTile) {
 			return false;
 		}
 		var tileData = GetTileData(tile);
-		if (tileData == null)
-		{
+		if (tileData == null) {
 			return false;
 		}
 		int partFrameX = tile.TileFrameX % tileData.CoordinateFullWidth;

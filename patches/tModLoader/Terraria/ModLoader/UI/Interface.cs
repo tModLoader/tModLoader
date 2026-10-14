@@ -374,7 +374,7 @@ internal static class Interface
 			Main.MenuUI.SetState(extractMod);
 			Main.menuMode = 888;
 		}
-		else if(Main.menuMode == progressID) {
+		else if (Main.menuMode == progressID) {
 			Main.MenuUI.SetState(progress);
 			Main.menuMode = 888;
 		}
@@ -476,13 +476,11 @@ internal static class Interface
 				SoundEngine.PlaySound(11, -1, -1, 1);
 			}
 		}
-		else if (Main.menuMode == modConfigID)
-		{
+		else if (Main.menuMode == modConfigID) {
 			Main.MenuUI.SetState(modConfig);
 			Main.menuMode = 888;
 		}
-		else if (Main.menuMode == modConfigListID)
-		{
+		else if (Main.menuMode == modConfigListID) {
 			Main.MenuUI.SetState(modConfigList);
 			Main.menuMode = 888;
 		}

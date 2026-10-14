@@ -2,6 +2,7 @@
 using Terraria.ModLoader;
 
 namespace Terraria.ID;
+
 public class HairID
 {
 	public class Sets

@@ -191,7 +191,8 @@ public static partial class Logging
 		return $"{baseLogName}.log";
 	}
 
-	private static void RenameToOld(List<string> existingLogs) {
+	private static void RenameToOld(List<string> existingLogs)
+	{
 		foreach (string existingLog in existingLogs.OrderBy(File.GetCreationTime)) {
 			string oldExt = ".old";
 			int n = 0;

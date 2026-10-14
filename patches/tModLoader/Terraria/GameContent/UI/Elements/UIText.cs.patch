@@ -4,7 +4,7 @@
  		}
  		set {
  			_isWrapped = value;
-+			if(value)
++			if (value)
 +				MinWidth.Set(0, 0); // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to CreateWrappedText+GetInnerDimensions logic. IsWrapped is false in ctor, so need to undo changes.
  			InternalSetText(_text, _textScale, _isLarge);
  		}

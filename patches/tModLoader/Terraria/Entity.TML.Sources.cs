@@ -16,7 +16,7 @@ partial class Entity
 
 	public IEntitySource GetSource_DropAsItem(string? context = null)
 		=> new EntitySource_DropAsItem(this, context);
-	
+
 	public IEntitySource GetSource_Loot(string? context = null)
 		=> new EntitySource_Loot(this, context);
 
@@ -24,16 +24,16 @@ partial class Entity
 		=> new EntitySource_Gift(this, context);
 
 	// Damage / Death
-	
+
 	public IEntitySource GetSource_OnHit(Entity victim, string? context = null)
 		=> new EntitySource_OnHit(attacker: this, victim, context);
-	
+
 	public IEntitySource GetSource_OnHurt(Entity? attacker, string? context = null)
 		=> new EntitySource_OnHurt(victim: this, attacker, context);
 
 	public IEntitySource GetSource_Death(string? context = null)
 		=> new EntitySource_Death(this, context);
-	
+
 	// Etc
 
 	public IEntitySource GetSource_Misc(string context)
@@ -60,7 +60,7 @@ partial class Entity
 
 	public static IEntitySource GetSource_NaturalSpawn()
 		=> new EntitySource_SpawnNPC();
-	
+
 	public static IEntitySource GetSource_TownSpawn()
 		=> new EntitySource_SpawnNPC();
 }

@@ -15,7 +15,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 
 	public ModNPC ModNPC { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalNPC>.Type => type;
 	internal GlobalNPC[] _globals;
 	public RefReadOnlyArray<GlobalNPC> EntityGlobals => _globals;
@@ -41,7 +41,7 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalNPC<T>(T baseInstance, out T result) where T : GlobalNPC
 		=> GlobalNPC.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	/// <summary> Provides access to (static) happiness data associated with this NPC's type. </summary>
 	public NPCHappiness Happiness => NPCHappiness.Get(type);

@@ -8,7 +8,8 @@ namespace Terraria.ModLoader.Engine;
 
 internal static class NativeExceptionHandling
 {
-	internal static void Init(){
+	internal static void Init()
+	{
 		if (!OperatingSystem.IsWindows())
 			return;
 

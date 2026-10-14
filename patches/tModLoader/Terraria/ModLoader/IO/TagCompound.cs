@@ -29,7 +29,7 @@ public class TagCompound : IEnumerable<KeyValuePair<string, object>>, ICloneable
 	/// <exception cref="IOException"></exception>
 	public T Get<T>(string key)
 	{
-		if(!TryGet(key, out T value) && value == null) {
+		if (!TryGet(key, out T value) && value == null) {
 			try {
 				return TagIO.Deserialize<T>(null);
 			}

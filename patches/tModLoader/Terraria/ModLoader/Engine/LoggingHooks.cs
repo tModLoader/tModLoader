@@ -54,7 +54,8 @@ internal static class LoggingHooks
 
 	private delegate void hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e);
 
-	private static void Hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e) {
+	private static void Hook_StackTrace_CaptureStackTrace(orig_StackTrace_CaptureStackTrace orig, StackTrace self, int skipFrames, bool fNeedFileInfo, Exception e)
+	{
 		// avoid including the hook frames in manually captured stack traces. Note that 3 frames are from the hook, and the System.Diagnostics frame is normally trimmed by CalculateFramesToSkip in StackTrace.CoreCLR.cs
 		// The Hook_StackTrace_CaptureStackTrace frame is only present in DEBUG
 
@@ -95,7 +96,8 @@ internal static class LoggingHooks
 
 	private static Hook stackTrace_CaptureStackTrace;
 	private static Hook stackTraceSymbols_GetSourceLineInfo;
-	private static void PrettifyStackTraceSources() {
+	private static void PrettifyStackTraceSources()
+	{
 		stackTrace_CaptureStackTrace = new Hook(typeof(StackTrace).GetMethod("CaptureStackTrace", BindingFlags.NonPublic | BindingFlags.Instance)!,
 			new hook_StackTrace_CaptureStackTrace(Hook_StackTrace_CaptureStackTrace));
 

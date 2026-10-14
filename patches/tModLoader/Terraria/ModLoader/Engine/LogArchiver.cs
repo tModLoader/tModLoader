@@ -19,7 +19,8 @@ internal static class LogArchiver
 
 #if NETCORE
 	// Register support for encodings not present on .NET Core (necessary to port from .NET Framework)
-	static LogArchiver() {
+	static LogArchiver()
+	{
 		Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 	}
 #endif

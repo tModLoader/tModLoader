@@ -14,12 +14,14 @@ internal class ContentCache
 
 	internal static bool contentLoadingFinished;
 
-	internal static void Unload() {
+	internal static void Unload()
+	{
 		contentLoadingFinished = false;
 		_cachedContentForAllMods.Clear();
 	}
 
-	public static IEnumerable<T> GetContentForAllMods<T>() where T : ILoadable {
+	public static IEnumerable<T> GetContentForAllMods<T>() where T : ILoadable
+	{
 		// Check of the cache already exists
 		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
 		if (_cachedContentForAllMods.TryGetValue(typeof(T), out IList cachedContent))
@@ -43,17 +45,20 @@ internal class ContentCache
 	private readonly List<ILoadable> _content = new List<ILoadable>();
 	private readonly Dictionary<Type, IList> _cachedContent = new();
 
-	internal ContentCache(Mod mod) {
+	internal ContentCache(Mod mod)
+	{
 		_mod = mod;
 	}
 
-	internal void Add(ILoadable loadable) {
+	internal void Add(ILoadable loadable)
+	{
 		_content.Add(loadable);
 	}
 
 	public IEnumerable<ILoadable> GetContent() => _content.AsReadOnly();  // Prevent exposing the list via hard cast
 
-	public IEnumerable<T> GetContent<T>() where T : ILoadable {
+	public IEnumerable<T> GetContent<T>() where T : ILoadable
+	{
 		// Check of the cache already exists
 		// It will already be a ReadOnlyList<T>, so it just needs to be cast back to it
 		if (_cachedContent.TryGetValue(typeof(T), out IList cachedContent))
@@ -78,7 +83,8 @@ internal class ContentCache
 		return content;
 	}
 
-	internal void Clear() {
+	internal void Clear()
+	{
 		_content.Clear();
 		_cachedContent.Clear();
 	}

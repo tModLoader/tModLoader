@@ -276,11 +276,11 @@ public partial class Player
 		public static DefenseStat operator +(DefenseStat stat, int add) => add < 0 ? stat - (-add) : stat with { Positive = stat.Positive + add };
 		public static DefenseStat operator -(DefenseStat stat, int sub) => sub < 0 ? stat + (-sub) : stat with { Negative = stat.Negative + sub };
 
-		public static DefenseStat operator ++(DefenseStat stat) => stat+1;
-		public static DefenseStat operator --(DefenseStat stat) => stat-1;
+		public static DefenseStat operator ++(DefenseStat stat) => stat + 1;
+		public static DefenseStat operator --(DefenseStat stat) => stat - 1;
 
-		public static DefenseStat operator *(DefenseStat stat, float mult) => stat with { FinalMultiplier = stat.FinalMultiplier * mult};
-		public static DefenseStat operator /(DefenseStat stat, float div) => stat with { FinalMultiplier = stat.FinalMultiplier / div};
+		public static DefenseStat operator *(DefenseStat stat, float mult) => stat with { FinalMultiplier = stat.FinalMultiplier * mult };
+		public static DefenseStat operator /(DefenseStat stat, float div) => stat with { FinalMultiplier = stat.FinalMultiplier / div };
 
 		public static implicit operator int(DefenseStat stat) => Math.Max((int)Math.Round((stat.Positive * (1 + stat.AdditiveBonus.Value) - stat.Negative) * stat.FinalMultiplier.Value), 0);
 
