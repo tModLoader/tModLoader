@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.ID;
@@ -1438,5 +1439,29 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	public virtual void DrawPlayer(Camera camera)
 	{
+	}
+
+	/// <summary>
+	/// Allows for modification of the player's eyelid.
+	/// </summary>
+	/// <param name="drawinfo"> The player's current draw information. </param>
+	/// <param name="position"> The position that the eye will be drawn.
+	/// <para/>Defaults to <see cref="Vector2.Zero"/> which will be the player's eye position.
+	/// </param>
+	/// <param name="color"> The color of the eyelid.
+	/// <para/>If you change the color, you'll also need to apply the lighting to the color:
+	/// <code>
+	/// Color eyeLidColor = Color.White; // Define the real color of the eye lid here.
+	/// color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor, drawinfo.shadow);
+	/// </code>
+	/// <para/>Defaults to <see cref="PlayerDrawSet.colorHead"/> which will be the player's skin color.
+	/// </param>
+	/// <param name="shader"> The dye shader to apply to the eye lid.
+	/// <para/>Defaults to <see cref="PlayerDrawSet.skinDyePacked"/> which will be the player's dye.
+	/// </param>
+	/// <param name="eyeFrame"> The frame show the eyelid as.</param>
+	public virtual void ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
+	{
+
 	}
 }

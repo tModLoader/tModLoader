@@ -155,4 +155,45 @@ public static class MountLoader
 		}
 		return true;
 	}
+
+	/// <summary>
+	/// See <see cref="ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet)"/>
+	/// </summary>
+	public static void ModifyPlayerDrawInfo(Mount mount, ref PlayerDrawSet drawInfo)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.ModifyPlayerDrawInfo(ref drawInfo);
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.ResetFlightTime(Player, ref int)"/>
+	/// </summary>
+	public static void ResetFlightTime(Mount mount, Player player, ref int flightTime)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.ResetFlightTime(player, ref flightTime);
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.CanFly(Player)"/>
+	/// </summary>
+	public static bool? CanFly(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.CanFly(player);
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.UpdateAfterEquips(Player)"/>
+	/// </summary>
+	public static void UpdateAfterEquips(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.UpdateAfterEquips(player);
+		}
+	}
 }
