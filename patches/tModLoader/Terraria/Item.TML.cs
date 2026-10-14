@@ -372,7 +372,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		if (PrefixLegacy.ItemSets.Summon[type] || ItemLoader.SummonPrefix(this))
 			categories.Add(PrefixCategory.Summon);
 
-		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Count != 0)
+		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Exists(PrefixLoader.IsWeaponSubCategory))
 			categories.Add(PrefixCategory.AnyWeapon);
 
 		if (IsAPrefixableAccessory())
