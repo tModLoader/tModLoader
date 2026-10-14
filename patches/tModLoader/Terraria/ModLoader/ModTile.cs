@@ -797,4 +797,14 @@ public abstract class ModTile : ModBlockType
 	public virtual void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
 	}
+
+	/// <summary>
+	/// Called when the player is wearing Flower Boots and walking on this tile. Use this to spawn flowers above grass tiles. Only called if the tile above is empty and has no liquid.
+	/// <para/> This is called on the local client and single player.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual void FlowerBootsPlaceFlowers(int i, int j)
+	{
+	}
 }

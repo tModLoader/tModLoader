@@ -3175,6 +3175,16 @@
  	}
  
  	private void SpawnHallucination(Item item)
+@@ -10511,6 +_,9 @@
+ 			tile.frameY = 0;
+ 			tile.slope(0);
+ 			tile.halfBrick(halfBrick: false);
++
++			TileLoader.FlowerBootsPlaceFlowers(X, Y + 1); // Hook doesn't have a return value since it isn't used anyway.
++
+ 			if (Main.tile[X, Y + 1].type == 2 || Main.tile[X, Y + 1].type == 477) {
+ 				int num = Main.rand.NextFromList<int>(6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 24, 27, 30, 33, 36, 39, 42);
+ 				switch (num) {
 @@ -10590,6 +_,12 @@
  
  	private void ApplyEquipVanity(int itemSlot, Item currentItem)

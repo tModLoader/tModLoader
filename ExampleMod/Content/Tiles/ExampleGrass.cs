@@ -98,6 +98,18 @@ namespace ExampleMod.Content.Tiles
 				NetMessage.SendTileSquare(-1, i, j, 3);
 			}
 		}
+
+		// Support Flower Boots. Unlike in RandomUpdate, only the "flower" styles of ExamplePlants will be placed.
+		public override void FlowerBootsPlaceFlowers(int i, int j) {
+			Tile above = Main.tile[i, j - 1];
+			above.HasTile = true;
+			above.TileType = (ushort)ModContent.TileType<ExamplePlants>();
+			above.TileFrameX = (short)(Main.rand.Next(6, 11) * 18); // Styles 6, 7, 8, 9, and 10 are the flower looking styles.
+			above.CopyPaintAndCoating(Main.tile[i, j]);
+			if (Main.netMode == NetmodeID.MultiplayerClient) {
+				NetMessage.SendTileSquare(-1, i, j - 1);
+			}
+		}
 	}
 
 	// These classes inherit from the abstract ExampleGrass class to share logic.

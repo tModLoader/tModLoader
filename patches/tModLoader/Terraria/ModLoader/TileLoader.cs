@@ -1529,4 +1529,9 @@ public static class TileLoader
 
 		GetTile(tileToCreate)?.OverridePlacementTile(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
 	}
+
+	public static void FlowerBootsPlaceFlowers(int i, int j)
+	{
+		GetTile(Main.tile[i, j].TileType)?.FlowerBootsPlaceFlowers(i, j);
+	}
 }
