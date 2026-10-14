@@ -638,3 +638,14 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
+
+## New tModLoader features
+
+In addition to changes to existing features and adapting to vanilla changes, 1.4.5 tModLoader also contains several new features unrelated to vanilla changes.
+
+* `WallDefinition` added.
+* `ModItem.GetGolfClubProperties` added, as well as ExampleGolfClub.
+* Mod ratings are now displayed in the Mod Browser and mods can be rated from the Mods menu.
+* `Projectile.GetDefaultDrawData` helper method for calculating the default projectile draw parameters.
+* `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
+* `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
