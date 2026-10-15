@@ -10,6 +10,7 @@ using Terraria.Graphics;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader;
 public static class LiquidLoader
@@ -103,7 +104,7 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPlayersEmitBreathBubbles, globalLiquids, (GlobalLiquid g) => g.AllowEmitBreathBubbles);
 		ModLoader.BuildGlobalHook(ref HookCanPlayerDrown, globalLiquids, (GlobalLiquid g) => g.CanPlayerDrown);
 		ModLoader.BuildGlobalHook(ref HookPoolSizeMultiplier, globalLiquids, (GlobalLiquid g) => g.LiquidFishingPoolSizeMulitplier);
-		ModLoader.BuildGlobalHook(ref HookAllowFishingInShimmer, globalLiquids, (GlobalLiquid g) => g.AllowFishingInShimmer);
+		ModLoader.BuildGlobalHook(ref HookAllowFishingInLiquid, globalLiquids, (GlobalLiquid g) => g.AllowFishingInLiquid);
 		ModLoader.BuildGlobalHook(ref HookLiquidSlopeOpacity, globalLiquids, (GlobalLiquid g) => g.LiquidSlopeOpacity);
 		ModLoader.BuildGlobalHook(ref HookLiquidLightMaskMode, globalLiquids, (GlobalLiquid g) => g.LiquidLightMaskMode);
 		ModLoader.BuildGlobalHook(ref HookWaterRippleMultipler, globalLiquids, (GlobalLiquid g) => g.WaterRippleMultiplier);
@@ -590,6 +591,24 @@ public static class LiquidLoader
 			}
 		}
 		return false;
+	}
+
+
+	private static Func<int, Player, Projectile, bool?>[] HookAllowFishingInLiquid;
+	public static bool? AllowFishingInLiquid(int liquidType, Player player, Projectile projectile)
+	{
+		ModLiquid modLiquid = GetLiquid(liquidType);
+		bool? result = null;
+		if (modLiquid != null) {
+			result = modLiquid.AllowFishingInLiquid(player, projectile);
+		}
+		for (int k = 0; k < HookAllowFishingInLiquid.Length; k++) {
+			result = HookAllowFishingInLiquid[k](liquidType, player, projectile);
+			if (HookAllowFishingInLiquid[k](liquidType, player, projectile) != null) {
+				return result;
+			}
+		}
+		return result;
 	}
 
 	private delegate void DelegateSlopeOpacity(int type, ref float slopeOpacity);

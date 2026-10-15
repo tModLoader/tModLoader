@@ -207,6 +207,17 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
+	/// Allow or not fishing in this liquid. Return true by default; 
+	/// </summary>
+	/// <param name="player">The player attempting to fish in it</param>
+	/// <param name="bobber">The bobber that is trying to fish in the liquid</param>
+	/// <returns></returns>
+	public virtual bool AllowFishingInLiquid(Player player, Projectile bobber)
+	{
+		return true;
+	}
+
+	/// <summary>
 	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids during updates such as custom evaporation. Returns true by default. 
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

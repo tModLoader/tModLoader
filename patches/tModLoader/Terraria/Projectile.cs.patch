@@ -2274,7 +2274,7 @@
  	{
  		int x = (int)base.Center.X / 16;
  		int num = (int)base.Center.Y / 16;
-@@ -46261,7 +_,7 @@
+@@ -46261,12 +_,13 @@
  		}
  	}
  
@@ -2283,6 +2283,36 @@
  	{
  		Player player = Main.player[owner];
  		bool flag = type >= 986 && type <= 993;
+ 		timeLeft = 60;
+ 		bool flag2 = false;
++		bool shimmerPlayer = false;
+ 		if (player.inventory[player.selectedItem].fishingPole == 0 || player.CCed || player.noItems)
+ 			flag2 = true;
+ 		else if (player.inventory[player.selectedItem].shoot != type && !flag)
+@@ -46275,6 +_,23 @@
+ 			flag2 = true;
+ 		else if (player.dead)
+ 			flag2 = true;
++		else {
++			for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++				if (wets[i]) {
++					bool? result = LiquidLoader.AllowFishingInLiquid(i, player, this);
++					if (result == false) {
++						flag2 = true;
++						break;
++					}
++
++					if (i == LiquidID.Shimmer && wets[i] && !flag2 && result != true) {
++						shimmerPlayer = true;
++						break;
++					}
++				}
++	
++			}
++		}
+ 
+ 		if (flag2) {
+ 			Kill();
 @@ -46284,16 +_,16 @@
  		player.afkCounterForKiting = 0;
  		if (ai[1] > 0f && localAI[1] != 0f) {
@@ -2309,7 +2339,7 @@
  
  		if (wet) {
 -			if (shimmerWet) {
-+			if (shimmerWet && !LiquidLoader.AllowFishingInShimmer()) {
++			if (shimmerWet && shimmerPlayer) {
  				if (Main.myPlayer == owner)
  					Main.player[owner].AddBuff(353, 60);
  

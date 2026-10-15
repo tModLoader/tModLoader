@@ -506,13 +506,14 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows bobbers to ignore the application of the shimmer effect when being wet by shimmer. <br/>
-	/// This allows modders to easily enable fishing in shimmer. Do keep in mind, the fishing loot normally is water.
+	/// Allow or not fishing in this liquid. Return true by default; 
 	/// </summary>
+	/// <param name="player">The player attempting to fish in it</param>
+	/// <param name="bobber">The bobber that is trying to fish in the liquid</param>
 	/// <returns></returns>
-	public virtual bool AllowFishingInShimmer()
+	public virtual bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber)
 	{
-		return false;
+		return true;
 	}
 
 	/// <summary>
