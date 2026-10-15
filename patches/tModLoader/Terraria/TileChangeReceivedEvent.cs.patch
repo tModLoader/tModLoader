@@ -5,4 +5,4 @@
  namespace Terraria;
  
 -public delegate void TileChangeReceivedEvent(int x, int y, int count, TileChangeType type);
-+public delegate void TileChangeReceivedEvent(int x, int y, int count, byte type, int data2);
++public delegate void TileChangeReceivedEvent(int x, int y, int count, byte liquidMergeType, int adjacentLiquidType);

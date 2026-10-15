@@ -162,23 +162,23 @@ public partial class WorldGen
 	/// </summary>
 	/// <param name="x"></param>
 	/// <param name="y"></param>
-	/// <param name="type"></param>
-	/// <param name="otherType"></param>
+	/// <param name="liquidMergeType"></param>
+	/// <param name="adjacentLiquidType"></param>
 	/// <param name="count"></param>
-	public static void PlayLiquidChangeSound(int x, int y, int type, int otherType, int count = 1)
+	public static void PlayLiquidChangeSound(int x, int y, int liquidMergeType, int adjacentLiquidType, int count = 1)
 	{
 		SoundStyle? collisionSound = SoundID.LiquidsHoneyWater;
 
-		if ((type == LiquidID.Water && otherType == LiquidID.Lava) || (type == LiquidID.Lava && otherType == LiquidID.Water))
+		if ((liquidMergeType == LiquidID.Water && adjacentLiquidType == LiquidID.Lava) || (liquidMergeType == LiquidID.Lava && adjacentLiquidType == LiquidID.Water))
 			collisionSound = SoundID.LiquidsWaterLava;
-		else if ((type == LiquidID.Water && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Water))
+		else if ((liquidMergeType == LiquidID.Water && adjacentLiquidType == LiquidID.Honey) || (liquidMergeType == LiquidID.Honey && adjacentLiquidType == LiquidID.Water))
 			collisionSound = SoundID.LiquidsHoneyWater;
-		else if ((type == LiquidID.Lava && otherType == LiquidID.Honey) || (type == LiquidID.Honey && otherType == LiquidID.Lava))
+		else if ((liquidMergeType == LiquidID.Lava && adjacentLiquidType == LiquidID.Honey) || (liquidMergeType == LiquidID.Honey && adjacentLiquidType == LiquidID.Lava))
 			collisionSound = SoundID.LiquidsHoneyLava;
-		else if ((type == LiquidID.Shimmer || otherType == LiquidID.Shimmer) && type < LiquidID.Count && otherType < LiquidID.Count)
+		else if ((liquidMergeType == LiquidID.Shimmer || adjacentLiquidType == LiquidID.Shimmer) && liquidMergeType < LiquidID.Count && adjacentLiquidType < LiquidID.Count)
 			collisionSound = SoundID.ShimmerWeak1;
 
-		LiquidLoader.LiquidMergeSounds(x, y, type, otherType, ref collisionSound);
+		LiquidLoader.LiquidMergeSounds(x, y, liquidMergeType, adjacentLiquidType, ref collisionSound);
 
 		if (collisionSound != null) {
 			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);

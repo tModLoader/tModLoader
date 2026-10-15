@@ -186,33 +186,23 @@
  
  					player9.dead = player9.statLife <= 0;
  					if (Main.netMode == 2)
-@@ -1138,20 +_,34 @@
+@@ -1138,6 +_,7 @@
  				ushort num93 = reader.ReadByte();
  				ushort num94 = reader.ReadByte();
  				byte b7 = reader.ReadByte();
-+				int otherLiquid = reader.ReadInt32();
++				int adjacentLiquidType = reader.ReadInt32(); //Added by tML
  				if (!WorldGen.InWorld(num91, num92, 3))
  					break;
  
-+				/* // TODO: Verify if it match Crr L + 10
- 				TileChangeType type7 = TileChangeType.None;
+@@ -1145,13 +_,15 @@
  				if (Enum.IsDefined(typeof(TileChangeType), b7))
  					type7 = (TileChangeType)b7;
-+				*/
  
-+				/* // TODO: Verify if it match Curr L + 9
++				byte mergeLiquidType = adjacentLiquidType <= -1 ? (byte)type7 : b7;
++
  				if (MessageBuffer.OnTileChangeReceived != null)
- 					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7);
-+				*/
-+				if (otherLiquid <= -1) {
-+					TileChangeType type7 = TileChangeType.None;
-+					if (Enum.IsDefined(typeof(TileChangeType), b7))
-+						type7 = (TileChangeType)b7;
-+					
-+					if (MessageBuffer.OnTileChangeReceived != null)
-+						MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), b7, otherLiquid);
-+					
-+				}
+-					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), type7);
++					MessageBuffer.OnTileChangeReceived(num91, num92, Math.Max(num93, num94), mergeLiquidType, adjacentLiquidType);
  
  				BitsByte bitsByte19 = (byte)0;
  				BitsByte bitsByte20 = (byte)0;
