@@ -1569,11 +1569,12 @@ public static class TileLoader
 
 	public static WaterfallManager.WaterfallData? CreateWaterfall(int i, int j, int type)
 	{
-		WaterfallManager.WaterfallData? data = GetTile(type)?.CreateWaterfall(i, j);
 		foreach (var hook in HookCreateWaterfall) {
-			data = hook(i, j, type);
+			if (hook(i, j, type) is { } data)
+				return data;
 		}
-		return data;
+
+		return GetTile(type)?.CreateWaterfall(i, j);
 	}
 
 	public static bool? CanDoWireStuffHere(int i, int j, int type)
