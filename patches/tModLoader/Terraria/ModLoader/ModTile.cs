@@ -404,7 +404,7 @@ public abstract class ModTile : ModTileOrWall
 
 	/// <summary>
 	/// Animates an individual tile. <paramref name="i"/> and <paramref name="j"/> are the coordinates of the Tile in question. <paramref name="frameXOffset"/> and <paramref name="frameYOffset"/> should be used to specify an offset from the tiles <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>. <c>frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];</c> will already be set before this hook is called, taking into account the TileID-wide animation set via <see cref="AnimateTile(ref int, ref int)"/>.
-	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
+	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
 	/// <param name="type">The tile type.</param>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -417,7 +417,7 @@ public abstract class ModTile : ModTileOrWall
 
 	/// <summary>
 	/// Allows you to adjust how the tile at the given coordinates is drawn. For example, changing the color the tile is drawn in.
-	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
+	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>.
 	/// <para/> <b>Note:</b> Previously ExampleMod examples showed spawning particles (dust or gore) in this method, but they should be spawned in <see cref="EmitParticles(int, int, Tile, short, short, Color, bool)"/> instead now. This is because particles are only spawned under specific conditions and those conditions are baked into the logic calling EmitParticles.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -458,7 +458,7 @@ public abstract class ModTile : ModTileOrWall
 	}
 
 	/// <summary>
-	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
