@@ -1,0 +1,8 @@
+--- src/TerrariaNetCore/Terraria/WaterfallID.cs
++++ src/tModLoader/Terraria/WaterfallID.cs
+@@ -30,4 +_,5 @@
+ 	public const int Shimmer = 25;
+ 	public const int LavaRain = 26;
+ 	public const int LavaRainSecondDrawLayer = 27;
++	public static readonly int Count = 28;
+ }

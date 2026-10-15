@@ -3,6 +3,7 @@ using ExampleMod.Common.Systems;
 using ExampleMod.Content.CustomModType;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Weapons;
+using ExampleMod.Content.Liquids;
 using ExampleMod.Content.NPCs;
 using ExampleMod.Content.TileEntities;
 using System.IO;
@@ -28,6 +29,7 @@ namespace ExampleMod
 			StartVictoryPose,
 			CancelVictoryPose,
 			SendCustomUseStylePlayerDirection,
+			LiquidMergeExplosion,
 		}
 
 		// Override this method to handle network packets sent for this mod.
@@ -68,6 +70,11 @@ namespace ExampleMod
 					break;
 				case MessageType.SendCustomUseStylePlayerDirection:
 					ExampleCustomUseStylePlayer.ReceiveDirection(reader, whoAmI);
+					break;
+				case MessageType.LiquidMergeExplosion:
+					int x = reader.ReadInt32();
+					int y = reader.ReadInt32();
+					ExampleComplexLiquid.SpawnVisualExplosion(x, y);
 					break;
 				default:
 					Logger.WarnFormat("ExampleMod: Unknown Message type: {0}", msgType);
