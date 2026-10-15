@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -7,7 +7,8 @@ using Terraria.Graphics;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
-using static Terraria.GameContent.Liquid.LiquidRenderer;
+using LiquidCache = Terraria.GameContent.Liquid.LiquidRenderer.LiquidCache;
+using LiquidDrawCache = Terraria.GameContent.Liquid.LiquidRenderer.LiquidDrawCache;
 
 namespace Terraria.ModLoader;
 
@@ -89,7 +90,21 @@ public abstract class ModLiquid : ModBlockType
 		LiquidRenderer.VISCOSITY_MASK[Type] = 0;
 		SetStaticDefaults();
 	}
-	
+
+	/// <summary>
+	/// Allows you to modify the properties after initial loading has completed.
+	/// <br /> This is where you would set the properties of this liquid. Many properties are stored as arrays throughout Terraria's code.
+	/// <br /> For example:
+	/// <list type="bullet">
+	/// <item> LiquidRenderer.WATERFALL_LENGTH[Type] = 10; </item>
+	/// <item> LiquidRenderer.DEFAULT_OPACITY[Type] = 0.6f; </item>
+	/// <item> LiquidRenderer.VISCOSITY_MASK[Type] = 0; </item>
+	/// </list>
+	/// </summary>
+	public override void SetStaticDefaults()
+	{
+	}
+
 	/// <summary>
 	/// Allows you to make stuff happen whenever the liquid at the given coordinates is drawn. For example, creating bubble dusts or changing the color the liquid is drawn in. <para />
 	/// This hook is seperate from Liquid Rendering, Only use this for things such as spawning particles.
@@ -103,7 +118,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="ModLiquid.PreDraw" /> for the other Lighting modes pre drawing
+	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="PreDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -115,8 +130,8 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="ModLiquid.PreRetroDraw" /> returns false.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="ModLiquid.PostDraw" /> for the other Lighting modes post drawing
+	/// This hook is not called if <see cref="PreRetroDraw" /> returns false.<para />
+	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="PostDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -127,7 +142,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to make stuff happen whenever the liquid at the given coordinates is drawn. For example, creating bubble dusts or changing the color the liquid is drawn in. <para />
-	/// This hook is not called if <see cref="ModLiquid.PreRetroDraw" /> returns false.
+	/// This hook is not called if <see cref="PreRetroDraw" /> returns false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -141,7 +156,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. <para />
-	/// Only called for liquid slopes. If you want to predraw the liquid itself, see <see cref="ModLiquid.PreDraw" /> or <see cref="ModLiquid.PreRetroDraw" />
+	/// Only called for liquid slopes. If you want to predraw the liquid itself, see <see cref="PreDraw" /> or <see cref="PreRetroDraw" />
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -156,8 +171,8 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="ModLiquid.PreSlopeDraw" /> returns false.<para />
-	/// Only called for liquid slopes. If you want to postdraw the liquid itself, see <see cref="ModLiquid.PostDraw" /> or <see cref="ModLiquid.PostRetroDraw" />
+	/// This hook is not called if <see cref="PreSlopeDraw" /> returns false.<para />
+	/// Only called for liquid slopes. If you want to postdraw the liquid itself, see <see cref="PostDraw" /> or <see cref="PostRetroDraw" />
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -354,7 +369,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with the player (especially player movement). <br/>
-	/// Please see <see cref="Terraria.Player.WaterCollision" />, <see cref="Terraria.Player.HoneyCollision" />, or <see cref="Terraria.Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="Player.WaterCollision" />, <see cref="Player.HoneyCollision" />, or <see cref="Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -369,7 +384,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with the player (especially player gravity). <br/>
-	/// Please see <see cref="Terraria.Player.Update" />, to see how vanilla handles it's liquid gravity.
+	/// Please see <see cref="Player.Update" />, to see how vanilla handles it's liquid gravity.
 	/// </summary>
 	/// <param name="player">The player instance thats being effected by the liquid.</param>
 	/// <param name="gravity">The current player.gravity being changed.</param>
@@ -382,7 +397,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with an item (especially item gravity and movement). <br/>
-	/// Please see <see cref="Terraria.Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
+	/// Please see <see cref="Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
 	/// This method is also used to modify items detected to be in liquids. Use this to do things such as deleting items touching this liquid.
 	/// </summary>
 	/// <param name="item">The item instance thats being effected by the liquid.</param>
@@ -395,7 +410,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with an npc (especially npc movement). <br/>
-	/// Please see <see cref="Terraria.NPC.UpdateCollision" />, to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="NPC.UpdateCollision" />, to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to call the method that applies the liquid velocity multiplier. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -409,7 +424,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with an npc (especially npc gravity). <br/>
-	/// Please see <see cref="Terraria.NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid gravity.
+	/// Please see <see cref="NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid gravity.
 	/// </summary>
 	/// <param name="npc">The npc instance thats being effected by the liquid.</param>
 	/// <param name="gravity">The gravity of the npc.</param>
@@ -420,7 +435,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows the user to specify how the liquid interacts with a projectile (especially projectile movement). <br/>
-	/// Please see <see cref="Terraria.Projectile.HandleMovement" />, to see how vanilla handles it's liquid collision. <br/>
+	/// Please see <see cref="Projectile.HandleMovement" />, to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
 	/// Returns true by default.
 	/// </summary>
@@ -440,7 +455,7 @@ public abstract class ModLiquid : ModBlockType
 	/// Allows you to give conditions for when the game attempts to check to see if the player is drowning. <br/>
 	/// Set isDrowning to either true or false depending on whether the player should or should not be drowning. <br/>
 	/// This is used by items such as the Breething Reed to make the player be submerged deeper underwater. <br/>
-	/// Please see <see cref="Terraria.Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
+	/// Please see <see cref="Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
 	/// ChecksForDrowning must be set to true for this to run. Not to be confused with ChecksForDrowning.
 	/// </summary>
 	/// <param name="player">The player instance thats being effected by the liquid.</param>
@@ -542,22 +557,7 @@ public abstract class ModLiquid : ModBlockType
 	{
 	}
 
-	#region ModBlockTypeOverrides
 	public override string LocalizationCategory => "Liquids";
-
-	/// <summary>
-	/// Allows you to modify the properties after initial loading has completed.
-	/// <br /> This is where you would set the properties of this liquid. Many properties are stored as arrays throughout Terraria's code.
-	/// <br /> For example:
-	/// <list type="bullet">
-	/// <item> LiquidRenderer.WATERFALL_LENGTH[Type] = 10; </item>
-	/// <item> LiquidRenderer.DEFAULT_OPACITY[Type] = 0.6f; </item>
-	/// <item> LiquidRenderer.VISCOSITY_MASK[Type] = 0; </item>
-	/// </list>
-	/// </summary>
-	public override void SetStaticDefaults()
-	{
-	}
 
 	/// <summary>
 	/// A display name for the liquid. May be used as a default impl for recipe conditions, map names and other mod features.
@@ -572,7 +572,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PreRetroDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -584,15 +584,10 @@ public abstract class ModLiquid : ModBlockType
 		return true;
 	}
 
-	public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
-	{
-		return true;
-	}
-
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="ModLiquid.PreDraw" /> returns false.<para />
-	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="ModLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
+	/// This hook is not called if <see cref="PreDraw" /> returns false.<para />
+	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -602,9 +597,4 @@ public abstract class ModLiquid : ModBlockType
 	public virtual void PostDraw(int i, int j, LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw)
 	{
 	}
-
-	public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
-	{
-	}
-	#endregion
 }
