@@ -23,7 +23,7 @@ public partial class NetMessage
 	/// </summary>
 	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, byte liquidType, byte otherLiquid)
 	{
-		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, liquidType, (int)(otherLiquid));
+		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, liquidType, otherLiquid + 1);
 		WorldGen.RangeFrame(tileX, tileY, xSize, ySize);
 	}
 }

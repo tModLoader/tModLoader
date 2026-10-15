@@ -190,7 +190,7 @@
  				ushort num93 = reader.ReadByte();
  				ushort num94 = reader.ReadByte();
  				byte b7 = reader.ReadByte();
-+				int adjacentLiquidType = reader.ReadInt32(); //Added by tML
++				int adjacentLiquidType = reader.ReadInt32() - 1; //Added by tML
  				if (!WorldGen.InWorld(num91, num92, 3))
  					break;
  
@@ -212,6 +212,15 @@
  				for (int num95 = num91; num95 < num91 + num93; num95++) {
  					for (int num96 = num92; num96 < num92 + num94; num96++) {
  						if (Main.tile[num95, num96] == null)
+@@ -1222,7 +_,7 @@
+ 
+ 				WorldGen.RangeFrame(num91, num92, num91 + num93, num92 + num94);
+ 				if (Main.netMode == 2)
+-					NetMessage.TrySendData(b, -1, whoAmI, null, num91, num92, (int)num93, (int)num94, b7);
++					NetMessage.TrySendData(b, -1, whoAmI, null, num91, num92, (int)num93, (int)num94, b7, adjacentLiquidType + 1);
+ 
+ 				break;
+ 			}
 @@ -1231,8 +_,12 @@
  				int num41 = reader.ReadInt16();
  				Vector2 vector = reader.ReadVector2();

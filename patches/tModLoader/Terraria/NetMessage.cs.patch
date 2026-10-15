@@ -638,8 +638,7 @@
 +	/// </summary>
  	public static void SendTileSquare(int whoAmi, int tileX, int tileY, int xSize, int ySize, TileChangeType changeType = TileChangeType.None)
  	{
--		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
-+		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType, -1);
+ 		SendData(20, whoAmi, -1, null, tileX, tileY, xSize, ySize, (int)changeType);
  	}
  
 +	/// <SharedSummary>
