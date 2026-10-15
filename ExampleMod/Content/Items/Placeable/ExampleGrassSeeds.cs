@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Placeable
 			ItemID.Sets.GrassSeeds[Type] = true;
 			ItemID.Sets.GrassSeedDirtTiles[Type] = [TileID.Dirt, ModContent.TileType<Tiles.ExampleBlock>()];
 
-			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true; // Seeds are not be recovered when grass tiles are destroyed.
+			ItemID.Sets.DisableAutomaticPlaceableDrop[Type] = true; // Seeds are not recovered when grass tiles are destroyed.
 		}
 
 		public override void SetDefaults() {

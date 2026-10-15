@@ -7655,6 +7655,14 @@
  
  			SetMeleeHitCooldown(npcIndex, itemAnimation);
  			if (attempt.DidNPCDie())
+@@ -34724,6 +_,7 @@
+ 								num = Main.rand.Next(2, 5);
+ 								break;
+ 						}
++						TileLoader.SickleDropHay(i, j, type, ref num);
+ 
+ 						if (num > 0) {
+ 							int number = Item.NewItem(new EntitySource_ItemUse(this, sItem), i * 16, j * 16, 16, 16, 1727, num);
 @@ -34746,11 +_,17 @@
  
  	private Rectangle ItemCheck_CatchCritters(Item sItem, Rectangle itemRectangle)

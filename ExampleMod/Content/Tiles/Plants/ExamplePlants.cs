@@ -35,6 +35,30 @@ namespace ExampleMod.Content.Tiles.Plants
 			if (Main.rand.NextBool(100)) {
 				yield return new Item(ModContent.ItemType<ExampleGrassSeeds>());
 			}
+
+			/*
+			// Drop a Seed (50% chance) if the Blowpipe or Blowgun (ItemID.Sets.DropSeedsIfInInventory) is in the player's inventory.
+			if (WorldGen.KillTile_ShouldDropSeeds(i, j)) {
+				yield return new Item(ItemID.Seed);
+			}
+			*/
+		}
+
+		public override void SickleDropHay(int i, int j, ref int hayStack) {
+			hayStack = Main.rand.Next(1, 3); // This plant drops 1-2 hay when cut with a sickle, like other 1 tile tall plants.
+		}
+
+		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+			// This critter drop chance logic matches normal grass.
+			wormChance = 400;
+			grassHopperChance = 100;
+
+			// If the player is wearing Flower Boots, drop rates are decreased drastically for "flower" styles, likely to prevent players from farming critters with Flower Boots.
+			int playerIndex = Player.FindClosest(new Vector2(i * 16, j * 16), 16, 16);
+			if (Main.player[playerIndex].flowerBoots && Main.tile[i, j].TileFrameX >= 6 * 18) {
+				wormChance *= 10000;
+				grassHopperChance *= 10000;
+			}
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {

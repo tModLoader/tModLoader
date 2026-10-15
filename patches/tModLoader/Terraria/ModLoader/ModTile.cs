@@ -807,4 +807,14 @@ public abstract class ModTile : ModBlockType
 	public virtual void FlowerBootsPlaceFlowers(int i, int j)
 	{
 	}
+
+	/// <summary>
+	/// Customizes how many <see cref="ItemID.Hay"/> are dropped when this tile is cut with a sickle.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="hayStack">The stack of the hay to drop</param>
+	public virtual void SickleDropHay(int i, int j, ref int hayStack)
+	{
+	}
 }
