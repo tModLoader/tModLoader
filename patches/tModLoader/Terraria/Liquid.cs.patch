@@ -317,7 +317,7 @@
 +
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (thisLiquidType != i && liquidsNearby[i]) {
-+				modLiquidTileType = LiquidLoader.LiquidMergeTilesType(x, y, i, thisLiquidType);
++				modLiquidTileType = LiquidLoader.LiquidMergeTilesType(i, thisLiquidType);
 +				if (modLiquidTileType != null) {
 +					liquidMergeTileType = (int)modLiquidTileType;
 +				}

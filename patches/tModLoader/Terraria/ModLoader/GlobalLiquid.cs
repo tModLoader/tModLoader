@@ -226,7 +226,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int? LiquidMerge(int i, int j, int type, int otherLiquid)
+	public virtual int? LiquidMerge(int type, int otherLiquid)
 	{
 		return null;
 	}

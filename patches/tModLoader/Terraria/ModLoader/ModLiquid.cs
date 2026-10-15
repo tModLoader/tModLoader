@@ -263,7 +263,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int LiquidMerge(int i, int j, int otherLiquid)
+	public virtual int LiquidMerge(int otherLiquid)
 	{
 		return TileID.Stone;
 	}

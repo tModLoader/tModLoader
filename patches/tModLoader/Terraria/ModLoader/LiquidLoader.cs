@@ -306,20 +306,20 @@ public static class LiquidLoader
 		return GetLiquid(type)?.SettleLiquidMovement(i, j) ?? true;
 	}
 
-	private static Func<int, int, int, int, int?>[] HookMergeTiles;
-	public static int? LiquidMergeTilesType(int i, int j, int type, int otherLiquid)
+	private static Func<int, int, int?>[] HookMergeTiles;
+	public static int? LiquidMergeTilesType(int type, int otherLiquid)
 	{
-		Func<int, int, int, int, int?>[] hookMergeTiles = HookMergeTiles;
+		Func<int, int, int?>[] hookMergeTiles = HookMergeTiles;
 		for (int k = 0; k < hookMergeTiles.Length; k++) {
-			if (hookMergeTiles[k](i, j, type, otherLiquid) != null)
-				return hookMergeTiles[k](i, j, type, otherLiquid);
+			if (hookMergeTiles[k](type, otherLiquid) != null)
+				return hookMergeTiles[k](type, otherLiquid);
 		}
 		ModLiquid modLiquid = GetLiquid(type);
 		ModLiquid otherModLiquid = GetLiquid(otherLiquid);
 		if (modLiquid == null && otherModLiquid != null) {
-			return otherModLiquid?.LiquidMerge(i, j, type) ?? null;
+			return otherModLiquid?.LiquidMerge(type) ?? null;
 		}
-		return modLiquid?.LiquidMerge(i, j, otherLiquid) ?? null;
+		return modLiquid?.LiquidMerge(otherLiquid) ?? null;
 	}
 
 	private delegate void DelegateLiquidMergeTilesSound(int i, int j, int type, int otherLiquid, ref SoundStyle? collisionSound);
