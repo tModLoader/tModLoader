@@ -108,8 +108,9 @@ namespace ExampleMod.Content.Items.Ammo
 		public bool HellifyGrass(int i, int j, int type, int conversionType) {
 
 			int tileTypeAbove = -1;
-			if (j > 1 && Main.tile[i, j - 1].HasTile)
-				tileTypeAbove = Main.tile[i, j - 1].TileType;
+			Tile tileAbove = Main.tile[i, j - 1];
+			if (j > 1 && tileAbove.HasTile)
+				tileTypeAbove = tileAbove.TileType;
 
 			// Convert trees above grass into hell trees
 			// Most vanilla trees usually automatically turn into the type that matches the grass below, but not ashwood trees
@@ -127,25 +128,10 @@ namespace ExampleMod.Content.Items.Ammo
 				tileTypeAbove == TileID.Plants2 ||
 				tileTypeAbove == TileID.HallowedPlants2) {
 
-				Tile tileAbove = Main.tile[i, j - 1];
-
-				// Trim the top of 2 tall plants, since hell plants only have 1 tall plants
-				// If you were making a modded biome and had 2 tall plants you could ignore this part and convert 2 tall plants into the appropriate modded 2 tall plant
-				if (j > 2 && (tileTypeAbove == TileID.Plants2 || tileTypeAbove == TileID.HallowedPlants2)) {
-					Tile tileTwiceAbove = Main.tile[i, j - 2];
-					if (tileTwiceAbove.TileType == tileTypeAbove) {
-						tileTwiceAbove.HasTile = false;
-						tileTwiceAbove.TileType = 0;
-					}
-
-					// Reset the Y frame, since the bottom half of tall plants would have a higher Y frame
-					tileAbove.TileFrameY = 0;
-				}
-
 				// Doing the change by directly setting the TileType without using WorldGen.Convert, otherwise the plant would break immediately as we haven't converted the grass below yet
 				tileAbove.TileType = TileID.AshPlants;
-				// We also reset the X frame, since hell plants have much less variants compared to other biome plants (only 10 compared to forest plant's 44!)
-				tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(10) * 18);
+				// We also reset the X frame, since hell plants have much less variants compared to other biome plants (only 11 compared to forest plant's 45!)
+				tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(11) * 18);
 			}
 
 			WorldGen.ConvertTile(i, j, TileID.AshGrass);

@@ -1,6 +1,7 @@
 ﻿using ExampleMod.Content.Dusts;
 using ExampleMod.Content.Tiles;
 using ExampleMod.Content.Tiles.Furniture;
+using ExampleMod.Content.Tiles.Plants;
 using ExampleMod.Content.Walls;
 using Microsoft.Xna.Framework;
 using Terraria;
@@ -96,6 +97,7 @@ namespace ExampleMod.Content.Items.Ammo
 		public static int UnsafeWallType;
 		public static int StoneType;
 		public static int SandType;
+		public static int GrassType;
 		public static int ChairType;
 		public static int WorkbenchType;
 
@@ -106,6 +108,7 @@ namespace ExampleMod.Content.Items.Ammo
 			UnsafeWallType = ModContent.WallType<ExampleWallUnsafe>();
 			StoneType = ModContent.TileType<ExampleBlock>();
 			SandType = ModContent.TileType<ExampleSand>();
+			GrassType = ModContent.TileType<ExampleGrass_Dirt>();
 			ChairType = ModContent.TileType<ExampleChair>();
 			WorkbenchType = ModContent.TileType<ExampleWorkbench>();
 
@@ -130,6 +133,9 @@ namespace ExampleMod.Content.Items.Ammo
 			// This registers a conversion from Sand to ExampleSand, as well as a fallback from ExampleSand to Sand, so other solutions can convert ExampleSand (eg to Crimsand)
 			TileLoader.RegisterSimpleConversion(TileID.Sand, Type, SandType);
 
+			// We register a conversion method because ConvertGrass has custom logic for converting plants on the tile above to ExamplePlant
+			TileLoader.RegisterConversion(TileID.Grass, Type, ConvertGrass);
+
 			// We register a conversion method and fallback separately rather than using RegisterSimpleConversion, because ConvertStone has custom logic for converting trees on the tile above
 			TileLoader.RegisterConversion(TileID.Stone, Type, ConvertStone);
 			TileLoader.RegisterConversionFallback(StoneType, TileID.Stone, Type);
@@ -138,6 +144,31 @@ namespace ExampleMod.Content.Items.Ammo
 			// We could register a purifying conversion for these too if we wanted
 			TileLoader.RegisterConversion(TileID.Chairs, Type, ConvertChairs);
 			TileLoader.RegisterConversion(TileID.WorkBenches, Type, ConvertWorkbenches);
+		}
+
+		public bool ConvertGrass(int i, int j, int type, int conversionType) {
+			int tileTypeAbove = -1;
+			Tile tileAbove = Main.tile[i, j - 1];
+			if (j > 1 && tileAbove.HasTile)
+				tileTypeAbove = tileAbove.TileType;
+
+			// Convert plants above grass into ExamplePlants
+			// Note that ExamplePlants.TileFrame is necessary to convert ExamplePlants back into the appropriate vanilla plant type when the grass below is converted back to a vanilla grass type
+			if (tileTypeAbove == TileID.Plants ||
+				tileTypeAbove == TileID.CorruptPlants ||
+				tileTypeAbove == TileID.CrimsonPlants ||
+				tileTypeAbove == TileID.HallowedPlants ||
+				tileTypeAbove == TileID.Plants2 ||
+				tileTypeAbove == TileID.HallowedPlants2) {
+
+				// Doing the change by directly setting the TileType without using WorldGen.Convert, otherwise the plant would break immediately as we haven't converted the grass below yet
+				tileAbove.TileType = (ushort)ModContent.TileType<ExamplePlants>();
+				// We also reset TileFrameX since ExamplePlants only has 11 styles and other plants can have more.
+				tileAbove.TileFrameX = (short)(WorldGen.genRand.Next(11) * 18);
+			}
+
+			WorldGen.ConvertTile(i, j, GrassType);
+			return false;
 		}
 
 		public bool ConvertStone(int i, int j, int type, int conversionType) {

@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Placeable;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -59,6 +60,70 @@ namespace ExampleMod.Content.Tiles.Plants
 				wormChance *= 10000;
 				grassHopperChance *= 10000;
 			}
+		}
+
+		// When the tile below ExamplePlant changes to another tile, we might need to adjust it by using TileFrame.
+		// If the tile below is mined or changed to a non-grass tile, we kill this plant.
+		// If the tile below changes to a grass tile, we will convert to the corresponding vanilla plant tile.
+		// ExampleSolutionConversion.ConvertGrass handles the opposite conversion, converting vanilla plants to ExamplePlants.
+		public override bool TileFrame(int i, int j, ref bool resetFrame, ref bool noBreak) {
+			Tile tile = Main.tile[i, j];
+			Tile below = Main.tile[i, j + 1];
+
+			// Verify that the tile below is a valid placement for this tile
+			int belowTileType = -1;
+			if (below.HasUnactuatedTile && !below.IsHalfBlock && below.Slope == SlopeType.Solid)
+				belowTileType = below.TileType;
+
+			int[] validGrassTypes = [ModContent.TileType<ExampleGrass_Dirt>(), ModContent.TileType<ExampleGrass_ExampleBlock>()];
+			if (validGrassTypes.Contains(belowTileType))
+				return true;
+
+			// If the tile below is not valid, attempt to convert to another vanilla plant tile corresponding to the grass tile
+			// TileFrameX adjustments are used to control the final style varieties for the converted plants since not all plants have matching variety counts.
+			int plantTileType = -1;
+			switch (belowTileType) {
+				case TileID.CorruptGrass:
+				case TileID.CorruptJungleGrass:
+					plantTileType = TileID.CorruptPlants;
+					if (tile.TileFrameX >= 162)
+						tile.TileFrameX = 126; 
+					break;
+				case TileID.Grass:
+				case TileID.GolfGrass:
+					plantTileType = TileID.Plants;
+					break;
+				case TileID.HallowedGrass:
+				case TileID.GolfGrassHallowed:
+					plantTileType = TileID.HallowedPlants;
+					break;
+				case TileID.CrimsonGrass:
+				case TileID.CrimsonJungleGrass:
+					plantTileType = TileID.CrimsonPlants;
+					break;
+				case TileID.JungleGrass:
+					plantTileType = TileID.JunglePlants;
+					while (tile.TileFrameX > 126) {
+						tile.TileFrameX -= 126;
+					}
+					break;
+				case TileID.MushroomGrass:
+					plantTileType = TileID.MushroomPlants;
+					while (tile.TileFrameX > 72) {
+						tile.TileFrameX -= 72;
+					}
+					break;
+			}
+
+			if (plantTileType != -1) {
+				tile.TileType = (ushort)plantTileType;
+			}
+			else {
+				// The tile is killed if a suitable conversion is not found
+				WorldGen.KillTile(i, j);
+			}
+
+			return true;
 		}
 
 		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
