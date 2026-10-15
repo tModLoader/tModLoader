@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Interfaces;
 
 namespace Terraria.ModLoader;
 
@@ -13,7 +12,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 /// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall">Wall Guide</see> teaches the basics of making a modded wall.
 /// </summary>
-public abstract class ModWall : ModBlockType, IWorldUpdateBlock, IPlaceableBlock, IMineableBlock
+public abstract class ModWall : ModTileOrWall
 {
 	public override string LocalizationCategory => "Walls";
 
@@ -104,48 +103,4 @@ public abstract class ModWall : ModBlockType, IWorldUpdateBlock, IPlaceableBlock
 	public virtual void OnWallConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}
-
-	#region InterfaceMethods
-	// IWorldUupdateBlock Interface methods
-	/// <inheritdoc/>
-	public virtual void RandomUpdate(int i, int j, bool underground) { }
-
-	/// <inheritdoc/>
-	public virtual void Convert(int i, int j, int conversionType) { }
-	// END IWorldUpdateBlock
-
-	// IPlaceableBlock Interface methods
-	/// <inheritdoc/>
-	public virtual bool CanPlace(int i, int j)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual void PlaceInWorld(int i, int j, Item item) { }
-	// END IPlaceableBlock
-
-	// IMineableBlock Interface methods
-	/// <inheritdoc/>
-	public virtual bool KillSound(int i, int j, bool fail)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual void NumDust(int i, int j, bool fail, ref int num) { }
-
-	/// <inheritdoc/>
-	public virtual bool CreateDust(int i, int j, ref int type)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual bool CanExplode(int i, int j)
-	{
-		return true;
-	}
-	// END IMineableBlock
-	#endregion
 }

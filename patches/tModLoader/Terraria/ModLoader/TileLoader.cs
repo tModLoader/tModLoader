@@ -112,6 +112,8 @@ public static class TileLoader
 	private static DelegateTileMaskMode[] HookTileLightMaskMode;
 	private delegate WaterfallManager.WaterfallData? DelegateCreateWaterfall(int i, int j, int type);
 	private static DelegateCreateWaterfall[] HookCreateWaterfall;
+	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
+	private static Func<int, int, int, bool?>[] HookCanShowWireStuffHere;
 
 	internal static int ReserveTileID()
 	{
@@ -155,9 +157,6 @@ public static class TileLoader
 		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
-		Array.Resize(ref Main._playerSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main._cameraSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.tileLighted, nextTile);
 		Array.Resize(ref Main.tileMergeDirt, nextTile);
 		Array.Resize(ref Main.tileCut, nextTile);
@@ -278,6 +277,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookTileLightMaskMode, globalTiles, g => g.TileLightMaskMode);
 		ModLoader.BuildGlobalHook(ref HookDrawTileInWater, globalTiles, g => g.DrawTileInWater);
 		ModLoader.BuildGlobalHook(ref HookCreateWaterfall, globalTiles, g => g.CreateWaterfall);
+		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalTiles, g => g.CanDoWireStuffHere);
+		ModLoader.BuildGlobalHook(ref HookCanShowWireStuffHere, globalTiles, g => g.CanShowWireStuffHere);
 
 		if (!unloading) {
 			loaded = true;
@@ -1573,5 +1574,41 @@ public static class TileLoader
 			data = hook(i, j, type);
 		}
 		return data;
+	}
+
+	public static bool? CanDoWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetTile(type)?.CanDoWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanDoWireStuffHere) {
+			bool? canDoWire = hook(i, j, type);
+			if (canDoWire.HasValue) {
+				if (!canDoWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	public static bool? CanShowWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetTile(type)?.CanShowWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanShowWireStuffHere) {
+			bool? canShowWire = hook(i, j, type);
+			if (canShowWire.HasValue) {
+				if (!canShowWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
 	}
 }

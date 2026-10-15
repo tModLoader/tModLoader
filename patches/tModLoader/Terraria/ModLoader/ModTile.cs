@@ -8,7 +8,6 @@ using Terraria.GameContent.ObjectInteractions;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
-using Terraria.ModLoader.Interfaces;
 using Terraria.ObjectData;
 using static Terraria.WaterfallManager;
 
@@ -18,7 +17,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType, IWorldUpdateBlock, IPlaceableBlock, IMineableBlock
+public abstract class ModTile : ModTileOrWall
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations.
 	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
@@ -129,7 +128,7 @@ public abstract class ModTile : ModBlockType, IWorldUpdateBlock, IPlaceableBlock
 	}
 
 	/// <summary>
-	/// Called when a tree is attempting to grow from a sapling tile (Assuming <see cref="TileID.Sets.CommonSapling"/> is set for this tile type) at this location. This can be either a natural growth from code calling <see cref="WorldGen.AttemptToGrowTreeFromSapling(int, int, bool, int, bool)"/> in <see cref="ModBlockType.RandomUpdate(int, int, bool)"/> or unnaturally, such as when fertilizer (<see cref="ItemID.Fertilizer"/> or <see cref="ItemID.SuperFertilizer"/>) is used on this tile.
+	/// Called when a tree is attempting to grow from a sapling tile (Assuming <see cref="TileID.Sets.CommonSapling"/> is set for this tile type) at this location. This can be either a natural growth from code calling <see cref="WorldGen.AttemptToGrowTreeFromSapling(int, int, bool, int, bool)"/> in <see cref="ModTileOrWall.RandomUpdate(int, int, bool)"/> or unnaturally, such as when fertilizer (<see cref="ItemID.Fertilizer"/> or <see cref="ItemID.SuperFertilizer"/>) is used on this tile.
 	/// <para/> <paramref name="treeHeightAddon"/> and <paramref name="ignoreWalls"/> are set based on how the tree is being grown. For example, <see cref="ItemID.SuperFertilizer"/> will set <paramref name="treeHeightAddon"/> to 15 and <paramref name="ignoreWalls"/> to true, while natural growth will set <paramref name="treeHeightAddon"/> to 0 and <paramref name="ignoreWalls"/> to false.
 	/// <para/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/> and then potentially spawns leaves if a player is nearby, matching vanilla behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
 	/// <para/> Return <see langword="true"/> if a tree was grown, <see langword="false"/> otherwise.
@@ -815,48 +814,4 @@ public abstract class ModTile : ModBlockType, IWorldUpdateBlock, IPlaceableBlock
 	{
 		return new WaterfallData() { type = -1, x = i, y = j };
 	}
-
-	#region InterfaceMethods
-	// IWorldUupdateBlock Interface methods
-	/// <inheritdoc/>
-	public virtual void RandomUpdate(int i, int j, bool underground) { }
-
-	/// <inheritdoc/>
-	public virtual void Convert(int i, int j, int conversionType) { }
-	// END IWorldUpdateBlock
-
-	// IPlaceableBlock Interface methods
-	/// <inheritdoc/>
-	public virtual bool CanPlace(int i, int j)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual void PlaceInWorld(int i, int j, Item item) { }
-	// END IPlaceableBlock
-
-	// IMineableBlock Interface methods
-	/// <inheritdoc/>
-	public virtual bool KillSound(int i, int j, bool fail)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual void NumDust(int i, int j, bool fail, ref int num) { }
-
-	/// <inheritdoc/>
-	public virtual bool CreateDust(int i, int j, ref int type)
-	{
-		return true;
-	}
-
-	/// <inheritdoc/>
-	public virtual bool CanExplode(int i, int j)
-	{
-		return true;
-	}
-	// END IMineableBlock
-	#endregion
 }

@@ -9,6 +9,13 @@ namespace Terraria.ModLoader.IO;
 
 internal static class MapIO
 {
+	private enum EntryKind : byte
+	{
+		Wall,
+		Tile,
+		Liquid
+	}
+
 	//in Terraria.Map.MapHelper.SaveMap at end of try block call MapIO.WriteModFile(text, isCloudSave);
 	internal static void WriteModFile(string path, bool isCloudSave)
 	{
@@ -65,27 +72,27 @@ internal static class MapIO
 			writer.Write(type);
 			if (MapLoader.entryToTile.ContainsKey(type)) {
 				ModTile tile = TileLoader.GetTile(MapLoader.entryToTile[type]);
-				writer.Write(true);
+				writer.Write((byte)EntryKind.Tile);
 				writer.Write(tile.Mod.Name);
 				writer.Write(tile.Name);
 				writer.Write((ushort)(type - MapHelper.tileLookup[tile.Type]));
 			}
-			else if (MapLoader.entryToLiquid.ContainsKey(type)) {
-				ModLiquid liquid = LiquidLoader.GetLiquid(MapLoader.entryToLiquid[type]);
-				writer.Write(false);
-				writer.Write(liquid.Mod.Name);
-				writer.Write(liquid.Name);
-				writer.Write((ushort)(type - MapHelper.liquidLookup[liquid.Type]));
-			}
 			else if (MapLoader.entryToWall.ContainsKey(type)) {
 				ModWall wall = WallLoader.GetWall(MapLoader.entryToWall[type]);
-				writer.Write(false);
+				writer.Write((byte)EntryKind.Wall);
 				writer.Write(wall.Mod.Name);
 				writer.Write(wall.Name);
 				writer.Write((ushort)(type - MapHelper.wallLookup[wall.Type]));
 			}
+			else if (MapLoader.entryToLiquid.ContainsKey(type)) {
+				ModLiquid liquid = LiquidLoader.GetLiquid(MapLoader.entryToLiquid[type]);
+				writer.Write((byte)EntryKind.Liquid);
+				writer.Write(liquid.Mod.Name);
+				writer.Write(liquid.Name);
+				writer.Write((ushort)(type - MapHelper.liquidLookup[liquid.Type]));
+			}
 			else {
-				writer.Write(true);
+				writer.Write((byte)EntryKind.Tile);
 				writer.Write("");
 				writer.Write("");
 				writer.Write((ushort)0);
@@ -101,12 +108,12 @@ internal static class MapIO
 		ushort count = reader.ReadUInt16();
 		for (ushort k = 0; k < count; k++) {
 			ushort type = reader.ReadUInt16();
-			bool isTile = reader.ReadBoolean();
+			var kind = (EntryKind)reader.ReadByte();
 			string modName = reader.ReadString();
 			string name = reader.ReadString();
 			ushort option = reader.ReadUInt16();
 			ushort newType = 0;
-			if (isTile) {
+			if (kind == EntryKind.Tile) {
 				if (ModContent.TryFind(modName, name, out ModTile tile)) {
 					if (option >= MapLoader.modTileOptions(tile.Type)) {
 						option = 0;
@@ -114,14 +121,16 @@ internal static class MapIO
 					newType = (ushort)MapHelper.TileToLookup(tile.Type, option);
 				}
 			}
-			else {
+			else if (kind == EntryKind.Wall) {
 				if (ModContent.TryFind(modName, name, out ModWall wall)) {
 					if (option >= MapLoader.modWallOptions(wall.Type)) {
 						option = 0;
 					}
 					newType = (ushort)(MapHelper.wallLookup[wall.Type] + option);
 				}
-				else if (ModContent.TryFind(modName, name, out ModLiquid liquid)) {
+			}
+			else if (kind == EntryKind.Liquid) {
+				if (ModContent.TryFind(modName, name, out ModLiquid liquid)) {
 					if (option >= MapLoader.modLiquidOptions(liquid.Type)) {
 						option = 0;
 					}

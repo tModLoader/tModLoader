@@ -11,7 +11,7 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -68,12 +_,19 @@
+@@ -68,11 +_,18 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -26,11 +26,10 @@
  using Terraria.Physics;
  using Terraria.Social;
  using Terraria.Social.Base;
- using Terraria.Testing;
 +using Terraria.Social.Steam;
+ using Terraria.Testing;
  using Terraria.UI;
  using Terraria.UI.Chat;
- using Terraria.UI.Gamepad;
 @@ -83,9 +_,9 @@
  namespace Terraria;
  
@@ -5344,17 +5343,6 @@
  		if (explicitNone && _requiredObjectsForCraftingText.Count == 0) {
  			string value = Lang.inter[23].Value;
  			_requiredObjectsForCraftingText.Add(value);
-@@ -37703,6 +_,10 @@
- 		if (item.IsAir)
- 			return true;
- 
-+		// #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
-+		if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0)
-+			return false;
-+
- 		if (!item.CanHavePrefixes() && Item.CanStack(item, currentRecipe.createItem) && item.stack + currentRecipe.createItem.stack <= item.maxStack)
- 			return true;
- 
 @@ -37732,6 +_,11 @@
  			inventoryScale = 0.755f;
  			num += 5;

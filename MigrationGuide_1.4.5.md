@@ -614,6 +614,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms` has been removed. Set `Projectile.drawLayer` to `ProjectileDrawLayerID.HeldProjOverHand` instead. 
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
+* 🤖: `ModPylon.DefaultDrawMapIcon` now has an `out bool onScreen` parameter, which should be passed as the new second parameter of `ModPylon.DefaultMapClickHandle`. On the fullscreen map, off-screen modded pylon icons are now clamped to the edge of the screen like vanilla pylons, and clicking them pans the map instead of teleporting.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
@@ -629,6 +630,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModNPC.OnChatButtonClicked` changed parameters. `(bool firstButton, ref string shop)` -> `(NPCInteraction interaction)`
 * ⚙️: `GlobalNPC.OnChatButtonClicked` and `GlobalNPC.PreChatButtonClicked` changed parameters. `(NPC npc, bool firstButton)` -> `(NPC npc, NPCInteraction interaction)`
 * ⚙️: `ModItem.IsQuestFish` has been removed. Use `ItemID.Sets.IsQuestFish` instead.
+* ⚙️: `Item.AllowReforgeForStackableItem` has been removed. In 1.4.5 items with prefixes can now stack. Bananarang and Light Disc are no longer consumable and no longer require obtaining multiple copies.
 * 🤖: Modded trees now support being grown directly with `Fertilizer` and `Infused Fertilizer`. This requires moving tree growing code in your sapling tiles. Move `WorldGen.GrowTree`/`WorldGen.GrowPalmTree` code from `ModTile.RandomUpdate` to the new `ModTile.GrowSapling` method and call `WorldGen.AttemptToGrowTreeFromSapling` in its place. See the [`ExampleSapling.cs` changes](https://github.com/tModLoader/tModLoader/pull/5229/changes) for an example.
 * Localized mod display names, mod descriptions, and steam workshop descriptions are now supported. [More information](https://github.com/tModLoader/tModLoader/pull/5226).
   * Add `displayName.[languageCode] = LocalizedDisplayName` to `build.txt` to support other languages for the name of the mod.
@@ -636,3 +638,15 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `(Mod|Global)BlockType.RandomUpdate` (Tiles and Walls) now have an `underground` parameter to more easily support underground or overground-only logic and better support the "Don't dig up" special world seed behaviors. If that seed is active, tile locations technically underground (below `Main.worldSurface`) might be considered overground for random update purposes. Modders should trust the `underground` parameter rather than rely on checking `Main.worldSurface` to support the special characteristics of "Don't dig up".
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
+
+## New tModLoader features
+
+In addition to changes to existing features and adapting to vanilla changes, 1.4.5 tModLoader also contains several new features unrelated to vanilla changes.
+
+* `WallDefinition` added.
+* `ModItem.GetGolfClubProperties` added, as well as ExampleGolfClub.
+* Mod ratings are now displayed in the Mod Browser and mods can be rated from the Mods menu.
+* `Projectile.GetDefaultDrawData` helper method for calculating the default projectile draw parameters.
+* `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
+* `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
+* `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   

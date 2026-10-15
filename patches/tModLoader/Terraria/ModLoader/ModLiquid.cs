@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent.Liquid;
 using Terraria.Graphics;
@@ -16,7 +14,6 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class represents a type of liquid that can be added by a mod. Only one instance of this class will ever exist for each type of liquid that is added. Any hooks that are called will be called by the instance corresponding to the liquid type. This is to prevent the game from using a massive amount of memory storing liquid instances.<br />
 /// </summary>
-// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Liquid Guide</see> teaches the basics of making a modded tile. //Add documentation page
 public abstract class ModLiquid : ModBlockType
 {
 	/// <summary> The block texture of this liquid. Used for some slope framing and when liquids are rendered in retro lighting modes. </summary>
@@ -84,9 +81,9 @@ public abstract class ModLiquid : ModBlockType
 
 	public sealed override void SetupContent()
 	{
-		LiquidLoader.LiquidAssets[Type] = ModContent.Request<Texture2D>(Texture, (AssetRequestMode)2);
-		LiquidLoader.LiquidBlockAssets[Type] = ModContent.Request<Texture2D>(BlockTexture, (AssetRequestMode)2);
-		LiquidLoader.LiquidSlopeAssets[Type] = ModContent.Request<Texture2D>(SlopeTexture, (AssetRequestMode)2);
+		LiquidLoader.LiquidAssets[Type] = ModContent.Request<Texture2D>(Texture);
+		LiquidLoader.LiquidBlockAssets[Type] = ModContent.Request<Texture2D>(BlockTexture);
+		LiquidLoader.LiquidSlopeAssets[Type] = ModContent.Request<Texture2D>(SlopeTexture);
 		LiquidRenderer.WATERFALL_LENGTH[Type] = 10;
 		LiquidRenderer.DEFAULT_OPACITY[Type] = 0.6f;
 		LiquidRenderer.VISCOSITY_MASK[Type] = 0;
@@ -553,9 +550,9 @@ public abstract class ModLiquid : ModBlockType
 	/// <br /> This is where you would set the properties of this liquid. Many properties are stored as arrays throughout Terraria's code.
 	/// <br /> For example:
 	/// <list type="bullet">
-	/// <item> WATERFALL_LENGTH = 10 </item>
-	/// <item> DefaultOpacity = 0.6f; </item>
-	/// <item> VisualViscosity = 0; </item>
+	/// <item> LiquidRenderer.WATERFALL_LENGTH[Type] = 10; </item>
+	/// <item> LiquidRenderer.DEFAULT_OPACITY[Type] = 0.6f; </item>
+	/// <item> LiquidRenderer.VISCOSITY_MASK[Type] = 0; </item>
 	/// </list>
 	/// </summary>
 	public override void SetStaticDefaults()

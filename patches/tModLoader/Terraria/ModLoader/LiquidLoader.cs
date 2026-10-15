@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -31,6 +30,10 @@ public static class LiquidLoader
 
 	internal static int ReserveLiquidID()
 	{
+		if (nextLiquid >= LiquidData.MaxLiquidTypes) {
+			throw new Exception($"Cannot add more than {LiquidData.MaxLiquidTypes} liquid types");
+		}
+
 		int result = nextLiquid;
 		nextLiquid++;
 		return result;
@@ -62,7 +65,6 @@ public static class LiquidLoader
 		Array.Resize(ref LiquidRenderer.VISCOSITY_MASK, nextLiquid);
 		Array.Resize(ref Main.liquidFrame, nextLiquid);
 		Array.Resize(ref Main.liquidFrameState, nextLiquid);
-		Array.Resize(ref Main.SceneMetrics._liquidCounts, nextLiquid);
 
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 

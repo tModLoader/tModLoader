@@ -1551,16 +1551,13 @@ public static class ItemLoader
 	private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 	/// <summary>
-	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+	/// Calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStack(Item destination, Item source)
 	{
-		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
-			return false;
-
 		foreach (var g in HookCanStack.Enumerate(destination)) {
 			if (!g.CanStack(destination, source))
 				return false;

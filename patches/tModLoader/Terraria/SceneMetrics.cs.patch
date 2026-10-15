@@ -217,7 +217,7 @@
  		if (_tileCounts[27] > 0)
  			HasSunflower = true;
  
-@@ -623,6 +_,8 @@
+@@ -623,10 +_,14 @@
  
  	public int GetTileCount(ushort tileId) => _tileCounts[tileId];
  
@@ -226,6 +226,12 @@
  	public void Reset()
  	{
  		LastScanTime = uint.MaxValue;
++		Array.Resize(ref _tileCounts, TileLoader.TileCount);
+ 		Array.Clear(_tileCounts, 0, _tileCounts.Length);
++		Array.Resize(ref _liquidCounts, LiquidLoader.LiquidCount);
+ 		Array.Clear(_liquidCounts, 0, _liquidCounts.Length);
+ 		Array.Clear(ClosestNPCPosition, 0, ClosestNPCPosition.Length);
+ 		SandTileCount = 0;
 @@ -707,6 +_,12 @@
  		_bestOreDistSq = int.MaxValue;
  		TownNPCCount = 0;

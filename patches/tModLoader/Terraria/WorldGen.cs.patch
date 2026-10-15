@@ -2793,6 +2793,17 @@
  			if (tileCache.type == 627 || tileCache.type == 628 || (tileCache.type == 184 && tileCache.frameX / 22 == 10)) {
  				int num19 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, num, 0f, 0f, 0, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB));
  				Main.dust[num19].noGravity = true;
+@@ -58508,7 +_,10 @@
+ 	public static bool IsOpenDoorAnchorFrame(int x, int y)
+ 	{
+ 		Tile tile = Main.tile[x, y];
++		/*
+ 		if (!tile.active() || tile.type != 11)
++		*/
++		if (!tile.active() || (tile.type != 11 && TileID.Sets.CloseDoorID[tile.type] == -1))
+ 			return false;
+ 
+ 		int num = tile.frameX % 72;
 @@ -58525,6 +_,10 @@
  		if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
  			return t.frameX < 54;

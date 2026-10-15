@@ -57,16 +57,15 @@
  
  	public static void Initialize()
  	{
-@@ -1683,8 +_,11 @@
+@@ -1683,8 +_,10 @@
  
  		wallRangeEnd = num21;
  		liquidPosition = num21;
-+		liquidLookup = new ushort[LiquidID.Count];
-+		/*for (int num26 = 0; num26 < 4; num26++) {*/
++		liquidLookup = new ushort[LiquidID.Count]; // TML added
 -		for (int num26 = 0; num26 < 4; num26++) {
 +		for (int num26 = 0; num26 < LiquidID.Count; num26++) {
  			colorLookup[num21] = array3[num26];
-+			liquidLookup[num26] = num21;
++			liquidLookup[num26] = num21; // TML added
  			num21 = (ushort)(num21 + 1);
  		}
  

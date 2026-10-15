@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/CraftingEffects.cs
++++ src/tModLoader/Terraria/GameContent/CraftingEffects.cs
+@@ -63,7 +_,7 @@
+ 		}
+ 
+ 		int num;
+-		if (newItem.GetRollablePrefixes() == null && !newItem.accessory && newItem.bodySlot == -1 && newItem.headSlot == -1 && newItem.legSlot == -1 && (newItem.shoot == 0 || !Main.projHook[newItem.shoot])) {
++		if (!newItem.CanHavePrefixes() && !newItem.accessory && newItem.bodySlot == -1 && newItem.headSlot == -1 && newItem.legSlot == -1 && (newItem.shoot == 0 || !Main.projHook[newItem.shoot])) {
+ 			num = ((newItem.mountType != -1) ? 1 : 0);
+ 			if (num == 0)
+ 				goto IL_00d1;

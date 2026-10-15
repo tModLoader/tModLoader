@@ -2,32 +2,19 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.Audio;
 using Terraria.ID;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This is the superclass for ModTile and ModWall, combining common code
+/// This is the superclass for <see cref="ModTileOrWall"/> and <see cref="ModLiquid"/>, combining common code
 /// </summary>
 [CloneByReference]
 public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The internal ID of this type of tile/wall/liquid. </summary>
 	public ushort Type { get; internal set; }
-
-	// NOTE: HitSound and DustType could be implemented in IMineableBlock, but would require more effort to do so.
-	/// <summary>
-	/// The default style of sound made when this tile/wall is hit.<br/>
-	/// Defaults to SoundID.Dig, which is the sound used for tiles such as dirt and sand.
-	/// </summary>
-	public SoundStyle? HitSound { get; set; } = SoundID.Dig;
-
-	/// <summary> The default type of dust made when this tile/wall is hit.
-	/// <para/> Defaults to 0, which is <see cref="DustID.Dirt"/>. To prevent spawning any hit dust, set this to -1 instead. </summary>
-	public int DustType { get; set; }
-	// End NOTE
 
 	/// <summary>
 	/// The vanilla ID of what should replace the instance when a user unloads and subsequently deletes data from your mod in their save file.

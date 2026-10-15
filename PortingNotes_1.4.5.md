@@ -9,8 +9,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
-- We need to add ModItem.SummonPrefix(), add ModPrefix.Summon
-- ShimmerTransforms.IsItemTransformLocked seems to have been split, need to verify RecipeLoader.DecraftAvailable and other logic still applies.
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
@@ -66,8 +64,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
-  - #StackablePrefixWeapons needs to be searched for and removed
-- ModPylon.DrawMapIcon needs to support new vanilla options (DrawClamped when fullscreen it seems.)
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
 - ApplyDifficultyAndPlayerScaling needs to be revisited.
@@ -77,7 +73,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - OreRunner changed, new parameters should make the method more useful, need docs. Also in 1.4.4 OreRunner was missing a tileMoss check, so that might affect mods when fixed.
 - Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
 - Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
-- It seems like bomb damage logic has been reworked. Maybe many of our patches are no longer necessary or our explosive projectile examples need fixing. 
 - CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
 - Looks like we might want to split out the collision hitbox modification from TileCollideStyle. There is a new Projectile.GetCollisionParams method.
 - Double check new DoScrollingInInventory logic against PlayerInput.MouseInModdedUI
@@ -107,13 +102,11 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - anyX (anyWood, anySand, etc) all removed. We should no longer need to maintain those old recipe group approaches.
   - useX (useWood, ext) also removed. Same.
   - needEverythingSeed seems to be replaced by needMechdusa. TODo: Rename Condition.ZenithWorld?
-  - Recipe item consumption seems to be in another class now, patches need to be moved. GetIngredientCraftingDiscount also needs to be tweaked to work again for modded RecipeLoader.ConsumeIngredient
-    - Hook needs rework to use `Recipe.RequiredItemEntry`
+  - Recipe item consumption is now in `CraftingRequests`. `RecipeLoader.ConsumeIngredient` is now called from `Recipe.GetIngredientsForOneCraft`, so consume ingredient callbacks work for crafting again.
   - CraftViaRequest complicates `RecipeItemCreationContext.DestinationStack` I think. Removed for compile, restore if possible. OnCraftHooks also not hooked up.
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
-- There are still a lot of places checking for TileID.ClosedDoor that need to be TileLoader.IsClosedDoor.
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
@@ -201,6 +194,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Many of the unique vanilla hairstyles are no longer available at character creation. Set ModHair.AvailableDuringCharacterCreation to false if you wish to follow suit.
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
+  - Vanilla summon weapons can no longer roll Keen, Superior, Godly, Demonic or Zealous. To match, summon weapons no longer get PrefixCategory.AnyWeapon, so AnyWeapon ModPrefixes won't roll on them. Override ModItem.WeaponPrefix to opt back in.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - UnifiedRandom.Next methods are no longer virtual
