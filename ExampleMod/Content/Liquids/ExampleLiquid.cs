@@ -139,7 +139,7 @@ namespace ExampleMod.Content.Liquids
 
 		//Using EvaporatesInHell, we are able to choose whether this liquid evaporates in hell, based on a condition.
 		//For custom evaporation, use the UpdateLiquid hook.
-		public override bool EvaporatesInHell(int i, int j) {
+		public override bool CanEvaporate(int i, int j) {
 			//Here, our liquid in the bottom half of the underworld evaporates, while in the upper half does not
 			if (j > Main.maxTilesY - 100) {
 				return true;

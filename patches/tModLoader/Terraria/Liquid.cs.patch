@@ -53,19 +53,32 @@
  		if (tile5.nactive() && Main.tileSolid[tile5.type] && !Main.tileSolidTop[tile5.type]) {
  			_ = tile5.type;
  			_ = 10;
-@@ -345,7 +_,11 @@
+@@ -345,12 +_,25 @@
  
  		byte liquid = tile5.liquid;
  		float num = 0f;
-+		bool? canEvaporate = LiquidLoader.EvaporatesInHell(x, y, tile5.liquidType());
-+		if (canEvaporate == null)
++		bool? canEvaporate = LiquidLoader.CanLiquidEvaporate(x, y, tile5.liquidType());
++		if (canEvaporate == null && y > Main.UnderworldLayer)
 +			canEvaporate = tile5.liquidType() == 0;
--		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
-+		/*if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {*/
-+		if (y > Main.UnderworldLayer && (bool)canEvaporate && tile5.liquid > 0) {
++
++		/*
+ 		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
  			byte b = 2;
  			if (tile5.liquid < b)
  				b = tile5.liquid;
+ 
+ 			tile5.liquid -= b;
++		}*/
++
++		if (tile5.liquid > 0 && canEvaporate == true) {
++			byte b = 2;
++			if (tile5.liquid < b)
++				b = tile5.liquid;
++
++			tile5.liquid -= b;
+ 		}
+ 
+ 		if (tile5.liquid == 0) {
 @@ -358,6 +_,7 @@
  			return;
  		}

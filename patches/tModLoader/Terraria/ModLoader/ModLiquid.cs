@@ -235,7 +235,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <returns></returns>
-	public virtual bool EvaporatesInHell(int i, int j)
+	public virtual bool CanEvaporate(int i, int j)
 	{
 		return false;
 	}

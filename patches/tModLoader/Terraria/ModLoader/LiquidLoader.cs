@@ -81,7 +81,7 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookDisableRetroLavaBubbles, globalLiquids, (GlobalLiquid g) => g.DisableRetroLavaBubbles);
 		ModLoader.BuildGlobalHook(ref HookDrawWaterfall, globalLiquids, (GlobalLiquid g) => g.ChooseWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookUpdate, globalLiquids, (GlobalLiquid g) => g.UpdateLiquid);
-		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.EvaporatesInHell);
+		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.CanLiquidEvaporate);
 		ModLoader.BuildGlobalHook(ref HookSettleLiquidMovement, globalLiquids, (GlobalLiquid g) => g.SettleLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookMergeTiles, globalLiquids, (GlobalLiquid g) => g.LiquidMerge);
 		ModLoader.BuildGlobalHook(ref HookMergeTilesSounds, globalLiquids, (GlobalLiquid g) => g.LiquidMergeSound);
@@ -224,6 +224,7 @@ public static class LiquidLoader
 		}
 	}
 
+	// TODO: Implement later
 	private delegate bool DelegatePreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePreSlopeDraw[] HookPreSlopeDraw;
 	public static bool PreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
@@ -237,6 +238,7 @@ public static class LiquidLoader
 		return GetLiquid(type)?.PreSlopeDraw(i, j, behindBlocks, ref drawPosition, ref liquidSize, ref colors) ?? true;
 	}
 
+	// TODO: Implement later
 	private delegate void DelegatePostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePostSlopeDraw[] HookPostSlopeDraw;
 	public static void PostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
@@ -265,8 +267,9 @@ public static class LiquidLoader
 	{
 		Func<int, int, int, int?>[] hookDrawWaterfall = HookDrawWaterfall;
 		for (int k = 0; k < hookDrawWaterfall.Length; k++) {
-			if (hookDrawWaterfall[k](i, j, type) != null)
-				return hookDrawWaterfall[k](i, j, type);
+			int? result = hookDrawWaterfall[k](i, j, type);
+			if (result != null)
+				return result;
 		}
 		return GetLiquid(type)?.ChooseWaterfallStyle(i, j) ?? null;
 	}
@@ -284,14 +287,15 @@ public static class LiquidLoader
 	}
 
 	private static Func<int, int, int, bool?>[] HookEvaporation;
-	public static bool? EvaporatesInHell(int i, int j, int type)
+	public static bool? CanLiquidEvaporate(int i, int j, int type)
 	{
 		Func<int, int, int, bool?>[] hookEvaporation = HookEvaporation;
 		for (int k = 0; k < hookEvaporation.Length; k++) {
-			if (hookEvaporation[k](i, j, type) != null)
-				return hookEvaporation[k](i, j, type);
+			bool? result = hookEvaporation[k](i, j, type);
+			if (result != null)
+				return result;
 		}
-		return GetLiquid(type)?.EvaporatesInHell(i, j) ?? null;
+		return GetLiquid(type)?.CanEvaporate(i, j) ?? null;
 	}
 
 	private static Func<int, int, int, bool>[] HookSettleLiquidMovement;
@@ -299,7 +303,8 @@ public static class LiquidLoader
 	{
 		Func<int, int, int, bool>[] hookSettleLiquidMovement = HookSettleLiquidMovement;
 		for (int k = 0; k < hookSettleLiquidMovement.Length; k++) {
-			if (!hookSettleLiquidMovement[k](i, j, type)) {
+			bool result = hookSettleLiquidMovement[k](i, j, type);
+			if (!result) {
 				return false;
 			}
 		}
@@ -311,8 +316,9 @@ public static class LiquidLoader
 	{
 		Func<int, int, int?>[] hookMergeTiles = HookMergeTiles;
 		for (int k = 0; k < hookMergeTiles.Length; k++) {
-			if (hookMergeTiles[k](type, otherLiquid) != null)
-				return hookMergeTiles[k](type, otherLiquid);
+			int? result = hookMergeTiles[k](type, otherLiquid);
+			if (result != null)
+				return result;
 		}
 		ModLiquid modLiquid = GetLiquid(type);
 		ModLiquid otherModLiquid = GetLiquid(otherLiquid);
@@ -393,8 +399,9 @@ public static class LiquidLoader
 	{
 		Func<Player, int, int, int, bool?>[] hookBlockTilePlacement = HookBlocksTilePlacement;
 		for (int k = 0; k < hookBlockTilePlacement.Length; k++) {
-			if (hookBlockTilePlacement[k](player, i, j, type) != null) {
-				return (bool)hookBlockTilePlacement[k](player, i, j, type);
+			bool? result = hookBlockTilePlacement[k](player, i, j, type);
+			if (result != null) {
+				return result.Value;
 			}
 		}
 		return GetLiquid(type)?.BlocksTilePlacement(player, i, j) ?? type == LiquidID.Lava ? true : false;
@@ -581,19 +588,6 @@ public static class LiquidLoader
 		}
 	}
 
-	private static Func<bool>[] HookAllowFishingInShimmer;
-	public static bool AllowFishingInShimmer()
-	{
-		Func<bool>[] hookAllowFishingInShimmer = HookAllowFishingInShimmer;
-		for (int k = 0; k < hookAllowFishingInShimmer.Length; k++) {
-			if (hookAllowFishingInShimmer[k]()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-
 	private static Func<int, Player, Projectile, bool?>[] HookAllowFishingInLiquid;
 	public static bool? AllowFishingInLiquid(int liquidType, Player player, Projectile projectile)
 	{
@@ -604,7 +598,7 @@ public static class LiquidLoader
 		}
 		for (int k = 0; k < HookAllowFishingInLiquid.Length; k++) {
 			result = HookAllowFishingInLiquid[k](liquidType, player, projectile);
-			if (HookAllowFishingInLiquid[k](liquidType, player, projectile) != null) {
+			if (result != null) {
 				return result;
 			}
 		}

@@ -196,7 +196,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool? EvaporatesInHell(int i, int j, int type)
+	public virtual bool? CanLiquidEvaporate(int i, int j, int type)
 	{
 		return null;
 	}

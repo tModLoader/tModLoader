@@ -47,7 +47,7 @@ namespace ExampleMod.Common.GlobalLiquids
 
 		// EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld under certain condition (or not).
 		// This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
-		public override bool? EvaporatesInHell(int i, int j, int type) {
+		public override bool? CanLiquidEvaporate(int i, int j, int type) {
 			// In this first example, we make it so honey just evaporate in the underworld without any extra condition
 			if (type == LiquidID.Honey) {
 				return true;
@@ -58,7 +58,12 @@ namespace ExampleMod.Common.GlobalLiquids
 				return false;
 			}
 
-			// In this third example, we make lava evaporate if it's standing on a block of ice
+			// In this third example, we make water evaporate if it's essentially in space
+			if (type == LiquidID.Water && j < 200) {
+				return true;
+			}
+
+			// In this fourth example, we make lava evaporate if it's standing on a block of ice
 			if (type == LiquidID.Lava && WorldGen.InWorld(i, j + 1)) {
 				Tile tile = Main.tile[i, j + 1];
 				if (tile.TileType == TileID.IceBlock && tile.HasTile) {
