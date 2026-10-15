@@ -14,7 +14,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 	{
 		public ref float ShootTimer => ref Projectile.ai[0];
 
-		public bool Floating => Projectile.ai[2] == 0;
+		public bool Floating => Projectile.ai[1] == 0;
+
+		// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
 
 		public bool JustSpawned {
 			get => Projectile.localAI[0] == 0;
@@ -94,6 +96,8 @@ namespace ExampleMod.Content.Projectiles.Minions
 				}
 			}
 
+			AI_CheckForHeavySling(); // Run the AI for checking and positioning the sentry if the player picks it up with the Heavy Sling.
+
 			// Find an enemy to target.
 			float closestTargetDistance = TargetingRange;
 			NPC targetNPC = null;
@@ -164,6 +168,56 @@ namespace ExampleMod.Content.Projectiles.Minions
 					targetNPC = npc;
 				}
 			}
+		}
+
+		/// <summary>
+		/// This sub-method checks if the sentry can be picked up if the player has the Heavy Sling equipped.
+		/// </summary>
+		private void AI_CheckForHeavySling() {
+			// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
+			// 0 == not being carried.
+			// 1 == being carried.
+			if (Projectile.ai[2] == 0f && Projectile.CanGetPickedUpBySentryBackpack()) {
+				Projectile.ai[2] = 1f;
+				Projectile.netUpdate = true;
+			}
+
+			// Projectile.IsSentryBeingCarried() is equivalent to (Projectile.ai[2] == 1f)
+			if (Projectile.IsSentryBeingCarried()) {
+				Projectile.SetAsSelectedSentryBackpackTarget();
+				Projectile.velocity = Vector2.Zero; // Set the velocity to 0 so it doesn't get affected by gravity.
+				Projectile.tileCollide = false;
+
+				// Depending on the design of your sentry, you may want to set its direction to be the same as the owner's direction.
+				// Projectile.direction = Projectile.spriteDirection = Main.player[Projectile.owner].direction;
+
+				// Some sentries also change their frame when being carried. For example, the Ballista sentry has frames without its stand when the player carries it.
+
+				Projectile.AI_Sentries_HeavySlingReposition(); // Change how the sentry gets positioned.
+			}
+		}
+
+		// This hook is called during Projectile.AI_Sentries_HeavySlingReposition() and lets us modify the position of the sentry.
+		public override bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin) {
+			Player owner = Main.player[Projectile.owner];
+			// Here are two useful bools for checking which kind of mount the player is riding.
+			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= MountID.Rudolph && MountID.Sets.IsTransformationMount[owner.mount.Type];
+			// bool playerRidingMinecart = player.mount.Active && player.mount.AnyTrackRider;
+
+			// This is where we can change the offset of the sentry while the player is carrying it.
+			// The transformation mounts apply their own offsets, so only apply this offset while not transformed.
+			// Remember: negative Y is up.
+			offset = new(0, playerTransformationMount ? 0 : -28);
+
+			// The pogo stick lets the player rotate while in the air. Adjust this value to make the sentry appear at the same spot relative to the player's rotation.
+			if (owner.mount.Active && owner.mount.Type == MountID.PogoStick) {
+				pushFromOrigin = 12;
+			}
+
+			// If desired, rotate the sentry to match the player's rotation.
+			Projectile.rotation = owner.fullRotation;
+
+			return true; // Return true to use the vanilla logic.
 		}
 
 		public override void OnKill(int timeLeft) {

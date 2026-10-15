@@ -2076,6 +2076,51 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
+@@ -58918,7 +_,7 @@
+ 		velocity.Y += 0.2f;
+ 	}
+ 
+-	private void AI_Sentries_HeavySlingReposition()
++	public void AI_Sentries_HeavySlingReposition() // TML: Made public
+ 	{
+ 		Player player = Main.player[owner];
+ 		if (!player.accSentryBackpack) {
+@@ -59056,6 +_,9 @@
+ 		if (flag5 && player.mount.Active && player.mount.Type == 43)
+ 			pushFromOriginHack = 12;
+ 
++		if (!ProjectileLoader.SentryHeavySlingReposition(this, ref vector2, ref vector, ref pushFromOriginHack))
++			return;
++
+ 		switch (player.mount.Type) {
+ 			default: {
+ 				base.Center = player.MountedCenter + vector2;
+@@ -59136,7 +_,7 @@
+ 					num3 = 0;
+ 
+ 				base.Bottom += vector2 + new Vector2(0f, num3);
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 			}
+ 			case 54:
+@@ -59146,14 +_,14 @@
+ 				}
+ 				base.Bottom = player.MountedTop + new Vector2(-12f * player.Directions.X, 16f);
+ 				base.Bottom += vector2;
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 			case 52:
+ 				base.Bottom = player.MountedTop + new Vector2(-4f * player.Directions.X, 10f);
+ 				if (flag4)
+ 					position.Y += 4f;
+ 				base.Bottom += vector2;
+-				base.Bottom = player.RotatedRelativePoint(base.Bottom);
++				base.Bottom = player.RotatedRelativePoint(base.Bottom, addGfxOffY: false); // TML: Fix double player.gfxOffY
+ 				break;
+ 		}
+ 
 @@ -59348,7 +_,10 @@
  				_ = localAI[1];
  				_ = 1f;
@@ -2276,6 +2321,33 @@
  							WorldGen.KillWall(k, l);
  							if (tile2.wall == 0 && Main.netMode != 0)
  								NetMessage.SendData(17, -1, -1, null, 2, k, l);
+@@ -68119,8 +_,15 @@
+ 		AchievementsHelper.CurrentlyMining = false;
+ 	}
+ 
++	/// <summary>
++	/// Sentries use <c>Projectile.ai[2]</c> to keep track if they can be picked up or are already picked up by a player if they have the Heavy Sling equipped.
++	/// </summary>
++	/// <returns><see langword="true"/> if <c>Projectile.ai[2] == 1f</c></returns>
+ 	public bool IsSentryBeingCarried() => ai[2] == 1f;
+ 
++	/// <summary>
++	/// States whether a sentry projectile is eligible to be picked up by a player if they have the Heavy Sling equipped.
++	/// </summary>
+ 	public bool CanGetPickedUpBySentryBackpack()
+ 	{
+ 		if (!sentry)
+@@ -68139,6 +_,10 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Sets the cooldown for the player's ability to pick up a sentry to 2, preventing them from being able to pick one up.
++	/// <br/>Sets <see cref="Player.accSentryBackpackGrabCooldown"/> to 2.
++	/// </summary>
+ 	public void SetAsSelectedSentryBackpackTarget()
+ 	{
+ 		Main.player[owner].accSentryBackpackGrabCooldown = 2;
 @@ -68162,6 +_,8 @@
  
  	public bool IsInteractable()
