@@ -25,15 +25,20 @@
  	public static void ResetSections()
  	{
  		RemoteClient[] clients = Clients;
-@@ -176,6 +_,8 @@
+@@ -176,11 +_,12 @@
  
  	private static void OnConnectionAccepted(ISocket client)
  	{
-+		Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
++		Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
 +
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
+ 			Clients[num].Socket = client;
+-			Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
+ 			return;
+ 		}
+ 
 @@ -299,8 +_,16 @@
  					if (!Clients[i].Kicked && !Clients[i].IsAnnouncementCompleted)
  						Console.WriteLine(Language.GetTextValue("Net.ClientLostConnection", Clients[i].Socket.GetRemoteAddress()));
