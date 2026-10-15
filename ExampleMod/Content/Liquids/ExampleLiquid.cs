@@ -83,7 +83,7 @@ namespace ExampleMod.Content.Liquids
 
 		//Here with LiquidMerge, we are able to decide when the liquid generates with a different tile.
 		//Using the otherLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
-		public override int LiquidMerge(int i, int j, int otherLiquid) {
+		public override int LiquidMerge(int otherLiquid) {
 			if (otherLiquid == LiquidID.Water) {
 				return TileID.TeamBlockBlue; //When the liquid collides with water. Blue team block is created
 			}

@@ -40,7 +40,7 @@ namespace ExampleMod.Content.Liquids
 			}
 		}
 
-		public override int LiquidMerge(int i, int j, int otherLiquid) {
+		public override int LiquidMerge(int otherLiquid) {
 			if (otherLiquid == LiquidID.Water) {
 				return ModContent.TileType<ExampleBlock>();
 			}
