@@ -262,10 +262,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public static Condition NearLiquid(int liquidID)
 	{
-		string liquidMapName = "";
-		if (liquidID < MapHelper.liquidLookup.Length) {
-			liquidMapName = Lang.GetMapObjectName(MapHelper.liquidLookup[liquidID]);
-		}
 		LocalizedText text;
 		if (liquidID == LiquidID.Water)
 			text = Language.GetText("Conditions.NearWater");
@@ -276,7 +272,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 		else if (liquidID == LiquidID.Shimmer)
 			text = Language.GetText("Conditions.NearShimmer");
 		else
-			text = Language.GetText("Conditions.NearLiquid").WithFormatArgs(liquidMapName == "" ? LiquidLoader.GetLiquid(liquidID).Name : liquidMapName);
+			text = Language.GetText("Conditions.NearLiquid").WithFormatArgs(LiquidLoader.GetLiquid(liquidID).DisplayName);
 
 		return new Condition(text, () => Main.LocalPlayer.adjLiquid[liquidID]);
 	}

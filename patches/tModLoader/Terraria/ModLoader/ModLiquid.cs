@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
@@ -558,6 +558,11 @@ public abstract class ModLiquid : ModBlockType
 	public override void SetStaticDefaults()
 	{
 	}
+
+	/// <summary>
+	/// A display name for the liquid. May be used as a default impl for recipe conditions, map names and other mod features.
+	/// </summary>
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	/// <inheritdoc/>
 	public override void AddMapEntry(Color color, LocalizedText name = null, Func<string, int, int, string> nameFunc = null)

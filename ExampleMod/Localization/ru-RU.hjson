@@ -1785,7 +1785,7 @@ Mods: {
 			// NounE$Collective: School
 		}
 
-		// Liquids.ExampleLiquid.MapEntry: Example Liquid
+		// Liquids.ExampleLiquid.DisplayName: Example Liquid
 	}
 }
 
