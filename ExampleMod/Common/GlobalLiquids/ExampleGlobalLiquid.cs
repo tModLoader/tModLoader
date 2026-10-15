@@ -16,17 +16,17 @@ namespace ExampleMod.Common.GlobalLiquids
 	{
 		//AllowFishingInLiquid allow to control the fact you can fish in a liquid at a global level instead of a ModLiquid level
 		public override bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber) {
-			// In this check, we allow fishing in shimmer only if the EoC has been defeated
+			// We check if we allow fishing in shimmer only if the EoC has been defeated
 			if (liquidType == LiquidID.Shimmer && NPC.downedBoss1) {
 				// Returning true allow fishing in the liquid
 				return true;
 			}
-			// In this check, we check if the bobber is the golden rod bobber and check if also if the EoC has been defeated, if this is the case then return false to block fishing in water
+			// We check if the bobber is the golden rod bobber and if the EoC has been defeated
 			if (liquidType == LiquidID.Water && bobber.type == ProjectileID.BobberGolden && NPC.downedBoss1) {
 				// Returning false block fishing in the liquid
 				return false;
 			}
-			// In this check, we check if the player is on fire, if they are then they cannot fish in lava at all
+			// We check if the player is on fire and if the liquid is lava
 			if ((liquidType == LiquidID.Lava || liquidType == ModContent.LiquidType<ExampleComplexLiquid>()) && player.onFire) {
 				return false;
 			}
@@ -45,21 +45,39 @@ namespace ExampleMod.Common.GlobalLiquids
 			return true;
 		}
 
-		//EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld.
-		//This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
+		// EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld under certain condition (or not).
+		// This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
 		public override bool? EvaporatesInHell(int i, int j, int type) {
-			if (type == LiquidID.Shimmer) {
+			// In this first example, we make it so honey just evaporate in the underworld without any extra condition
+			if (type == LiquidID.Honey) {
 				return true;
 			}
-			if (type == LiquidID.Water) {
+
+			// In this second example, we disable water evaporation in the underworld if the wall of flesh as been defeated
+			if (type == LiquidID.Water && Main.hardMode) {
 				return false;
 			}
+
+			// In this third example, we make lava evaporate if it's standing on a block of ice
+			if (type == LiquidID.Lava && WorldGen.InWorld(i, j + 1)) {
+				Tile tile = Main.tile[i, j + 1];
+				if (tile.TileType == TileID.IceBlock && tile.HasTile) {
+					return true;
+				}
+			}
+
 			return null;
 		}
 
 		//The LiquidFallDelay hook/method is used for changing the falldelay of a liquid.
 		//Here we change the delay of water to be 10 (maximum delay time)
 		public override int? LiquidFallDelay(int type) {
+			// In this first example, we make the maximum falldelay for all liquids if the moonlord is active in the world
+			if (NPC.AnyNPCs(NPCID.MoonLordCore)) {
+				return 10;
+			}
+
+			// In this second example, we make the maximum falldelay of water at all time 
 			if (type == LiquidID.Water) {
 				return 10;
 			}
