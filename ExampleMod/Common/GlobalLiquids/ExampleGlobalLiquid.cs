@@ -179,17 +179,14 @@ namespace ExampleMod.Common.GlobalLiquids
 			}
 		}
 
-		//When drowning, we can prevent the emitting of breath bubbles when submerged for both NPCs and Players
-		//We make shimmer and water not emit breath bubbles from the player's mouth
-		public override bool? AllowEmitBreathBubbles(int type) {
-			if (type == LiquidID.Shimmer || type == LiquidID.Water) {
-				return false;
-			}
-			return null;
-		}
 
 		//Here using OnPump we make shimmer un-pump-able, returning false, skipping the liquid movement logic
 		public override bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY) {
+			if (inY > Main.UnderworldLayer && outY < Main.UnderworldLayer) {
+				return false;
+
+			}
+
 			if (inLiquidType == LiquidID.Shimmer) {
 				return false;
 			}
@@ -230,14 +227,6 @@ namespace ExampleMod.Common.GlobalLiquids
 				if (player.PortalPhysicsEnabled) {
 					maxFallSpeed = 35f;
 				}
-			}
-		}
-
-		//related to the PlayerLiquidMovement hook, we fix lava displaying the incorrect MPH number when moving through it
-		//Since lava does not slow us down, we set its multiplier to 1x
-		public override void StopWatchMPHMultiplier(int type, ref float multiplier) {
-			if (type == LiquidID.Lava) {
-				multiplier = 1f;
 			}
 		}
 

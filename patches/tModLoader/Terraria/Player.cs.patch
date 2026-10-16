@@ -4318,17 +4318,14 @@
  		if (Main.myPlayer == whoAmI) {
  			if (accMerman) {
  				if (flag)
-@@ -18899,7 +_,23 @@
+@@ -18899,7 +_,20 @@
  			}
  		}
  
 +		bool? canEmitBreath = null;
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (wets[i]) {
-+				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
-+				if (canEmitBreath == null && i >= LiquidID.Count) {
-+						canEmitBreath = LiquidLoader.GetLiquid(i).AllowEmitBreathBubbles;
-+				}
++				canEmitBreath = LiquidID.Sets.AllowEmitBreathBubbles[i];
 +			}
 +		}
 +		if (canEmitBreath == null) {
