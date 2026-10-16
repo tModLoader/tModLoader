@@ -16,22 +16,26 @@
  {
  	public enum TileContactSide
  	{
-@@ -1179,7 +_,17 @@
+@@ -1151,6 +_,8 @@
+ 		return true;
+ 	}
+ 
++
++
+ 	public static bool DrownCollision(Vector2 Position, int Width, int Height, float gravDir = -1f, bool includeSlopes = false)
+ 	{
+ 		Vector2 vector = new Vector2(Position.X + (float)(Width / 2), Position.Y + (float)(Height / 2));
+@@ -1179,7 +_,12 @@
  		for (int i = num3; i < value2; i++) {
  			for (int j = value3; j < value4; j++) {
  				Tile tile = Main.tile[i, j];
-+				bool? canLiquidTypeDrown = LiquidLoader.ChecksForDrowning(tile.liquidType());
-+				if (canLiquidTypeDrown == null) {
-+					canLiquidTypeDrown = true;
-+					if (tile.lava() || tile.shimmer())
-+						canLiquidTypeDrown = false;
-+
-+					if (tile.liquidType() >= LiquidID.Count)
-+						canLiquidTypeDrown = LiquidLoader.GetLiquid(tile.liquidType()).ChecksForDrowning;
-+				}
++				// TODO: Fix patch tomorrow
++				/*
++				if (tile.lava() || tile.shimmer())
++					return true;
++				*/
 -				if (tile != null && tile.liquid > 0 && !tile.lava() && !tile.shimmer() && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {
-+				/*if (tile != null && tile.liquid > 0 && !tile.lava() && !tile.shimmer() && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {*/
-+				if (tile != null && tile.liquid > 0 && (bool)canLiquidTypeDrown && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {
++				if (tile != null && tile.liquid > 0 && LiquidID.Sets.CheckForDrowning[tile.liquidType()] && (j != num4 || !tile.active() || !Main.tileSolid[tile.type] || Main.tileSolidTop[tile.type] || (includeSlopes && tile.blockType() != 0))) {
  					vector2.X = i * 16;
  					vector2.Y = j * 16;
  					int num5 = 16;

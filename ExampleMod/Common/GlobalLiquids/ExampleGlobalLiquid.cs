@@ -173,14 +173,10 @@ namespace ExampleMod.Common.GlobalLiquids
 
 		//ChecksForDrowning allows which liquid the player can drown in.
 		//Normally water and honey will only let you drown, but here we make shimmer allow the player to drown in, and make water breathable.
-		public override bool? ChecksForDrowning(int type) {
-			if (type == LiquidID.Water) {
-				return false;
+		public override void CanPlayerDrown(Player player, int type, ref bool isDrowning) {
+			if (type == LiquidID.Water && player.armor[0].type == ItemID.IronHelmet) {
+				isDrowning = false;
 			}
-			if (type == LiquidID.Shimmer) {
-				return true;
-			}
-			return null;
 		}
 
 		//When drowning, we can prevent the emitting of breath bubbles when submerged for both NPCs and Players

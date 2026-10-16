@@ -43,17 +43,15 @@
  		tilesIgnoreWater(ignoreSolids: true);
  		if (tile.liquid == 0 || (tile.active() && tile.type == 379))
  			return;
-@@ -336,6 +_,9 @@
+@@ -336,6 +_,7 @@
  		Tile tile3 = Main.tile[x, y - 1];
  		Tile tile4 = Main.tile[x, y + 1];
  		Tile tile5 = Main.tile[x, y];
-+		if (!LiquidLoader.UpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
-+			return;
-+		}
++		
  		if (tile5.nactive() && Main.tileSolid[tile5.type] && !Main.tileSolidTop[tile5.type]) {
  			_ = tile5.type;
  			_ = 10;
-@@ -345,12 +_,25 @@
+@@ -345,12 +_,28 @@
  
  		byte liquid = tile5.liquid;
  		float num = 0f;
@@ -61,6 +59,9 @@
 +		if (canEvaporate == null && y > Main.UnderworldLayer)
 +			canEvaporate = tile5.liquidType() == 0;
 +
++		if (!LiquidLoader.UpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
++			return;
++		}
 +		/*
  		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
  			byte b = 2;
@@ -95,7 +96,7 @@
  				delay = 0;
  			}
  		}
-@@ -424,7 +_,56 @@
+@@ -424,7 +_,51 @@
  				}
  			}
  		}
@@ -112,18 +113,13 @@
 +				}
 +				if (!quickFall) {
 +					int fallDelay = 0;
-+					if (i == LiquidID.Lava) {
-+						fallDelay = 5;
-+					}
-+					if (i == LiquidID.Honey) {
-+						fallDelay = 10;
-+					}
-+					if (i >= LiquidID.Count) {
-+						fallDelay = LiquidLoader.GetLiquid(i).FallDelay;
-+					}
++					fallDelay = LiquidID.Sets.FallDelay[i];
++					// TODO: Keep this hook???
++					/*
 +					if (LiquidLoader.LiquidEditingFallDelay(i) != null) {
 +						fallDelay = (int)LiquidLoader.LiquidEditingFallDelay(i);
 +					}
++					*/
 +					/*if (delay < 10) {*/
 +					if (delay < fallDelay) {
 +						delay++;

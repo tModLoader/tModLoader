@@ -5798,7 +5798,7 @@
  				num = 9;
  				text3 = Lang.inter[103].Value;
  				Vector2 vector = LocalPlayer.velocity + LocalPlayer.instantMovementAccumulatedThisFrame;
-@@ -41898,25 +_,49 @@
+@@ -41898,25 +_,42 @@
  				int num19 = 216000;
  				float num20 = num16 * (float)num19 / (float)num18;
  				if (!player[myPlayer].merman && !player[myPlayer].ignoreWater) {
@@ -5810,21 +5810,14 @@
  					else if (player[myPlayer].wet && !player[myPlayer].trident)
  						num20 /= 2f;
 +					*/
++					
 +					float multiplier = 1f;
 +					for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
 +						if (player[myPlayer].wets[j]) {
-+							if (player[myPlayer].shimmerWet) {
-+								multiplier = 0.375f;
-+							}
-+							else if (player[myPlayer].honeyWet) {
-+								multiplier = 0.25f;
-+							}
-+							else if (player[myPlayer].wets[LiquidID.Water] || player[myPlayer].wets[LiquidID.Lava]) {
-+								multiplier = 0.5f;
-+							}
-+							LiquidLoader.StopWatchMPHMultiplier(j, ref multiplier);
++							multiplier = LiquidID.Sets.StopWatchMPHMultiplier[i];
 +						}
 +					}
++					
 +					num20 *= multiplier;
  				}
  

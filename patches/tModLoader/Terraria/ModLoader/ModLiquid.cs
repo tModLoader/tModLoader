@@ -30,16 +30,16 @@ public abstract class ModLiquid : ModBlockType
 	public int SplashDustType { get; set; } = -1;
 
 	/// <summary> Liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode. </summary>
-	public int FallDelay { get; set; } = 0;
+	public int FallDelay { get => LiquidID.Sets.FallDelay[Type]; set => LiquidID.Sets.FallDelay[Type] = value; }
 
 	/// <summary> An array of the IDs of liquids that this tile can be considered as when looking for available liquids. </summary>
 	public int[] AdjLiquids { get; set; } = Array.Empty<int>();
 
 	/// <summary> The check in Collision that checks if a coord will be drowning in water.</summary>
-	public bool ChecksForDrowning { get; set; } = true;
+	public bool ChecksForDrowning { get => LiquidID.Sets.CheckForDrowning[Type]; set => LiquidID.Sets.CheckForDrowning[Type] = value; }
 
 	/// <summary> Whether or not, when drowning, a player or npc will emit dusts from their mouth. </summary>
-	public bool AllowEmitBreathBubbles { get; set; } = true;
+	public bool AllowEmitBreathBubbles { get => LiquidID.Sets.AllowEmitBreathBubbles[Type]; set => LiquidID.Sets.AllowEmitBreathBubbles[Type] = value; }
 
 	/// <summary> The multiplier used to change how many tiles are needed to fish in a pool of liquid. Honey uses a 1.5x multiplier for its pool size. </summary>
 	public float FishingPoolSizeMultiplier { get; set; } = 1f;
@@ -51,10 +51,10 @@ public abstract class ModLiquid : ModBlockType
 	public float SlopeOpacity { get; set; } = 0.5f;
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) the player moves while in this liquid. </summary>
-	public float PlayerMovementMultiplier { get; set; } = 0.5f;
+	public float PlayerMovementMultiplier { get => LiquidID.Sets.PlayerMovementMultiplier[Type]; set => LiquidID.Sets.PlayerMovementMultiplier[Type] = value; }
 
 	/// <summary> The multiplier used for stopwatches to know how to offset the MPH reading. </summary>
-	public float StopWatchMPHMultiplier { get; set; } = 0.5f;
+	public float StopWatchMPHMultiplier { get => LiquidID.Sets.StopWatchMPHMultiplier[Type]; set => LiquidID.Sets.StopWatchMPHMultiplier[Type] = value; }
 
 	/// <summary> The default value that NPC.liquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
 	public float NPCMovementMultiplierDefault { get; set; } = 0.5f;

@@ -100,8 +100,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookNPCLiquidCollision, globalLiquids, (GlobalLiquid g) => g.NPCLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookNPCGravityModifier, globalLiquids, (GlobalLiquid g) => g.NPCGravityModifier);
 		ModLoader.BuildGlobalHook(ref HookProjectileLiquidMovement, globalLiquids, (GlobalLiquid g) => g.ProjectileLiquidMovement);
-		ModLoader.BuildGlobalHook(ref HookChecksForDrowning, globalLiquids, (GlobalLiquid g) => g.ChecksForDrowning);
-		ModLoader.BuildGlobalHook(ref HookPlayersEmitBreathBubbles, globalLiquids, (GlobalLiquid g) => g.AllowEmitBreathBubbles);
 		ModLoader.BuildGlobalHook(ref HookCanPlayerDrown, globalLiquids, (GlobalLiquid g) => g.CanPlayerDrown);
 		ModLoader.BuildGlobalHook(ref HookPoolSizeMultiplier, globalLiquids, (GlobalLiquid g) => g.LiquidFishingPoolSizeMulitplier);
 		ModLoader.BuildGlobalHook(ref HookAllowFishingInLiquid, globalLiquids, (GlobalLiquid g) => g.AllowFishingInLiquid);
@@ -110,7 +108,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookWaterRippleMultipler, globalLiquids, (GlobalLiquid g) => g.WaterRippleMultiplier);
 		ModLoader.BuildGlobalHook(ref HookModifyTilesNearby, globalLiquids, (GlobalLiquid g) => g.ModifyNearbyTiles);
 		ModLoader.BuildGlobalHook(ref HookOnPump, globalLiquids, (GlobalLiquid g) => g.OnPump);
-		ModLoader.BuildGlobalHook(ref HookStopWatchMPHMultiplier, globalLiquids, (GlobalLiquid g) => g.StopWatchMPHMultiplier);
 		ModLoader.BuildGlobalHook(ref HookOnPlayerCollision, globalLiquids, (GlobalLiquid g) => g.OnPlayerCollision);
 		ModLoader.BuildGlobalHook(ref HookOnNPCCollision, globalLiquids, (GlobalLiquid g) => g.OnNPCCollision);
 		ModLoader.BuildGlobalHook(ref HookOnProjectileCollision, globalLiquids, (GlobalLiquid g) => g.OnProjectileCollision);
@@ -541,28 +538,6 @@ public static class LiquidLoader
 		return GetLiquid(type)?.ProjectileLiquidMovement(proj, ref wetVelocity, collisionPosition, Width, Height, fallThrough) ?? true;
 	}
 
-	private static Func<int, bool?>[] HookChecksForDrowning;
-	public static bool? ChecksForDrowning(int type)
-	{
-		Func<int, bool?>[] hookChecksForDrowning = HookChecksForDrowning;
-		for (int k = 0; k < hookChecksForDrowning.Length; k++) {
-			return hookChecksForDrowning[k](type);
-		}
-		return null;
-	}
-
-	private static Func<int, bool?>[] HookPlayersEmitBreathBubbles;
-	public static bool? PlayersEmitBreathBubbles(int type)
-	{
-		Func<int, bool?>[] hookPlayersEmitBreathBubbles = HookPlayersEmitBreathBubbles;
-		for (int k = 0; k < hookPlayersEmitBreathBubbles.Length; k++) {
-			bool? emitBubbles = hookPlayersEmitBreathBubbles[k](type);
-			if (emitBubbles != null)
-				return emitBubbles;
-		}
-		return null;
-	}
-
 	private delegate void DelegateCanPlayerDrown(Player player, int type, ref bool isDrowning);
 	private static DelegateCanPlayerDrown[] HookCanPlayerDrown;
 	public static void CanPlayerDrown(int type, Player player, ref bool isDrowning)
@@ -649,20 +624,6 @@ public static class LiquidLoader
 			}
 		}
 		return GetLiquid(type)?.OnPump(x, y, x2, y2) ?? true;
-	}
-
-	private delegate void DelegateStopWatchMPHMultiplier(int type, ref float multiplier);
-	private static DelegateStopWatchMPHMultiplier[] HookStopWatchMPHMultiplier;
-	public static void StopWatchMPHMultiplier(int type, ref float multiplier)
-	{
-		ModLiquid modLiquid = GetLiquid(type);
-		if (modLiquid != null) {
-			multiplier = modLiquid.StopWatchMPHMultiplier;
-		}
-		DelegateStopWatchMPHMultiplier[] hookStopWatchMPHMultiplier = HookStopWatchMPHMultiplier;
-		for (int k = 0; k < hookStopWatchMPHMultiplier.Length; k++) {
-			hookStopWatchMPHMultiplier[k](type, ref multiplier);
-		}
 	}
 
 	private static Action<Player, int>[] HookOnPlayerCollision;

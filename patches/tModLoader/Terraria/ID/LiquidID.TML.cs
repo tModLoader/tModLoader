@@ -28,6 +28,31 @@ public partial class LiquidID
 			new List<int>() { ItemID.HoneyAbsorbantSponge, ItemID.UltraAbsorbantSponge }
 		);
 
+		/// <summary>
+		/// If <see langword="true"/>, certain npc and player can drown in it 
+		/// </summary>
+		public static bool[] CheckForDrowning = Factory.CreateBoolSet(false, Water, Honey);
+
+		/// <summary>
+		/// The higher the value, longer a liquid will take to fall (maximum of 10)
+		/// </summary>
+		public static int[] FallDelay = Factory.CreateIntSet(0, Lava, 5, Honey, 10);
+
+		/// <summary>
+		/// If <see langword="true"/>, player and npc that can drown will emit bubble if they are in a liquid
+		/// </summary>
+		public static bool[] AllowEmitBreathBubbles = Factory.CreateBoolSet(false, Water, Honey);
+
+		/// <summary>
+		/// Liquid's stopwatch MPH multiplier whether that be modded or vanilla liquids.
+		/// </summary>
+		public static float[] StopWatchMPHMultiplier = Factory.CreateFloatSet(0.5f, Honey, 0.25f, Shimmer, 0.375f);
+
+		/// <summary>
+		/// Liquids movement multiplier for when a player is moving in it
+		/// </summary>
+		public static float[] PlayerMovementMultiplier = Factory.CreateFloatSet(0.5f);
+
 		static Sets()
 		{
 			for (int i = 0; i < CanBeAbsorbedBy.Length; i++) {

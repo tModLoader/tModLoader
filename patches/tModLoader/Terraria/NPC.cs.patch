@@ -3349,7 +3349,7 @@
  		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
  			return nPC.type != 453;
  
-@@ -80085,8 +_,23 @@
+@@ -80085,8 +_,20 @@
  				breathCounter = 0;
  			}
  		}
@@ -3359,10 +3359,7 @@
 +		bool? canEmitBreath = null;
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (wets[i]) {
-+				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
-+				if (canEmitBreath == null && i >= LiquidID.Count) {
-+					canEmitBreath = LiquidLoader.GetLiquid(i).AllowEmitBreathBubbles;
-+				}
++				canEmitBreath = LiquidID.Sets.AllowEmitBreathBubbles[i];
 +			}
 +		}
 +		if (canEmitBreath == null) {
