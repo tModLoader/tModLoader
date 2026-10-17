@@ -1269,6 +1269,11 @@ Mods: {
 				DisplayName: Example Special Glide Wings
 				Tooltip: ""
 			}
+
+			ExampleGrassSeeds: {
+				DisplayName: Example Grass Seeds
+				Tooltip: ""
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

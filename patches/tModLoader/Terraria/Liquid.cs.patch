@@ -1,0 +1,31 @@
+--- src/TerrariaNetCore/Terraria/Liquid.cs
++++ src/tModLoader/Terraria/Liquid.cs
+@@ -1231,14 +_,28 @@
+ 						if (!tile5.active())
+ 							continue;
+ 
++						/*
+ 						if (tile5.type == 2 || tile5.type == 23 || tile5.type == 109 || tile5.type == 199 || tile5.type == 477 || tile5.type == 492) {
++						*/
++						if (TileID.Sets.Grass[tile5.type]) {
+ 							tile5.type = 0;
+ 							WorldGen.SquareTileFrame(i, j);
+ 							if (Main.netMode == 2)
+ 								NetMessage.SendTileSquare(-1, num, num2, 3);
+ 						}
++						/*
+ 						else if (tile5.type == 60 || tile5.type == 70 || tile5.type == 661 || tile5.type == 662) {
++						*/
++						else if (TileID.Sets.GrassSpecial[tile5.type]) {
+ 							tile5.type = 59;
++							WorldGen.SquareTileFrame(i, j);
++							if (Main.netMode == 2)
++								NetMessage.SendTileSquare(-1, num, num2, 3);
++						}
++						// TML: Add support for any other "dirt" tile.
++						// Note that AshGrass specifically doesn't revert to Ash, so this check excludes those grass tiles. Main.tileLavaDeath isn't true for grasses, probably because that would call KillTile without the fail parameter to turn it into dirt, but maybe a separate set will be needed to allow mods to have a tile that doesn't revert to a non-ash "dirt" tile in lava.
++						else if (TileID.Sets.NeedsGrassFraming[tile5.type] && TileID.Sets.NeedsGrassFramingDirt[tile5.type] != TileID.Ash) {
++							tile5.type = (ushort)TileID.Sets.NeedsGrassFramingDirt[tile5.type];
+ 							WorldGen.SquareTileFrame(i, j);
+ 							if (Main.netMode == 2)
+ 								NetMessage.SendTileSquare(-1, num, num2, 3);
