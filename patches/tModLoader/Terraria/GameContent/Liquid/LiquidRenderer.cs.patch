@@ -541,8 +541,8 @@
 +						/*Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);*/
 +						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
 +
-+					PostDraw:
 +						LiquidLoader.PostDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
++						PostDraw:;
  					}
  
  					ptr2++;
@@ -595,12 +595,13 @@
  				Lighting.GetCornerColors(num3, num4, out var vertices);
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
-@@ -608,6 +_,9 @@
+@@ -608,6 +_,10 @@
  					Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
  				}
  
-+				PostDraw:
 +				LiquidLoader.PostDraw(num3, num4, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, 1, 0f);
++				PostDraw:
++				
 +
  				ptr2++;
  			}
