@@ -1102,7 +1102,7 @@
  	}
  
  	public static void ClearAll()
-@@ -6499,8 +_,27 @@
+@@ -6499,8 +_,23 @@
  			return;
  		}
  
@@ -1119,14 +1119,10 @@
 +		GravityIgnoresSpace = false;
 +		GravityIgnoresType = false;
 +
++		// Added by TML
 +		liquidMovementSpeed = new float[LiquidLoader.LiquidCount];
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
-+			liquidMovementSpeed[i] = 0.5f;
-+			if (i >= LiquidID.Count)
-+				liquidMovementSpeed[i] = LiquidLoader.GetLiquid(i).NPCMovementMultiplierDefault;
-+		}
-+		liquidMovementSpeed[LiquidID.Honey] = 0.25f;
-+		liquidMovementSpeed[LiquidID.Shimmer] = 0.375f;
++		Array.Copy(LiquidID.Sets.NPCMovementMultiplierDefault, liquidMovementSpeed, liquidMovementSpeed.Length);
++
  		altTexture = 0;
  		townNpcVariationIndex = 0;
  		nameOver = 0f;

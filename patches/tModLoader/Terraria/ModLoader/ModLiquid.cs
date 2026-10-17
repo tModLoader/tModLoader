@@ -51,23 +51,23 @@ public abstract class ModLiquid : ModBlockType
 	public float SlopeOpacity { get; set; } = 0.5f;
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) the player moves while in this liquid. </summary>
-	public float PlayerMovementMultiplier { get => LiquidID.Sets.PlayerMovementMultiplier[Type]; set => LiquidID.Sets.PlayerMovementMultiplier[Type] = value; }
+	public float EntityMovementMultiplier { get => LiquidID.Sets.PlayerMovementMultiplier[Type]; set => LiquidID.Sets.PlayerMovementMultiplier[Type] = value; }
 
 	/// <summary> The multiplier used for stopwatches to know how to offset the MPH reading. </summary>
 	public float StopWatchMPHMultiplier { get => LiquidID.Sets.StopWatchMPHMultiplier[Type]; set => LiquidID.Sets.StopWatchMPHMultiplier[Type] = value; }
 
 	/// <summary> The default value that NPC.liquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
-	public float NPCMovementMultiplierDefault { get; set; } = 0.5f;
+	public float NPCMovementMultiplierDefault { get => LiquidID.Sets.NPCMovementMultiplierDefault[Type]; set => LiquidID.Sets.NPCMovementMultiplierDefault[Type] = value; }
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) projectiles move while in this liquid. </summary>
-	public float ProjectileMovementMultiplier { get; set; } = 0.5f;
+	public float ProjectileMovementMultiplier { get => LiquidID.Sets.ProjectileMovementMultiplier[Type]; set => LiquidID.Sets.ProjectileMovementMultiplier[Type] = value; }
 
 	/// <summary> Uses lava based collision check for when applying this liquid's wet boolean. <br/>
 	/// This means collision is more sensitive, and the wet is active even when touching the smallest amount of this liquid. </summary>
 	public bool UsesLavaCollisionForWet { get; set; } = false;
 
 	/// <summary> Whether or not this liquid removes the On Fire! debuffs when entering. </summary>
-	public bool ExtinguishesOnFireDebuffs { get; set; } = true;
+	public bool ExtinguishesOnFireDebuffs { get => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type]; set => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type] = value; }
 
 	/// <summary> The multiplier repsonsible for multiplying how much opacity each step in this liquid's fall should be drawn at.  
 	/// <br/> Only effects slopes when underground (similar to other liquids).</summary>

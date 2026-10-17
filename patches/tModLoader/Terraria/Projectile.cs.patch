@@ -1636,7 +1636,7 @@
  					if (type >= 736 && type <= 738) {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
-@@ -15339,9 +_,31 @@
+@@ -15339,9 +_,26 @@
  					else {
  						velocity = Collision.TileCollision(position, velocity, width, height, flag6, flag6);
  					}
@@ -1645,26 +1645,21 @@
  				else if (wet) {
 -					if (shimmerWet) {
 +						/*if (shimmerWet) {*/
-+						bool inModdedLiquid = false;
-+					for (int i = LiquidLoader.LiquidCount - 1; i > LiquidID.Count; i--) {
-+						if (wets[i]) {
-+							if (LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
-+								Vector2 vector3 = velocity;
-+								velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6);
-+								wetVelocity = velocity * LiquidLoader.GetLiquid(i).ProjectileMovementMultiplier;
-+								if (velocity.X != vector3.X) {
-+									wetVelocity.X = velocity.X;
-+								}
-+								if (velocity.Y != vector3.Y) {
-+										wetVelocity.Y = velocity.Y;
-+								}
++					for (int i = LiquidLoader.LiquidCount - 1; i > 0; i--) {
++						if (wets[i] && LiquidLoader.ProjectileLiquidMovement(i, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
++							Vector2 vector3 = velocity;
++							velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6);
++							wetVelocity = velocity * LiquidID.Sets.ProjectileMovementMultiplier[i];
++							if (velocity.X != vector3.X) {
++								wetVelocity.X = velocity.X;
 +							}
-+							inModdedLiquid = true;
++							if (velocity.Y != vector3.Y) {
++									wetVelocity.Y = velocity.Y;
++							}
 +						}
 +					}
-+					if(inModdedLiquid) {
-+							goto postVanillaMovement;
-+					}
++					goto postVanillaMovement;
++					
 +					if (shimmerWet && LiquidLoader.ProjectileLiquidMovement(LiquidID.Shimmer, this, ref wetVelocity, vector, colWidth, colHeight, flag6)) {
  						Vector2 vector2 = velocity;
  						velocity = Collision.TileCollision(vector, velocity, colWidth, colHeight, flag6, flag6, 1, ignoreDoors);

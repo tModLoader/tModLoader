@@ -53,6 +53,23 @@ public partial class LiquidID
 		/// </summary>
 		public static float[] PlayerMovementMultiplier = Factory.CreateFloatSet(0.5f);
 
+		/// <summary>
+		/// Default NPCs movement speed multiplier before any change for each liquid
+		/// </summary>
+		public static float[] NPCMovementMultiplierDefault = Factory.CreateFloatSet(0.5f, Honey, 0.25f, Shimmer, 0.375f);
+
+		/// <summary>
+		/// Default projectiles movement speed multiplier before any change for each liquid
+		/// </summary>
+		public static float[] ProjectileMovementMultiplier = Factory.CreateFloatSet(0.5f, Honey, 0.25f, Shimmer, 0.375f);
+
+		/// <summary>
+		/// Liquids by default extinguish On Fire and HellFire debuff, unless it's lava.
+		/// </summary>
+		public static bool[] DoesNotExtinguishesOnFireDebuffs = Factory.CreateBoolSet(true, Lava);
+
+		public static float[] FishingPoolSizeMultiplier = Factory.CreateFloatSet(1f, Honey, 1.5f);
+
 		static Sets()
 		{
 			for (int i = 0; i < CanBeAbsorbedBy.Length; i++) {

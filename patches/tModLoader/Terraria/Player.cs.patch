@@ -4925,9 +4925,9 @@
  
  		if (num86) {
 +			bool putsOutOnfire = true;
-+			for (int j = LiquidLoader.LiquidCount - 1; j >= LiquidID.Count; j--)
++			for (int j = LiquidLoader.LiquidCount - 1; j >= 0; j--)
 +				if (wets[j])
-+					putsOutOnfire = LiquidLoader.GetLiquid(j).ExtinguishesOnFireDebuffs;
++					putsOutOnfire = LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[j];
 -			if ((onFire || onFire3) && !lavaWet) {
 +			if ((onFire || onFire3) && !lavaWet && putsOutOnfire) {
  				for (int num89 = 0; num89 < maxBuffs; num89++) {

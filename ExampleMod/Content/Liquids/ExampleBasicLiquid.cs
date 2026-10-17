@@ -18,7 +18,6 @@ namespace ExampleMod.Content.Liquids
 		public override void SetStaticDefaults() {
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 3;
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.75f;
-			SlopeOpacity = 0.8f;
 			LiquidRenderer.VISCOSITY_MASK[Type] = 200;
 			FallDelay = 5;
 			SplashDustType = ModContent.DustType<ExampleSolutionDust>();

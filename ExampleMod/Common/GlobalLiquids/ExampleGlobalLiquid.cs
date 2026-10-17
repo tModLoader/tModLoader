@@ -74,21 +74,6 @@ namespace ExampleMod.Common.GlobalLiquids
 			return null;
 		}
 
-		//The LiquidFallDelay hook/method is used for changing the falldelay of a liquid.
-		//Here we change the delay of water to be 10 (maximum delay time)
-		public override int? LiquidFallDelay(int type) {
-			// In this first example, we make the maximum falldelay for all liquids if the moonlord is active in the world
-			if (NPC.AnyNPCs(NPCID.MoonLordCore)) {
-				return 10;
-			}
-
-			// In this second example, we make the maximum falldelay of water at all time 
-			if (type == LiquidID.Water) {
-				return 10;
-			}
-			return null;
-		}
-
 		// In this example, we change how lava and water should interact before making a LiquidMerge.
 		// If the EoC is defeated and the water and lava come in contact, there is 50% chance it will spawn an obsidian pillar instead of doing a regular tile merge
 		public override bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid) {

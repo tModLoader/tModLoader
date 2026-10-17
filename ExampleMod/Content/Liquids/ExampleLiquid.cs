@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Liquids
 			//This is the opacity of the liquid. How well you can see objects in the liquid.
 			//DefaultOpacity is a vanilla array containing the definitions of each liquid type's default opacity for just white and color lighting modes
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.95f;
-			SlopeOpacity = 1f; //Slope opacity is mainly for liquids near slopes when in retro or trippy lighting modes or when LiquidSlopeFix setting is disabled
 			LiquidfallOpacityMultiplier = 0.5f; //Here we make the liquidfalls of this liquid draw at a 0.5x multiplier, making them seem much thicker
 			//To change the old liquid rendering opacity, please see the RetroDrawEffects override.
 
@@ -53,10 +52,10 @@ namespace ExampleMod.Content.Liquids
 			//Water/Lava/Regular modded liquid = 0.5f
 			//Honey = 0.25f
 			//Shimmer = 0.375f
-			PlayerMovementMultiplier = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
-			StopWatchMPHMultiplier = PlayerMovementMultiplier; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
-			NPCMovementMultiplierDefault = PlayerMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
-			ProjectileMovementMultiplier = PlayerMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
+			EntityMovementMultiplier = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
+			StopWatchMPHMultiplier = EntityMovementMultiplier; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
+			NPCMovementMultiplierDefault = EntityMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
+			ProjectileMovementMultiplier = EntityMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
 
 			FishingPoolSizeMultiplier = 2f; //The multiplier used for calculating the size of a fishing pool of this liquid. Here, each liquid tile counts as 2 for every tile in a fished pool.
 
@@ -215,11 +214,23 @@ namespace ExampleMod.Content.Liquids
 				npc.AddBuff(BuffID.DryadsWardDebuff, 60 * 4);
 			}
 		}
+
 		//Secondly, we apply the 2nd tier of Well Fed for 30 seconds
+		// And thirdly, we remove the onFire debuff if the player have it
 		public override void OnPlayerCollision(Player player) {
 			//No conditions needed for our liquid
 			//Shimmer and honey also don't have any other conditions outside of already not shimmering
 			player.AddBuff(BuffID.WellFed2, 60 * 30);
+			//Here we check if the player is either on fire or is afflicted with hellfire
+			if (player.onFire || player.onFire3) {
+				// If they are, we iterate trough all the buff slot the player have and remove them if they are found
+				for (int i = 0; i < Player.MaxBuffs; i++) {
+					int buffType = player.buffType[i];
+					if (buffType == BuffID.OnFire || buffType == BuffID.OnFire3) {
+						player.DelBuff(i);
+					}
+				}
+			}
 		}
 
 		//Here we animate our liquid separately from other liquids in the game.
@@ -271,7 +282,7 @@ namespace ExampleMod.Content.Liquids
 			int height = (!player.onTrack) ? player.height : (player.height - 20);
 			Vector2 velocity = player.velocity;
 			player.velocity = Collision.TileCollision(player.position, player.velocity, player.width, height, fallThrough, ignorePlats, (int)player.gravDir);
-			Vector2 vector2 = player.velocity * PlayerMovementMultiplier; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
+			Vector2 vector2 = player.velocity * EntityMovementMultiplier; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
 			if (player.velocity.X != velocity.X) {
 				vector2.X = player.velocity.X;
 			}

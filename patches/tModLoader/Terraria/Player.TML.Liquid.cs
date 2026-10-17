@@ -94,7 +94,7 @@ public partial class Player
 		int num = ((!onTrack) ? height : (height - 20));
 		Vector2 vector = velocity;
 		velocity = Collision.TileCollision(position, velocity, width, num, fallThrough, ignorePlats, (int)gravDir);
-		Vector2 vector2 = velocity * LiquidLoader.GetLiquid(liquidID).PlayerMovementMultiplier;
+		Vector2 vector2 = velocity * LiquidLoader.GetLiquid(liquidID).EntityMovementMultiplier;
 		if (velocity.X != vector.X)
 			vector2.X = velocity.X;
 

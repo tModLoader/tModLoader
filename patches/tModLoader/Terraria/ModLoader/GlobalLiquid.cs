@@ -270,19 +270,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows the editing of how fast liquids fall, return null for the regular liquid falling to apply. <br/>
-	/// For Modded Liquids, use ModLiquid.FallDelay property to edit how fast your liquid falls. This method can be used to edit other mod liquids falling as well.<br/>
-	/// Returns null by default <br/>
-	/// NOTE: liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual int? LiquidFallDelay(int type)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// Allows you to determine which liquids the given liquid type can be considered as when looking for avaliable liquids.
 	/// </summary>
 	/// <param name="type"></param>
@@ -490,18 +477,6 @@ public abstract class GlobalLiquid : ModType
 	public virtual bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// The opacity liquid slopes render at. Lava uses this to render at 1f opacity, and honey does the following calculation for it's opacity: <br/>
-	/// Math.Max(0.5f * 1.7f, 1f) <br/>
-	/// The game does additional calulations after this hook to get the final opacity. Use this method to edit liquid slope's default opacity to render at. <br/>
-	/// slopeOpacity defaults at 0.5f.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="slopeOpacity">The opacity already given to a liquid. Edit this to change the default liquid slope opacity.</param>
-	public virtual void LiquidSlopeOpacity(int type, ref float slopeOpacity)
-	{
 	}
 
 	/// <summary>
