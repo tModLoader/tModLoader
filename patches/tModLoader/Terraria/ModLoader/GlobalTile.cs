@@ -401,4 +401,9 @@ public abstract class GlobalTile : GlobalBlockType
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
 	}
+
+	/// <inheritdoc cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/>
+	public virtual void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
+	{
+	}
 }

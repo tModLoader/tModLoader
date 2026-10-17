@@ -109,6 +109,8 @@ public static class TileLoader
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
+	private delegate void DelegateOverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace);
+	private static DelegateOverridePlacementTile[] HookOverridePlacementTile;
 
 	internal static int ReserveTileID()
 	{
@@ -268,6 +270,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
+		ModLoader.BuildGlobalHook(ref HookOverridePlacementTile, globalTiles, g => g.OverridePlacementTile);
 
 		if (!unloading) {
 			loaded = true;
@@ -1528,6 +1531,10 @@ public static class TileLoader
 			ItemLoader.GetItem(item.type)?.OverridePlacementTile(i, j, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
 
 		GetTile(tileToCreate)?.OverridePlacementTile(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+
+		foreach (var hook in HookOverridePlacementTile) {
+			hook(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+		}
 	}
 
 	public static void FlowerBootsPlaceFlowers(int i, int j)
