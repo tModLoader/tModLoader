@@ -931,7 +931,7 @@
  	public static int TileInteractionHY = -1;
 +	/// <summary>
 +	/// The mouse cursor to display, a <see cref="ID.CursorOverrideID"/> value, overriding the normal mouse cursor. Affects visuals and inventory item slot click behavior.
-+	/// <para/> Typically set during code handling <see cref="ItemSlot"/>s. Can be set during <see cref="ModPlayer.HoverSlot(Item[], int, int)"/> and checked against during <see cref="ModPlayer.ShiftClickSlot(Item[], int, int)"/>. 
++	/// <para/> Typically set during code handling <see cref="ItemSlot"/>s. Can be set during <see cref="ModPlayer.HoverSlot(Item[], int, int)"/> and checked against during <see cref="ModPlayer.ShiftClickSlot(Item[], int, int)"/>.
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public static int cursorOverride = -1;
@@ -3036,7 +3036,7 @@
  	private void UpdateWorld_Gores()
  	{
 +		SystemLoader.PreUpdateGores();
-+		
++
  		if (netMode == 2)
  			return;
  
@@ -6504,10 +6504,10 @@
  	}
  
  	public static void ClearWorldSeedFlags()
-@@ -46461,6 +_,7 @@
- 		infectedSeed = false;
- 		teamBasedSpawnsSeed = false;
+@@ -46463,6 +_,7 @@
  		dualDungeonsSeed = false;
+ 		moreLightningSeed = false;
+ 		noLightningSeed = false;
 +		SeedLoader.DisableAll();
  	}
  
