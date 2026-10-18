@@ -152,9 +152,15 @@ internal class UIModConfigList : UIState
 
 	public override void OnActivate()
 	{
+		modList.Clear();
+		configList.Clear();
+
 		configListPrompt.Remove();
-		modList?.Clear();
-		configList?.Clear();
+		modListScrollbar.Remove();
+		configListScrollbar.Remove();
+
+		modList.ViewPosition = 0f;
+		configList.ViewPosition = 0f;
 
 		// Select the mod that we clicked on, otherwise don't select anything
 		selectedMod = null;
