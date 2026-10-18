@@ -159,7 +159,7 @@ namespace ExampleMod.Content.Liquids
 		}
 
 		//Here with UpdateLiquid, we use this method to make our liquid evaporate when in the ocean biome
-		public override bool UpdateLiquid(int i, int j, Liquid liquid) {
+		public override bool PreUpdateLiquid(int i, int j, Liquid liquid) {
 			//Firstly we check if the liquid both has more than 0 liquid amount, and is in the ocean biome part of the world
 			if ((i < WorldGen.beachDistance || i > Main.maxTilesX - WorldGen.beachDistance) && Main.tile[i, j].LiquidAmount > 0) {
 				byte evaporateAmount = 2; //the amount of liquid removed each frame

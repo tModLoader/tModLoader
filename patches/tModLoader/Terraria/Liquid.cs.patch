@@ -59,7 +59,7 @@
 +		if (canEvaporate == null && y > Main.UnderworldLayer)
 +			canEvaporate = tile5.liquidType() == 0;
 +
-+		if (!LiquidLoader.UpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
++		if (!LiquidLoader.PreUpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
 +			return;
 +		}
 +		/*

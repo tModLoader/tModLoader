@@ -212,13 +212,13 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids during updates such as custom evaporation. Returns true by default. 
+	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids they update, return false if you don't want your liquid to you vanilla update behavior
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool UpdateLiquid(int i, int j, Liquid liquid)
+	public virtual bool PreUpdateLiquid(int i, int j, Liquid liquid)
 	{
 		return true;
 	}

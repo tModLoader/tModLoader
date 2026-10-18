@@ -177,14 +177,14 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids during updates such as custom evaporation. Returns true by default. 
+	/// Allows the changing of vanilla and modded liquid movement in-game as well as allowing you to do other stuff with liquids they update, return false if you don't want your liquid to you vanilla update behavior.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool UpdateLiquid(int i, int j, int type, Liquid liquid)
+	public virtual bool PreUpdateLiquid(int i, int j, int type, Liquid liquid)
 	{
 		return true;
 	}

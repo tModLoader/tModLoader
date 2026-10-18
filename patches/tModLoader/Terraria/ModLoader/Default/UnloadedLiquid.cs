@@ -13,7 +13,7 @@ public class UnloadedLiquid : ModLiquid
 		TileIO.Liquids.unloadedTypes.Add(Type);
 	}
 
-	public override bool UpdateLiquid(int i, int j, Liquid liquid) => false; //prevents unloaded liquids from moving
+	public override bool PreUpdateLiquid(int i, int j, Liquid liquid) => false; //prevents unloaded liquids from moving
 
 	public override bool SettleLiquidMovement(int i, int j) => false; //prevents unloaded liquids from being moved when loading worlds
 

@@ -80,7 +80,7 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPostSlopeDraw, globalLiquids, (GlobalLiquid g) => g.PostSlopeDraw);
 		ModLoader.BuildGlobalHook(ref HookDisableRetroLavaBubbles, globalLiquids, (GlobalLiquid g) => g.DisableRetroLavaBubbles);
 		ModLoader.BuildGlobalHook(ref HookDrawWaterfall, globalLiquids, (GlobalLiquid g) => g.ChooseWaterfallStyle);
-		ModLoader.BuildGlobalHook(ref HookUpdate, globalLiquids, (GlobalLiquid g) => g.UpdateLiquid);
+		ModLoader.BuildGlobalHook(ref HookPreUpdate, globalLiquids, (GlobalLiquid g) => g.UpdateLiquid);
 		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.CanLiquidEvaporate);
 		ModLoader.BuildGlobalHook(ref HookSettleLiquidMovement, globalLiquids, (GlobalLiquid g) => g.SettleLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookMergeTiles, globalLiquids, (GlobalLiquid g) => g.LiquidMerge);
@@ -268,16 +268,16 @@ public static class LiquidLoader
 		return GetLiquid(type)?.ChooseWaterfallStyle(i, j) ?? null;
 	}
 
-	private static Func<int, int, int, Liquid, bool>[] HookUpdate;
-	public static bool UpdateLiquid(int i, int j, int type, Liquid liquid)
+	private static Func<int, int, int, Liquid, bool>[] HookPreUpdate;
+	public static bool PreUpdateLiquid(int i, int j, int type, Liquid liquid)
 	{
-		Func<int, int, int, Liquid, bool>[] hookUpdate = HookUpdate;
+		Func<int, int, int, Liquid, bool>[] hookUpdate = HookPreUpdate;
 		for (int k = 0; k < hookUpdate.Length; k++) {
 			if (!hookUpdate[k](i, j, type, liquid)) {
 				return false;
 			}
 		}
-		return GetLiquid(type)?.UpdateLiquid(i, j, liquid) ?? true;
+		return GetLiquid(type)?.PreUpdateLiquid(i, j, liquid) ?? true;
 	}
 
 	private static Func<int, int, int, bool?>[] HookEvaporation;
