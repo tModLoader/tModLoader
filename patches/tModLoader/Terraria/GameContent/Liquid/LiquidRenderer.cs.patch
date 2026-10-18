@@ -171,7 +171,7 @@
  		Rectangle rectangle = new Rectangle(drawArea.X - 2, drawArea.Y - 2, drawArea.Width + 4, drawArea.Height + 4);
  		_drawArea = drawArea;
  		if (_cache.Length < rectangle.Width * rectangle.Height + 1)
-@@ -127,20 +_,24 @@
+@@ -127,20 +_,23 @@
  		if (_drawCache.Length < drawArea.Width * drawArea.Height + 1)
  			_drawCache = new LiquidDrawCache[drawArea.Width * drawArea.Height + 1];
  
@@ -187,7 +187,6 @@
 -		Tile tile = null;
 +		Tile tile = default;
  		fixed (LiquidCache* ptr = &_cache[1]) {
-+			#region Gather Tile Data
  			LiquidCache* ptr2 = ptr;
  			int num = rectangle.Height * 2 + 2;
  			ptr2 = ptr;
@@ -198,7 +197,7 @@
  					if (tile == null)
  						tile = new Tile();
  
-@@ -154,10 +_,20 @@
+@@ -154,9 +_,18 @@
  					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
  						ptr2->Type = ptr2[-1].Type;
  
@@ -210,49 +209,22 @@
  					ptr2++;
  				}
  			}
- 
++
 +			// Added by TML
 +			if (edgeData)
 +				LiquidEdgeRenderer.FinishEdgeData();
-+			#endregion
-+			#region Filling the gaps between liquid
+ 
  			ptr2 = ptr;
  			float num2 = 0f;
- 			ptr2 += num;
-@@ -167,16 +_,18 @@
+@@ -167,7 +_,7 @@
  					if (ptr2->IsHalfBrick && ptr2[-1].HasLiquid) {
  						num2 = 1f;
  					}
 -					else if (!ptr2->HasLiquid) {
--						LiquidCache liquidCache = ptr2[-1];
--						LiquidCache liquidCache2 = ptr2[1];
--						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
--						LiquidCache liquidCache4 = ptr2[rectangle.Height];
 +					else if (!ptr2->HasLiquid && !ptr2->EdgeData.HasValue) { // edge tiles don't have liquid, but shouldn't participate in gap filling
-+						ref readonly LiquidCache liquidCache = ref ptr2[-1]; //left
-+						ref readonly LiquidCache liquidCache2 = ref ptr2[1]; // right
-+						ref readonly LiquidCache liquidCache3 = ref ptr2[-rectangle.Height]; // up
-+						ref readonly LiquidCache liquidCache4 = ref ptr2[rectangle.Height]; // down
-+						// Check if there is a gap of 2 block between the liquid (left and right), get the average
- 						if (liquidCache.HasLiquid && liquidCache2.HasLiquid && liquidCache.Type == liquidCache2.Type && !liquidCache.IsSolid && !liquidCache2.IsSolid) {
- 							num2 = liquidCache.LiquidLevel + liquidCache2.LiquidLevel;
- 							ptr2->Type = liquidCache.Type;
- 						}
- 
-+						// Check if there is a vertical gap between the 2 liquid, get the average
- 						if (liquidCache3.HasLiquid && liquidCache4.HasLiquid && liquidCache3.Type == liquidCache4.Type && !liquidCache3.IsSolid && !liquidCache4.IsSolid) {
- 							num2 = Math.Max(num2, liquidCache3.LiquidLevel + liquidCache4.LiquidLevel);
- 							ptr2->Type = liquidCache3.Type;
-@@ -195,7 +_,8 @@
- 
- 				ptr2 += 4;
- 			}
--
-+			#endregion
-+			#region Handle liquidfall
- 			ptr2 = ptr;
- 			for (int m = 0; m < rectangle.Width; m++) {
- 				for (int n = 0; n < rectangle.Height - 10; n++) {
+ 						LiquidCache liquidCache = ptr2[-1];
+ 						LiquidCache liquidCache2 = ptr2[1];
+ 						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
 @@ -214,8 +_,12 @@
  							ptr2[num5].VisibleType = ptr2->Type;
  						}
@@ -267,30 +239,7 @@
  						ptr2->VisibleLiquidLevel = 1f;
  						ptr2->HasVisibleLiquid = false;
  					}
-@@ -228,7 +_,8 @@
- 
- 				ptr2 += 10;
- 			}
--
-+			#endregion
-+			#region Calculate the current frame
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			for (int num6 = 2; num6 < rectangle.Width - 2; num6++) {
-@@ -240,17 +_,17 @@
- 						ptr2->HasBottomEdge = false;
- 					}
- 					else {
--						LiquidCache liquidCache = ptr2[-1];
--						LiquidCache liquidCache2 = ptr2[1];
--						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
--						LiquidCache liquidCache4 = ptr2[rectangle.Height];
-+						ref readonly LiquidCache liquidCache = ref ptr2[-1];
-+						ref readonly LiquidCache liquidCache2 = ref ptr2[1];
-+						ref readonly LiquidCache liquidCache3 = ref ptr2[-rectangle.Height];
-+						ref readonly LiquidCache liquidCache4 = ref ptr2[rectangle.Height];
- 						float num8 = 0f;
- 						float num9 = 1f;
+@@ -249,8 +_,8 @@
  						float num10 = 0f;
  						float num11 = 1f;
  						float visibleLiquidLevel = ptr2->VisibleLiquidLevel;
@@ -310,38 +259,14 @@
  						ptr2->HasTopEdge = (!liquidCache.HasVisibleLiquid && !liquidCache.IsSolid) || num10 != 0f;
  						ptr2->HasBottomEdge = (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid) || num11 != 1f;
  						ptr2->HasLeftEdge = (!liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid) || num8 != 0f;
-@@ -289,7 +_,7 @@
+@@ -289,7 +_,6 @@
  							else
  								zero.Y += 16;
  						}
 -
-+						// Check if the top edge is off and if only either the left or right edge are exclusively on and then the y value is even
  						if (zero.Y == 16 && (ptr2->HasLeftEdge ^ ptr2->HasRightEdge) && (num7 + rectangle.Y) % 2 == 0)
  							zero.Y += 16;
  
-@@ -301,16 +_,17 @@
- 
- 				ptr2 += 4;
- 			}
--
-+			#endregion
-+			#region Smooth liquids
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			for (int num12 = 2; num12 < rectangle.Width - 2; num12++) {
- 				for (int num13 = 2; num13 < rectangle.Height - 2; num13++) {
- 					if (ptr2->HasVisibleLiquid) {
--						LiquidCache liquidCache = ptr2[-1];
--						LiquidCache liquidCache2 = ptr2[1];
--						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
--						LiquidCache liquidCache4 = ptr2[rectangle.Height];
-+						ref readonly LiquidCache liquidCache = ref ptr2[-1];
-+						ref readonly LiquidCache liquidCache2 = ref ptr2[1];
-+						ref readonly LiquidCache liquidCache3 = ref ptr2[-rectangle.Height];
-+						ref readonly LiquidCache liquidCache4 = ref ptr2[rectangle.Height];
- 						ptr2->VisibleLeftWall = ptr2->LeftWall;
- 						ptr2->VisibleRightWall = ptr2->RightWall;
- 						ptr2->VisibleTopWall = ptr2->TopWall;
 @@ -318,15 +_,28 @@
  						if (liquidCache.HasVisibleLiquid && liquidCache2.HasVisibleLiquid) {
  							if (ptr2->HasLeftEdge)
@@ -373,71 +298,6 @@
  							if (ptr2->HasBottomEdge)
  								ptr2->VisibleBottomWall = (ptr2->BottomWall * 2f + liquidCache3.BottomWall + liquidCache4.BottomWall) * 0.25f;
  						}
-@@ -337,16 +_,18 @@
- 
- 				ptr2 += 4;
- 			}
--
-+			#endregion
-+			#region Blend visible tile/wall
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			for (int num14 = 2; num14 < rectangle.Width - 2; num14++) {
- 				for (int num15 = 2; num15 < rectangle.Height - 2; num15++) {
- 					if (ptr2->HasLiquid) {
--						LiquidCache liquidCache = ptr2[-1];
--						LiquidCache liquidCache2 = ptr2[1];
--						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
--						LiquidCache liquidCache4 = ptr2[rectangle.Height];
-+						ref readonly LiquidCache liquidCache = ref ptr2[-1];
-+						ref readonly LiquidCache liquidCache2 = ref ptr2[1];
-+						ref readonly LiquidCache liquidCache3 = ref ptr2[-rectangle.Height];
-+						ref readonly LiquidCache liquidCache4 = ref ptr2[rectangle.Height];
-+						// Check if the current tile have a top edge and no bottom edge and only either the left or right edge are exclusively on
- 						if (ptr2->HasTopEdge && !ptr2->HasBottomEdge && (ptr2->HasLeftEdge ^ ptr2->HasRightEdge)) {
- 							if (ptr2->HasRightEdge) {
- 								ptr2->VisibleRightWall = liquidCache2.VisibleRightWall;
-@@ -357,6 +_,7 @@
- 								ptr2->VisibleTopWall = liquidCache4.VisibleTopWall;
- 							}
- 						}
-+						// Check if the right liquid frameoffset x is in the middle and the frame offset y is also in the middle
- 						else if (liquidCache2.FrameOffset.X == 16 && liquidCache2.FrameOffset.Y == 32) {
- 							if (ptr2->VisibleLeftWall > 0.5f) {
- 								ptr2->VisibleLeftWall = 0f;
-@@ -374,16 +_,17 @@
- 
- 				ptr2 += 4;
- 			}
--
-+			#endregion
-+			#region Adjust frame to match width/height of adjacent tiles
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			for (int num16 = 2; num16 < rectangle.Width - 2; num16++) {
- 				for (int num17 = 2; num17 < rectangle.Height - 2; num17++) {
- 					if (ptr2->HasLiquid) {
--						LiquidCache liquidCache = ptr2[-1];
--						LiquidCache liquidCache2 = ptr2[1];
--						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
--						LiquidCache liquidCache4 = ptr2[rectangle.Height];
-+						ref readonly LiquidCache liquidCache = ref ptr2[-1];
-+						ref readonly LiquidCache liquidCache2 = ref ptr2[1];
-+						ref readonly LiquidCache liquidCache3 = ref ptr2[-rectangle.Height];
-+						ref readonly LiquidCache liquidCache4 = ref ptr2[rectangle.Height];
- 						if (!ptr2->HasBottomEdge && !ptr2->HasLeftEdge && !ptr2->HasTopEdge && !ptr2->HasRightEdge) {
- 							if (liquidCache3.HasTopEdge && liquidCache.HasLeftEdge) {
- 								ptr2->FrameOffset.X = Math.Max(4, (int)(16f - liquidCache.VisibleLeftWall * 16f)) - 4;
-@@ -409,7 +_,8 @@
- 
- 				ptr2 += 4;
- 			}
--
-+			#endregion
-+			#region Create draw data
- 			ptr2 = ptr;
- 			ptr2 += num;
- 			fixed (LiquidDrawCache* ptr3 = &_drawCache[0]) {
 @@ -426,7 +_,7 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
@@ -459,13 +319,7 @@
  							}
  							else {
  								ptr4->IsVisible = false;
-@@ -461,11 +_,12 @@
- 					}
- 				}
- 			}
--
-+			#endregion
-+			#region Lava bubble dust
+@@ -465,7 +_,7 @@
  			ptr2 = ptr;
  			for (int num25 = rectangle.X; num25 < rectangle.X + rectangle.Width; num25++) {
  				for (int num26 = rectangle.Y; num26 < rectangle.Y + rectangle.Height; num26++) {
@@ -474,11 +328,9 @@
  						if (_random.Next(700) == 0)
  							Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
  
-@@ -484,7 +_,10 @@
- 					ptr2++;
+@@ -485,6 +_,8 @@
  				}
  			}
-+			#endregion
  
 +			// TML: Liquid draw caches merged, population redundant
 +			/*
