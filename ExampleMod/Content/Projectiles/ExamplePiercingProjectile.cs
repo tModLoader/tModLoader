@@ -9,6 +9,7 @@ namespace ExampleMod.Content.Projectiles
 	// The code of the item that spawns it is located at the bottom.
 
 	// NPC.immune determines if an npc can be hit by a item or projectile owned by a particular player (it is an array, each slot corresponds to different players (whoAmI))
+	// The https://terraria.wiki.gg/wiki/Invincibility_frame#Entity_invincibility wiki page explains NPC immunity in more details.
 	// NPC.immune is decremented towards 0 every update
 	// Melee items set NPC.immune to player.itemAnimation, which starts at item.useAnimation and decrements towards 0
 	// Projectiles, however, provide mechanisms for custom immunity.
@@ -23,11 +24,13 @@ namespace ExampleMod.Content.Projectiles
 	// 	Video: https://github.com/user-attachments/assets/48f1e9da-ec1b-4841-a66a-a9a0d77e90f1 Notice how Sharknado minion hits prevent Arkhalis hits for a brief moment.
 	// 4. Projectile.usesIDStaticNPCImmunity and Projectile.idStaticNPCHitCooldown: Specifies that a type of projectile has a shared immunity timer for each npc.
 	// 	Use this if you want other projectiles a chance to damage, but don't want the same projectile type to hit an npc rapidly.
-	// 	Ex: Ghastly Glaive is the only one who uses this.
+	// 	Ex: Wasps from the Wasp Gun and Nimbus Rod are some examples
 	// 5. Projectile.usesLocalNPCImmunity and Projectile.localNPCHitCooldown: Specifies the projectile manages it's own immunity timers for each npc
 	// 	Use this if you want the multiple projectiles of the same type to have a chance to attack rapidly, but don't want a single projectile to hit rapidly. A -1 value prevents the same projectile from ever hitting the npc again.
 	// 	Ex: Lightning Aura sentries use this. (localNPCHitCooldown = 3, but other code controls how fast the projectile itself hits)
 	// 		Overlapping Auras all have a chance to hit after each other even though they share the same ID.
+	//  Multiple projectile types can share usesLocalNPCImmunity behavior by calling Projectile.UseGroupStaticImmunity.
+	// 6. Projectile.usesOwnerMeleeHitCD makes the projectile set NPC immunity like a normal melee weapon attack. See ExampleSwingingEnergySwordProjectile.cs for an example of this approach.
 	// Try the above by uncommenting out the respective bits of code in the projectile below.
 
 

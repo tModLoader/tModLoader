@@ -23,6 +23,7 @@ namespace Terraria.ModLoader;
 	ImplicitUseKindFlags.InstantiatedNoFixedConstructorSignature,
 	ImplicitUseTargetFlags.WithMembers | ImplicitUseTargetFlags.WithInheritors
 )]
+[CloneByReference]
 public partial class Mod
 {
 	/// <summary>

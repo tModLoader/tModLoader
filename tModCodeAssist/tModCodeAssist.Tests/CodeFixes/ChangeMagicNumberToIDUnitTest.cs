@@ -425,4 +425,66 @@ public sealed class ChangeMagicNumberToIDUnitTest
 			Projectile.NewProjectile(null, 0f, 0f, 0f, 0f, (true ? ProjectileID.None : ProjectileID.WoodenArrowFriendly), 0, 0f, 0, 0f, 0f);
 			""");
 	}
+
+	[TestMethod]
+	public async Task Test_Params()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.GameContent.ItemDropRules;
+			using Terraria.ID;
+
+			// Expanded Form (Multiple Arguments)
+			ItemDropRule.OneFromOptions(1, [|3006|], [|3007|], [|3013|], [|3016|], [|3020|]);
+			ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 1, [|4982|], ItemID.CrystalNinjaChestplate, [|4984|]);
+			WorldGen.CountTileTypesInWorld([|7|], [|166|], [|6|], [|167|], [|9|], [|168|], [|8|], [|169|]);
+
+			// Normal Form (An Explicit Array)
+			WorldGen.CountTileTypesInWorld([[|6|], [|167|]]);
+			WorldGen.CountTileTypesInWorld(new int[] { [|9|], [|168|] });
+			""",
+			"""
+			using Terraria;
+			using Terraria.GameContent.ItemDropRules;
+			using Terraria.ID;
+
+			// Expanded Form (Multiple Arguments)
+			ItemDropRule.OneFromOptions(1, ItemID.SoulDrain, ItemID.DartPistol, ItemID.FetidBaghnakhs, ItemID.FleshKnuckles, ItemID.TendonHook);
+			ItemDropRule.FewFromOptionsNotScalingWithLuckWithX(2, 1, 1, ItemID.CrystalNinjaHelmet, ItemID.CrystalNinjaChestplate, ItemID.CrystalNinjaLeggings);
+			WorldGen.CountTileTypesInWorld(TileID.Copper, TileID.Tin, TileID.Iron, TileID.Lead, TileID.Silver, TileID.Tungsten, TileID.Gold, TileID.Platinum);
+
+			// Normal Form (An Explicit Array)
+			WorldGen.CountTileTypesInWorld([TileID.Iron, TileID.Lead]);
+			WorldGen.CountTileTypesInWorld(new int[] { TileID.Silver, TileID.Tungsten });
+			""");
+	}
+
+	[TestMethod]
+	public async Task Test_FallbackForFactory()
+	{
+		await VerifyCS.Run(
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			const int Fifteen = 15;
+			ProjectileID.Sets.Factory.CreateIntSet([[|1|], 10, [|2|], -20, [|3|], Fifteen / 2]);
+			ProjectileID.Sets.Factory.CreateIntSet(-10, [|1|], -500, [|2|], 10000, [|3|], ProjectileID.Sets.FixedDamageForRockets);
+			ItemID.Sets.Factory.CreateBoolSet([|509|], [|850|], [|851|], [|3612|]);
+			TileID.Sets.Factory.CreateBoolSet(false, [|568|], [|569|], [|570|]);
+			ItemID.Sets.Factory.CreateFloatSet(1f, [|162f|], 2f, [|801f|], 2f);
+			""",
+			"""
+			using Terraria;
+			using Terraria.ID;
+
+			const int Fifteen = 15;
+			ProjectileID.Sets.Factory.CreateIntSet([ProjectileID.WoodenArrowFriendly, 10, ProjectileID.FireArrow, -20, ProjectileID.Shuriken, Fifteen / 2]);
+			ProjectileID.Sets.Factory.CreateIntSet(-10, ProjectileID.WoodenArrowFriendly, -500, ProjectileID.FireArrow, 10000, ProjectileID.Shuriken, ProjectileID.Sets.FixedDamageForRockets);
+			ItemID.Sets.Factory.CreateBoolSet(ItemID.Wrench, ItemID.BlueWrench, ItemID.GreenWrench, ItemID.YellowWrench);
+			TileID.Sets.Factory.CreateBoolSet(false, TileID.PinkFairyJar, TileID.GreenFairyJar, TileID.BlueFairyJar);
+			ItemID.Sets.Factory.CreateFloatSet(1f, ItemID.BallOHurt, 2f, ItemID.TheMeatball, 2f);
+			""");
+	}
 }

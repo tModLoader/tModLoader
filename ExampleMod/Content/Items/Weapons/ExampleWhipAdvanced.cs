@@ -112,7 +112,7 @@ namespace ExampleMod.Content.Items.Weapons
 
 		// OnProcHit will run when TryEnableProcOnNPC is true for the NPC. See ExampleWhipProjectileAdvanced.OnHitNPC for how to apply that.
 		// Procs will be removed from the NPC once they activate.
-		public override void OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) {
+		public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit) {
 			// Display some combat text when the tag procs.
 			CombatText.NewText(optionalProjectile.Hitbox, Color.Purple, "BAM!");
 
@@ -120,6 +120,7 @@ namespace ExampleMod.Content.Items.Weapons
 			int explosionDamage = (int)(hit.Damage * ProcDamageMultiplier);
 			int explosionProj = Projectile.NewProjectile(optionalProjectile.GetSource_FromThis(), npcHit.Center, Vector2.Zero, ProjectileID.FireWhipProj, explosionDamage, 0f, optionalProjectile.owner);
 			Main.projectile[explosionProj].localNPCImmunity[npcHit.whoAmI] = -1; // This makes it so the explosion projectile can only hit the same NPC once.
+			return true;
 		}
 		public override void ModifyProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, ref NPC.HitModifiers modifiers) {
 			// This is how the Firecracker's damage scaling works.

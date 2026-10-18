@@ -12,37 +12,14 @@ namespace Terraria.ModLoader;
 /// This class represents a type of wall that can be added by a mod. Only one instance of this class will ever exist for each type of wall that is added. Any hooks that are called will be called by the instance corresponding to the wall type.
 /// <br/><br/> The <see href="https://github.com/tModLoader/tModLoader/wiki/Wall">Wall Guide</see> teaches the basics of making a modded wall.
 /// </summary>
-public abstract class ModWall : ModBlockType
+public abstract class ModWall : ModTileOrWall
 {
 	public override string LocalizationCategory => "Walls";
 
-	/// <summary>
-	/// Adds an entry to the minimap for this wall with the given color and display name. This should be called in SetDefaults.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	/// <inheritdoc/>
+	public override void AddMapEntry(Color color, LocalizedText name = null, Func<string, int, int, string> nameFunc = null)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
-	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
-	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.wallEntries.Keys.Contains(Type)) {
-				MapLoader.wallEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.wallEntries[Type].Add(entry);
-		}
+		AddMapEntryToMapLoader(MapLoader.wallEntries, color, name, nameFunc);
 	}
 
 	/// <summary>

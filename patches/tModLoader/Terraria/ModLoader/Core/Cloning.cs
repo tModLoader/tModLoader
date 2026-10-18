@@ -1,10 +1,9 @@
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Runtime.CompilerServices;
+using Terraria.Testing.Cloning;
 
 namespace Terraria.ModLoader.Core;
 
@@ -50,7 +49,6 @@ public static class Cloning
 	}
 
 	private static Dictionary<Type, TypeCloningInfo> typeInfos = new();
-	private static ConditionalWeakTable<Type, object> immutableTypes = new();
 
 	public static bool IsCloneable<T>(T t, Expression<Func<T, Delegate>> cloneMethod) => IsCloneable<T, Delegate>(t, cloneMethod);
 	public static bool IsCloneable<T, F>(T t, Expression<Func<T, F>> cloneMethod) where F : Delegate
@@ -72,7 +70,7 @@ public static class Cloning
 		if (!info.overridesClone) {
 			info.fieldsWhichMightNeedDeepCloning =
 					type.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-					.Where(f => f.DeclaringType == type && !IsCloneByReference(f))
+					.Where(f => f.DeclaringType == type && DeepCloning.NeedsFieldClone(f))
 					.ToArray();
 			info.baseTypeInfo = typeInfos.TryGetValue(type.BaseType, out var typeInfo) ? typeInfo : ComputeInfo(type.BaseType, cloneableAncestor);
 		}
@@ -81,37 +79,14 @@ public static class Cloning
 		return info;
 	}
 
-	private static bool IsCloneByReference(FieldInfo f)
-	{
-		return f.GetCustomAttribute<CloneByReference>() != null || IsCloneByReference(f.FieldType);
-	}
+	public static bool IsImmutable(Type type) => !type.IsValueType && !DeepCloning.NeedsDynamicClone(type);
 
-	// note that value typed fields could still contain references... maybe detect later
-	private static bool IsCloneByReference(Type type) => type.IsValueType || type.GetCustomAttribute<CloneByReference>() != null || IsImmutable(type);
-
-	public static bool IsImmutable(Type type)
-	{
-		if (type.IsGenericType && !type.IsGenericTypeDefinition && IsImmutable(type.GetGenericTypeDefinition()))
-			return true;
-
-		lock (immutableTypes) {
-			return immutableTypes.TryGetValue(type, out _);
-		}
-	}
-
-	public static void AddImmutableType(Type type)
-	{
-		lock (immutableTypes) {
-			immutableTypes.AddOrUpdate(type, null);
-		}
-	}
+	public static void AddImmutableType(Type type) => DeepCloning.AddImmutableType(type);
 
 	public static void WarnNotCloneable(Type type) => typeInfos[type].Warn();
 
 	static Cloning()
 	{
 		TypeCaching.OnClear += typeInfos.Clear;
-		AddImmutableType(typeof(string));
-		AddImmutableType(typeof(Asset<>));
 	}
 }

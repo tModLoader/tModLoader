@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// A class that is used to modify existing building toggles (i.e. the ruler line and mechanical ruler toggles).
 /// All vanilla toggles can be accessed using BuilderToggle.(name of item).
 /// </summary>
+[CloneByReference]
 public class GlobalBuilderToggle : ModType
 {
 	protected sealed override void Register() => BuilderToggleLoader.AddGlobalBuilderToggles(this);

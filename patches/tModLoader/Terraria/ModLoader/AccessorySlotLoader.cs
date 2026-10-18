@@ -360,7 +360,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			Player.mouseInterface = true;
 			Main.armorHide = true;
-			ItemSlot.OverrideHover(items, Math.Abs(context), slot);
+			ItemSlot.OverrideHover(items, context, slot);
 
 			if (!flag) {
 				if (Math.Abs(context) == 12) {
@@ -378,7 +378,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				}
 			}
 
-			ItemSlot.MouseHover(items, Math.Abs(context), slot);
+			// Keep modded slot contexts negative so ItemSlot.MouseHover doesn't treat them as vanilla loadout-share slots.
+			ItemSlot.MouseHover(items, context, slot);
 
 			if (context < 0) {
 				OnHover(slot, context);

@@ -1,0 +1,16 @@
+--- src/TerrariaNetCore/Terraria/GameContent/PlayerDamageTracker.cs
++++ src/tModLoader/Terraria/GameContent/PlayerDamageTracker.cs
+@@ -77,11 +_,11 @@
+ 				return ((Player)entity).name;
+ 		}
+ 
+-		if (source.SourceOtherIndex.HasValue)
++		if (source.SourceOtherIndex >= 0)
+ 			return "Other (" + source.SourceOtherIndex + ")";
+ 
+ 		if (source.CustomReason != null)
+-			return source.CustomReason;
++			return source.CustomReason.ToString();
+ 
+ 		return "Unknown";
+ 	}

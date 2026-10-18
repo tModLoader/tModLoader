@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Testing/Cloning/CloneByReference.cs
++++ src/tModLoader/Terraria/Testing/Cloning/CloneByReference.cs
+@@ -2,7 +_,10 @@
+ 
+ namespace Terraria.Testing.Cloning;
+ 
++// Merged with Terraria.ModLoader.CloneByReference
++/*
+ [AttributeUsage(AttributeTargets.Class | AttributeTargets.Property | AttributeTargets.Field)]
+ public class CloneByReference : Attribute
+ {
+ }
++*/

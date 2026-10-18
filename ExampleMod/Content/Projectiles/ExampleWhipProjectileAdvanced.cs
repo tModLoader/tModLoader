@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Projectiles
 			Player owner = Main.player[Projectile.owner];
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Without PiOver2, the rotation would be off by 90 degrees counterclockwise.
 
-			Projectile.Center = Main.GetPlayerArmPosition(Projectile, owner) + Projectile.velocity * Timer;
+			Projectile.Center = owner.GetArmPosition() + Projectile.velocity * Timer;
 			// Vanilla uses Vector2.Dot(Projectile.velocity, Vector2.UnitX) here. Dot Product returns the difference between two vectors, 0 meaning they are perpendicular.
 			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
@@ -135,7 +135,7 @@ namespace ExampleMod.Content.Projectiles
 			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
 			if (Projectile.localAI[0] == 0f) {
 				Projectile.localAI[0] = 1f;
-				Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
+				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 			}
 		}
 

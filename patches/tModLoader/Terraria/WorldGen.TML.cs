@@ -83,7 +83,7 @@ public partial class WorldGen
 	}
 
 	/// <summary>
-	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModBlockType.RandomUpdate"/> to let your infectious tiles spread around<br/>
+	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModTileOrWall.RandomUpdate"/> to let your infectious tiles spread around<br/>
 	/// Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection.
 	/// </summary>
 	/// <param name="x">X coordinate of the spreading tile</param>

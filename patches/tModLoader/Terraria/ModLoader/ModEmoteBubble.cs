@@ -29,7 +29,7 @@ public abstract class ModEmoteBubble : ModType<EmoteBubble, ModEmoteBubble>, ILo
 	public virtual string LocalizationCategory => "Emotes";
 
 	/// <summary>
-	/// This is the name that will show up as the emote command.
+	/// This is the name that will show up as the emote command. Must be lowercase.
 	/// </summary>
 	public virtual LocalizedText Command => this.GetLocalization(nameof(Command), () => Name.ToLower());
 

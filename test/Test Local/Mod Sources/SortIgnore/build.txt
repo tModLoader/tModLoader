@@ -1,0 +1,7 @@
+author = Moonlight Glint
+version = 0.1
+displayName = SortIgnore
+side = Both
+modReferences = SyncNoSyncDep
+sortIgnore = SyncNoSyncDep
+sortBefore = NoSyncMod

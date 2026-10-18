@@ -9,6 +9,9 @@ namespace ExampleMod.Content.Projectiles
 			ProjectileID.Sets.IsAGolfBall[Type] = true; // Allows the projectile to be placed on the tee.
 			ProjectileID.Sets.TrailingMode[Type] = 0; // Creates a trail behind the golf ball.
 			ProjectileID.Sets.TrailCacheLength[Type] = 20; // Sets the length of the trail.
+
+			// Despawn the projectile when right clicked in range.
+			ProjectileID.Sets.DespawnItemIcon[Type] = ModContent.ItemType<Items.ExampleGolfBall>();
 		}
 
 		public override void SetDefaults() {

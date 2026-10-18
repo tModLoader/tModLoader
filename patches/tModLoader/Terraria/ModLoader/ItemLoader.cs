@@ -1520,16 +1520,13 @@ public static class ItemLoader
 	private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 	/// <summary>
-	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+	/// Calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStack(Item destination, Item source)
 	{
-		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
-			return false;
-
 		foreach (var g in HookCanStack.Enumerate(destination)) {
 			if (!g.CanStack(destination, source))
 				return false;
@@ -1824,6 +1821,29 @@ public static class ItemLoader
 			g.VerticalWingSpeeds(item, player, ref ascentWhenFalling, ref ascentWhenRising,
 				ref maxCanAscendMultiplier, ref maxAscentMultiplier, ref constantAscend);
 		}
+	}
+
+	private delegate bool DelegateWingGlidingSpeeds(Item item, Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier, bool prevented);
+	private static HookList HookWingGlidingSpeeds = AddHook<DelegateWingGlidingSpeeds>(g => g.WingGlidingSpeeds);
+	/// <summary>
+	/// If the player is gliding using wings, this uses the result of GetWing, and calls ModItem.WingGlidingSpeeds then all GlobalItem.WingGlidingSpeeds hooks.
+	/// <para/> Return false to prevent vanilla gliding behavior.
+	/// </summary>
+	public static bool WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
+	{
+		Item item = player.equippedWings;
+		if (item == null) {
+			EquipTexture texture = EquipLoader.GetEquipTexture(EquipType.Wings, player.wingsLogic);
+			return texture?.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier) ?? true;
+		}
+
+		bool result = item.ModItem?.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier) ?? true;
+
+		foreach (GlobalItem g in HookWingGlidingSpeeds.Enumerate(item)) {
+			result &= g.WingGlidingSpeeds(item, player, ref gravityMultiplier, ref maxSpeedMultiplier, !result);
+		}
+
+		return result;
 	}
 
 	private delegate void DelegateHorizontalWingSpeeds(Item item, Player player, ref float speed, ref float acceleration);

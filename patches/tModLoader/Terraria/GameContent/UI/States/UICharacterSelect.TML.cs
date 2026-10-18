@@ -28,7 +28,7 @@ public partial class UICharacterSelect : UIState
 		_migrationPanel = new UIExpandablePanel();
 		_migrationPanel.OnExpanded += _migrationPanel_OnExpanded;
 
-		var playerMigrationPanelTitle = new UIText(Language.GetTextValue("tModLoader.MigrateIndividualPlayersHeader"));
+		var playerMigrationPanelTitle = new UIText(Language.GetText("tModLoader.MigrateIndividualPlayersHeader"));
 		playerMigrationPanelTitle.Top.Set(4, 0);
 		_migrationPanel.Append(playerMigrationPanelTitle);
 

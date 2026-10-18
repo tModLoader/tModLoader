@@ -8,6 +8,7 @@ namespace Terraria.ModLoader;
 /// <br/><br/> Custom PlayerDrawLayer can be used to add additional layers to player drawing. There are a few options for customizing player rendering without resorting to a custom PlayerDrawLayer for some specific use-cases: <see cref="ModItem.ModifyEquipTextureDraw"/> can be used to modify how an equipment texture for an item is drawn. <see cref="ModItem.ModifyItemDraw"/> can be used to modify how the held item is drawn.
 /// </summary>
 [Autoload]
+[CloneByReference]
 public abstract partial class PlayerDrawLayer : ModType
 {
 	public abstract class Transformation

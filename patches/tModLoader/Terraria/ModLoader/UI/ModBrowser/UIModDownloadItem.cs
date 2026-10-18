@@ -169,8 +169,8 @@ internal class UIModDownloadItem : UIPanel
 		Vector2 drawPos = new Vector2(innerDimensions.X + 5f + leftOffset, innerDimensions.Y + 30f);
 		spriteBatch.Draw(_dividerTexture.Value, drawPos, null, Color.White, 0f, Vector2.Zero, new Vector2((innerDimensions.Width - 10f - leftOffset) / 8f, 1f), SpriteEffects.None, 0f);
 
-		drawPos = new Vector2(innerDimensions.X + innerDimensions.Width - 125, innerDimensions.Y + 45);
-		DrawTimeText(spriteBatch, drawPos);
+		drawPos = new Vector2(innerDimensions.X + innerDimensions.Width, innerDimensions.Y + 45);
+		DrawMetadata(spriteBatch, drawPos);
 
 		if (_updateButton?.IsMouseHovering == true) {
 			tooltip = Language.GetTextValue("tModLoader.BrowserRejectWarning");
@@ -266,29 +266,104 @@ internal class UIModDownloadItem : UIPanel
 			_updateWithDepsButton.Left.Pixels -= ModIconAdjust;
 	}
 
-	private void DrawTimeText(SpriteBatch spriteBatch, Vector2 drawPos)
+	private string FormatRatingNumbers(uint number)
 	{
-		if (ModDownload.TimeStamp == DateTime.MinValue) {
+		var result = number.ToString();
+		if (number >= 1000000)
+			result = MathF.Round(number / 1000000f, 1) + Language.GetTextValue("tModLoader.MillionSuffix");
+		else if (number >= 1000)
+			result = MathF.Round(number / 1000f, 1) + Language.GetTextValue("tModLoader.ThousandSuffix");
+
+		return result;
+	}
+
+	private void DrawMetadata(SpriteBatch spriteBatch, Vector2 drawPos)
+	{
+		void DrawMetadataPanel(Vector2 position, int width)
+		{
+			spriteBatch.Draw(_innerPanelTexture.Value, position, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + 8f, position.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((width - 16f) / 8f, 1f), SpriteEffects.None, 0f);
+			spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(position.X + width - 8f, position.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height()), Color.White);
+		}
+
+		// The amount of total ratings a mod must have before its rating ratio can be displayed
+		const int ratingThreshold = 25;
+
+		var shouldDrawTime = ModDownload.TimeStamp != DateTime.MinValue;
+		var shouldDrawRating = ModDownload.Downvotes + ModDownload.Upvotes >= ratingThreshold;
+
+		if (shouldDrawTime) {
+			try {
+				const int dateWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
+				drawPos.X -= dateWidth;
+				DrawMetadataPanel(drawPos, dateWidth);
+
+				string text = TimeHelper.HumanTimeSpanString(ModDownload.TimeStamp); // get time text
+				int textWidth = (int)FontAssets.MouseText.Value.MeasureString(text).X; // measure text width
+				int diffWidth = dateWidth - textWidth; // get difference
+				var offset = new Vector2(diffWidth * 0.5f, 4);
+				Utils.DrawBorderString(spriteBatch, text, drawPos + offset, Color.White);
+			}
+			catch (Exception e) {
+				Logging.tML.Error("Problem during drawing of time text", e);
+			}
+		}
+
+		var ratingIcons = UICommon.RatingIcons.Value;
+		var ratingStar = UICommon.RatingStar.Value;
+
+		// var ratio = ModDownload.Upvotes + ModDownload.Downvotes == 0 ? 0 : MathF.Round(100 * ModDownload.Upvotes / (float)(ModDownload.Upvotes + ModDownload.Downvotes), 0); // Option for simple math
+		var ratio = MathF.Round(ModDownload.VoteScore * 100, 0); // Option to use the weighted rating used on workshop
+		var ratioText = ratio + "%";
+		var upvoteText = FormatRatingNumbers(ModDownload.Upvotes);
+		var downvoteText = FormatRatingNumbers(ModDownload.Downvotes);
+		var tooNewText = Language.GetTextValue("tModLoader.NotEnoughRatings");
+
+		var ratingOffset = new Vector2(6, 6);
+		var textOffset = new Vector2(0, -2);
+		var ratingFrame = new Rectangle(0, 0, 18, 16);
+
+		var ratioDisplayWidth = ratingIcons.Width + (int)FontAssets.MouseText.Value.MeasureString("000%").X + 8;
+		var detailedDisplayWidth = ratingIcons.Width * 2 + (int)FontAssets.MouseText.Value.MeasureString(downvoteText + upvoteText).X + 28;
+		var ratingWidth = IsMouseHovering ? detailedDisplayWidth : ratioDisplayWidth;
+
+		if (!shouldDrawRating)
+			ratingWidth = (int)FontAssets.MouseText.Value.MeasureString(tooNewText).X + 8;
+
+		drawPos.X -= ratingWidth + 4;
+		DrawMetadataPanel(drawPos, ratingWidth);
+
+		if (!shouldDrawRating) {
+			ratingOffset.X = (ratingWidth - (int)FontAssets.MouseText.Value.MeasureString(tooNewText).X) * 0.5f;
+			Utils.DrawBorderString(spriteBatch, tooNewText, drawPos + ratingOffset + textOffset, Color.White);
+
 			return;
 		}
 
-		const int baseWidth = 125; // something like 1 days ago is ~110px, XX minutes ago is ~120 px (longest)
-		spriteBatch.Draw(_innerPanelTexture.Value, drawPos, new Rectangle(0, 0, 8, _innerPanelTexture.Height()), Color.White);
-		spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(drawPos.X + 8f, drawPos.Y), new Rectangle(8, 0, 8, _innerPanelTexture.Height()), Color.White, 0f, Vector2.Zero, new Vector2((baseWidth - 16f) / 8f, 1f), SpriteEffects.None, 0f);
-		spriteBatch.Draw(_innerPanelTexture.Value, new Vector2(drawPos.X + baseWidth - 8f, drawPos.Y), new Rectangle(16, 0, 8, _innerPanelTexture.Height()), Color.White);
+		if (!IsMouseHovering) {
+			var starFrame = (int)((1f - ratio / 100f) * 4);
 
-		drawPos += new Vector2(0f, 2f);
+			ratingOffset = new Vector2(2, 2);
+			ratingFrame = new Rectangle(0, 24 * starFrame, 22, 22);
 
-		try {
-			string text = TimeHelper.HumanTimeSpanString(ModDownload.TimeStamp); // get time text
-			int textWidth = (int)FontAssets.MouseText.Value.MeasureString(text).X; // measure text width
-			int diffWidth = baseWidth - textWidth; // get difference
-			drawPos.X += diffWidth * 0.5f; // add difference as padding
-			Utils.DrawBorderString(spriteBatch, text, drawPos, Color.White);
+			textOffset.X += 0.5f * ((int)FontAssets.MouseText.Value.MeasureString("000%").X - (int)FontAssets.MouseText.Value.MeasureString(ratioText).X) - 2;
+			textOffset.Y += 4;
 		}
-		catch (Exception e) {
-			Logging.tML.Error("Problem during drawing of time text", e);
-		}
+
+		spriteBatch.Draw(IsMouseHovering ? ratingIcons : ratingStar, drawPos + ratingOffset, ratingFrame, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+		ratingOffset.X += ratingFrame.Width + 4;
+		Utils.DrawBorderString(spriteBatch, IsMouseHovering ? upvoteText : ratioText, drawPos + ratingOffset + textOffset, Color.White);
+
+		if (!IsMouseHovering)
+			return;
+
+		ratingOffset.X = ratingWidth - (int)FontAssets.MouseText.Value.MeasureString(downvoteText).X - 6;
+		Utils.DrawBorderString(spriteBatch, downvoteText, drawPos + ratingOffset + textOffset, Color.White);
+
+		ratingFrame.Y += 18;
+		ratingOffset.X -= ratingFrame.Width + 4;
+		spriteBatch.Draw(ratingIcons, drawPos + ratingOffset, ratingFrame, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 	}
 
 	public override void MouseOver(UIMouseEvent evt)

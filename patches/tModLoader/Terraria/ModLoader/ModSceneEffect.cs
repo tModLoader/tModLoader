@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// ModSceneEffect is an abstract class that your classes can derive from. It serves as a container for handling exclusive SceneEffect content such as backgrounds, music, and water styling.
 /// </summary>
+[CloneByReference]
 public abstract partial class ModSceneEffect : ModType
 {
 	public int Type { get; internal set; }

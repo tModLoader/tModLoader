@@ -6,6 +6,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class is used to facilitate easily drawing icons and other things over the map. Pylons and spawn/bed icons are examples of vanilla map layers. Use <see cref="ModSystem.PreDrawMapIconOverlay(System.Collections.Generic.IReadOnlyList{IMapLayer}, MapOverlayDrawContext)"/> to selectively hide vanilla layers if needed.
 /// </summary>
+[CloneByReference]
 public abstract class ModMapLayer : ModType, IMapLayer
 {
 	public bool Visible { get; set; } = true;

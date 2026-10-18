@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Drawing/IHorizonRenderer.cs
++++ src/tModLoader/Terraria/GameContent/Drawing/IHorizonRenderer.cs
+@@ -12,7 +_,7 @@
+ 
+ 	void CloudsStart();
+ 
+-	void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY);
++	void DrawCloud(float globalCloudAlpha, Cloud theCloud, int cloudPass, float cY, int cloudIndex);
+ 
+ 	void CloudsEnd();
+ 

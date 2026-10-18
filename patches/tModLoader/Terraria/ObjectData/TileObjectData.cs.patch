@@ -844,7 +844,7 @@
  	{
  		newAlternate.Calculate();
  		if (!newTile._hasOwnAlternates)
-@@ -3109,6 +_,11 @@
+@@ -3115,6 +_,11 @@
  		addTile(486);
  		newTile.CopyFrom(Style3x2);
  		newTile.LavaDeath = false;
@@ -856,7 +856,7 @@
  		addTile(488);
  		newTile.CopyFrom(Style3x2);
  		newTile.LavaDeath = false;
-@@ -4375,11 +_,13 @@
+@@ -4388,11 +_,13 @@
  		};
  
  		newTile.StyleHorizontal = true;
@@ -870,7 +870,7 @@
  
  		addTile(419);
  		newTile.CopyFrom(Style1x1);
-@@ -5310,7 +_,10 @@
+@@ -5323,7 +_,10 @@
  		newSubTile.AnchorBottom = new AnchorData(AnchorType.SolidTile | AnchorType.SolidWithTop | AnchorType.SolidSide, newTile.Width, 0);
  		addSubTile(2);
  		addTile(165);
@@ -881,7 +881,7 @@
  	}
  
  	public static bool CustomPlace(int type, int style)
-@@ -5401,6 +_,11 @@
+@@ -5414,6 +_,11 @@
  
  	public static int PlatformFrameWidth() => _data[19].CoordinateFullWidth;
  
@@ -893,7 +893,7 @@
  	public static TileObjectData GetTileData(int type, int style, int alternate = 0)
  	{
  		if (type < 0 || type >= _data.Count)
-@@ -5431,6 +_,10 @@
+@@ -5444,6 +_,10 @@
  		return tileObjectData;
  	}
  
@@ -904,7 +904,7 @@
  	public static bool TryGetTileBounds(int x, int y, out Rectangle bounds)
  	{
  		bounds = new Rectangle(x, y, 1, 1);
-@@ -5462,6 +_,10 @@
+@@ -5475,6 +_,10 @@
  		return true;
  	}
  
@@ -915,7 +915,7 @@
  	public static TileObjectData GetTileData(Tile getTile)
  	{
  		if (getTile == null || !getTile.active())
-@@ -5481,13 +_,18 @@
+@@ -5494,13 +_,18 @@
  		if (num3 == 0)
  			num3 = 1;
  
@@ -934,7 +934,7 @@
  		int styleLineSkip = tileObjectData.StyleLineSkip;
  		if (styleLineSkip > 1) {
  			if (tileObjectData.StyleHorizontal) {
-@@ -5499,6 +_,7 @@
+@@ -5512,6 +_,7 @@
  				num6 = num % styleLineSkip;
  			}
  		}

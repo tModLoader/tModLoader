@@ -8,16 +8,35 @@
  
  namespace Terraria.Chat.Commands;
  
-@@ -9,7 +_,8 @@
- public class EmojiCommand : IChatCommand, ICommandAliasProvider
- {
- 	public const int PlayerEmojiDuration = 360;
-+	// TML: Changed from private readonly to internal static so we can change it from LocalizationLoader
--	private readonly Dictionary<LocalizedText, int> _byName = new Dictionary<LocalizedText, int>();
-+	internal static Dictionary<LocalizedText, int> _byName = new Dictionary<LocalizedText, int>();
- 
- 	public EmojiCommand()
+@@ -19,7 +_,7 @@
+ 	public void Initialize()
  	{
+ 		_byName.Clear();
+-		for (int i = 0; i < EmoteID.Count; i++) {
++		for (int i = 0; i < EmoteBubbleLoader.EmoteBubbleCount; i++) {
+ 			LocalizedText emojiName = Lang.GetEmojiName(i);
+ 			if (emojiName != LocalizedText.Empty)
+ 				_byName[emojiName] = i;
+@@ -28,10 +_,19 @@
+ 
+ 	public void PrepareAliases(ChatCommandProcessor commandProcessor)
+ 	{
++		Initialize(); // Added by TML, also sets up _byName for modded emotes
++
+ 		for (int i = 0; i < EmoteID.Count; i++) {
+ 			string name = EmoteID.Search.GetName(i);
+ 			commandProcessor.AddAlias(Language.GetText("EmojiCommand." + name), () => string.Format("{0} {1}", Language.GetTextValue("ChatCommand.Emoji_1"), Language.GetTextValue("EmojiName." + name)));
+ 		}
++
++		// Vanilla uses 2 keys per emote, EmojiName.X for the name and EmojiCommand.X = "/{$EmojiName.X}" for the command.
++		// TML added ChatCommandProcessor.MatchCommandPrefix so ModEmoteBubble.Command can serve as both name and command
++		for (int i = EmoteID.Count; i < EmoteBubbleLoader.EmoteBubbleCount; i++) {
++			LocalizedText command = Lang.GetEmojiName(i);
++			commandProcessor.AddAlias(command, () => string.Format("{0} {1}", Language.GetTextValue("ChatCommand.Emoji_1"), command.Value));
++		}
+ 	}
+ 
+ 	public void ProcessIncomingMessage(string text, byte clientId)
 @@ -47,7 +_,7 @@
  
  		int result = -1;

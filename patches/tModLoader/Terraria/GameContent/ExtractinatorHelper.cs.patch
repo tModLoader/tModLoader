@@ -1,0 +1,71 @@
+--- src/TerrariaNetCore/Terraria/GameContent/ExtractinatorHelper.cs
++++ src/tModLoader/Terraria/GameContent/ExtractinatorHelper.cs
+@@ -1,3 +_,5 @@
++using Terraria.ID;
++
+ namespace Terraria.GameContent;
+ 
+ public class ExtractinatorHelper
+@@ -20,13 +_,19 @@
+ 				itemType = -1;
+ 				stack = 1;
+ 				return;
++			/*
+ 			case 1:
++			*/
++			case ItemID.DesertFossil:
+ 				num /= 3;
+ 				num2 *= 2;
+ 				num3 = 20;
+ 				num4 = 10;
+ 				break;
++			/*
+ 			case 2:
++			*/
++			case ItemID.OldShoe:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+@@ -34,7 +_,10 @@
+ 				num5 = 1;
+ 				num7 = -1;
+ 				break;
++			/*
+ 			case 3:
++			*/
++			case ItemID.LavaMoss:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+@@ -43,7 +_,10 @@
+ 				num7 = -1;
+ 				num6 = 1;
+ 				break;
++			/*
+ 			case 4:
++			*/
++			case ItemID.PoopBlock:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+@@ -51,14 +_,20 @@
+ 				num9 = 50;
+ 				num8 = 1;
+ 				break;
++			/*
+ 			case 5:
++			*/
++			case ItemID.Hive:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;
+ 				num7 = -1;
+ 				num11 = 1;
+ 				break;
++			/*
+ 			case 6:
++			*/
++			case ItemID.ShellPileBlock:
+ 				num = -1;
+ 				num2 = -1;
+ 				num3 = -1;

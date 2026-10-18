@@ -214,7 +214,7 @@ public static class RecipeLoader
 	/// <param name="type">Type of the ingredient.</param>
 	/// <param name="amount">Modifiable amount of the item consumed.</param>
 	/// <param name="isDecrafting">If the operation takes place during shimmer decrafting.</param>
-	public static void ConsumeIngredient(Recipe recipe, int type, ref int amount, bool isDecrafting)
+	public static void ConsumeIngredient(Recipe recipe, int type, ref int amount, bool isDecrafting = false)
 	{
 		recipe.ConsumeIngredientHooks?.Invoke(recipe, type, ref amount, isDecrafting);
 	}

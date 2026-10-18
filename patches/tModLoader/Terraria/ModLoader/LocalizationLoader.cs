@@ -21,6 +21,9 @@ public static class LocalizationLoader
 		var gameTipPrefix = $"Mods.{mod.Name}.GameTips.";
 
 		foreach (var (key, _) in LoadTranslations(mod.File, GameCulture.DefaultCulture)) {
+			if (key.Contains('$')) // Any key with a $ in it is a variant and will not be registered as a real key.
+				continue;
+
 			var text = lang.GetOrRegister(key); // adds the key but leaves it untranslated for now.
 
 			if (key.StartsWith(gameTipPrefix))
@@ -33,7 +36,7 @@ public static class LocalizationLoader
 		var lang = LanguageManager.Instance;
 		foreach (var mod in ModLoader.Mods) {
 			foreach (var (key, value) in LoadTranslations(mod.File, culture)) {
-				lang.GetText(key).SetValue(value); // can only set the value of existing keys. Cannot register new keys.
+				LanguageManager.Instance.UpdateTextValue(key, value); // can only set the value of existing keys. Cannot register new keys. (same for variants)
 			}
 		}
 	}
@@ -860,6 +863,7 @@ public static class LocalizationLoader
 	{
 		LanguageManager.Instance.UnloadModdedEntries();
 		UnloadFileWatchers();
+		Lang.ResetGlobalSubstitutions();
 	}
 
 	private static void UnloadFileWatchers()

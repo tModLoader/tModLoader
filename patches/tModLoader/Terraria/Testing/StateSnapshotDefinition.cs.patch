@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/Testing/StateSnapshotDefinition.cs
++++ src/tModLoader/Terraria/Testing/StateSnapshotDefinition.cs
+@@ -146,6 +_,10 @@
+ 		_components.Add(c);
+ 	}
+ 
++	private int _vanillaCount;
++	internal void SetVanillaComponentCount() => _vanillaCount = _components.Count;
++	internal void RemoveModdedComponents() => _components.RemoveRange(_vanillaCount, _components.Count - _vanillaCount);
++
+ 	public StateSnapshot Capture()
+ 	{
+ 		DeepCloneContext ctx = new DeepCloneContext(isBackup: true);
