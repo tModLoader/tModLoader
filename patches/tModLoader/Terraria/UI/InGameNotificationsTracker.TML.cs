@@ -22,6 +22,11 @@ partial class InGameNotificationsTracker
 		menuNotifications.Add(notification);
 	}
 
+	internal static void ClearMenuNotifications()
+	{
+		menuNotifications.Clear();
+	}
+
 	public static void DrawInMenu(SpriteBatch sb)
 	{
 		float num = Main.screenHeight - 40;

@@ -1,23 +1,23 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
 using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
-using Terraria.ModLoader.UI;
-using Terraria.UI;
-using Terraria.UI.Gamepad;
 using Terraria.Localization;
+using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.Elements;
+using Terraria.UI;
 using Terraria.UI.Chat;
+using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -545,9 +545,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	public void SetMessage(string text, Color color)
 	{
 		var notification = new ConfigNotification(text, color);
-		InGameNotificationsTracker.AddMenuNotification(notification); // TODO: test for in game too
-		// TODO: temporary, testing for comparison
-		InGameNotificationsTracker.AddMenuNotification(new InGamePopups.AchievementUnlockedPopup(Main.Achievements.GetAchievement("BENCHED")));
+		InGameNotificationsTracker.AddMenuNotification(notification);
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
@@ -579,6 +577,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
 			UICommon.TooltipMouseText(ConfigElementTooltip);
+		}
+
+		// Draw the "Menu notifications" if we are in game, since they aren't drawn otherwise
+		if (!Main.gameMenu) {
+			InGameNotificationsTracker.DrawInMenu(spriteBatch);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
@@ -639,6 +642,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			ScrollTo(scrollToOption, centerScrolledOption);
 			scrollToOption = null;
 			centerScrolledOption = false;
+		}
+
+		if (!Main.gameMenu) {
+			InGameNotificationsTracker.ClearMenuNotifications();
 		}
 	}
 
