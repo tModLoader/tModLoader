@@ -103,11 +103,6 @@ partial class TileID
 			597
 		};
 
-		/// <summary>
-		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
-		/// </summary>
-		public static bool[] WallsMergeWith = Factory.CreateBoolSet(Glass);
-
 		// Values taken from Main.SetupTileMerge
 		/// <summary>
 		/// The value a tile forces to be set for <see cref="BlockMergesWithMergeAllBlock"/> regardless of default conditions (see its documentation). null by default.

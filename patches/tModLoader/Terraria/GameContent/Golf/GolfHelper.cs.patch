@@ -1,0 +1,53 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Golf/GolfHelper.cs
++++ src/tModLoader/Terraria/GameContent/Golf/GolfHelper.cs
+@@ -5,12 +_,29 @@
+ using Terraria.GameContent.Metadata;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Physics;
+ 
+ namespace Terraria.GameContent.Golf;
+ 
+ public static class GolfHelper
+ {
++	/// <summary>
++	/// Controls the shot strength of the golf club:
++	/// <list type="bullet">
++	/// <item><term>MinimumStrength</term><description> The minimum power applied to the golf ball. </description></item>
++	/// <item><term>MaximumStrength</term><description> The maximum power applied to the golf ball. </description></item>
++	/// <item><term>RoughLandResistance</term><description> Resistance to rough landing (0 = none, 1 = full). </description></item>
++	/// </list>
++	/// <br/> Common club type references:
++	/// <list type="bullet">
++	/// <item><term>Iron</term><description> Minimum=(0.25,0.25), Maximum=(1,1), RoughLandResistance=0 </description></item>
++	/// <item><term>Putter</term><description> Minimum=(0,0), Maximum=(0.25,0.25), RoughLandResistance=0 </description></item>
++	/// <item><term>Driver</term><description> Minimum=(0.25,0.25), Maximum=(1.5,0.65), RoughLandResistance=0 </description></item>
++	/// <item><term>Wedge</term><description> Minimum=(0.25,0.25), Maximum=(0.65,1.5), RoughLandResistance=1 </description></item>
++	/// </list>
++	/// <br/> Note that all vanilla club upgrades share the same stats and are purely aesthetic.
++	/// </summary>
+ 	public struct ClubProperties
+ 	{
+ 		public readonly Vector2 MinimumStrength;
+@@ -289,7 +_,10 @@
+ 			return false;
+ 
+ 		int type = player.HeldItem.type;
++		/*
+ 		if (type == 4039 || (uint)(type - 4092) <= 2u || (uint)(type - 4587) <= 11u)
++		*/
++		if (ItemID.Sets.IsAGolfClub[type])
+ 			return true;
+ 
+ 		return false;
+@@ -321,6 +_,9 @@
+ 
+ 	public static ClubProperties GetClubProperties(short itemId)
+ 	{
++		if (ItemLoader.GetGolfClubProperties(itemId, out ClubProperties moddedProperties))
++			return moddedProperties;
++
+ 		Vector2 vector = new Vector2(0.25f, 0.25f);
+ 		switch (itemId) {
+ 			case 4039:

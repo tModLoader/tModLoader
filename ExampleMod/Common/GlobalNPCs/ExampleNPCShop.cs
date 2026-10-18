@@ -3,6 +3,7 @@ using ExampleMod.Content.Items;
 using ExampleMod.Content.Items.Ammo;
 using ExampleMod.Content.Items.Consumables;
 using ExampleMod.Content.Items.Mounts;
+using ExampleMod.Content.Items.Tools;
 using ExampleMod.Content.NPCs;
 using Terraria;
 using Terraria.ID;
@@ -44,6 +45,9 @@ namespace ExampleMod.Common.GlobalNPCs
 			}
 			else if (shop.NpcType == NPCID.Cyborg) {
 				shop.Add<ExampleRocket>(Condition.NpcIsPresent(ModContent.NPCType<ExamplePerson>()));
+			}
+			else if (shop.NpcType == NPCID.Golfer) {
+				shop.Add<ExampleGolfClub>(Condition.GolfScoreOver(250));
 			}
 
 			// Example of adding new items with complex conditions in the Merchant shop.

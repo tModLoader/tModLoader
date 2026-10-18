@@ -29,7 +29,7 @@
  		if (ActiveCulture != culture) {
  			Thread.CurrentThread.CurrentCulture = culture.CultureInfo;
  			Thread.CurrentThread.CurrentUICulture = culture.CultureInfo;
-@@ -114,6 +_,25 @@
+@@ -114,6 +_,26 @@
  		ProcessCopyCommandsInTexts();
  	}
  
@@ -47,6 +47,7 @@
 +
 +		ProcessCopyCommandsInTexts();
 +		RecalculateBoundTextValues();
++		Terraria.UI.ItemTooltip.InvalidateTooltips();
 +		ChatInitializer.PrepareAliases();
 +
 +		SystemLoader.OnLocalizationsLoaded();

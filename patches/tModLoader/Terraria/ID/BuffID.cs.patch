@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/BuffID.cs
 +++ src/tModLoader/Terraria/ID/BuffID.cs
-@@ -2,25 +_,87 @@
+@@ -2,25 +_,92 @@
  using System.Collections.Generic;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -84,6 +84,11 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] NurseCannotRemoveDebuff = Factory.CreateBoolSet(28, 34, 87, 89, 21, 86, 199, 332, 333, 334, 165, 146, 48, 158, 157, 350, 215, 147, 321, 43);
++		/// <summary>
++		/// When a buff in this set is reapplied to a player who already has the buff, the buff time is added to the remaining buff time up to the supplied cap instead of resetting back to the new buff time. This allows a buff to accumulate time with repeated applications. 
++		/// <para/> <see cref="ManaSickness"/> sets this to 600 (10 seconds) and "High Spirits" (<see cref="Kite"/>) sets to tp 43200 (12 minutes).
++		/// <para/> Defaults to 0, meaning the normal behavior of resetting time will take place.
++		/// </summary>
  		public static int[] AddBuffTimeAdditivelyToCap = Factory.CreateIntSet(0, 94, 600, 383, 43200);
 +		/// <summary>
 +		///	Allows for assigning an IBuffTextHandler to this buff ID. Used to calculate the text below the buff icon, overriding the time remaining text if that would be shown.

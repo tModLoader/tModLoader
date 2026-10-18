@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.IO;
@@ -423,5 +424,11 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	/// <inheritdoc cref="ModProjectile.EmitEnchantmentVisualsAt"/>
 	public virtual void EmitEnchantmentVisualsAt(Projectile projectile, Vector2 boxPosition, int boxWidth, int boxHeight)
 	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.DisplayDollSettings"/>
+	public virtual bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	{
+		return true;
 	}
 }

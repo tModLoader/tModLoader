@@ -90,7 +90,7 @@ namespace ExampleMod.Content.Projectiles
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			List<Vector2> list = new List<Vector2>();
-			Projectile.FillWhipControlPoints(Projectile, list);
+			Projectile.FillWhipControlPoints(Projectile, list, player);
 
 			DrawLine(list);
 

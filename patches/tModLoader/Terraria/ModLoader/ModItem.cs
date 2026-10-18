@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.RegularExpressions;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.Golf;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -362,6 +363,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <param name="itemGroup">The item group this item is being assigned to</param>
 	public virtual void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
 	{
+	}
+
+	/// <summary>
+	/// Allows you to specify the <see cref="GolfHelper.ClubProperties"/> for a custom golf club item.<br/>
+	/// This hook is only called if <see cref="ItemID.Sets.IsAGolfClub"/> is set to <see langword="true"/> for this item's type.
+	/// Return <see langword="null"/> by default, which will result in a club that can't launch a ball.<br/>
+	/// This method is not instanced.
+	/// <para/><b><see cref="GolfHelper.ClubProperties"/> documentation:</b>
+	/// <br/><inheritdoc cref="GolfHelper.ClubProperties" />
+	/// </summary>
+	public virtual GolfHelper.ClubProperties? GetGolfClubProperties()
+	{
+		return null;
 	}
 
 	/// <summary>

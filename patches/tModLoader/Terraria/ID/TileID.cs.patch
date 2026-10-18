@@ -302,7 +302,7 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
  		public static List<int> CorruptCountCollection = new List<int> {
-@@ -298,6 +_,9 @@
+@@ -298,33 +_,85 @@
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
  		public static bool[] UsesADifferentTileTypeForNPCSpawning = Factory.CreateBoolSet(false, 421, 422);
  		public static bool[] BlocksStairs = Factory.CreateBoolSet(386, 387, 54, 328, 459, 541);
@@ -312,7 +312,11 @@
  		public static bool[] NotReallySolid = Factory.CreateBoolSet(387, 388, 10);
  		public static bool[] BlocksWaterDrawingBehindSelf = Factory.CreateBoolSet(false, 54, 541, 328, 459, 470);
  		public static bool[] AllowLightInWater = Factory.CreateBoolSet(false, 54, 541, 328, 459, 748, 750);
-@@ -306,25 +_,71 @@
++		/// <summary>
++		/// Tiles that are interpreted as a wall by nearby walls during framing, causing them to frame as if merging with this adjacent tile. Prevents wall from drawing within bounds for transparent tiles.
++		/// </summary>
+ 		public static bool[] TruncatesWalls = Factory.CreateBoolSet(false, 54, 328, 459, 748);
+ 		public static bool[] FrameImportantEchoCulling = Factory.CreateBoolSet(false, 19, 436, 435, 438, 427, 439, 437, 380);
  		public static bool[] NeedsGrassFraming = Factory.CreateBoolSet(633);
  		public static int[] NeedsGrassFramingDirt = Factory.CreateIntSet(0, 633, 57);
  		public static bool[] ChecksForMerge = Factory.CreateBoolSet(0, 668, 2, 661, 60, 70, 199, 662, 109, 477, 492, 633, 747, 57, 58, 75, 76, 684, 147, 161, 164, 163, 200, 162, 189, 196, 460, 717, 718, 719, 170, 738, 224, 191, 383, 211, 225, 59, 226, 396, 397, 398, 399, 402, 400, 401, 403, 404, 234, 112, 407);

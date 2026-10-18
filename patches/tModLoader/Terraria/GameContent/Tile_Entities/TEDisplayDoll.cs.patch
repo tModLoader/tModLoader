@@ -15,6 +15,22 @@
  {
  	public struct DisplayDollPose
  	{
+@@ -70,7 +_,14 @@
+ 		RegisterUsePose(15, DisplayDollPoseID.Use1, 0.5f);
+ 	}
+ 
+-	private static void RegisterUsePose(int useStyle, DisplayDollPoseID pose, float usePercent, float? useAim = null)
++	/// <summary>
++	/// Allows registering custom use styles for mannequins to use.
++	/// </summary>
++	/// <param name="useStyle">The use style ID. Use the result from <see cref="ItemLoader.RegisterUseStyle"/></param>
++	/// <param name="pose">The pose that the mannequin is in. Typically <see cref="DisplayDollPoseID.Use1"/> through 5.</param>
++	/// <param name="usePercent">How far into the item animation will be displayed.</param>
++	/// <param name="useAim">An angle (in radians) to rotate the item.</param>
++	public static void RegisterUsePose(int useStyle, DisplayDollPoseID pose, float usePercent, float? useAim = null) // TML: Made public
+ 	{
+ 		if (!SupportedUseStylePoses.TryGetValue(useStyle, out var value)) {
+ 			value = new List<DisplayDollPose>();
 @@ -168,8 +_,8 @@
  		Item[] equip = _equip;
  		foreach (Item item in equip) {
@@ -63,6 +79,17 @@
  		WorldGen.destroyObject = true;
  		for (int k = num; k < num + 2; k++) {
  			for (int l = num2; l < num2 + 3; l++) {
+@@ -420,7 +_,10 @@
+ 				_playerRenderer.OverrideHeldProjectile = projectileDummy;
+ 				int drawLayer = projectileDummy.drawLayer;
+ 				if ((uint)drawLayer <= 3u)
++					/*
+ 					Main.instance.DrawProjDirect(projectileDummy);
++					*/
++					Main.instance.DrawProjDirect(projectileDummy, dollPlayer);
+ 			}
+ 		}
+ 
 @@ -672,6 +_,10 @@
  	public void WriteItem(int itemIndex, BinaryWriter writer, Item[] collection)
  	{
