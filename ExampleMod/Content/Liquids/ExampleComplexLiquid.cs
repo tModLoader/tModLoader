@@ -153,7 +153,7 @@ namespace ExampleMod.Content.Liquids
 
 		//Similarly to RetroDrawEffects, we use PreSlopeDraw to edit the rendering of slopes to also modify the color to be rainbow too
 		//As of oct 1st 2025, slopes are only really used for retro rendering so we only change the color simialrly to retro lighting to make slopes not look out of place
-		public override bool PreSlopeDraw(int i, int j, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors) {
+		public override bool PreSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors) {
 			SetComplexLiquidVertexColors(ref colors, 1f);
 			return true;
 		}

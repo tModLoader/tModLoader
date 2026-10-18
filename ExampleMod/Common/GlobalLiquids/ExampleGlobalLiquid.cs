@@ -3,6 +3,7 @@ using ExampleMod.Content.Liquids;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Drawing;
+using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -163,18 +164,21 @@ namespace ExampleMod.Common.GlobalLiquids
 			}
 		}
 
-
-		//Here using OnPump we make shimmer un-pump-able, returning false, skipping the liquid movement logic
+		// In this first example, we make it so that water located in the underworld cannot be pumped out of the underworld
+		// In the second example, we make it so that shimmer cannot be pumped if the moonlord was not defeated in the world
 		public override bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY) {
-			if (inY > Main.UnderworldLayer && outY < Main.UnderworldLayer) {
-				return false;
-
-			}
-
-			if (inLiquidType == LiquidID.Shimmer) {
+			// We check if the current liquid type is water and if the input is located in the underworld and the outside of the underworld
+			if (inLiquidType == LiquidID.Water && inY > Main.UnderworldLayer && outY < Main.UnderworldLayer) {
+				// If this is the case, then we cannot pump the water outside of the underworld
 				return false;
 			}
-			return true;
+
+			// We check if the current liquid type is shimmer, if it is then we can check if the moon was not defeated.
+			if (inLiquidType == LiquidID.Shimmer && !NPC.downedMoonlord) {
+				// If this is the case, then we cannot pump shimmer until the moon lord has been defeated
+				return false;
+			}
+			return base.OnPump(inLiquidType, inX, inY, outX, outY);
 		}
 
 		//Here, we make lava have no liquid movement at all

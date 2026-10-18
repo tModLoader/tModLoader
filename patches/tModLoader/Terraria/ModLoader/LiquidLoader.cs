@@ -100,7 +100,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookNPCGravityModifier, globalLiquids, (GlobalLiquid g) => g.NPCGravityModifier);
 		ModLoader.BuildGlobalHook(ref HookProjectileLiquidMovement, globalLiquids, (GlobalLiquid g) => g.ProjectileLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookCanPlayerDrown, globalLiquids, (GlobalLiquid g) => g.CanPlayerDrown);
-		ModLoader.BuildGlobalHook(ref HookPoolSizeMultiplier, globalLiquids, (GlobalLiquid g) => g.LiquidFishingPoolSizeMulitplier);
 		ModLoader.BuildGlobalHook(ref HookAllowFishingInLiquid, globalLiquids, (GlobalLiquid g) => g.AllowFishingInLiquid);
 		ModLoader.BuildGlobalHook(ref HookLiquidLightMaskMode, globalLiquids, (GlobalLiquid g) => g.LiquidLightMaskMode);
 		ModLoader.BuildGlobalHook(ref HookWaterRippleMultipler, globalLiquids, (GlobalLiquid g) => g.WaterRippleMultiplier);
@@ -220,28 +219,28 @@ public static class LiquidLoader
 	}
 
 	// TODO: Implement later
-	private delegate bool DelegatePreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
+	private delegate bool DelegatePreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePreSlopeDraw[] HookPreSlopeDraw;
-	public static bool PreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public static bool PreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 		DelegatePreSlopeDraw[] hookPreSlopeDraw = HookPreSlopeDraw;
 		for (int k = 0; k < hookPreSlopeDraw.Length; k++) {
-			if (!hookPreSlopeDraw[k](i, j, type, behindBlocks, ref drawPosition, ref liquidSize, ref colors)) {
+			if (!hookPreSlopeDraw[k](type, behindBlocks, ref drawPosition, ref liquidSize, ref colors)) {
 				return false;
 			}
 		}
-		return GetLiquid(type)?.PreSlopeDraw(i, j, behindBlocks, ref drawPosition, ref liquidSize, ref colors) ?? true;
+		return GetLiquid(type)?.PreSlopeDraw(behindBlocks, ref drawPosition, ref liquidSize, ref colors) ?? true;
 	}
 
 	// TODO: Implement later
-	private delegate void DelegatePostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
+	private delegate void DelegatePostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePostSlopeDraw[] HookPostSlopeDraw;
-	public static void PostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public static void PostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
-		GetLiquid(type)?.PostSlopeDraw(i, j, behindBlocks, ref drawPosition, ref liquidSize, ref colors);
+		GetLiquid(type)?.PostSlopeDraw(behindBlocks, ref drawPosition, ref liquidSize, ref colors);
 		DelegatePostSlopeDraw[] hookPostSlopeDraw = HookPostSlopeDraw;
 		for (int k = 0; k < hookPostSlopeDraw.Length; k++) {
-			hookPostSlopeDraw[k](i, j, type, behindBlocks, ref drawPosition, ref liquidSize, ref colors);
+			hookPostSlopeDraw[k](type, behindBlocks, ref drawPosition, ref liquidSize, ref colors);
 		}
 	}
 
@@ -534,20 +533,6 @@ public static class LiquidLoader
 		DelegateCanPlayerDrown[] hookCanPlayerDrown = HookCanPlayerDrown;
 		for (int k = 0; k < hookCanPlayerDrown.Length; k++) {
 			hookCanPlayerDrown[k](player, type, ref isDrowning);
-		}
-	}
-
-	private delegate void DelegatePoolSizeMultiplier(int type, ref float multiplier);
-	private static DelegatePoolSizeMultiplier[] HookPoolSizeMultiplier;
-	public static void LiquidFishingPoolSizeMulitplier(int type, ref float multiplier)
-	{
-		ModLiquid modLiquid = GetLiquid(type);
-		if (modLiquid != null) {
-			multiplier = (float)modLiquid.FishingPoolSizeMultiplier;
-		}
-		DelegatePoolSizeMultiplier[] hookPoolSizeMultiplier = HookPoolSizeMultiplier;
-		for (int k = 0; k < hookPoolSizeMultiplier.Length; k++) {
-			hookPoolSizeMultiplier[k](type, ref multiplier);
 		}
 	}
 

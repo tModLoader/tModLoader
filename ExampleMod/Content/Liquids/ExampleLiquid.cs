@@ -5,6 +5,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Liquid;
+using Terraria.Graphics;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,12 +27,10 @@ namespace ExampleMod.Content.Liquids
 			//This is the opacity of the liquid. How well you can see objects in the liquid.
 			//DefaultOpacity is a vanilla array containing the definitions of each liquid type's default opacity for just white and color lighting modes
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.95f;
-			LiquidfallOpacityMultiplier = 0.5f; //Here we make the liquidfalls of this liquid draw at a 0.5x multiplier, making them seem much thicker
-			//To change the old liquid rendering opacity, please see the RetroDrawEffects override.
 
 			//For the Waves Quality setting, when set to Medium, waves are set to be the same distance no matter the liquid type.
-			//To do this, the game applied a multiplier to make them all consistant between liquids. Here we set our own multiplier to make the waves the same distance.
-			WaterRippleMultiplier = 0.3f;
+			//To do this, the game applied a multiplier to make them all consistant between liquids. Here we set our own multiplier to make the waves the same distance as honey and lava.
+			LiquidRippleMultiplier = 0.3f;
 
 			//This is used to specify what dust is used when splashing in this liquid.
 			//SplashDustType is -1 normally, which prevents the liquid from doing any splash dust
@@ -57,7 +56,7 @@ namespace ExampleMod.Content.Liquids
 			NPCMovementMultiplierDefault = EntityMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
 			ProjectileMovementMultiplier = EntityMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
 
-			FishingPoolSizeMultiplier = 2f; //The multiplier used for calculating the size of a fishing pool of this liquid. Here, each liquid tile counts as 2 for every tile in a fished pool.
+			FishingPoolMinimumSize = 150; // We set the amount of tile required before it's a valid fishing pool, here we set it to 150 so it's double of what normally water would require
 
 			//For more dangerous liquids, we may want to have our liquid call On(Player/NPC/Projectile)Collision whenever an entity touches the liquid, rather than when an entity splashes in a liquid
 			//For this we use similar collision calculations as lava using this boolean.
@@ -76,6 +75,8 @@ namespace ExampleMod.Content.Liquids
 			//We can add a map entry to our liquid, by doing so we can show where our liquid is on the map.
 			//Unlike vanilla, we can also add a map entry name, which will display a name if the liquid is being selected on the map.
 			AddMapEntry(new Color(200, 200, 200), DisplayName);
+
+			VanillaFallbackOnModDeletion = (ushort)LiquidID.Water;
 
 			//Please see ExampleFishingPlayer to see modded liquid fishing pool examples
 		}
@@ -124,6 +125,10 @@ namespace ExampleMod.Content.Liquids
 		//We set this to none, this is due to the liquid emitting light, needing no special lightMaskMode for its interaction with light.
 		//LightMaskMode is how light interacts with the liquid or tile when hitting it. i.e. honey makes light slowly turn yellow when passing through
 		public override LightMaskMode LiquidLightMaskMode(int i, int j) {
+			if (j < Main.maxTilesY - 200) {
+				return LightMaskMode.Water;
+			}
+
 			return LightMaskMode.None;
 		}
 
@@ -347,6 +352,28 @@ namespace ExampleMod.Content.Liquids
 			return false; //We return false as we do not want the normal liquid movement to execute after this hook/method
 		}
 
+		// We use this hook to make so that the liquid can only be pumped up to 15 tiles away from it's original location
+		public override bool OnPump(int inX, int inY, int outX, int outY) {
+			// We start by converting our coordinates into Vector
+			Vector2 inPosition = new Vector2(inX, inY);
+			Vector2 outPosition = new Vector2(outX, outY);
+
+			// We then calculate the distance between the 2 vector
+			double distance = inPosition.Distance(outPosition);
+
+			// Then we check if the distance between them is higher than 15, if is then you can pump the liquid to that location
+			if (distance > 15.0) {
+				return true;
+			}
+
+			// Here we have another example where if the moon lord has been defeated you can move the liquid using pumps;
+			// if (NPC.downedMoonlord) {
+			//	 return true;
+			// }
+
+			// otherwise you cannot pump it at all
+			return false;
+		}
 
 
 		//The following contains all the logic for what this liquid does when being entered and exited by different entities.

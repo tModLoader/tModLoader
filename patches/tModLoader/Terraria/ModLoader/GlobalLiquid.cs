@@ -117,7 +117,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual bool PreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual bool PreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 		return true;
 	}
@@ -134,7 +134,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual void PostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual void PostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 	}
 
@@ -455,16 +455,6 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="isDrowning">The boolean flag for whether or not the player is drowning.</param>
 	public virtual void CanPlayerDrown(Player player, int type, ref bool isDrowning)
-	{
-	}
-
-	/// <summary>
-	/// The multiper responsable for the poolsize of liquid being fished in. <br/>
-	/// Honey uses this to multiply its pool size by 1.5x, this means that honey only needs a minimum of 50 tiles rather than 75 tiles of liquid.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="multiplier">The multiplier used, for most liquids this will be 1, but for honey it's 1.5.</param>
-	public virtual void LiquidFishingPoolSizeMulitplier(int type, ref float multiplier)
 	{
 	}
 

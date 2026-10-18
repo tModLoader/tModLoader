@@ -68,7 +68,15 @@ public partial class LiquidID
 		/// </summary>
 		public static bool[] DoesNotExtinguishesOnFireDebuffs = Factory.CreateBoolSet(true, Lava);
 
-		public static float[] FishingPoolSizeMultiplier = Factory.CreateFloatSet(1f, Honey, 1.5f);
+		/// <summary>
+		/// Minimum amount of block required for a liquid to make it viable for fishing
+		/// </summary>
+		public static int[] FishingPoolMinimumSize = Factory.CreateIntSet(75, Honey, 50);
+
+		/// <summary>
+		/// Multiplier for liquid ripple when an entity come in contact with a liquid
+		/// </summary>
+		public static float[] LiquidRippleMultiplier = Factory.CreateFloatSet(1f, Lava, 0.3f, Honey, 0.3f);
 
 		static Sets()
 		{

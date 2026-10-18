@@ -1717,7 +1717,7 @@
  		if (wet)
  			position += wetVelocity;
  		else
-@@ -17717,7 +_,7 @@
+@@ -17717,11 +_,17 @@
  		fisher.X = (int)(base.Center.X / 16f);
  		fisher.Y = (int)(base.Center.Y / 16f);
  		fisher.bobberType = type;
@@ -1726,6 +1726,17 @@
  		if (Main.notTheBeesWorld && Main.rand.Next(2) == 0)
  			fisher.inHoney = false;
  
++		int minimumTileCount = 75;
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++			if (fisher.inLiquid[i])
++				minimumTileCount = LiquidID.Sets.FishingPoolMinimumSize[i];
++		}
++
+-		if (fisher.waterTilesCount < 75) {
++		if (fisher.waterTilesCount < minimumTileCount) {
+ 			Main.player[owner].displayedFishingInfo = Language.GetTextValue("GameUI.NotEnoughWater");
+ 			return false;
+ 		}
 @@ -17816,6 +_,9 @@
  
  		fisher.junk = Main.rand.Next(50) > fisher.fishingLevel && Main.rand.Next(50) > fisher.fishingLevel && fisher.waterTilesCount < fisher.waterNeededToFish;
@@ -1795,7 +1806,7 @@
  		if (fisher.junk) {
  			fisher.rolledItemDrop = Main.rand.Next(2337, 2340);
  			if (Main.rand.Next(8) == 0)
-@@ -18434,30 +_,49 @@
+@@ -18434,30 +_,41 @@
  			crate = true;
  	}
  
@@ -1831,20 +1842,12 @@
  			}
  		}
 -
++		// TML: No longer required since we just check for a set amount of block
 +		/*
  		if (honey)
  			numWaters = (int)((double)numWaters * 1.5);
-+		 */
-+		float poolMultiplier = 1f;
-+		if (liquids[LiquidID.Honey]) {
-+			poolMultiplier = 1.5f;
-+		}
-+		for (int i = 0; i < liquids.Length; i++) {
-+			if (liquids[i]) {
-+				LiquidLoader.LiquidFishingPoolSizeMulitplier(i, ref poolMultiplier);
-+			}
-+		}
-+		numWaters = (int)((double)numWaters * poolMultiplier);
++
++		numWaters = (int)((double)numWaters);*/
  	}
  
  	private static void GetFishingPondWidth(int x, int y, out int minX, out int maxX)

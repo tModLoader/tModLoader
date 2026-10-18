@@ -32,6 +32,7 @@ public partial class Player
 	/// <summary>
 	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
 	/// </summary>
+	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
 	public bool oldAdjWater {
 		get => oldAdjLiquid[LiquidID.Water];
 		set => oldAdjLiquid[LiquidID.Water] = value;
@@ -39,6 +40,7 @@ public partial class Player
 	/// <summary>
 	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
 	/// </summary>
+	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
 	public bool oldAdjHoney {
 		get => oldAdjLiquid[LiquidID.Honey];
 		set => oldAdjLiquid[LiquidID.Honey] = value;
@@ -46,6 +48,7 @@ public partial class Player
 	/// <summary>
 	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
 	/// </summary>
+	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
 	public bool oldAdjLava {
 		get => oldAdjLiquid[LiquidID.Lava];
 		set => oldAdjLiquid[LiquidID.Lava] = value;
@@ -53,6 +56,7 @@ public partial class Player
 	/// <summary>
 	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
 	/// </summary>
+	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
 	public bool oldAdjShimmer {
 		get => oldAdjLiquid[LiquidID.Shimmer];
 		set => oldAdjLiquid[LiquidID.Shimmer] = value;
