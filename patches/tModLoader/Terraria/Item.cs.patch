@@ -848,7 +848,7 @@
  	public static void DropCache(IEntitySource reason, Vector2 pos, Vector2 spread, int t, bool stopCaching = true)
  	{
  		if (cachedItemSpawnsByType[t] == -1)
-@@ -300,17 +_,64 @@
+@@ -300,10 +_,30 @@
  		}
  	}
  
@@ -865,27 +865,22 @@
  	public override string ToString() => $"Name: \"{Name}\" Type: {type} Stack: {stack}";
 +
 +	/// <summary>
-+	/// Determines if this <see cref="Item"/> can receive prefixes.
++	/// Determines if this <see cref="Item"/> can receive prefixes.<br/>
++	/// Allows placement in the reforge slot.<br/>
++	/// Blocks stacking into the mouse when crafting.<br/>
++	/// Controls whether prefix rolls are attempted. The item may still be unable to roll a valid prefix.
 +	/// </summary>
-+	/// <returns>
-+	/// <see langword="true"/> if this <see cref="Item"/> is allowed to receive prefixes, <see langword="false"/> otherwise.
-+	/// </returns>
- 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
- 
-+	/* TODO: reintergrate TML rules
-+	public bool CanHavePrefixes()
-+ 	{
-+		return type != 0
-+			&& ItemID.Sets.CanGetPrefixes[type]
-+			&& (maxStack == 1 || AllowReforgeForStackableItem)
-+			&& ammo == 0
-+			&& (damage > 0 || IsAPrefixableAccessory());
-+	}
-+	*/
++	public bool CanHavePrefixes() => GetRollablePrefixes() != null
++		// Temporary support for the PrefixCategory system until we can make something better
++		|| ItemID.Sets.CanGetPrefixes[type] && ammo == 0 && damage > 0 && !consumable && GetPrefixCategories().Count > 0;
 +
++	/*
+ 	public bool CanHavePrefixes() => GetRollablePrefixes() != null;
++	*/
+ 
  	public bool Prefix(int prefixWeWant)
  	{
- 		bool rolledPrefixIsTopTier;
+@@ -311,6 +_,27 @@
  		return Prefix(prefixWeWant, out rolledPrefixIsTopTier);
  	}
  
@@ -905,26 +900,19 @@
 +	/// <item><paramref name="prefixWeWant"/> is <c>0</c></item>
 +	/// <item><see cref="CanHavePrefixes"/> returns <see langword="false"/></item>
 +	/// <item><see cref="CanApplyPrefix(int)"/> returns <see langword="false"/></item>
-+	/// <item><c><paramref name="prefixWeWant"/> == -1</c> and <c><see cref="maxStack"/> &gt; 1</c></item>
 +	/// <item><see cref="ItemLoader.PrefixChance(Item, int, UnifiedRandom)"/> returns <see langword="false"/></item>
-+	/// <item><c><paramref name="prefixWeWant"/> == -1 or -2 or -3</c> and <see cref="PrefixLoader.Roll(Item, UnifiedRandom, out int, bool)"/> returns <see langword="false"/>.</item>
++	/// <item><c><paramref name="prefixWeWant"/> == -1 or -2</c> and <see cref="PrefixLoader.Roll(Item, UnifiedRandom, out int)"/> returns <see langword="false"/>.</item>
 +	/// </list>
 +	/// Otherwise, return <see langword="true"/>.
 +	/// </returns>
  	public bool Prefix(int prefixWeWant, out bool rolledPrefixIsTopTier)
  	{
  		if (!WorldGen.isGeneratingOrLoadingWorld && Main.rand == null)
-@@ -330,7 +_,21 @@
+@@ -330,7 +_,15 @@
  		if (prefixWeWant == -2 || prefixWeWant == -1)
  			num = BestPrefixValue();
  
-+		/* TODO: CanApplyPrefix method no longer exists.
 +		if (prefixWeWant > 0 && !CanApplyPrefix(prefixWeWant))
-+			return false;
-+		*/
-+
-+		//#StackablePrefixWeapons: Stackable items will not spawn with a prefix on craft/generate. Only when deliberately reforged.
-+		if (prefixWeWant == -1 && maxStack > 1)
 +			return false;
 +
  		UnifiedRandom unifiedRandom = (WorldGen.isGeneratingOrLoadingWorld ? WorldGen.genRand : Main.rand);
@@ -936,7 +924,7 @@
  		int rolledPrefix = prefixWeWant;
  		float dmg = 1f;
  		float kb = 1f;
-@@ -345,17 +_,32 @@
+@@ -345,8 +_,12 @@
  		bool flag = true;
  		while (flag) {
  			flag = false;
@@ -949,11 +937,7 @@
  
  			if (prefixWeWant < -1)
  				rolledPrefix = -1;
- 
-+			// Faster check implementation than actually rolling.
-+			if (prefixWeWant == -3)
-+				return PrefixLoader.Roll(this, unifiedRandom, out _, justCheck: true);
-+
+@@ -354,8 +_,15 @@
  			if ((rolledPrefix == -1 || rolledPrefix == -2 || rolledPrefix == -3) && !RollAPrefix(unifiedRandom, ref rolledPrefix))
  				return false;
  
@@ -997,7 +981,7 @@
  		if ((double)num2 >= 1.2)
  			rare += 2;
  		else if ((double)num2 >= 1.05)
-@@ -392,22 +_,34 @@
+@@ -392,22 +_,37 @@
  		else if ((double)num2 <= 0.95)
  			rare--;
  
@@ -1031,6 +1015,9 @@
 +	/// <remarks>Just because a prefix can be rolled does not mean it can be applied -- use <see cref="CanApplyPrefix(int)"/> to check for that.</remarks>
  	public bool CanRollPrefix(int prefix)
  	{
++		if (!CanHavePrefixes())
++			return false;
++
 +		/*
  		int[] rollablePrefixes = GetRollablePrefixes();
  		if (rollablePrefixes == null)
@@ -1146,7 +1133,7 @@
  		return true;
 +		*/
 +
-+		return PrefixLoader.Roll(this, random, out rolledPrefix, justCheck: false);
++		return PrefixLoader.Roll(this, random, out rolledPrefix);
  	}
  
 +	/// <summary>
@@ -1830,7 +1817,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,48 @@
+@@ -48311,24 +_,47 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1853,7 +1840,6 @@
 +		ModItem = null;
 +		_globals = null;
 +		StatsModifiedBy = new();
-+		AllowReforgeForStackableItem = false;
 +		useTurnOnAnimationStart = false;
 +		attackSpeedOnlyAffectsWeaponAnimation = false;
 +		useLimitPerAnimation = null;

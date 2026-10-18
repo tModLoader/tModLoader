@@ -486,7 +486,7 @@ public static partial class Config
 		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
 		RenameStaticField("Terraria.Condition", from: "InGraveyardBiome", to: "InGraveyard");
 
-		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
+		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `Item.CanHavePrefixes()` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
 
@@ -607,6 +607,7 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifier", Removed("Set Color = Terraria.ID.Colors.PrefixGood instead"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifierBad", Removed("Set Color = Terraria.ID.Colors.PrefixBad instead"));
+		RefactorInstanceMember("Terraria.Item", "AllowReforgeForStackableItem", Removed("In 1.4.5 items with prefixes can stack"));
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 

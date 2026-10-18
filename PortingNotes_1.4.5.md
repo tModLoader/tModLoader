@@ -64,7 +64,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
   - "This is unused, replaced with this.ArmorPenetration." patch might be incorrect as well. Nearby switch table also changed a lot, might need to apply them elsewhere.
 - Vanilla CanHavePrefixes logic changed, might be able to use it rather than tml changes.
-  - #StackablePrefixWeapons needs to be searched for and removed
 - ItemSlot has new flip parameter, what is it used for? PreDrawInInventory needs flip parameter. (and itemFade parameter? And secondColor?)
 - "// Sound is played on animation start #ItemTimeOnAllClients" comments around "SoundEngine.PlaySound(item6.UseSound" in MessageBuffer's `ShotAnimationAndSound` code. ShotAnimationAndSound was renamed, we might need to verify that this is still fixed in tmod.
 - ApplyDifficultyAndPlayerScaling needs to be revisited.
@@ -108,7 +107,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
-- There are still a lot of places checking for TileID.ClosedDoor that need to be TileLoader.IsClosedDoor.
 - Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
@@ -196,6 +194,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Many of the unique vanilla hairstyles are no longer available at character creation. Set ModHair.AvailableDuringCharacterCreation to false if you wish to follow suit.
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
+  - Vanilla summon weapons can no longer roll Keen, Superior, Godly, Demonic or Zealous. To match, summon weapons no longer get PrefixCategory.AnyWeapon, so AnyWeapon ModPrefixes won't roll on them. Override ModItem.WeaponPrefix to opt back in.
 - Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
 - Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - UnifiedRandom.Next methods are no longer virtual
