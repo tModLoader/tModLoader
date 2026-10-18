@@ -243,7 +243,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
 			HAlign = 1f,
 			VAlign = 1f,
-			AutoHide = true,
 		}.WithView(100f, 1000f);
 		uiPanel.Append(scrollbar);
 		configElementList.SetScrollbar(scrollbar);
@@ -475,8 +474,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		configElementList.Recalculate();
 		configElementList.Width.Pixels = 0;
+		scrollbar.Remove();
 		if (scrollbar.CanScroll) {
 			configElementList.Width.Pixels -= 25;
+			uiPanel.Append(scrollbar);
 		}
 		configElementList.Recalculate();
 
