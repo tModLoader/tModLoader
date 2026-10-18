@@ -102,7 +102,6 @@ internal class UIModConfigList : UIState
 		modListScrollbar = new UIScrollbar {
 			Top = { Pixels = headerHeight },
 			Height = { Pixels = -headerHeight, Percent = 1f },
-			AutoHide = true,
 		};
 		modListScrollbar.SetView(100f, 1000f);
 		modList.SetScrollbar(modListScrollbar);
@@ -111,7 +110,6 @@ internal class UIModConfigList : UIState
 		configListScrollbar = new UIScrollbar {
 			Top = { Pixels = headerHeight },
 			Height = { Pixels = -headerHeight, Percent = 1f },
-			AutoHide = true,
 			HAlign = 1f,
 		};
 		configListScrollbar.SetView(100f, 1000f);
@@ -229,10 +227,12 @@ internal class UIModConfigList : UIState
 			}
 		}
 
+		modListScrollbar.Remove();
 		modList.Recalculate();
 		modList.Width.Pixels = 0;
 		if (modListScrollbar.CanScroll) {
 			modList.Width.Pixels = -25;
+			modListPanel.Append(modListScrollbar);
 		}
 		modList.Recalculate();
 
@@ -338,10 +338,12 @@ internal class UIModConfigList : UIState
 			configList.Add(configPanel);
 		}
 
+		configListScrollbar.Remove();
 		configList.Recalculate();
 		configList.Width.Pixels = 0;
 		if (configListScrollbar.CanScroll) {
 			configList.Width.Pixels = -25;
+			configListPanel.Append(configListScrollbar);
 		}
 		configList.Recalculate();
 	}
