@@ -576,7 +576,7 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
+	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. It is important to use Main.tileBatch for drawing operation here.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PreRetroDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -590,7 +590,7 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
+	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks. It is important to use Main.tileBatch for drawing operation here.<para />
 	/// This hook is not called if <see cref="PreDraw" /> returns false.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
