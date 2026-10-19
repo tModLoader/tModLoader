@@ -549,6 +549,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `TileID.Sets.Torch` -> `TileID.Sets.Torches`
 * 🤖: `TileID.Sets.Campfire` -> `TileID.Sets.Campfires`
 * 🤖: `TileID.Sets.WallsMergeWith` -> `TileID.Sets.TruncatesWalls`
+* 💀: `TileID.Sets.(Corrupt|Crimson|Hallow)` sets have had their biome spread function split out into `TileID.Sets.Spreads(Corrupt|Crimson|Hallow)` sets. If spreading is desired, use the new sets as well.
 * 🤖: `WallID.Sets.Corrupt` -> `WallID.Sets.SpreadsCorruption`
 * 🤖: `WallID.Sets.Crimson` -> `WallID.Sets.SpreadsCrimson`
 * 🤖: `WallID.Sets.Hallow` -> `WallID.Sets.SpreadsHallow`
