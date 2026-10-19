@@ -280,6 +280,7 @@ namespace ExampleMod.Content.Mounts
 			}
 		}
 
+		// A "container" for storing whether the mount is allowed to fly or not. This data is stored in the mount's _mountSpecificData upon spawning.
 		private class ExampleBeastTransformationSelectiveFlyingMountData
 		{
 			public bool allowedToFly;
@@ -353,7 +354,7 @@ namespace ExampleMod.Content.Mounts
 			Terraria.On_Player.ApplyItemPositionOffsetFromMount += On_Player_ApplyItemPositionOffsetFromMount;
 			Terraria.On_Player.GetHelmetOffsetAddonFromMount += On_Player_GetHelmetOffsetAddonFromMount;
 			Terraria.On_Player.GetBeardOffsetAddonFromMount += On_Player_GetBeardOffsetAddonFromMount;
-			// There are a few other minor things that the Velociratpor does such as an offset for the Eyebrella rain and the Solar Shield.
+			// There are a few other minor things that the Velociraptor does such as an offset for the Eyebrella rain and the Solar Shield.
 		}
 
 		// Draw the mount's arm over the items its holding.
@@ -361,7 +362,7 @@ namespace ExampleMod.Content.Mounts
 			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
 			}
-			orig(ref drawinfo);
+			orig(ref drawinfo); // Run the vanilla method.
 		}
 
 		// Make the mount handle drawing the head and the eyelid.
@@ -371,12 +372,12 @@ namespace ExampleMod.Content.Mounts
 				self.mountDrawsEyelid = true; // The mount changes how the eye lid is drawn.
 			}
 
-			orig(ref self);
+			orig(ref self); // Run the vanilla method.
 		}
 
 		// Apply the same offset for face accessories as the Velociraptor.
 		private Vector2 On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc(On_PlayerDrawLayers.orig_DrawPlayer_GetMountOffsetForFaceAcc orig, ref PlayerDrawSet drawinfo, ref bool isVelociraptor, ref bool hasRockGolemHead) {
-			Vector2 pos = orig(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead);
+			Vector2 pos = orig(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead); // Run the vanilla method and capture what it returned.
 
 			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
@@ -384,12 +385,12 @@ namespace ExampleMod.Content.Mounts
 				isVelociraptor = true;
 			}
 
-			return pos;
+			return pos; // Return the modified position.
 		}
 
 		// Change where the beard sits on the mount if the mount can wear beards.
 		private Vector2 On_Player_GetBeardOffsetAddonFromMount(On_Player.orig_GetBeardOffsetAddonFromMount orig, Player self, Vector2 beardOffset) {
-			Vector2 originalReturn = orig(self, beardOffset);
+			Vector2 originalReturn = orig(self, beardOffset); // Run the vanilla method and capture what it returned.
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				beardOffset += new Vector2(2f, 4f) * self.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
@@ -400,101 +401,24 @@ namespace ExampleMod.Content.Mounts
 				return beardOffset;
 			}
 
-			return originalReturn;
+			return originalReturn; // Return the vanilla position if it for wasn't our mount.
 		}
 
 		// Certain helmets have an additional offset to better sit on the mount's head.
 		private Vector2 On_Player_GetHelmetOffsetAddonFromMount(On_Player.orig_GetHelmetOffsetAddonFromMount orig, Player self) {
-			Vector2 originalReturn = orig(self);
-
-			Vector2 zero = Vector2.Zero;
+			Vector2 originalReturn = orig(self); // Run the vanilla method and capture what it returned.
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				switch (self.head) {
-					case 13:
-					case 15:
-					case 16:
-					case 59:
-					case 60:
-					case 63:
-					case 64:
-					case 81:
-					case 126:
-					case 231:
-					case 279:
-						zero += new Vector2(0f, -2f) * self.Directions;
-						break;
-					case 2:
-					case 5:
-					case 10:
-					case 12:
-					case 25:
-					case 84:
-					case 85:
-					case 116:
-					case 117:
-					case 138:
-					case 141:
-					case 143:
-					case 160:
-					case 178:
-					case 183:
-					case 191:
-					case 194:
-					case 197:
-					case 217:
-					case 218:
-					case 233:
-					case 245:
-					case 265:
-					case 274:
-					case 277:
-						zero += new Vector2(-2f, 0f) * self.Directions;
-						break;
-					case 163:
-					case 228:
-					case 229:
-					case 235:
-						zero += new Vector2(-2f, 2f) * self.Directions;
-						break;
-					case 222:
-					case 242:
-					case 243:
-					case 244:
-						zero += new Vector2(0f, 2f) * self.Directions;
-						break;
-					case 73:
-					case 91:
-					case 227:
-					case 280:
-						zero += new Vector2(-2f, -2f) * self.Directions;
-						break;
-					case 195:
-						zero += new Vector2(-4f, -2f) * self.Directions;
-						break;
-					case 241:
-						zero += new Vector2(-4f, -14f) * self.Directions;
-						break;
-					case 272:
-						zero += new Vector2(-4f, 4f) * self.Directions;
-						break;
-					case 203:
-						zero += new Vector2(0f, -4f) * self.Directions;
-						break;
-					case 267:
-						zero += new Vector2(-2f, -4f) * self.Directions;
-						break;
-				}
-
-				return zero;
+				// Reuse the offsets created for the Velociraptor.
+				return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[self.head] * self.Directions;
 			}
 
-			return originalReturn;
+			return originalReturn; // Return the vanilla position if it for wasn't our mount.
 		}
 
 		// Offsets items that the player is holding to match up with the mount's hand.
 		private void On_Player_ApplyItemPositionOffsetFromMount(On_Player.orig_ApplyItemPositionOffsetFromMount orig, Player self, ref Vector2 pos) {
-			orig(self, ref pos);
+			orig(self, ref pos); // Run the vanilla method.
 
 			int bodyYFrame = self.bodyFrame.Y / self.bodyFrame.Height;
 			Vector2 itemOffset = Vector2.Zero;
@@ -607,7 +531,7 @@ namespace ExampleMod.Content.Mounts
 				}
 			}
 
-			pos += itemOffset;
+			pos += itemOffset; // pos is a reference, so modifying it here will modify the value as if the vanilla method did.
 		}
 	}
 

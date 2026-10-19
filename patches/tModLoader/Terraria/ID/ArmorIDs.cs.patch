@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
-@@ -1,22 +_,52 @@
+@@ -1,23 +_,59 @@
  using System.Collections.Generic;
 +using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -55,8 +55,15 @@
 +			/// <br/> Defaults to <see langword="false"/>.
 +			/// </summary>
  			public static bool[] UseAltFaceHeadDraw = Factory.CreateBoolSet(false, 3, 4, 6, 7, 9, 17, 22, 27, 28, 31, 32, 37, 38, 39, 40, 42, 43, 45, 46, 47, 48, 49, 50, 57, 58, 61, 66, 69, 70, 72, 74, 75, 76, 77, 78, 82, 83, 86, 89, 93, 98, 101, 103, 104, 105, 107, 108, 109, 110, 111, 115, 118, 120, 122, 123, 124, 127, 128, 129, 131, 132, 134, 135, 136, 137, 142, 146, 147, 148, 149, 150, 151, 152, 153, 154, 155, 156, 157, 162, 164, 165, 168, 169, 170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 185, 186, 187, 188, 189, 192, 193, 194, 200, 201, 202, 204, 207, 208, 209, 210, 211, 213, 214, 230, 236, 237, 239, 240, 241, 251, 254, 255, 258, 260, 266, 268, 269, 270, 271, 261, 8, 12, 30, 35, 36, 73, 79, 80, 84, 85, 87, 88, 90, 91, 102, 112, 141, 160, 180, 196, 205, 257, 256, 291, 292, 283, 287);
++
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Head"/>, then the head equipment can be seen when worn and the player is transformed into the <see cref="MountID.Velociraptor"/>.
++			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/>To add an offset for a specific head equipment, see: <see cref="ArmorIDs.Head.Sets.VelociraptorMountHeadOffset"/>
++			/// </summary>
  			public static bool[] CanDrawOnVelociraptorMount = Factory.CreateBoolSet(false, 212, 241, 274, 277, 5, 278, 34, 205, 41, 42, 30, 8, 84, 79, 33, 91, 90, 99, 35, 4, 256, 257, 36, 85, 80, 1, 112, 2, 215, 201, 202, 199, 194, 206, 262, 259, 234, 226, 238, 250, 280, 232, 225, 223, 224, 219, 220, 216, 263, 273, 264, 267, 18, 19, 24, 21, 26, 25, 16, 14, 12, 275, 65, 51, 56, 40, 29, 81, 94, 95, 62, 67, 44, 68, 121, 114, 116, 113, 92, 106, 100, 96, 97, 141, 143, 145, 139, 140, 144, 126, 130, 133, 159, 158, 161, 166, 183, 181, 178, 184, 182, 13, 64, 60, 59, 73, 63, 117, 138, 160, 10, 235, 197, 195, 203, 191, 228, 233, 227, 217, 218, 245, 243, 244, 242, 231, 229, 222, 265, 272, 279, 15, 163, 288, 289, 290);
  		}
+ 
 @@ -315,17 +_,33 @@
  		public const int KazzymodusHood = 291;
  		public const int LunasHead = 292;

@@ -1631,6 +1631,16 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
+@@ -3103,6 +_,9 @@
+ 			return zero;
+ 
+ 		if (mount.Type == 54) {
++
++			return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[head] * Directions;
++
+ 			switch (head) {
+ 				case 13:
+ 				case 15:
 @@ -3218,14 +_,19 @@
  			return beardOffset;
  
