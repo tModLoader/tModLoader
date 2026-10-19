@@ -58,7 +58,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - TECritterAnchor will probably require more changes as well.
 - ItemID.BannerEffect changed, might need an example. Docs need to be updated for LinearCurve.
 - Chest.maxItems no longer const. DefaultMaxItems/AbsoluteMaxItemsWeCanEverReachInAChestForNow added. Might need to find for loops to 40 and change if we want to support this. Chest ctors changed.
-- Verify that https://github.com/tModLoader/tModLoader/issues/4383 is fixed: `if (Language.GetText("CLI.NewWorld_Command").EqualsCommand(text3))` in vanilla replaced `if (text2 == "n" || text2 == "N" || string.Equals(text2, Language.GetTextValue("CLI.NewWorld_Command"), StringComparison.CurrentCultureIgnoreCase))` fix in tmod. (New world command)
 - Main.ExecuteCommand changed, doesn't have both a lowercase and raw input string anymore. Double check how capitalization is handled now, such as in CommandLoader.HandleCommand. 
 - Main menu music logic now checks Main.titleMusicStyle and titleMusicStyleRandom, document and adjust ModMenu logic if necessary.
 - Item.armorPenetration added, should we keep tml-added ArmorPenetration property?
@@ -69,7 +68,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ApplyDifficultyAndPlayerScaling needs to be revisited.
 - WorldGen.StopWaterfallAmbienceAudio might be a better place for some existing patches. Need to verify save and quit stopping waterfall sounds properly.
 - TileLoader.DropCritterChance could be updated with LuckyClover chance. Also Lavafly/HellButterfly chance
-- OreRunner changed, new parameters should make the method more useful, need docs. Also in 1.4.4 OreRunner was missing a tileMoss check, so that might affect mods when fixed.
 - Code in Projectile claiming "// Moved to CombinedHooks.ModifyHitByProjectile" will need to be copied over again if that is still the intention. It seems that deadMansSweater is also nearby, should it also be commented?
 - Not sure about the order for "VanillaOnHitEffectsResume:" and other labels. SpawnHitVisuals method added in between existing patches.
 - CombinedHooks.CanHitNPCWithProj patches might need to be reworked, it seems like they should be able to be simplified
@@ -80,7 +78,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - DrawBlockReplacementIcon return changed from void to bool. Does that affect how the builders toggle works? Did vanilla behavior change? New state bool in logic, and DoStatefulTickSound
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
-- DrawPlayer_14_2_GlassSlipperSparkles gone?
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
 - SoundID.TML: NPCHit58, NPCDeath67, NPCDeath68, Item179-199
 - CreateTrackable now has maxInstances parameter, need to make sure they are applied to our changes.
