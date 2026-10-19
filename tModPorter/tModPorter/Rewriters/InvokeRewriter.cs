@@ -363,5 +363,17 @@ public partial class InvokeRewriter : BaseRewriter
 
 		return invoke;
 	};
+
+	public static RewriteInvoke InsertArgument(int oldArgCount, int index, string argument) => (_, invoke, _) => {
+		var args = invoke.ArgumentList.Arguments;
+		if (args.Count != oldArgCount)
+			return invoke;
+
+		var arg = ParseArgumentList($"({argument})").Arguments[0];
+		var comma = TokenSpace(SyntaxKind.CommaToken);
+		var nodes = args.GetWithSeparators();
+		nodes = index < args.Count ? nodes.InsertRange(index * 2, [arg, comma]) : nodes.AddRange([comma, arg]);
+		return invoke.WithArgumentList(invoke.ArgumentList.WithArguments(SyntaxFactory.SeparatedList<ArgumentSyntax>(nodes)));
+	};
 }
 
