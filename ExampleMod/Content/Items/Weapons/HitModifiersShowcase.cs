@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Items.Weapons
 	/// When testing this weapon the first time, it is recommended to disable other mods and to remove all damage boosting accessories, as they will complicate the math being taught. <br/>
 	/// Testing against <see cref="NPCID.BlueArmoredBonesNoPants"/> is recommended as it has high defense (50), good knockback resistance, and enough health for a few hits. Having 50 defense makes the math for defense and armor penetration easy to follow.
 	/// <br/>
-	/// The math taught in this example also assumes the player is in a normal world. <br/> 
+	/// The math taught in this example also assumes the player is in a normal world. <br/>
 	/// Use right click to switch modes.<br/>
 	/// This example is purely for demonstration purposes only, it will not work in multiplayer. This should also not be considered correct code for a working dual-use weapon. <br/>
 	/// </summary>
@@ -80,7 +80,7 @@ namespace ExampleMod.Content.Items.Weapons
 					mode = 0;
 				}
 				Main.NewText(SwitchingText.Format(mode, GetMessageForMode()));
-				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync. 
+				// This line will trigger NetSend to be called at the end of this game update, allowing the changes to useStyle to be in sync.
 				Item.NetStateChanged();
 			}
 			else {
