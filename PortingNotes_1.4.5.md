@@ -78,8 +78,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
 - There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
-- SoundID.TML: NPCHit58, NPCDeath67, NPCDeath68, Item179-199
-- CreateTrackable now has maxInstances parameter, need to make sure they are applied to our changes.
 - Item.IsTheSameAs removed
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
 - `//TML: Eventide and nightglow handled by Item.useLimitPerAnimation.` comment now commenting out item 5669. Might need to make changes to that item similar to 4956
@@ -101,7 +99,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
-- Item192 uses Projectile.kiteSoundPitch. How do we do that?
 - New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
 - TileSnapshot will need more thought to restore functionality. Commented out erroring code for now.
