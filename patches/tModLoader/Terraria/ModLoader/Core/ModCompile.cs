@@ -335,6 +335,7 @@ $@"<Project ToolsVersion=""14.0"" xmlns=""http://schemas.microsoft.com/developer
 
 				using var modIconMemoryStream = new MemoryStream();
 				src.CopyTo(modIconMemoryStream);
+				src.Position = 0;
 				var modIconBytes = (ReadOnlySpan<byte>)modIconMemoryStream.GetBuffer();
 
 				if (modIconBytes.SequenceEqual(defaultIconBytes)) {
