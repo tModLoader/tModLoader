@@ -27,6 +27,9 @@ public static class ConfigManager
 
 	// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 	private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
+	// This copy of configs stores the default values of configs. It is used to detect if a config has default values set.
+	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
+	private static readonly IDictionary<Mod, List<ModConfig>> defaultValueConfigs = new Dictionary<Mod, List<ModConfig>>();
 
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
@@ -67,6 +70,14 @@ public static class ConfigManager
 
 	internal static void Add(ModConfig config)
 	{
+		// Maintain list of default value configs
+		if (!defaultValueConfigs.TryGetValue(config.Mod, out var defaultValueConfigList))
+			defaultValueConfigs[config.Mod] = defaultValueConfigList = new List<ModConfig>();
+
+		var defaultValueConfig = GeneratePopulatedClone(config);
+		Reset(defaultValueConfig);
+		defaultValueConfigList.Add(defaultValueConfig);
+
 		Load(config);
 
 		if (!Configs.TryGetValue(config.Mod, out var configList))
@@ -307,6 +318,14 @@ public static class ConfigManager
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
 	}
 
+	internal static ModConfig GetDefaultValueConfig(Mod mod, string config)
+	{
+		if (defaultValueConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
+			return configs.Single(x => x.Name == config);
+		}
+		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+	}
+
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -425,10 +444,15 @@ public static class ConfigManager
 	/// </summary>
 	public static ModConfig GeneratePopulatedClone(ModConfig original)
 	{
-		string json = JsonConvert.SerializeObject(original, ConfigManager.serializerSettings);
 		ModConfig properClone = original.Clone();
-		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
+		RevertConfigChanges(original, properClone);
 		return properClone;
+	}
+
+	internal static void RevertConfigChanges(ModConfig originalConfig, ModConfig pendingConfig)
+	{
+		string json = JsonConvert.SerializeObject(originalConfig, serializerSettings);
+		JsonConvert.PopulateObject(json, pendingConfig, serializerSettings);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
@@ -492,6 +516,14 @@ public static class ConfigManager
 			hasNextB = enumeratorB.MoveNext();
 		}
 		return !hasNextA && !hasNextB;
+	}
+
+	public static bool AreConfigsEqual(ModConfig a, ModConfig b)
+	{
+		if (a.GetType() != b.GetType())
+			return false;
+
+		return JsonConvert.SerializeObject(a, serializerSettingsCompact) == JsonConvert.SerializeObject(b, serializerSettingsCompact);
 	}
 
 	internal static string FormatTextAttribute(LocalizedText localizedText, object[]? args)
