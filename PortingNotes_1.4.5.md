@@ -99,7 +99,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
     - In theory it can be restored, since the `_pendingCrafts` queue remains on the client, and changes to `Main.mouseItem` are forbidden while a craft is pending. Documentation needs to note that the craft could be refunded though, so we likely need `OnCraft` hoook to be in `CraftItem_GrantItem`. We could amend the response packet from the server to send the consumed items, at the cost of quite some bandwidth when rapid crafting
 - ItemSlot flow changed a lot. AccCheck no longer exists, replaced by CanEquipAccessoryInSlot?
 - DyeSwap/ModSlotDyeSwap needs new approach
-- New AmmoID.Sets.IsSpecialist doesn't contain Sand anymore. Is that expected?
 - Everything in NPCSpawnHelper will need to be checked against any 1.4.5 changes, as well as any new conditions that are still missing.
 - TileSnapshot will need more thought to restore functionality. Commented out erroring code for now.
 - Vanilla now has a NativeLibraries class, conflicting with our own.

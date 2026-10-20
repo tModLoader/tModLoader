@@ -22,7 +22,7 @@
  		public static Dictionary<int, Dictionary<int, int>> SpecificLauncherAmmoProjectileMatches = new Dictionary<int, Dictionary<int, int>> {
  			{
  				759,
-@@ -94,8 +_,20 @@
+@@ -94,8 +_,21 @@
  				}
  			}
  		};
@@ -38,7 +38,8 @@
  		public static bool[] IsBullet = Factory.CreateBoolSet(Bullet, CandyCorn);
 +		/// <summary>
 +		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>), then items of that type are counted as specialist ammo for the purposes of <see cref="Player.specialistDamage"/>.
-+		/// <br/> Defaults to <see langword="false"/>.
++		/// <para/> See also <see cref="ItemID.Sets.IsRangedSpecialistWeapon"/>.
++		/// <para/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] IsSpecialist = Factory.CreateBoolSet(Rocket, StyngerBolt, JackOLantern, NailFriendly, Coin, Flare, Dart, Snowball, FallenStar, Gel);
  	}
