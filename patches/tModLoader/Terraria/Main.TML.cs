@@ -428,7 +428,7 @@ public partial class Main
 			}
 
 
-			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + drawParams.Frame.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
 				float colorByte = (float)mouseTextColor / 255f;
