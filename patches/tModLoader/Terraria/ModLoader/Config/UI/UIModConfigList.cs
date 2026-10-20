@@ -243,9 +243,7 @@ internal class UIModConfigList : UIState
 		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
-		// Have to sort by display name because normally configs are sorted by internal names
-		// TODO: Support sort by attribute or some other custom ordering then replicate logic in UIModConfig.SetMod too
-		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
+		var sortedConfigs = ConfigManager.SortConfigsForUI(configs);
 
 		foreach (var config in sortedConfigs) {
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {

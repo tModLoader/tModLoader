@@ -711,3 +711,5 @@ ModConfigShowcaseAcceptClientChanges: {
 		Tooltip: ""
 	}
 }
+
+ModConfigShowcaseSortOrder.DisplayName: ModConfig Showcase: Sort Order
