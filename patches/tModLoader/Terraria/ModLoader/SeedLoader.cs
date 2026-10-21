@@ -259,7 +259,6 @@ public static class SeedLoader
 	{
 		int seedNum = WorldFileData.TranslateSeed(seed);
 		string seedText = Regex.Replace(seed.ToLower(), "[^a-z0-9]+", "");
-		bool enabledASeed = false;
 		foreach (ModSpecialSeed seedCandidate in specialSeeds) {
 			//We reuse the instance created for WorldGenerationOption instead of making a new one
 			int[] candidateSeedValues = seedCandidate.UIOption.SpecialSeedValues;

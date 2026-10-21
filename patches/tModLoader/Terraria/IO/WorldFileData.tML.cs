@@ -25,7 +25,7 @@ public partial class WorldFileData
 	/// </summary>
 	public bool WorldGenModsRecorded => modVersionsDuringWorldGen != null;
 
-	internal IList<string> ModSeeds;
+	internal List<string> ModSeeds = new List<string>();
 
 	internal Dictionary<string, TagCompound> ModHeaders { get; set; } = new Dictionary<string, TagCompound>();
 

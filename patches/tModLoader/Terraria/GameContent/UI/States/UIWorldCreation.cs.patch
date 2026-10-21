@@ -26,7 +26,7 @@
  	{
  		ResetSpecialSeedRing();
 -		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this);
-+		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, true);
++		UIWorldCreationAdvanced uIWorldCreationAdvanced = new UIWorldCreationAdvanced(this, allowScrolling: true); //allowScrolling set to true by TML to allow for the menu to be navigable as added seeds exceed the menu height.
  		SetGoBackTarget(uIWorldCreationAdvanced);
  		Main.MenuUI.SetState(uIWorldCreationAdvanced);
  	}
@@ -63,19 +63,18 @@
  		Array.Clear(oldTangent, 0, oldTangent.Length);
  	}
  
-+	// Added by TML. Used by UIWorldCreationAdvanced.
-+	internal bool RecalculateSpecialSeedRing { get; set; }
++	// Added by TML. Used to determine when to recalculate the special seed ring.
++	private Rectangle oldButtonDimensions;
 +
  	public void DrawSpecialSeedRingCallback(UIElement element, SpriteBatch spriteBatch)
  	{
  		if (!HasEnteredSpecialSeed)
-@@ -992,7 +_,8 @@
+@@ -992,7 +_,7 @@
  
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, Main.UIScaleMatrix);
 -		if (oldPos[0] == Vector2.Zero) {
-+		if (oldPos[0] == Vector2.Zero || RecalculateSpecialSeedRing) {
-+			RecalculateSpecialSeedRing = false;
++		if (oldPos[0] == Vector2.Zero || element.GetDimensions().ToRectangle() != oldButtonDimensions) {
  			for (int i = 0; i < 61; i++) {
  				UpdateSpecialSeedRing(element);
  			}
@@ -88,3 +87,11 @@
  	}
  
  	public void DrawSpecialSeedRingCallbackWithoutCondition(UIElement element, SpriteBatch spriteBatch)
+@@ -1038,6 +_,7 @@
+ 			dimensions = element.GetDimensions();
+ 
+ 		Rectangle rectangle = dimensions.ToRectangle();
++		oldButtonDimensions = rectangle;
+ 		rectangle.Inflate(-1, -1);
+ 		int num = rectangle.Width * 2 + rectangle.Height * 2;
+ 		float num2 = (float)num / 60f;

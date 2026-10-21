@@ -830,7 +830,7 @@ internal static class WorldIO
 	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
 	{
 		LoadModHeaders(data, tag);
-		LoadModSeedHeader(data, tag.GetList<string>("modSpecialSeeds"));
+		LoadModSeedHeader(data, tag.GetList<string>("modSpecialSeeds").ToList());
 		LoadUsedMods(data, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(data, tag.GetString("usedModPack"));
 		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
@@ -858,7 +858,7 @@ internal static class WorldIO
 		}
 	}
 
-	private static void LoadModSeedHeader(WorldFileData data, IList<string> list)
+	private static void LoadModSeedHeader(WorldFileData data, List<string> list)
 	{
 		data.ModSeeds = list;
 	}

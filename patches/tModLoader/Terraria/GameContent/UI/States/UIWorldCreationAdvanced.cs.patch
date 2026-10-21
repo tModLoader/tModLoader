@@ -21,17 +21,16 @@
  	public UIWorldCreationAdvanced(UIWorldCreation state, bool allowScrolling = false)
  	{
  		_creationState = state;
-@@ -70,7 +_,9 @@
+@@ -70,7 +_,7 @@
  			VAlign = 0f
  		};
  
-+		/*
- 		if (!_allowScrolling)
-+		*/
+-		if (!_allowScrolling)
++		// if (!_allowScrolling) Maintain vanilla height so that the special seeds menu doesn't use too much empty menu space.
  			uIElement.MaxHeight = StyleDimension.FromPixels(400f);
  
  		uIElement.SetPadding(0f);
-@@ -132,8 +_,11 @@
+@@ -132,7 +_,8 @@
  		UIScrollbar uIScrollbar = new UIScrollbar {
  			Height = StyleDimension.FromPixelsAndPercent(-138 - num * 2, 1f),
  			Top = StyleDimension.FromPixels(44 + num),
@@ -39,11 +38,8 @@
 +			HAlign = 1f,
 +			AutoHide = true
  		};
-+		uIScrollbar.OnScroll += () => _creationState.RecalculateSpecialSeedRing = true;
-+
  
  		uIList.SetScrollbar(uIScrollbar);
- 		infoContainer.Append(uIList);
 @@ -196,7 +_,7 @@
  		GroupOptionButton<AWorldGenerationOption>[] array = (_seedButtons = PrepareSeedButtons());
  		_seedButtonRegion = new UIElement {

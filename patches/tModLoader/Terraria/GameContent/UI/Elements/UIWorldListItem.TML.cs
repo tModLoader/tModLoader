@@ -193,7 +193,7 @@ public partial class UIWorldListItem : AWorldListItem
 			return;
 		}
 		Rectangle frame = Rectangle.Empty;
-		_moddedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.HasCorruption, ref frame);
+		_moddedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.IsHardMode, ref frame);
 		if (frame != Rectangle.Empty) {
 			worldIcon.Frame = frame;
 		}
