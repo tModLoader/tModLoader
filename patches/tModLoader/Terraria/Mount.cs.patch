@@ -318,6 +318,26 @@
  
  		return num;
  	}
+@@ -2660,6 +_,10 @@
+ 		if (!_active)
+ 			return false;
+ 
++		bool? returnValue = MountLoader.CanFly(this, mountedPlayer);
++		if (returnValue is not null)
++			return returnValue.Value;
++
+ 		if (_type == 54 && ((SelectiveFlyingMountData)_mountSpecificData).allowedToFly)
+ 			return true;
+ 
+@@ -2760,6 +_,8 @@
+ 		if (!_active)
+ 			return;
+ 
++		MountLoader.UpdateAfterEquips(this, mountedPlayer);
++
+ 		if (_type == 54) {
+ 			bool flag = mountedPlayer.wingsLogic > 0;
+ 			((SelectiveFlyingMountData)_mountSpecificData).allowedToFly = flag;
 @@ -3014,7 +_,10 @@
  						Vector2 vector = mountedPlayer.Center + new Vector2(mountedPlayer.width * -mountedPlayer.direction, 26f);
  						Vector2 vector2 = new Vector2(0f, -4f).RotatedByRandom(0.10000000149011612);
@@ -340,6 +360,20 @@
  				}
  				break;
  			case 8:
+@@ -3236,10 +_,13 @@
+ 
+ 	private bool DoesHoverIgnoresFatigue()
+ 	{
++		return MountID.Sets.HoverIgnoresFatigue[_type];
++		/*
+ 		if (_type != 7 && _type != 8 && _type != 12 && _type != 23 && _type != 44 && _type != 49 && _type != 56)
+ 			return _type == 61;
+ 
+ 		return true;
++		*/
+ 	}
+ 
+ 	private float GetWitchBroomTrinketRotation(Player player)
 @@ -3260,6 +_,9 @@
  
  	public void UpdateFrame(Player mountedPlayer, int state, Vector2 velocity)
@@ -397,6 +431,16 @@
  				}
  				if (mountedPlayer.statLife <= mountedPlayer.statLifeMax2 / 2)
  					mountedPlayer.MountFishronSpecialCounter = 60f;
+@@ -4690,6 +_,9 @@
+ 
+ 		if (_type == 54)
+ 			_flyTime = mountedPlayer.wingTimeMax;
++
++		if (_active)
++			MountLoader.ResetFlightTime(this, mountedPlayer, ref _flyTime);
+ 	}
+ 
+ 	public void CheckMountBuff(Player mountedPlayer)
 @@ -4747,6 +_,9 @@
  	public bool AimAbility(Player mountedPlayer, Vector2 mousePosition)
  	{
