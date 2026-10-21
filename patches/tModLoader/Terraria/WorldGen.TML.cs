@@ -1,11 +1,12 @@
-using MonoMod.Cil;
+using System;
 using System.Collections.Generic;
+using MonoMod.Cil;
+using Terraria.Audio;
 using Terraria.GameContent.Generation;
-using Terraria.WorldBuilding;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ID;
-using System;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 
@@ -136,5 +137,51 @@ public partial class WorldGen
 		tile2.TileColor = tileTileColor;
 		tile2.IsTileFullbright = tileIsTileFullbright;
 		tile2.IsTileInvisible = tileIsTileInvisible;
+	}
+
+	/// <summary>
+	/// Removed method in 1.4.5, reintroduced for modded liquid purpose
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="liquidType"></param>
+	/// <returns></returns>
+	public static bool WouldTileReplacementBeBlockedByLiquid(int x, int y, int liquidType)
+	{
+		if ((Main.tile[x - 1, y].LiquidAmount <= 0 || Main.tile[x - 1, y].LiquidType != liquidType) && (Main.tile[x + 1, y].LiquidAmount <= 0 || Main.tile[x + 1, y].LiquidType != liquidType)) {
+			if (Main.tile[x, y - 1].LiquidAmount > 0) {
+				return Main.tile[x, y - 1].LiquidType == liquidType;
+			}
+			return false;
+		}
+		return true;
+	}
+
+	/// <summary>
+	/// Method for when a liquid merge happen such water + lava = obsidian.
+	/// </summary>
+	/// <param name="x"></param>
+	/// <param name="y"></param>
+	/// <param name="liquidMergeType"></param>
+	/// <param name="adjacentLiquidType"></param>
+	/// <param name="count"></param>
+	public static void PlayLiquidChangeSound(int x, int y, int liquidMergeType, int adjacentLiquidType, int count = 1)
+	{
+		SoundStyle? collisionSound = SoundID.LiquidsHoneyWater;
+
+		if ((liquidMergeType == LiquidID.Water && adjacentLiquidType == LiquidID.Lava) || (liquidMergeType == LiquidID.Lava && adjacentLiquidType == LiquidID.Water))
+			collisionSound = SoundID.LiquidsWaterLava;
+		else if ((liquidMergeType == LiquidID.Water && adjacentLiquidType == LiquidID.Honey) || (liquidMergeType == LiquidID.Honey && adjacentLiquidType == LiquidID.Water))
+			collisionSound = SoundID.LiquidsHoneyWater;
+		else if ((liquidMergeType == LiquidID.Lava && adjacentLiquidType == LiquidID.Honey) || (liquidMergeType == LiquidID.Honey && adjacentLiquidType == LiquidID.Lava))
+			collisionSound = SoundID.LiquidsHoneyLava;
+		else if ((liquidMergeType == LiquidID.Shimmer || adjacentLiquidType == LiquidID.Shimmer) && liquidMergeType < LiquidID.Count && adjacentLiquidType < LiquidID.Count)
+			collisionSound = SoundID.ShimmerWeak1;
+
+		LiquidLoader.LiquidMergeSounds(x, y, liquidMergeType, adjacentLiquidType, ref collisionSound);
+
+		if (collisionSound != null) {
+			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);
+		}
 	}
 }
