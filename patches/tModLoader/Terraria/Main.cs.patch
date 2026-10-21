@@ -931,7 +931,7 @@
  	public static int TileInteractionHY = -1;
 +	/// <summary>
 +	/// The mouse cursor to display, a <see cref="ID.CursorOverrideID"/> value, overriding the normal mouse cursor. Affects visuals and inventory item slot click behavior.
-+	/// <para/> Typically set during code handling <see cref="ItemSlot"/>s. Can be set during <see cref="ModPlayer.HoverSlot(Item[], int, int)"/> and checked against during <see cref="ModPlayer.ShiftClickSlot(Item[], int, int)"/>. 
++	/// <para/> Typically set during code handling <see cref="ItemSlot"/>s. Can be set during <see cref="ModPlayer.HoverSlot(Item[], int, int)"/> and checked against during <see cref="ModPlayer.ShiftClickSlot(Item[], int, int)"/>.
 +	/// <para/> Defaults to -1.
 +	/// </summary>
  	public static int cursorOverride = -1;
@@ -1637,6 +1637,15 @@
  					string processedSeed;
  					List<string> secretSeedTexts;
  					while (flag2) {
+@@ -4828,6 +_,8 @@
+ 					}
+ 					else {
+ 						AWorldGenerationOption optionFromSeedText = WorldGenerationOptions.GetOptionFromSeedText(text5);
++						if (optionFromSeedText == null)
++							optionFromSeedText = SeedLoader.GetOptionFromSeedText(text5);
+ 						WorldGenerationOptions.SelectOption(optionFromSeedText);
+ 						if (optionFromSeedText != null || string.IsNullOrWhiteSpace(text5))
+ 							ActiveWorldFileData.SetSeedToRandomWithCurrentEvents();
 @@ -4868,6 +_,22 @@
  
  					continue;
@@ -1780,7 +1789,7 @@
  		}
  
  		if (Netplay.SaveOnServerExit) {
-@@ -5072,6 +_,8 @@
+@@ -5072,12 +_,14 @@
  			WorldFile.SaveWorld();
  		}
  
@@ -1789,6 +1798,13 @@
  		YouCanSleepNow();
  	}
  
+ 	private static void DedServ_SeedFlagsMenu()
+ 	{
+-		List<AWorldGenerationOption> list = WorldGenerationOptions.Options.ToList();
++		List<AWorldGenerationOption> list = SeedLoader.AddModSeedOptions(WorldGenerationOptions.Options);
+ 		foreach (AWorldGenerationOption item in list) {
+ 			item.Load();
+ 		}
 @@ -5124,6 +_,8 @@
  		Console.WriteLine();
  		if (WorldFile.LastThrownLoadException != null)
@@ -2556,7 +2572,7 @@
  							break;
  					}
 -
-+				*/ 
++				*/
 +				// TODO: Not really sure what these patches are trying to do.
 +				else {
 +					newMusic = MenuLoader.CurrentMenu.Music;
@@ -3011,7 +3027,7 @@
  		}
  
  		CurrentFrameFlags.AnyActiveBossNPC = anyActiveBossNPC;
-+		
++
 +		SystemLoader.PostUpdateNPCs();
 +
  		TimeLogger.UpdateNPCs.AddTime(fromTimestamp);
@@ -3020,7 +3036,7 @@
  	private void UpdateWorld_Gores()
  	{
 +		SystemLoader.PreUpdateGores();
-+		
++
  		if (netMode == 2)
  			return;
  
@@ -4038,7 +4054,7 @@
 +				toolTipNames[numLines] = "PrefixAccMeleeSpeed";
  				numLines++;
  			}
-+			
++
 +			prefixlineIndex = numLines;
  		}
  
@@ -5294,9 +5310,9 @@
 +
  		reforgeItem.ResetPrefix();
  		reforgeItem.Prefix(-2, out var rolledPrefixIsTopTier);
-+		
++
 +		ItemLoader.PostReforge(reforgeItem);
-+		
++
  		PopupText.NewText(rolledPrefixIsTopTier ? PopupTextContext.ItemReforge_Best : PopupTextContext.ItemReforge, reforgeItem, LocalPlayer.Center, reforgeItem.stack, noStack: true);
  		if (rolledPrefixIsTopTier) {
  			SoundEngine.PlaySound(SoundID.BestReforge);
@@ -6488,6 +6504,14 @@
  	}
  
  	public static void ClearWorldSeedFlags()
+@@ -46463,6 +_,7 @@
+ 		dualDungeonsSeed = false;
+ 		moreLightningSeed = false;
+ 		noLightningSeed = false;
++		SeedLoader.DisableAll();
+ 	}
+ 
+ 	private static void PostDrawMenu(Microsoft.Xna.Framework.Point screenSizeCache, Microsoft.Xna.Framework.Point screenSizeCacheAfterScaling)
 @@ -46494,11 +_,18 @@
  
  	private static bool IsBorderlessDisplayAvailable()

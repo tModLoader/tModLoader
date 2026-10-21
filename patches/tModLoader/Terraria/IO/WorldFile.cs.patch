@@ -53,6 +53,27 @@
  			}
  		}
  	}
+@@ -532,12 +_,20 @@
+ 			else {
+ 				text = Utils.TrimUserString(text, WorldFileData.MAX_USER_SEED_TEXT_LENGTH);
+ 				AWorldGenerationOption optionFromSeedText = WorldGenerationOptions.GetOptionFromSeedText(text);
++				if (optionFromSeedText == null) {
++					optionFromSeedText = SeedLoader.GetOptionFromSeedText(text);
++				}
+ 				WorldGenerationOptions.SelectOption(optionFromSeedText);
+ 				foreach (AWorldGenerationOption option in WorldGenerationOptions.Options) {
+ 					if (option.AutoGenEnabled)
+ 						option.Enabled = true;
+ 				}
+ 
++				foreach (ModSpecialSeed specialSeed in SeedLoader.specialSeeds) {
++					if (specialSeed.UIOption.AutoGenEnabled)
++						specialSeed.UIOption.Enabled = true;
++				}
++
+ 				if (optionFromSeedText != null || string.IsNullOrWhiteSpace(text))
+ 					Main.ActiveWorldFileData.SetSeedToRandomWithCurrentEvents();
+ 				else
 @@ -564,12 +_,17 @@
  
  				binaryReader.Close();

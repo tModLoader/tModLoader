@@ -1,5 +1,13 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/States/UIWorldLoad.cs
 +++ src/tModLoader/Terraria/GameContent/UI/States/UIWorldLoad.cs
+@@ -6,6 +_,7 @@
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.GameInput;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Testing;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
 @@ -18,6 +_,7 @@
  	private UIGenProgressBar _progressBar = new UIGenProgressBar();
  	private UIHeader _progressMessage = new UIHeader();
@@ -8,15 +16,28 @@
  
  	public UIWorldLoad()
  	{
-@@ -77,6 +_,11 @@
- 			text = _progress.Message;
- 			if (WorldGenerator.CurrentController.QueuedAbort)
+@@ -79,6 +_,11 @@
  				text = Language.GetTextValue("UI.Canceling");
-+		}
-+
+ 		}
+ 
 +		if (text != lastLoggedProgressMessage) {
 +			ModLoader.Logging.tML.Info(text + "...");
 +			lastLoggedProgressMessage = text;
- 		}
- 
++		}
++
  		_progressBar.SetProgress(overallProgress, currentProgress);
+ 		_progressMessage.Text = text;
+ 		if (WorldGen.drunkWorldGenText && !WorldGen.placingTraps && !WorldGen.getGoodWorldGen) {
+@@ -100,6 +_,12 @@
+ 
+ 			_progressMessage.Text = text2;
+ 		}
++
++		string modText = _progressMessage.Text;
++		Color modColor = (WorldGen.tenthAnniversaryWorldGen && !Main.zenithWorld) ? Color.HotPink : Color.White;
++		SeedLoader.ModifyWorldProgressText(ref modText, ref modColor);
++		_progressMessage.Text = modText;
++		_progressMessage.CustomColor = modColor;
+ 
+ 		Main.gameTips.Update();
+ 		Main.gameTips.Draw();
