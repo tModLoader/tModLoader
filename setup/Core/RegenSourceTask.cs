@@ -49,9 +49,7 @@ namespace Terraria.ModLoader.Setup.Core
 			ProgramSettings programSettings = serviceProvider.GetRequiredService<ProgramSettings>();
 
 			return [
-				new PatchTask(PatchTaskParameters.ForTerraria(programSettings), serviceProvider),
-				new PatchTask(PatchTaskParameters.ForTerrariaNetCore(programSettings), serviceProvider),
-				new PatchTask(PatchTaskParameters.ForTModLoader(programSettings), serviceProvider),
+				..PatchTaskParameters.All(programSettings).Select(parameters => new PatchTask(parameters, serviceProvider)),
 			];
 		}
 	}
