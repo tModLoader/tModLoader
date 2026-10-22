@@ -583,6 +583,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer", "ModifyZoom").RenameParameter("zoom", "panFactor");
 		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDraw", ProjectileDrawPlayerHint);

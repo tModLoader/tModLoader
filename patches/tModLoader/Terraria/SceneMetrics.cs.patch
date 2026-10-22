@@ -174,7 +174,7 @@
  					HasClock = true;
  
  				switch (tile.type) {
-@@ -449,6 +_,12 @@
+@@ -449,15 +_,23 @@
  							RadioThingMonolith = true;
  						break;
  				}
@@ -187,6 +187,17 @@
  			}
  		}
  	}
+ 
+ 	private void AggregateTileCounts()
+ 	{
++		/*
+ 		int num = -10;
+ 		if (Main.infectedSeed)
+ 			num *= 3;
++		*/
+ 
+ 		if (_tileCounts[27] > 0)
+ 			HasSunflower = true;
 @@ -465,8 +_,9 @@
  		if (_tileCounts[567] > 0)
  			HasGardenGnome = true;

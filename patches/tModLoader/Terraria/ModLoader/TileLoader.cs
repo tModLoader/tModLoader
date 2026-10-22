@@ -1492,6 +1492,13 @@ public static class TileLoader
 				jungle = TileID.Sets.RemixJungleBiome[i];
 			}
 
+			if (Main.infectedSeed) {
+				if (corrupt == -10)
+					corrupt *= 3;
+				if (crimson == -10)
+					crimson *= 3;
+			}
+
 			metrics.EvilTileCount += tileCount * corrupt;
 			metrics.BloodTileCount += tileCount * crimson;
 			metrics.JungleTileCount += tileCount * jungle;

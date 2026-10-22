@@ -456,7 +456,7 @@ partial class SoundID
 	public static readonly SoundStyle Item189 = ItemSound(189);
 	public static readonly SoundStyle Item190 = ItemSound(190);
 	public static readonly SoundStyle Item191 = ItemSound(191);
-	public static readonly SoundStyle Item192 = ItemSound(192);
+	public static readonly SoundStyle Item192 = ItemSound(192) with { PitchVariance = 0f, UsesKiteSoundPitch = true };
 	public static readonly SoundStyle Item193 = ItemSound(193);
 	public static readonly SoundStyle Item194 = ItemSound(194);
 	public static readonly SoundStyle Item195 = ItemSound(195);

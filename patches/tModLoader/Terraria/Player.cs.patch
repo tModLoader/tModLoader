@@ -842,7 +842,7 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
-@@ -1467,30 +_,94 @@
+@@ -1467,30 +_,103 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
  	public bool IsAllowedToHoldItems = true;
@@ -878,8 +878,17 @@
  	public float rocketDamage = 1f;
  	public float minionDamage = 1f;
 +	*/
++	/// <summary>
++	/// Additional damage modifiers for arrow ammo (<see cref="AmmoID.Sets.IsArrow"/>). Used by Shroomite Headgear and Archery buff.
++	/// </summary>
 +	public StatModifier arrowDamage = StatModifier.Default;
++	/// <summary>
++	/// Additional damage modifiers for bullet ammo (<see cref="AmmoID.Sets.IsBullet"/>). Used by Shroomite Mask.
++	/// </summary>
 +	public StatModifier bulletDamage = StatModifier.Default;
++	/// <summary>
++	/// Additional damage modifiers for ammo (<see cref="AmmoID.Sets.IsSpecialist"/>) and weapons (<see cref="ItemID.Sets.IsRangedSpecialistWeapon"/>) considered to be "specialist". Used by Shroomite Helmet.
++	/// </summary>
 +	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
@@ -1903,6 +1912,15 @@
  					item = inventory[i];
  					break;
  				}
+@@ -4397,6 +_,8 @@
+ 			panFactor = 2f / 3f;
+ 			needsMouseRight = false;
+ 		}
++
++		PlayerLoader.ModifyZoom(this, ref panFactor, ref needsMouseRight);
+ 	}
+ 
+ 	public void QuickGrapple()
 @@ -4472,7 +_,10 @@
  		else if (num2 == 646) {
  			num7 = 4;
