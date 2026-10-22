@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/CachedProjectileCounterBuffTextHandler.cs
++++ src/tModLoader/Terraria/DataStructures/CachedProjectileCounterBuffTextHandler.cs
+@@ -4,6 +_,9 @@
+ {
+ 	private int[] projectilesToLookFor;
+ 
++	/// <summary>
++	/// Displays the total number of projectiles owned by the local player for the specified projectile types. Displays "x" followed by the total count if greater than 0, otherwise returns null.
++	/// </summary>
+ 	public CachedProjectileCounterBuffTextHandler(params int[] projectileTypesToLookFor)
+ 	{
+ 		projectilesToLookFor = projectileTypesToLookFor;

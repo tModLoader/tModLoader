@@ -1184,11 +1184,14 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
+	/// Use this to modify the zoom factor (<paramref name="panFactor"/>) for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
+	/// <para/> The game will automatically apply <paramref name="panFactor"/> based on the user's "Forward Zoom" control setting, so there is no need to check for the right mouse button being held down.
+	/// <para/> Use <paramref name="needsMouseRight"/> to indicate whether the player needs to hold right click to zoom in. This defaults to true but is false for Binoculars so they are always in effect, bypassing the "Forward Zoom" control setting. 
 	/// <para/> Called on the local client only.
 	/// </summary>
-	/// <param name="zoom"></param>
-	public virtual void ModifyZoom(ref float zoom)
+	/// <param name="panFactor"></param>
+	/// <param name="needsMouseRight"></param>
+	public virtual void ModifyZoom(ref float panFactor, ref bool needsMouseRight)
 	{
 	}
 
@@ -1400,8 +1403,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when this player picks up an item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>

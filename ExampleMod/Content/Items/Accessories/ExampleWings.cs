@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
+	// This is a basic wings item.
+	// By default wings only support 4 frames of animation, see ExampleCustomDrawWings.cs for an example of custom wing animation.
 	[AutoloadEquip(EquipType.Wings)]
 	public class ExampleWings : ModItem
 	{

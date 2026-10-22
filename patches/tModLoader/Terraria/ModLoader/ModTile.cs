@@ -1,7 +1,7 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
@@ -15,7 +15,7 @@ namespace Terraria.ModLoader;
 /// This class represents a type of tile that can be added by a mod. Only one instance of this class will ever exist for each type of tile that is added. Any hooks that are called will be called by the instance corresponding to the tile type. This is to prevent the game from using a massive amount of memory storing tile instances.<br/>
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Tile">Basic Tile Guide</see> teaches the basics of making a modded tile.
 /// </summary>
-public abstract class ModTile : ModBlockType
+public abstract class ModTile : ModTileOrWall
 {
 	/// <summary> The height of a group of animation frames for this tile. Defaults to 0, which disables animations.
 	/// <para/> Used in conjunction with <see cref="AnimateTile(ref int, ref int)"/> to automatically animate tiles. Use <see cref="AnimateIndividualTile(int, int, int, ref int, ref int)"/> as well if needed.
@@ -58,38 +58,10 @@ public abstract class ModTile : ModBlockType
 		array[array.Length - 1] = Type;
 	}
 
-	/// <summary>
-	/// Adds an entry to the minimap for this tile with the given color and display name. This should be called in SetDefaults.
-	/// <br/> For a typical tile that has a map display name, use <see cref="ModBlockType.CreateMapEntryName"/> as the name parameter for a default key using the pattern "Mods.{ModName}.Tiles.{ContentName}.MapEntry".
-	/// <br/> If a tile will be using multiple map entries, it is suggested to use <c>this.GetLocalization("CustomMapEntryName")</c>. Modders can also re-use the display name localization of items, such as <c>ModContent.GetInstance&lt;ItemThatPlacesThisStyle&gt;().DisplayName</c>.
-	/// <br/><br/> Multiple map entries are suitable for tiles that need a different color or hover text for different tile styles. Vanilla code uses this mostly only for chest and dresser tiles. Map entries will be given a corresponding map option value, counting from 0, according to the order in which they are added. Map option values don't necessarily correspond to tile styles.
-	/// <br/> <see cref="ModBlockType.GetMapOption"/> will be used to choose which map entry is used for a given coordinate.
-	/// <br/><br/> Vanilla map entries for most furniture tiles tend to be fairly generic, opting to use a single map entry to show "Table" for all styles of tables instead of the style-specific text such as "Wooden Table", "Honey Table", etc. To use these existing localizations, use the <see cref="Language.GetText(string)"/> method with the appropriate key, such as "MapObject.Chair", "MapObject.Door", "ItemName.WorkBench", etc. Consult the source code or ExampleMod to find the existing localization keys for common furniture types. The <c>array</c> array in <c>MapHelper.Initialize</c> has vanilla tile color values and <c>Lang.BuildMapAtlas</c> has the text.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name = null)
+	/// <inheritdoc/>
+	public override void AddMapEntry(Color color, LocalizedText name = null, Func<string, int, int, string> nameFunc = null)
 	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
-	}
-
-	/// <summary>
-	/// <inheritdoc cref="AddMapEntry(Color, LocalizedText)"/>
-	/// <br/><br/> <b>Overload specific:</b> This overload has an additional <paramref name="nameFunc"/> parameter. This function will be used to dynamically adjust the hover text. The parameters for the function are the default display name, x-coordinate, and y-coordinate. This function is most typically used for chests and dressers to show the current chest name, if assigned, instead of the default chest name. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/Furniture/ExampleChest.cs">ExampleMod's ExampleChest</see> is one example of this functionality.
-	/// </summary>
-	public void AddMapEntry(Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
-	{
-		if (!MapLoader.initialized) {
-			MapEntry entry = new MapEntry(color, name, nameFunc);
-			if (!MapLoader.tileEntries.Keys.Contains(Type)) {
-				MapLoader.tileEntries[Type] = new List<MapEntry>();
-			}
-			MapLoader.tileEntries[Type].Add(entry);
-		}
+		AddMapEntryToMapLoader(MapLoader.tileEntries, color, name, nameFunc);
 	}
 
 	/// <summary>
@@ -154,7 +126,27 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
+	/// Called when a tree is attempting to grow from a sapling tile (Assuming <see cref="TileID.Sets.CommonSapling"/> is set for this tile type) at this location. This can be either a natural growth from code calling <see cref="WorldGen.AttemptToGrowTreeFromSapling(int, int, bool, int, bool)"/> in <see cref="ModTileOrWall.RandomUpdate(int, int, bool)"/> or unnaturally, such as when fertilizer (<see cref="ItemID.Fertilizer"/> or <see cref="ItemID.SuperFertilizer"/>) is used on this tile.
+	/// <para/> <paramref name="treeHeightAddon"/> and <paramref name="ignoreWalls"/> are set based on how the tree is being grown. For example, <see cref="ItemID.SuperFertilizer"/> will set <paramref name="treeHeightAddon"/> to 15 and <paramref name="ignoreWalls"/> to true, while natural growth will set <paramref name="treeHeightAddon"/> to 0 and <paramref name="ignoreWalls"/> to false.
+	/// <para/> By default, attempts to grow a standard tree via <see cref="WorldGen.GrowTree"/> and then potentially spawns leaves if a player is nearby, matching vanilla behavior. Override to use a different growth method (e.g. <see cref="WorldGen.GrowPalmTree"/>) or to add custom logic.
+	/// <para/> Return <see langword="true"/> if a tree was grown, <see langword="false"/> otherwise.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="underground">If the location should be considered underground or not.</param>
+	/// <param name="treeHeightAddon">The additional height for the tree. Will be 0 if <see cref="ItemID.Fertilizer"/> is used and 15 when <see cref="ItemID.SuperFertilizer"/> is used.</param>
+	/// <param name="ignoreWalls">If wall restrictions should be ignored.</param>
+	public virtual bool GrowSapling(int i, int j, bool underground, int treeHeightAddon, bool ignoreWalls)
+	{
+		bool success = WorldGen.GrowTree(i, j, treeHeightAddon, ignoreWalls);
+		if (success && WorldGen.PlayerLOS(i, j))
+			WorldGen.TreeGrowFXCheck(i, j);
+		return success;
+	}
+
+	/// <summary>
 	/// Whether or not the smart interact function can select this tile. Useful for things like chests. Defaults to false.
+	/// <para/> Any tile used in as a crafting station in a recipe will automatically behave this way as well.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -321,9 +313,10 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
-	/// <br/>Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
-	/// <br/>This is only called on the local client.
+	/// Allows you to determine whether this tile glows <paramref name="sightColor"/> while the player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> Return true and assign to <paramref name="sightColor"/> to allow this tile to glow.
+	/// <para/> This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -334,8 +327,9 @@ public abstract class ModTile : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
-	/// <br/>This is only called if Main.tileSpelunker[type] is false.
+	/// Allows you to customize whether this tile can glow yellow while the player has the Spelunker buff, and is also detected by various pets.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> This is only called if Main.tileSpelunker[type] is false.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -760,7 +754,7 @@ public abstract class ModTile : ModBlockType
 
 	/// <summary>
 	/// Use to populate <paramref name="tileFlameData"/> with flame drawing parameters.
-	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually in <see cref="ModBlockType.PostDraw(int, int, SpriteBatch)"/> as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs#L124">ExampleLamp.cs</see>.
+	/// <para/> Currently only supported for tiles drawn using <see cref="GameContent.Drawing.TileDrawing.AddSpecialPoint"/> with <see cref="GameContent.Drawing.TileDrawing.TileCounterType.MultiTileVine"/>, other tiles should draw flames manually by calling <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> in <see cref="DrawEffects"/> and drawing the flame in <see cref="SpecialDraw(int, int, SpriteBatch)"/>, as shown in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Content/Tiles/ExampleLamp.cs">ExampleLamp.cs</see>.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

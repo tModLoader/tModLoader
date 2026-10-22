@@ -78,6 +78,7 @@ public static class NPCLoader
 
 		// Sets
 		LoaderUtils.ResetStaticMembers(typeof(NPCID));
+		LoaderUtils.ResetStaticMembers(typeof(GameContent.Tile_Entities.TECritterAnchor));
 		Main.ShopHelper.ReinitializePersonalityDatabase();
 		NPCHappiness.RegisterVanillaNpcRelationships();
 
@@ -89,6 +90,8 @@ public static class NPCLoader
 		Array.Resize(ref Main.SceneMetrics.NPCBannerBuff, NPCCount);
 		Array.Resize(ref Main.SceneMetrics.ClosestNPCPosition, NPCCount);
 		Array.Resize(ref BannerSystem.killCount, NPCCount);
+		Array.Resize(ref BannerSystem.claimableBanners, NPCCount);
+		Array.Resize(ref BannerSystem.newBanner, NPCCount);
 		Array.Resize(ref NPC.ShimmeredTownNPCs, NPCCount);
 		Array.Resize(ref NPC.npcsFoundForCheckActive, NPCCount);
 		Array.Resize(ref Lang._npcNameCache, NPCCount);

@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Graphics/TileBatch.cs
 +++ src/Terraria/Terraria/Graphics/TileBatch.cs
-@@ -444,7 +_,7 @@
+@@ -496,7 +_,7 @@
  		_queuedSpriteCount = 0;
  	}
  
@@ -9,7 +9,7 @@
  	{
  		_graphicsDevice.Textures[0] = texture;
  		while (count > 0) {
-@@ -462,8 +_,18 @@
+@@ -514,8 +_,18 @@
  			}
  
  			FillVertexBuffer(texture, sprites, offset, num, 0);

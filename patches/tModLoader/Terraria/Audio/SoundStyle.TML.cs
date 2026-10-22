@@ -1,11 +1,13 @@
+using System;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using ReLogic.Content;
-using System;
-using System.Linq;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Utilities;
 using static Terraria.Audio.ActiveSound;
+using static Terraria.WorldGen.SecretSeed;
 
 #nullable enable
 
@@ -107,6 +109,12 @@ public record struct SoundStyle
 	/// Could prove useful, but is kept internal for the moment.
 	/// </summary>
 	internal bool UsesMusicPitch { get; set; } = false;
+
+	/// <summary>
+	/// Whether or not this sound obeys the <see cref="Projectile.kiteSoundPitch"/> field to decide its pitch.<br/>
+	/// Defaults to false. Used in vanilla by kites (SoundID.Item192, Projectile.KiteLogic).<br/>
+	/// </summary>
+	internal bool UsesKiteSoundPitch { get; set; } = false;
 
 	/// <summary>
 	/// An array of possible suffixes to randomly append to after <see cref="SoundPath"/>.
@@ -313,6 +321,9 @@ public record struct SoundStyle
 
 	public SoundStyle WithVolumeScale(float scale)
 		=> this with { Volume = Volume * scale };
+
+	public SoundStyle WithVolumePerceived(float volume)
+		=> WithVolume((float)Math.Pow(volume, 1.6609f));
 
 	public SoundStyle WithPitchOffset(float offset)
 		=> this with { Pitch = Pitch + offset };

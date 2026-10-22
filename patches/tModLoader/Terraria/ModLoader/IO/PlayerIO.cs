@@ -408,7 +408,7 @@ internal static class PlayerIO
 
 	internal static string SaveUsedModPack(Player player)
 	{
-		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+		return Path.GetFileName(Core.ModOrganizer.ModPackActive);
 	}
 
 	internal static TagCompound SaveLoadouts(EquipmentLoadout[] equipLoadouts)

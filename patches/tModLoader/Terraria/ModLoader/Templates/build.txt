@@ -1,3 +1,4 @@
 displayName = {{ModDisplayName}}
-author = {{ModAuthor}}
+{{#IncludeLocalizedModDisplayName}}displayName.{{ModDisplayNameCultureName}} = {{ModDisplayName}}
+{{/IncludeLocalizedModDisplayName}}author = {{ModAuthor}}
 version = {{ModVersion}}

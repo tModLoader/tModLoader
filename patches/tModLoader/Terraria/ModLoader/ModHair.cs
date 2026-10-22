@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class allows you to define custom hair styles for a player, controlling the associated gender and unlock conditions.
 /// </summary>
+[CloneByReference]
 public abstract class ModHair : ModTexturedType
 {
 	public int Type { get; internal set; }

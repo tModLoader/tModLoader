@@ -6,7 +6,7 @@
  namespace Terraria.DataStructures;
  
 +/// <summary>
-+/// Used when opening bags or gifts. Passed to <see cref="Player.QuickSpawnItem(IEntitySource, Item, int)"/>
++/// Used when opening bags or gifts. Passed to <see cref="Player.QuickSpawnItem(IEntitySource, Item)"/>
 +/// </summary>
  public class EntitySource_ItemOpen : IEntitySource
  {

@@ -309,6 +309,7 @@ public static class EquipLoader
 		equipTextures[type][slot] = equipTexture;
 		mod.equipTextures[Tuple.Create(equipTexture.Name, type)] = equipTexture;
 
+		// TODO: The docs claim that the first registered equip texture for an item will be the one used for mannequins and the player, but currently if multiple equip textures are registered for the same item, whichever one is registered last will be the one used since they overwrite each other. This should be fixed so that the first one is used instead, since that makes more sense. This will need to happen in 1.4.5 probably.
 		if (item != null) {
 			if (!idToSlot.TryGetValue(item.Type, out var slots))
 				idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();

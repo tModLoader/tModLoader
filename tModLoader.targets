@@ -1,13 +1,15 @@
+<!-- This is a special targets file that is only to be used by TML's own project files, such as ExampleMod. -->
+<!-- It replaces the one found in ModSources, avoiding reliance on the TML output folder and the problems that come with that. -->
 <Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- special targets file for ExampleMod. Fits in place of the one in /Mod Sources -->  
+  <!-- Set game paths from WorkspaceInfo.targets and avoid having them overwritten by tMLMod.targets. -->
   <Import Project="src/WorkspaceInfo.targets" />
-  <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
-  
+  <Import Project="src/tModLoader/Terraria/release_extras/tMLMod.targets" />  
+
   <ItemGroup>
-    <!-- unfortunately VS Goto Defintion doesn't work on pdb source paths, only direct project references -->
-    <Reference Remove="$(tMLSteamPath)**/FNA.dll"/>
-    <Reference Remove="$(tMLSteamPath)**/ReLogic.dll"/>
-    <Reference Remove="$(tMLSteamPath)**/tModLoader.dll"/>
+    <!-- Unfortunately VS Goto Definition doesn't work on PDB source paths, only direct project references. -->
+    <Reference Remove="$(tModLoaderSteamPath)/**/FNA.dll"/>
+    <Reference Remove="$(tModLoaderSteamPath)/**/ReLogic.dll"/>
+    <Reference Remove="$(tModLoaderSteamPath)/**/tModLoader.dll"/>
     <ProjectReference Include="$(MSBuildThisFileDirectory)FNA/FNA.Core.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/ReLogic/ReLogic.csproj" />
     <ProjectReference Include="$(MSBuildThisFileDirectory)src/tModLoader/Terraria/Terraria.csproj" />

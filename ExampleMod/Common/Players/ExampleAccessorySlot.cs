@@ -71,7 +71,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool IsEnabled() {
-			if (Player.armor[0].headSlot >= 0) // if player is wearing a helmet, because flight safety
+			if (Player.GetEffectiveArmor(0).headSlot >= 0) // if player is wearing a helmet, because flight safety
 				return true; // Then can use Slot
 
 			return false; // Can't use slot

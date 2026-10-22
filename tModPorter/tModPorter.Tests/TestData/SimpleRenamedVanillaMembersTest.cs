@@ -1,4 +1,5 @@
 using Terraria;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ObjectData;
 using Microsoft.Xna.Framework;
@@ -123,6 +124,7 @@ public class SimpleRenamedVanillaMembersTest
 		player.IsAValidEquipmentSlotForIteration(0);
 		player.VanillaUpdateEquip(null);
 		player.CanBuyItem(100000);
+		player.oldAdjTile[0] = false;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 
@@ -156,5 +158,16 @@ public class SimpleRenamedVanillaMembersTest
 		_ = Item.BannerToNPC(Banner);
 
 		Utils.PlotTileArea(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids);
+
+		Projectile projectile = Main.projectile[0];
+		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player);
+		_ = projectile.identity;
+		_ = projectile.projUUID;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI);
+
+		var tradeOption = new ItemTrader.TradeOption();
+		_ = tradeOption.GivingITemType;
+
+		_ = ContentSamples.CreativeHelper.ItemGroup.PlacableObjects;
 	}
 }

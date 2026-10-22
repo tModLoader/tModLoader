@@ -39,6 +39,7 @@ public interface CommandCaller
 /// <summary>
 /// This class represents a chat or console command. Use the CommandType to specify the scope of the command.
 /// </summary>
+[CloneByReference]
 public abstract class ModCommand : ModType
 {
 	/// <summary>The desired text to trigger this command.</summary>

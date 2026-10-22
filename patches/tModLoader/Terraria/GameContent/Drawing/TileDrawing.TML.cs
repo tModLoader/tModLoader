@@ -14,12 +14,12 @@ public partial class TileDrawing
 
 	/// <summary>
 	/// Checks if a tile at the given coordinates counts towards tile coloring from the Dangersense buff.
-	/// <br/>Vanilla uses <c>Main.SceneMetrics.PerspectivePlayer</c> for <paramref name="player"/>
+	/// <br/>Vanilla uses <c>Main.SceneMetrics.PerspectivePlayer</c> for <paramref name="perspectivePlayer"/>
 	/// </summary>
-	public static bool IsTileDangerous(int tileX, int tileY, Player player)
+	public static bool IsTileDangerous(Player perspectivePlayer, int tileX, int tileY)
 	{
 		Tile tile = Main.tile[tileX, tileY];
-		return IsTileDangerous(tileX, tileY, player, tile, tile.type);
+		return IsTileDangerous(perspectivePlayer, tileX, tileY, tile, tile.type);
 	}
 
 	private void DrawCustom(bool solidLayer)

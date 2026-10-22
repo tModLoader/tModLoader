@@ -10,6 +10,9 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FNA.Core", "FNA\FNA.Core.csproj", "{1EED6B32-5FC7-41A8-91C3-08147C46DD4F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExampleMod", "ExampleMod\ExampleMod.csproj", "{F646F0CE-2C51-4610-B097-F16FB58CECC5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4EFE2B31-D61A-4C07-BAD2-991D3633C237} = {4EFE2B31-D61A-4C07-BAD2-991D3633C237}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "tModPorter", "tModPorter\tModPorter\tModPorter.csproj", "{2667C978-80E3-4D97-9F64-E519BA578BC1}"
 EndProject

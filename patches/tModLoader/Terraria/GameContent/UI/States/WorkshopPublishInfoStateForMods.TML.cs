@@ -111,7 +111,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		UIText uIText = new UIText(Language.GetText("tModLoader.WorkshopDisclaimer")) {
 			HAlign = 0f,
 			VAlign = 0f,
-			Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
 			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
 			TextColor = Color.Cyan,
 			IgnoresMouseInteraction = true

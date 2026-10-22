@@ -10,4 +10,6 @@ public class ModWallTest : ModWall
 		soundType = 1;
 		soundStyle = 0;
 	}
+
+	public override void RandomUpdate(int i, int j) { /* Empty */ }
 }

@@ -439,6 +439,14 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifyLightingBrightness(ref float scale) { }
 
 	/// <summary>
+	/// Use this method and return true if you need the game to capture the screen (excluding UI,) ideal for use with <see cref="Main.finalScreenTarget"/>, and edits to FilterManager.EndCapture. <para/>
+	/// The game may capture the screen regardless of if this returns false explicitly, (for instance: if any vanilla filters are active.)
+	/// </summary>
+	/// <returns><see langword="true"/> if the game should capture the screen.</returns>
+	public virtual bool RequiresScreenTarget()
+		=> false;
+
+	/// <summary>
 	/// Allows you to store information about how many of each tile is nearby the player. This is useful for counting how many tiles of a certain custom biome there are.
 	/// <para/> The <paramref name="tileCounts"/> parameter is a read-only span (treat this as an array) that stores the tile count indexed by tile type.
 	/// <para/> Called on all clients.

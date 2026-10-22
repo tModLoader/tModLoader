@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Tile_Entities/TECritterAnchor.cs
++++ src/tModLoader/Terraria/GameContent/Tile_Entities/TECritterAnchor.cs
+@@ -7,6 +_,9 @@
+ public class TECritterAnchor : TELeashedEntityAnchorWithItem
+ {
+ 	private static byte _myEntityID;
++	/// <summary>
++	/// Indexed by NPC type. Maps an item's makeNPC to the LeashedCritter instance to use for animating and updating the leashed critter. Defaults to WalkerLeashedCritter.
++	/// </summary>
+ 	public static LeashedCritter[] CritterPrototypes;
+ 
+ 	public TECritterAnchor()

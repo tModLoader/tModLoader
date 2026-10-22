@@ -103,6 +103,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotInfectedSeed =			new("Conditions.SeedNotInfected",			() => !Main.infectedSeed);
 	public static readonly Condition NotTeamBasedSpawnsSeed =	new("Conditions.SeedNotTeamBasedSpawns",	() => !Main.teamBasedSpawnsSeed);
 	public static readonly Condition NotDualDungeonsSeed =		new("Conditions.SeedNotDualDungeons",		() => !Main.dualDungeonsSeed);
+
+	// World Features
+	public static readonly Condition MechdusaSeedFeature =		new("Conditions.SeedFeatureMechdusa",		() => SpecialSeedFeatures.Mechdusa);
+
 	// Events
 	public static readonly Condition Christmas =				new("Conditions.Christmas",					() => Main.xMas);
 	public static readonly Condition Halloween =				new("Conditions.Halloween",					() => Main.halloween);
@@ -208,6 +212,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotIsNpcHomeless =			new("Conditions.NotIsNpcHomeless",			() => !Main.LocalPlayer.TalkNPC.homeless);
 	/// <summary> Not Remix world, OR Celebration Mk10 AND not For the Worthy worlds.</summary>
 	public static readonly Condition BiomeSpreadingItems =		new("Conditions.BiomeSpreadingItems",		() => !Main.remixWorld || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
+	public static readonly Condition NeedTorchGodsFavor =		new("Conditions.TorchGodsFavor",			() => Main.LocalPlayer.unlockedBiomeTorches);
 
 	// Moon phases :( thanks to Chicken Bones for help with those
 	public static readonly Condition MoonPhaseFull =			new("Conditions.FullMoon",					() => Main.GetMoonPhase() == MoonPhase.Full);
@@ -253,4 +258,3 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
 }
-			

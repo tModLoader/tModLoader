@@ -91,7 +91,7 @@ namespace ExampleMod.Content.Projectiles
 
 			// Fade out
 			Projectile.alpha += 25;
-			// Cal alpha to the maximum 255(complete transparent)
+			// Cap alpha to the maximum 255 (completely transparent)
 			if (Projectile.alpha > 255)
 				Projectile.alpha = 255;
 		}

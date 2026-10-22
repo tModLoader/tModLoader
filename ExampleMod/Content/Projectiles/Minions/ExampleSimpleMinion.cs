@@ -23,6 +23,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		public override void SetStaticDefaults() {
 			Main.buffNoSave[Type] = true; // This buff won't save when you exit the world
 			Main.buffNoTimeDisplay[Type] = true; // The time remaining won't display on this buff
+			BuffID.Sets.BuffTextHandlers.Add(Type, new CachedProjectileCounterBuffTextHandler(ModContent.ProjectileType<ExampleSimpleMinion>())); // Adds the counter under the buff for how many active minions there are.
 		}
 
 		public override void Update(Player player, ref int buffIndex) {

@@ -1,6 +1,8 @@
 Learn how to mod with tModLoader by exploring the source code for this mod.
 
-You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4.4/ExampleMod
+You can find the source code at https://github.com/tModLoader/tModLoader/tree/1.4.5/ExampleMod
+
+This is the default description that will be used when no 'description_workshop_{language}' file is found.
 
 You can interpolate these values into a mod description:
 - ModVersion: {ModVersion}

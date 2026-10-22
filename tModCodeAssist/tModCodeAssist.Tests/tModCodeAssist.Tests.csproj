@@ -4,8 +4,7 @@
     <OutputTmlReferences>true</OutputTmlReferences>
   </PropertyGroup>
 
-  <Import Project="../../src/WorkspaceInfo.targets" />
-  <Import Project="$(tModLoaderSteamPath)/tMLMod.targets" />
+  <Import Project="../../tModLoader.targets" />
 
   <PropertyGroup>
     <TargetFramework>net10.0</TargetFramework>

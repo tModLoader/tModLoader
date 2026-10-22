@@ -6,6 +6,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -60,6 +61,7 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.friendly = true; // Deals damage to enemies
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Draws over the player's body and under the player's hands
 			Projectile.usesLocalNPCImmunity = true; // Used for hit cooldown changes in the ai hook
 			Projectile.localNPCHitCooldown = 10; // This facilitates custom hit cooldown logic
 
@@ -431,7 +433,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
 		public override bool PreDraw(Player player, ref Color lightColor) {
-			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile, player);
+			Vector2 playerArmPosition = player.GetArmPosition();
 			Rectangle? chainSourceRectangle = null;
 			// Drippler Crippler customizes sourceRectangle to cycle through sprite frames: sourceRectangle = asset.Frame(1, 6);
 			float chainHeightAdjustment = 0f; // Use this to adjust the chain overlap.
@@ -501,6 +503,13 @@ namespace ExampleMod.Content.Projectiles
 					Main.spriteBatch.Draw(projectileTexture, drawPos, null, color, Projectile.rotation, drawOrigin, Projectile.scale - k / (float)Projectile.oldPos.Length / 3, spriteEffects, 0f);
 				}
 			}
+			return true;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// We set aiStyle to Flail to draw the projectile as if it had the vanilla flail aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			aiStyle = ProjAIStyleID.Flail;
 			return true;
 		}
 	}

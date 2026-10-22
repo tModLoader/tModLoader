@@ -24,6 +24,7 @@ using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Default;
 using Terraria.ModLoader.Config;
 using System.Net.Http;
+using JetBrains.Annotations;
 using Newtonsoft.Json.Linq;
 
 namespace Terraria;
@@ -42,6 +43,7 @@ public partial class Main
 	public static bool hidePlayerCraftingMenu;
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
+
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 	/// <summary>
 	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with
@@ -144,7 +146,7 @@ public partial class Main
 	/// </summary>
 	public static ActiveProjectileIterator ActiveProjectiles => new(projectile.AsSpan(0, maxProjectiles));
 	/// <summary>
-	/// Use to iterate over active items. Game logic is usually only interested in <see cref="Item.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
+	/// Use to iterate over active world items. Game logic is usually only interested in <see cref="WorldItem.active"/> elements, this iterator facilitates that usage and allows for simpler and more readable code.
 	/// <para/> Typically used in a foreach statement:
 	/// <code>foreach (var item in Main.ActiveItems) {
 	///     // Code
@@ -159,7 +161,7 @@ public partial class Main
 	///     // Code
 	/// }
 	/// </code>
-	/// Note that if the index of the Item in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can <b>not</b> be used. This will be fixed in 1.4.5, but for now the for loop approach would have to be used instead.
+	/// Note that if the index of the WorldItem in the <see cref="item"/> array is needed, <see cref="Entity.whoAmI"/> can be used.
 	/// </summary>
 	public static ActiveItemIterator ActiveItems => new(item.AsSpan(0, maxItems));
 
@@ -338,6 +340,7 @@ public partial class Main
 
 	private void DrawBuilderAccToggles_Inner(Vector2 start)
 	{
+		int state = -1; // Which toggle is being hovered over
 		Player player = Main.player[myPlayer];
 		int[] builderAccStatus = player.builderAccStatus;
 		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
@@ -392,6 +395,7 @@ public partial class Main
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
+				state = i;
 
 				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
 				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
@@ -426,7 +430,7 @@ public partial class Main
 			}
 
 
-			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + drawParams.Frame.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
 				float colorByte = (float)mouseTextColor / 255f;
@@ -437,6 +441,7 @@ public partial class Main
 			}
 		}
 
+		DoStatefulTickSound(ref toggleAccMouseOver, state);
 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
 	}
 
@@ -592,7 +597,7 @@ public partial class Main
 				var newsColor = newsMouseOver && newsURL != null ? highVersionColor : menuColor;
 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, latestNewsText, newsPosition - newsSize, newsColor, 0f, Vector2.Zero, newsScales);
 
-				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowUIInputs && newsURL != null) {
+				if (newsMouseOver && mouseLeftRelease && mouseLeft && FocusHelper.AllowInputProcessing && newsURL != null) {
 					SoundEngine.PlaySound(SoundID.MenuOpen);
 					Utils.OpenToURL(newsURL);
 					newsIsNew = false;
@@ -613,7 +618,7 @@ public partial class Main
 				continue;
 			var normalMod = normalModsToLoad.First(mod => mod.Name == loadedMod.Name); // If this throws, we have a big issue.
 			if (normalMod.modFile.path != loadedMod.File.path) {
-				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(1, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
+				reloadRequiredExplanationEntries.Add(new ReloadRequiredExplanation(2, normalMod.Name, normalMod, Language.GetTextValue("tModLoader.ReloadRequiredExplanationSwitchVersion", "FFFACD", normalMod.Version, loadedMod.Version)));
 				needsReload = true;
 			}
 		}
@@ -649,4 +654,11 @@ public partial class Main
 			ConfigManager.OnChangedAll();
 		}
 	}
+
+	/// <summary>
+	/// Reference to the screen target after FilterManager.EndCapture has run, has all filters applied, and accounts for reverse gravity. <para/>
+	/// <see langword="null"/> if referenced before FilterManager.EndCapture or if the screen was not captured this frame. <para/>
+	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
+	/// </summary>
+	[CanBeNull]	public static RenderTarget2D finalScreenTarget;
 }

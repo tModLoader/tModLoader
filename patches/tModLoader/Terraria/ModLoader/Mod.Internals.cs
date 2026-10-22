@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
@@ -46,6 +48,18 @@ partial class Mod
 	{
 		if (Code == null)
 			return;
+
+		// Load icon.png and icon_small.png
+		// The embedded mod for tModLoader doesn't have File initialized
+		if (File != null && !Main.dedServ) {
+			ModIcon = ModLoader.GetModIcon(File, out string modIconError)
+			       ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
+
+			SmallModIcon = ModLoader.GetModIcon(File, out string smallIconError, "icon_small.png", 30);
+			if (SmallModIcon is null) {
+				Logger.Warn($"Failed to load icon_small.png. Reason: {smallIconError}.");
+			}
+		}
 
 		LocalizationLoader.Autoload(this);
 
@@ -128,6 +142,7 @@ partial class Mod
 				var reasons = new List<string>();
 				RootContentSource.Rejections.TryGetRejections(reasons); // Not technically the rejection reasons for the specific asset, but there is no current way of getting that.
 				var MissingResourceException = new Exceptions.MissingResourceException(reasons, assetPath.Replace("\\", "/"), cleanKeys);
+				MissingResourceException.Data["mod"] = ModContent.CurrentlyLoadingMod; // Attribute to the loading mod, not necessarily the mod corresponding to the asset path.
 				AssetExceptions.Add(MissingResourceException);
 			}
 			else {

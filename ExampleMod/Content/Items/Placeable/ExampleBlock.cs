@@ -9,7 +9,9 @@ namespace ExampleMod.Content.Items.Placeable
 	{
 		public override void SetStaticDefaults() {
 			Item.ResearchUnlockCount = 100;
-			ItemID.Sets.ExtractinatorMode[Type] = Item.type;
+			ItemID.Sets.ExtractinatorMode[Type] = Type;
+			// Also support using this item in the Extractinator while the Stress Ball accessory is equipped.
+			ItemID.Sets.CanBeExtractinated[Type] = true;
 
 			// Mods can be translated to any of the languages tModLoader supports. See https://github.com/tModLoader/tModLoader/wiki/Localization
 			// Translations go in localization files (.hjson files), but these are listed here as an example to help modders become aware of the possibility that users might want to use your mod in other languages:

@@ -108,9 +108,10 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the local player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
-	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default.
-	/// <br/>This is only called on the local client.
+	/// Allows you to customize whether this tile glows <paramref name="sightColor"/> while the player has the <see href="https://terraria.wiki.gg/wiki/Biome_Sight_Potion">Biome Sight buff</see>.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> Return true to force this behavior, or false to prevent it, overriding vanilla conditions and colors. Returns null by default.
+	/// <para/> This is only called on the local client.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -122,8 +123,9 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows you to customize whether this tile can glow yellow while having the Spelunker buff, and is also detected by various pets.
-	/// <br/>Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
+	/// Allows you to customize whether this tile can glow yellow while the player has the Spelunker buff, and is also detected by various pets.
+	/// <para/> The player isn't necessarily the local player, but the player being used to view the area (such as when spectating), <c>Main.SceneMetrics.PerspectivePlayer</c>.
+	/// <para/> Return true to force this behavior, or false to prevent it, overriding vanilla conditions. Returns null by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>

@@ -1,6 +1,8 @@
 ﻿using ExampleMod.Content.Dusts;
 using Microsoft.Xna.Framework;
+using System;
 using Terraria;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -14,6 +16,10 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void SetDefaults() {
 			Projectile.CloneDefaults(ProjectileID.Spear); // Clone the default values for a vanilla spear. Spear specific values set for width, height, aiStyle, friendly, penetrate, tileCollide, scale, hide, ownerHitCheck, and melee.
+
+			// Setting AIType along with a vanilla Projectile.aiStyle (which CloneDefaults sets) will make our modded projectile act like a vanilla projectile in its AI.
+			// In the case for ExampleSpearProjectile, this lets the projectile match the vanilla spear for mannequins.
+			AIType = ProjectileID.Spear;
 		}
 
 		public override bool PreAI() {
@@ -67,5 +73,32 @@ namespace ExampleMod.Content.Projectiles
 
 			return false; // Don't execute vanilla AI.
 		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
+		// If not setting an AIType, we need to customize the forward offset to make it look right and can't just use ProjAIStyleID.Spear for this one.
+		// Since we are using AIType, this example is commented out and left as an example of what custom DisplayDollSettings code would look like.
+		/*public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+			Projectile.direction = doll.direction;
+			Projectile.spriteDirection = -Projectile.direction;
+			Vector2 projectileDirection = Vector2.UnitX;
+			float armRotation = 0f;
+			if (pose.ItemAimRadians.HasValue)
+				armRotation = pose.ItemAimRadians.Value;
+
+			projectileDirection = projectileDirection.RotatedBy(armRotation);
+			if (Projectile.direction == -1)
+				projectileDirection.X *= -1f;
+
+			Projectile.velocity = projectileDirection;
+
+			int forwardOffset = 52; // This matches the vanilla Spear. Other spears may need a different value.
+			Projectile.position += Projectile.velocity * forwardOffset;
+			Projectile.rotation = projectileDirection.ToRotation() + (3f * MathHelper.PiOver4);
+			if (Projectile.spriteDirection == -1)
+				Projectile.rotation -= MathHelper.PiOver2;
+
+			return false;
+		}*/
 	}
 }

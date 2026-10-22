@@ -1,0 +1,11 @@
+{
+	"HomePage": {
+		"AreaTitle": "開發者之選",
+		"AreaDescription": "這些模組由 tModLoader 的開發者們親自挑選，旨在讓品質優良但知名度或許較低的 Terraria 模組獲得更多矚目。",
+	},
+	"General": {
+		"WorkshopTitle": "tModLoader 模組",
+		// Max Length: 200
+		"WorkshopDescription": "您可於 Steam 工作坊瀏覽並下載 tModLoader 模組。請注意，此處所列的模組僅適用於 tModLoader 的預設分支。可在 1.3-legacy 分支上游玩的模組，請至其他位置尋找。",
+	}
+}

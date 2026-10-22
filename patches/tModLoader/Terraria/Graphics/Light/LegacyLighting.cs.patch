@@ -1,32 +1,14 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LegacyLighting.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LegacyLighting.cs
-@@ -4,11 +_,12 @@
+@@ -4,6 +_,7 @@
  using ReLogic.Threading;
  using Terraria.DataStructures;
  using Terraria.Graphics.Capture;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  using Terraria.Utilities;
  
- namespace Terraria.Graphics.Light;
- 
--public class LegacyLighting : ILightingEngine
-+public partial class LegacyLighting : ILightingEngine
- {
- 	public struct RectArea
- 	{
-@@ -133,6 +_,11 @@
- 	private static FastRandom _swipeRandom = FastRandom.CreateWithRandomSeed();
- 	private LightMap _lightMap = new LightMap();
- 
-+	// TML: _lightMap is used by vanilla to get TileScanner data for basic
-+	// lighting and mask data.  This new light map contains a copy of the data
-+	// in _states so it can be used with the LightMapBuffer API.
-+	private LightMap exposedLightMap = new();
-+
- 	public int Mode { get; set; }
- 
- 	public bool IsColorOrWhiteMode => Mode < 2;
-@@ -144,6 +_,9 @@
+@@ -145,6 +_,9 @@
  
  	public Vector3 GetColor(int x, int y)
  	{
@@ -36,78 +18,7 @@
  		if (x < _expandedRectLeft || x >= _expandedRectRight || y < _expandedRectTop || y >= _expandedRectBottom)
  			return Vector3.Zero;
  
-@@ -165,6 +_,10 @@
- 		int num = (int)_camera.UnscaledSize.X / 16 + 90 + 10;
- 		int num2 = (int)_camera.UnscaledSize.Y / 16 + 90 + 10;
- 		_lightMap.SetSize(num, num2);
-+
-+		// TML: LightMapBuffer state maintenance.
-+		exposedLightMap.SetSize(num, num2);
-+
- 		if (_states != null && _states.Length >= num && _states[0].Length >= num2)
- 			return;
- 
-@@ -276,6 +_,9 @@
- 			PreRenderPhase();
- 
- 		_lastCameraPosition = Main.Camera.UnscaledPosition;
-+
-+		// TML: Mark light map as dirty and update area.
-+		exposedLightMap.UpdateArea(new Rectangle(_expandedRectLeft, _expandedRectTop, maxLightArrayX, maxLightArrayY));
- 	}
- 
- 	private void TryUpdatingMapWithLight()
-@@ -362,6 +_,9 @@
- 					if (lightingState.B < _skyColor)
- 						lightingState.B = tileB;
- 				}
-+
-+				// TML: LightMapBuffer state maintenance.
-+				exposedLightMap[i - _expandedRectLeft, j - _expandedRectTop] = lightingState.ToVector3();
- 			}
- 		}
- 	}
-@@ -420,6 +_,9 @@
- 				obj.R = lightingState.R;
- 				obj.G = lightingState.G;
- 				obj.B = lightingState.B;
-+
-+				// TML: LightMapBuffer state maintenace.
-+				exposedLightMap[i, j] = obj.ToVector3();
- 			}
- 		}
- 	}
-@@ -467,6 +_,9 @@
- 					obj.R = lightingState.R2;
- 					obj.G = lightingState.G2;
- 					obj.B = lightingState.B2;
-+
-+					// TML: LightMapBuffer state maintenance.
-+					exposedLightMap[i, j] = obj.ToVector3();
- 				}
- 			}
- 
-@@ -490,6 +_,9 @@
- 				obj2.R = lightingState2.R2;
- 				obj2.G = lightingState2.R2;
- 				obj2.B = lightingState2.R2;
-+
-+				// TML: LightMapBuffer state maintenance.
-+				exposedLightMap[k, l] = obj2.ToVector3();
- 			}
- 		}
- 	}
-@@ -513,6 +_,9 @@
- 				}
- 			}
- 		}
-+
-+		// TML: LightMapBuffer state maintenance.
-+		exposedLightMap.Clear();
- 	}
- 
- 	private void PreRenderPhase()
-@@ -581,6 +_,7 @@
+@@ -582,6 +_,7 @@
  		num3 = Utils.Clamp(_expandedRectTop, 5, Main.maxTilesY - 1);
  		num4 = Utils.Clamp(_expandedRectBottom, 5, Main.maxTilesY - 1);
  		Main.UpdateSceneMetrics();
@@ -115,7 +26,7 @@
  		_tileScanner.Update();
  		_tileScanner.ExportTo(new Rectangle(num, num3, num2 - num, num4 - num3), _lightMap, new TileLightScannerOptions {
  			DrawInvisibleWalls = Main.ShouldShowInvisibleBlocksAndWalls()
-@@ -588,6 +_,7 @@
+@@ -589,6 +_,7 @@
  
  		for (int m = num; m < num2; m++) {
  			LightingState[] array3 = _states[m - _expandedRectLeft];
@@ -123,20 +34,7 @@
  			for (int n = num3; n < num4; n++) {
  				LightingState lightingState2 = array3[n - _expandedRectTop];
  				Tile tile = Main.tile[m, n];
-@@ -671,6 +_,12 @@
- 		if (!Main.gamePaused && !CaptureManager.Instance.IsCapturing)
- 			_tempLights.Clear();
- 
-+		if (Testing.DebugOptions.devLightTilesCheat) {
-+			Main.renderCount = 1;
-+			TimeLogger.LightingInit.AddTime(fromTimestamp);
-+			return;
-+		}
-+
- 		_minX += _expandedRectLeft;
- 		_maxX += _expandedRectLeft;
- 		_minY += _expandedRectTop;
-@@ -688,6 +_,9 @@
+@@ -695,6 +_,9 @@
  
  	private void DoColors()
  	{
@@ -146,7 +44,7 @@
  		if (IsColorOrWhiteMode) {
  			_blueWave += (float)_blueDir * 0.0001f;
  			if (_blueWave > 1f) {
-@@ -761,6 +_,8 @@
+@@ -768,6 +_,8 @@
  						_wetLightB = 0f;
  						break;
  				}
@@ -155,7 +53,7 @@
  			}
  			else {
  				_negLight = 0.9f;
-@@ -792,6 +_,8 @@
+@@ -799,6 +_,8 @@
  				_negLight2 *= 0.85f;
  				_negLight3 *= 0.85f;
  			}
@@ -164,7 +62,7 @@
  		}
  		else {
  			_negLight = 0.04f;
-@@ -820,6 +_,8 @@
+@@ -827,6 +_,8 @@
  				_negLight2 += 0.18f;
  				_negLight3 += 0.18f;
  			}

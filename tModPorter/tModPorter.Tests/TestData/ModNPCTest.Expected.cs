@@ -117,6 +117,8 @@ public class ModNPCTest : ModNPC
 		NPCID.Sets.IsGoldCritter[Type] = true;
 
 		NPCID.Sets.SearchSpawnSlotsInReverse[Type] = true;
+
+		NPCID.Sets.ImmuneToRegularBuffs[Type]/* tModPorter NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true. */ = true;
 	}
 
 	public override void BossLoot(ref int potionType, ref int potionStack, ref int heartStack) { }

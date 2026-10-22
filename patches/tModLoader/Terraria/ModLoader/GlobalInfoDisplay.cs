@@ -7,6 +7,7 @@ namespace Terraria.ModLoader;
 /// A class that is used to modify existing info displays (i.e. the things that the Cell Phone uses to communicate information).
 /// All vanilla displays can be accessed using InfoDisplay.(name of item).
 /// </summary>
+[CloneByReference]
 public abstract class GlobalInfoDisplay : ModType
 {
 	protected sealed override void Register() => InfoDisplayLoader.AddGlobalInfoDisplay(this);

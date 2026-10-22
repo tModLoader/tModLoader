@@ -5,6 +5,8 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
+using Terraria.GameContent.LeashedEntities;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Utilities;
@@ -107,6 +109,10 @@ namespace ExampleMod.Content.NPCs
 
 			// This is so it appears between the frog and the gold frog
 			NPCID.Sets.NormalGoldCritterBestiaryPriority.Insert(NPCID.Sets.NormalGoldCritterBestiaryPriority.IndexOf(ClonedNPCID) + 1, Type);
+
+			// This tells the game how to animate and behave while leashed. While leashed, critters aren't actually NPC and the passed in LeashedCritter contains the AI and animation code to use.
+			// The available default options are in the Terraria.GameContent.LeashedEntities namespace, or a custom LeashedCritter can be used.
+			TECritterAnchor.CritterPrototypes[Type] = WalkerLeashedCritter.Prototype;
 		}
 
 		public override void SetDefaults() {
@@ -214,6 +220,7 @@ namespace ExampleMod.Content.NPCs
 	{
 		public override void SetStaticDefaults() {
 			ItemID.Sets.IsLavaBait[Type] = true; // While this item is not bait, this will require a lava bug net to catch.
+			ItemID.Sets.PlaceTileOnAltUse[Type] = true; // Places a critter anchor with right click
 		}
 
 		public override void SetDefaults() {
@@ -222,17 +229,18 @@ namespace ExampleMod.Content.NPCs
 			// useTurn = true;
 			// useAnimation = 15;
 			// useTime = 10;
-			// maxStack = CommonMaxStack;
 			// consumable = true;
 			// width = 12;
 			// height = 12;
 			// makeNPC = 361;
 			// noUseGraphic = true;
+			// createTile = TileID.CritterAnchor;
+			// value = Item.sellPrice(0, 0, 10); // Sell for 10 silver 
 
 			// Cloning ItemID.Frog sets the preceding values
 			Item.CloneDefaults(ItemID.Frog);
 			Item.makeNPC = ModContent.NPCType<ExampleCritterNPC>();
-			Item.value += Item.buyPrice(0, 0, 30, 0); // Make this critter worth slightly more than the frog
+			Item.value += Item.sellPrice(silver: 5); // Make this critter sell for 5 silver more than the normal frog
 			Item.rare = ItemRarityID.Blue;
 		}
 	}

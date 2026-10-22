@@ -8,7 +8,7 @@
  using System.IO;
  using System.Runtime.InteropServices;
  using System.Threading;
-@@ -15,6 +_,10 @@
+@@ -16,6 +_,10 @@
  
  internal class CaptureCamera : IDisposable
  {
@@ -19,7 +19,7 @@
  	private class CaptureChunk
  	{
  		public readonly Microsoft.Xna.Framework.Rectangle Area;
-@@ -236,6 +_,7 @@
+@@ -239,6 +_,7 @@
  			if (Program.IsFna) {
  				PlatformUtilities.SavePng(filename, width, height, data);
  			}
@@ -27,7 +27,7 @@
  			else {
  				using Bitmap bitmap = new Bitmap(width, height);
  				System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
-@@ -246,6 +_,7 @@
+@@ -249,6 +_,7 @@
  				bitmap.Save(filename, imageFormat);
  				bitmap.Dispose();
  			}
@@ -35,7 +35,7 @@
  
  			return true;
  		}
-@@ -284,6 +_,7 @@
+@@ -287,6 +_,7 @@
  			return;
  		}
  
@@ -43,7 +43,7 @@
  		using Bitmap bitmap = new Bitmap(width, height);
  		System.Drawing.Rectangle rect = new System.Drawing.Rectangle(0, 0, width, height);
  		int elementCount2 = texture.Width * texture.Height * 4;
-@@ -309,6 +_,7 @@
+@@ -312,6 +_,7 @@
  		Marshal.Copy(_outputData, 0, scan, width * height * 4);
  		bitmap.UnlockBits(bitmapData);
  		bitmap.Save(text2, imageFormat);
