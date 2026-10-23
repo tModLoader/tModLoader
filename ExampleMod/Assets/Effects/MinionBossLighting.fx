@@ -17,11 +17,10 @@ float2 uLightMapSize;
 float2 uScreenSize;
 float2 uScreenPosition;
 
-float uOffscreenTiles;
 float uGlobalBrightness;
 
 float2 uDrawOffset;
-float uDrawZoom;
+matrix uDrawMatrix;
 bool uDrawFlipped;
 
 // This is a shader. You are on your own with shaders. Compile shaders in an XNB project.
@@ -33,15 +32,10 @@ float4 PixelShaderFunction(float2 svPos : SV_POSITION, float2 textureUv : TEXCOO
     svPos.y *= uDrawFlipped ? -1 : 1;
     svPos.y += uScreenSize.y * uDrawFlipped;
     
-    float2 screenPosTiles = (svPos + uDrawOffset / uDrawZoom) / TILE_SIZE;
-    screenPosTiles += uOffscreenTiles;
+    float2 screenPosTiles = (svPos + uDrawOffset) / TILE_SIZE;
     float2 lightUv = screenPosTiles / uLightMapSize;
-    {
-        // Center and apply zoom.
-        lightUv -= 0.5;
-        lightUv *= uDrawZoom;
-        lightUv += 0.5;
-    }
+    
+    lightUv = mul(lightUv, uDrawMatrix);
     
     float3 light = tex2D(uLightMap, lightUv).rgb;
     light = saturate(light * uGlobalBrightness);
