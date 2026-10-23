@@ -1,7 +1,8 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
-@@ -1,12 +_,19 @@
+@@ -1,12 +_,43 @@
 +using System;
++using System.Runtime.CompilerServices;
  using Microsoft.Xna.Framework;
  using ReLogic.Threading;
  using Terraria.Utilities;
@@ -13,6 +14,29 @@
 +// from column-major to row-major; see comments below for explanations.
 +public partial class LightMap
  {
++	static LightMap()
++	{
++		Vector3 vec3 = default;
++		Vector4 vec4 = default;
++
++		// ByteOffset only accepts pointers to the same type.
++		ref float vec3Base = ref Unsafe.As<Vector3, float>(ref vec3);
++		ref float vec4Base = ref Unsafe.As<Vector4, float>(ref vec4);
++
++		bool vec3Aligned =
++			Unsafe.ByteOffset(ref vec3Base, ref vec3.X) == 0 &&
++			Unsafe.ByteOffset(ref vec3Base, ref vec3.Y) == 4 &&
++			Unsafe.ByteOffset(ref vec3Base, ref vec3.Z) == 8;
++
++		bool vec4Aligned =
++			Unsafe.ByteOffset(ref vec4Base, ref vec4.X) == 0 &&
++			Unsafe.ByteOffset(ref vec4Base, ref vec4.Y) == 4 &&
++			Unsafe.ByteOffset(ref vec4Base, ref vec4.Z) == 8;
++
++		if (!vec3Aligned || !vec4Aligned)
++			throw new Exception("Vector3 or Vector4 memory layout contract violated");
++	}
++
 +	// TML: Colors are now stored as a Vector4 array instead of a Vector3 array
 +	// with the express purpose of making it easier to write their data to a
 +	// texture.  This may be reverted if FNA ever adds a Vector3 surface
