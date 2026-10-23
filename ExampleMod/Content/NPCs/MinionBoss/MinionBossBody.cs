@@ -7,13 +7,17 @@ using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -96,10 +100,17 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		// This will result in "The Minion Boss and his minions have been defeated!" instead of just "Minion Boss has been defeated!" being shown in chat when this boss is defeated.
 		public override LocalizedText DeathMessage => Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(this.GetLocalization("BossFightName"));
 
+		private static Asset<Effect> lightMapShader;
+
 		public override void Load() {
+			if (Main.dedServ) {
+				return;
+			}
+
 			// We want to give it a second boss head icon, so we register one
 			string texture = BossHeadTexture + "_SecondStage"; // Our texture is called "ClassName_Head_Boss_SecondStage"
 			secondStageHeadSlot = Mod.AddBossHeadTexture(texture, -1); // -1 because we already have one registered via the [AutoloadBossHead] attribute, it would overwrite it otherwise
+			lightMapShader = ModContent.Request<Effect>("ExampleMod/Assets/Effects/MinionBossLighting");
 		}
 
 		public override void BossHeadSlot(ref int index) {
@@ -579,6 +590,58 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 					d.noGravity = true;
 				}
 			}
+		}
+
+		public override Color? GetAlpha(Color drawColor) {
+			if (NPC.IsABestiaryIconDummy) {
+				// This is required because we have NPC.alpha = 255, in the bestiary it would look transparent
+				return NPC.GetBestiaryEntryColor();
+			}
+			return Color.White * NPC.Opacity;
+		}
+
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			if (NPC.IsABestiaryIconDummy) {
+				return true;
+			}
+
+			spriteBatch.End();
+
+			GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
+
+			LightMapBuffer buffer = Lighting.GetBufferTexture();
+
+			Effect shader = lightMapShader.Value;
+
+			shader.Parameters["uLightMapTexture"].SetValue(buffer.Texture);
+
+			shader.Parameters["uLightMapSize"].SetValue(buffer.Texture.Size());
+
+			shader.Parameters["uScreenSize"].SetValue(graphicsDevice.Viewport.Bounds.Size());
+			shader.Parameters["uScreenPosition"].SetValue(Main.screenPosition);
+
+			shader.Parameters["uDrawZoom"].SetValue(1f / Main.GameZoomTarget);
+			shader.Parameters["uDrawFlipped"].SetValue(Main.GameViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically));
+
+			Vector2 offset = (buffer.TileArea.TopLeft() * 16f) - Main.screenPosition;
+			shader.Parameters["uDrawOffset"].SetValue(-offset);
+
+			shader.Parameters["uGlobalBrightness"].SetValue(Lighting.GlobalBrightness);
+
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, shader, Main.Transform);
+
+			spriteBatch.Draw(TextureAssets.MagicPixel.Value, graphicsDevice.Viewport.Bounds, Color.White);
+
+			return true;
+		}
+
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			if (NPC.IsABestiaryIconDummy) {
+				return;
+			}
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 		}
 	}
 }
