@@ -18,16 +18,10 @@ public readonly struct LightMapBuffer
 	public required Texture2D Texture { get; init; }
 
 	/// <summary>
-	///		The bounds of the texture with light data.  The X and Y coordinates
-	///		indicate the top-left position of the buffer in tile coordinates,
-	///		and the Width and Height indicate the full area being procesesed.
-	///		<para />
-	///		The light map buffer is subject to two possible kinds of padding:
-	///		1) padding in the allocated color/mask buffers, and 2) padding with
-	///		valid data, but is exempt from further processing (i.e. blurring in
-	///		<see cref="LightingEngine"/>).
-	///		<br />
-	///		Width and Height will exclude the former but, include the latter.
+	///		The bounds of the buffer.  The X and Y coordinates correspond to
+	///		the top-left position of the buffer in tile coordinates, while the
+	///		width and height correspond to the region of valid data in the
+	///		buffer.
 	/// </summary>
 	public required Rectangle TileArea { get; init; }
 }
