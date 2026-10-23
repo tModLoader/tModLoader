@@ -58,29 +58,15 @@ partial class LightMap
 		return new Texture2D(Main.instance.GraphicsDevice, width, height, mipMap: false, format: SurfaceFormat.Vector4);
 	}
 
-	// PERF: If we ever need these to be faster:
-	// private static Vector3 ToVector3(in Vector4 value)
-	//     return *(Vector3*)&value;
-	//
-	// private static void FromVector3(in Vector3 value, ref Vector4 dst)
-	//   *(Vector3*)&dst = value;
-	//
-	// The reason I don't currently do this is it relies on the memory layout
-	// of Vector3 and Vector4 to be Explicit or Sequential, which it currently
-	// isn't.  (In practice, this would probably work fine on 64-bit machines).
-	//
-	// As it currently stands, I don't notice a massive performance impact, so
-	// the JIT likely handles these cases quite well already.
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static Vector3 ToVector3(in Vector4 value)
+	private static Vector3 ToVector3(ref Vector4 value)
 	{
-		return new Vector3(value.X, value.Y, value.Z);
+		return Unsafe.As<Vector4, Vector3>(ref value);
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	private static Vector4 FromVector3(in Vector3 value)
+	private static void FromVector3(Vector3 src, ref Vector4 dst)
 	{
-		return new Vector4(value.X, value.Y, value.Z, 1f);
+		Unsafe.As<Vector4, Vector3>(ref dst) = src;
 	}
 }

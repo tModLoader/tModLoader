@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/Graphics/Light/LightMap.cs
 +++ src/tModLoader/Terraria/Graphics/Light/LightMap.cs
-@@ -4,9 +_,15 @@
+@@ -1,12 +_,19 @@
++using System;
+ using Microsoft.Xna.Framework;
+ using ReLogic.Threading;
+ using Terraria.Utilities;
  
  namespace Terraria.Graphics.Light;
  
@@ -23,11 +27,11 @@
  	public Vector3 this[int x, int y] {
  		get {
 -			return _colors[IndexOf(x, y)];
-+			return ToVector3(_colors[IndexOf(x, y)]);
++			return ToVector3(ref _colors[IndexOf(x, y)]);
  		}
  		set {
 -			_colors[IndexOf(x, y)] = value;
-+			_colors[IndexOf(x, y)] = FromVector3(value);
++			FromVector3(value, ref _colors[IndexOf(x, y)]);
  		}
  	}
  
@@ -51,7 +55,7 @@
  	public void GetLight(int x, int y, out Vector3 color)
  	{
 -		color = _colors[IndexOf(x, y)];
-+		color = ToVector3(_colors[IndexOf(x, y)]);
++		color = ToVector3(ref _colors[IndexOf(x, y)]);
  	}
  
  	public LightMaskMode GetMask(int x, int y) => _mask[IndexOf(x, y)];
@@ -90,7 +94,7 @@
  	}
  
  	private void BlurLine(int startIndex, int endIndex, int stride)
-@@ -189,16 +_,40 @@
+@@ -189,16 +_,45 @@
  		}
  	}
  
@@ -115,7 +119,12 @@
  		}
 +		*/
 +		if (neededSize > _colors.Length) {
-+			_colors = new Vector4[neededSize];
++			// The alpha channels need to be initialized to 1 here because they
++			// aren't touched by setting values elsewhere (since incoming values
++			// are converted from Vector3).
++			_colors = GC.AllocateUninitializedArray<Vector4>(neededSize);
++			Array.Fill(_colors, new Vector4(0f, 0f, 0f, 1f));
++
 +			_mask = new LightMaskMode[neededSize];
 +		}
  
