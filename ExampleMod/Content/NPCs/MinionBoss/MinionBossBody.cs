@@ -607,32 +607,23 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 
 			spriteBatch.End();
 
-			GraphicsDevice graphicsDevice = Main.instance.GraphicsDevice;
-
-			Rectangle viewportSize = graphicsDevice.Viewport.Bounds;
+			GraphicsDevice gd = Main.instance.GraphicsDevice;
+			Rectangle viewportSize = gd.Viewport.Bounds;
 
 			LightMapBuffer buffer = Lighting.GetBufferTexture();
-
 			Effect shader = lightMapShader.Value;
 
 			shader.Parameters["uLightMapTexture"].SetValue(buffer.Texture);
-
 			shader.Parameters["uLightMapSize"].SetValue(buffer.Texture.Size());
 
-			shader.Parameters["uScreenSize"].SetValue(viewportSize.Size());
-			shader.Parameters["uScreenPosition"].SetValue(Main.screenPosition);
+			shader.Parameters["uDrawMatrix"].SetValue(Matrix.Invert(Main.Transform));
 
-			shader.Parameters["uDrawMatrix"].SetValue(/* hi tomat */);
-			shader.Parameters["uDrawFlipped"].SetValue(Main.GameViewMatrix.Effects.HasFlag(SpriteEffects.FlipVertically));
-
-			Vector2 offset = (buffer.TileArea.TopLeft() * 16f) - Main.screenPosition;
-			shader.Parameters["uDrawOffset"].SetValue(-offset);
+			shader.Parameters["uViewportOrigin"].SetValue(new Vector2(gd.Viewport.X, gd.Viewport.Y));
+			shader.Parameters["uDrawOffset"].SetValue(Main.screenPosition - buffer.TileArea.TopLeft() * 16f);
 
 			shader.Parameters["uGlobalBrightness"].SetValue(Lighting.GlobalBrightness);
 
 			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, shader, Main.Transform);
-
-			spriteBatch.Draw(TextureAssets.MagicPixel.Value, viewportSize, Color.White);
 
 			return true;
 		}

@@ -4,9 +4,11 @@ texture uLightMapTexture;
 sampler2D uLightMap = sampler_state
 {
     texture = <uLightMapTexture>;
+
     magfilter = LINEAR;
     minfilter = LINEAR;
     mipfilter = LINEAR;
+
     AddressU = wrap;
     AddressV = wrap;
 };
@@ -14,28 +16,19 @@ sampler2D uLightMap = sampler_state
 #define TILE_SIZE (16.0)
 
 float2 uLightMapSize;
-float2 uScreenSize;
-float2 uScreenPosition;
-
-float uGlobalBrightness;
-
+float2 uViewportOrigin;
 float2 uDrawOffset;
-matrix uDrawMatrix;
-bool uDrawFlipped;
 
-// This is a shader. You are on your own with shaders. Compile shaders in an XNB project.
+float4x4 uDrawMatrix;
+float uGlobalBrightness;
 
 float4 PixelShaderFunction(float2 svPos : SV_POSITION, float2 textureUv : TEXCOORD0, float4 color : COLOR0) : COLOR0
 {
     float4 albedo = tex2D(uTexture, textureUv) * color;
-    
-    svPos.y *= uDrawFlipped ? -1 : 1;
-    svPos.y += uScreenSize.y * uDrawFlipped;
-    
-    float2 screenPosTiles = (svPos + uDrawOffset) / TILE_SIZE;
-    float2 lightUv = screenPosTiles / uLightMapSize;
-    
-    lightUv = mul(lightUv, uDrawMatrix);
+
+    float2 viewportPosition = svPos - uViewportOrigin;
+    float2 drawPosition = mul(float4(viewportPosition, 0.0, 1.0), uDrawMatrix).xy;
+    float2 lightUv = (drawPosition + uDrawOffset) / (TILE_SIZE * uLightMapSize);
     
     float3 light = tex2D(uLightMap, lightUv).rgb;
     light = saturate(light * uGlobalBrightness);
