@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Localization;
@@ -17,22 +18,23 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 	public event EventHandler OnUIButtonPress;
 	public event Action<AWorldGenerationOption> OnAnyOptionStateChange;
 
-	public string ParentName { get; }
+	public ModSpecialSeed Parent { get; }
 
 	public ref bool ToggleOnClick => ref _toggleOnClick;
 	private bool _toggleOnClick = true;
 
-	public (AWorldGenerationOption target, bool after) Ordering { get; internal set; }
-
-	public ModSpecialSeedUIOption(IEnumerable<string> specialSeedNames, IEnumerable<int> specialSeedNumbers, string parentName, LocalizedText description, LocalizedText title, Asset<Texture2D> texture)
+	public ModSpecialSeedUIOption(IEnumerable<string> specialSeedNames, IEnumerable<int> specialSeedNumbers, ModSpecialSeed parent, LocalizedText description, LocalizedText title, Asset<Texture2D> texture)
 	{
 		SpecialSeedNames = specialSeedNames.ToArray();
+		for (int i = 0; i < SpecialSeedNames.Length; i++) {
+			SpecialSeedNames[i] = Regex.Replace(SpecialSeedNames[i].ToLower(), "[^a-z0-9]+", "");
+		}
 		SpecialSeedValues = specialSeedNumbers.ToArray();
 		Description = description;
 		Title = title;
 		Texture = texture;
-		ParentName = parentName;
-		AWorldGenerationOption.OnOptionStateChanged += UpdateOptionState;
+		Parent = parent;
+		OnOptionStateChanged += UpdateOptionState;
 	}
 
 	public void OnClick()

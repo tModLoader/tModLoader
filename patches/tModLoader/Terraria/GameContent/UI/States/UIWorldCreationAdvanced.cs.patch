@@ -54,7 +54,7 @@
  	{
  		List<GroupOptionButton<AWorldGenerationOption>> list = new List<GroupOptionButton<AWorldGenerationOption>>();
 -		foreach (AWorldGenerationOption option in WorldGenerationOptions.Options) {
-+		foreach (AWorldGenerationOption option in SeedLoader.AddModSeedOptions(WorldGenerationOptions.Options)) {
++		foreach (AWorldGenerationOption option in SeedLoader.SpecialSeedOptions) {
  			option.Load();
  			list.Add(CreateButton(new WorldSpecialSeedOption {
  				Seed = option,

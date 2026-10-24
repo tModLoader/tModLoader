@@ -570,12 +570,21 @@ internal static class WorldIO
 				["name"] = seed.Name
 			});
 		}
+		foreach ((string mod, string name) unloadedSeed in UnloadedSeeds) {
+			list.Add(new TagCompound() {
+				["mod"] = unloadedSeed.mod,
+				["name"] = unloadedSeed.name
+			});
+		}
 
 		return list;
 	}
 
+	private static List<(string mod, string name)> UnloadedSeeds = new List<(string mod, string name)>();
+
 	internal static void LoadModSeeds(IList<TagCompound> list)
 	{
+		UnloadedSeeds.Clear();
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSecretSeed secretSeed)) {
 				secretSeed.Enabled = true;
@@ -583,7 +592,9 @@ internal static class WorldIO
 			}
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSpecialSeed specialSeed)) {
 				specialSeed.Enabled = true;
+				continue;
 			}
+			UnloadedSeeds.Add((tag.GetString("mod"), tag.GetString("name")));
 		}
 	}
 
@@ -609,18 +620,11 @@ internal static class WorldIO
 			return;
 		}
 
-		BitsByte seedsByte = (byte)0;
-		int seedsByteIndex = 0;
+		BitWriter seedWriter = new BitWriter();
 		for (int i = 0; i < SeedLoader.allSeeds.Count; i++) {
-			seedsByte[seedsByteIndex] = SeedLoader.allSeeds[i].Enabled;
-			seedsByteIndex++;
-			if (seedsByteIndex < 8 || i >= SeedLoader.allSeeds.Count - 1)
-				continue;
-			writer.Write(seedsByte);
-			seedsByte = (byte)0;
-			seedsByteIndex = 0;
+			seedWriter.WriteBit(SeedLoader.allSeeds[i].Enabled);
 		}
-		writer.Write(seedsByte);
+		seedWriter.Flush(writer);
 	}
 
 	public static void ReceiveModSeeds(BinaryReader reader)
@@ -628,15 +632,9 @@ internal static class WorldIO
 		if (SeedLoader.allSeeds.Count == 0) {
 			return;
 		}
-		BitsByte seedsByte = reader.ReadByte();
-		int seedsByteIndex = 0;
+		BitReader seedReader = new BitReader(reader);
 		for (int i = 0; i < SeedLoader.allSeeds.Count; i++) {
-			SeedLoader.allSeeds[i].Enabled = seedsByte[seedsByteIndex];
-			seedsByteIndex++;
-			if (seedsByteIndex < 8)
-				continue;
-			seedsByte = reader.ReadByte();
-			seedsByteIndex = 0;
+			SeedLoader.allSeeds[i].Enabled = seedReader.ReadBit();
 		}
 	}
 
@@ -789,6 +787,9 @@ internal static class WorldIO
 		foreach (ModSpecialSeed seed in SeedLoader.specialSeeds) {
 			if(seed.Enabled)
 				list.Add(seed.FullName);
+		}
+		foreach ((string mod, string name) unloadedSeed in UnloadedSeeds) {
+			list.Add($"{unloadedSeed.mod}/{unloadedSeed.name}");
 		}
 
 		return list;

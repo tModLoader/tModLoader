@@ -371,6 +371,7 @@ public static class ModContent
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
+		SeedLoader.FinishSetup();
 		AchievementManager.FinishSetup();
 		Main.AchievementAdvisor?.FinishSetup();
 

@@ -23,37 +23,12 @@ public abstract class ModSecretSeed : ModSeedType
 		get => _seedCode;
 		set {
 			_seedCode = value;
-			if (CodeEncrypted) {
-				SecretSeed.TextThatWasUsedToUnlock = SeedCode;
-				SecretSeed.Code = value;
-				return;
-			}
 			_seedCode = Regex.Replace(value, "[^a-zA-Z0-9 ]+", "");
 			SecretSeed.Code = Secrets.ToSecret(Regex.Replace(value.ToLower(), "[^a-z0-9]+", ""));
 			SecretSeed.TextThatWasUsedToUnlock = SeedCode;
 		}
 	}
 	private string _seedCode;
-
-	/// <summary>
-	/// Setting this to true will make the game presume that <see cref="SeedCode"/> has already been encrypted and doesn't need to be encrypted again.
-	/// <br/><br/>Useful if you want to prevent players from finding out the seed's code by looking at the source.
-	/// <br/><br/>Only use if you believe both: <br/>1) that your players will look at the source code to find the secret seed <br/>2) that your
-	/// players will still look for the seed after finding it encrypted in the source code.
-	/// </summary>
-	public bool CodeEncrypted {
-		get => _codeEncrypted;
-		set {
-			if (value && !_codeEncrypted) {
-				SecretSeed.Code = _seedCode;
-			}
-			if (!value && _codeEncrypted) {
-				SecretSeed.Code = Secrets.ToSecret(_seedCode);
-			}
-			_codeEncrypted = value;
-		}
-	}
-	private bool _codeEncrypted;
 
 	public bool Known {
 		get => (AutoUnlock && !SecretSeedsTracker.ProcessedConfig) || SecretSeedsTracker.SeedsForInterface.Contains(SecretSeed);

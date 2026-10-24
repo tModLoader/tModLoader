@@ -22,6 +22,10 @@ public class ExampleSpecialSeed : ModSpecialSeed
 		icon = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_Icon");
 	}
 
+	public override Position GetDefaultPosition() {
+		return new Before(WorldGenerationOptions.Get<WorldSeedOption_Skyblock>());
+	}
+
 	public override IEnumerable<string> SpecialSeedNames()
 	{
 		yield return "example";
@@ -68,7 +72,7 @@ public class ExampleSpecialSeedPass : GenPass
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.worldSurface; j++) {
 				Tile tile = Main.tile[i, j];
-				if (!TileID.Sets.Grass[tile.TileType] && !TileID.Sets.Dirt[tile.TileType]) {
+				if (!tile.HasTile || !TileID.Sets.Grass[tile.TileType] && !TileID.Sets.Dirt[tile.TileType] ) {
 					continue;
 				}
 

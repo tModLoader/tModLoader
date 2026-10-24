@@ -23,6 +23,11 @@ public static class SeedLoader
 
 	internal static readonly IList<ModSeedType> allSeeds = new List<ModSeedType>();
 
+	internal static AWorldGenerationOption FirstVanillaSeed = WorldGenerationOptions.Options.First(opt => opt != WorldGenerationOptions.Get<WorldSeedOption_Normal>());
+	internal static AWorldGenerationOption LastVanillaSeed => WorldGenerationOptions.Options.Last();
+
+	private static readonly List<AWorldGenerationOption> VanillaOptions = WorldGenerationOptions.Options.ToList();
+
 	internal static void Add(ModSpecialSeed modSpecialSeed)
 	{
 		specialSeeds.Add(modSpecialSeed);
@@ -79,7 +84,7 @@ public static class SeedLoader
 		foreach (ModSpecialSeed seed in specialSeeds) {
 			if (!seed.UIOption.Enabled || seed.WorldGenMenu == null)
 				continue;
-			float menuWeight = Math.Clamp(seed.GetMenuWeight(),0f,1f);
+			float menuWeight = seed.GetMenuWeight();
 			if (menuWeight < highestWeight) {
 				continue;
 			}
@@ -221,39 +226,70 @@ public static class SeedLoader
 		return option != null;
 	}
 
-	internal static List<AWorldGenerationOption> AddModSeedOptions(IEnumerable<AWorldGenerationOption> genOptions)
+	internal static List<AWorldGenerationOption> SpecialSeedOptions = [];
+
+	internal static void FinishSetup()
 	{
-		List<ModSpecialSeed> toBeAdded = new List<ModSpecialSeed>(specialSeeds);
-		List<AWorldGenerationOption> genOptionsPlusModded = new List<AWorldGenerationOption>(genOptions);
-		//Add seeds that have no sorting logic/invalid sorting logic first so that the sorter doesn't get stuck.
-		for (int i = 0; i < toBeAdded.Count; i++) {
-			if (toBeAdded[i].Ordering.target != null) {
-				continue;
-			}
-			if (genOptionsPlusModded.Contains(toBeAdded[i].Ordering.target)) {
-				continue;
-			}
-			if (specialSeeds.Any(seed => seed.UIOption == toBeAdded[i].Ordering.target)) {
-				continue;
-			}
-			genOptionsPlusModded.Add(toBeAdded[i].UIOption);
-			toBeAdded.RemoveAt(i);
-			i -= 1;
-		}
-		while (toBeAdded.Count > 0) {
-			for (int i = 0; i < toBeAdded.Count; i++) {
-				int target = genOptionsPlusModded.FindIndex(sortTarget => sortTarget == toBeAdded[i].Ordering.target);
-				if (target == -1) {
-					continue;
+		var sortingSlots = new List<AWorldGenerationOption>[VanillaOptions.Count + 1];
+		for (int i = 0; i < sortingSlots.Length; ++i)
+			sortingSlots[i] = [];
+
+		foreach (ModSpecialSeed specialSeed in specialSeeds) {
+			var position = specialSeed.GetDefaultPosition();
+
+			switch (position) {
+				case ModSpecialSeed.After after: {
+					int afterIndex = VanillaOptions.IndexOf(after.Option);
+					if (afterIndex >= VanillaOptions.Count || afterIndex == -1)
+						throw BlameSpecialSeedException(new ArgumentException(
+							$"ModSpecialSeed {specialSeed.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
+
+					sortingSlots[afterIndex + 1].Add(specialSeed.UIOption);
+					break;
 				}
-				genOptionsPlusModded.Insert(target + (toBeAdded[i].Ordering.after ? 1 : 0), toBeAdded[i].UIOption);
-				toBeAdded.RemoveAt(i);
-				i -= 1;
+				case ModSpecialSeed.Before before: {
+					int beforeIndex = VanillaOptions.IndexOf(before.Option);
+					if (beforeIndex >= VanillaOptions.Count || beforeIndex == -1)
+						throw BlameSpecialSeedException(new ArgumentException(
+							$"ModSpecialSeed {specialSeed.FullName} did not refer to a vanilla achievement in GetDefaultPosition()"));
+
+					sortingSlots[beforeIndex].Add(specialSeed.UIOption);
+					break;
+				}
+				default: {
+					var ex = new ArgumentException($"ModSpecialSeed {specialSeed} has unknown Position {position}");
+					throw BlameSpecialSeedException(ex);
+				}
+			}
+
+			Exception BlameSpecialSeedException(Exception ex)
+			{
+				if (specialSeed is ModSpecialSeed moddedSeed)
+					ex.Data["mod"] = moddedSeed.Mod.Name;
+				return ex;
 			}
 		}
 
-		return genOptionsPlusModded;
+		SpecialSeedOptions.Clear();
+
+		for (int i = 0; i < VanillaOptions.Count + 1; i++) {
+			var elements = sortingSlots[i];
+			var sort = new TopoSort<AWorldGenerationOption>(elements,
+				l => (l as ModSpecialSeedUIOption)?.Parent.GetModdedConstraints()?.OfType<ModSpecialSeed.After>().Select(a => a.Option).Where(elements.Contains) ?? [],
+				l => (l as ModSpecialSeedUIOption)?.Parent.GetModdedConstraints()?.OfType<ModSpecialSeed.Before>().Select(b => b.Option).Where(elements.Contains) ?? []);
+
+			foreach (AWorldGenerationOption option in sort.Sort()) {
+				SpecialSeedOptions.Add(option);
+			}
+
+			if(i < VanillaOptions.Count)
+				SpecialSeedOptions.Add(VanillaOptions[i]);
+		}
+
+
 	}
+
+
 
 	public static AWorldGenerationOption GetOptionFromSeedText(string seed)
 	{
@@ -271,11 +307,10 @@ public static class SeedLoader
 
 			string[] candidateSeedNames = seedCandidate.UIOption.SpecialSeedNames;
 			foreach (string seedName in candidateSeedNames) {
-				string formattedSeedName = Regex.Replace(seedName.ToLower(), "[^a-z0-9]+", "");
-				if (string.IsNullOrEmpty(formattedSeedName)) {
+				if (string.IsNullOrEmpty(seedName)) {
 					continue;
 				}
-				if (formattedSeedName != seedText) {
+				if (seedName != seedText) {
 					continue;
 				}
 				return seedCandidate.UIOption;

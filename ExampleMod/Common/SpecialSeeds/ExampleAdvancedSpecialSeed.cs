@@ -19,9 +19,12 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 		icon = ModContent.Request<Texture2D>($"ExampleMod/Common/SpecialSeeds/{Name}_Icon");
 	}
 
-	public override void PostSetupContent() {
-		SortAfterModdedSeed<ExampleSpecialSeed>();
-		// alternatively SortAfter(ModContent.GetInstance<ExampleSpecialSeed>());
+	public override Position GetDefaultPosition() {
+		return new Before(WorldGenerationOptions.Get<WorldSeedOption_Skyblock>());
+	}
+
+	public override IEnumerable<Position> GetModdedConstraints() {
+		yield return new After(ModContent.GetInstance<ExampleSpecialSeed>().UIOption);
 	}
 
 	public override IEnumerable<string> SpecialSeedNames()

@@ -1801,7 +1801,7 @@
  	private static void DedServ_SeedFlagsMenu()
  	{
 -		List<AWorldGenerationOption> list = WorldGenerationOptions.Options.ToList();
-+		List<AWorldGenerationOption> list = SeedLoader.AddModSeedOptions(WorldGenerationOptions.Options);
++		List<AWorldGenerationOption> list = SeedLoader.SpecialSeedOptions;
  		foreach (AWorldGenerationOption item in list) {
  			item.Load();
  		}

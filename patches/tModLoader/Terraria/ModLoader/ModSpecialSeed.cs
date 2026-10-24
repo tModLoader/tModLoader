@@ -42,7 +42,6 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <summary>
 	/// Is invoked when multiple ModSpecialSeeds with their own menus are together in a generating world, and the game needs to pick a WorldGenMenu to use.
 	/// Analogously, if WorldGenMenus were competing in a wrestling match, this would be how likely the WorldGenMenu should win within its weight class.
-	/// Is intentionally bounded at a max of 100% (1) to reduce complexity. Defaults to 50% (0.5).
 	/// </summary>
 	public virtual float GetMenuWeight() => 0.5f;
 
@@ -73,84 +72,6 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <br/><br/>Defaults to true.
 	/// </summary>
 	public ref bool ToggleOnClick => ref _uIOption.ToggleOnClick;
-
-	#region Sorting
-
-	// Use the variable in ModSpecialSeedUIOption in order to catch ordering loops.
-	public (AWorldGenerationOption target, bool after) Ordering { get => _uIOption.Ordering; internal set => _uIOption.Ordering = value; }
-
-	/// <inheritdoc cref="SortBefore(AWorldGenerationOption)"/>
-	public void SortBeforeVanillaSeed<T>() where T : AWorldGenerationOption
-	{
-		SortBefore(WorldGenerationOptions.Get<T>());
-	}
-
-	/// <inheritdoc cref="SortBefore(AWorldGenerationOption)"/>
-	public void SortBeforeModdedSeed<T>() where T : ModSpecialSeed
-	{
-		SortBefore(ModContent.GetInstance<T>().UIOption);
-	}
-
-	/// <inheritdoc cref="SortBefore(AWorldGenerationOption)"/>
-	/// <param name="option">The ModSpecialSeed instance to sort this seed before.</param>
-	public void SortBefore(ModSpecialSeed option)
-	{
-		SortBefore(option.UIOption);
-	}
-
-	/// <summary>
-	/// Allows you to specify the seed that this seed's option should be placed before.
-	/// <br/><br/>Note that this only affects the ordering of the seed buttons in the seed menu, not the seed's actual loading priority.
-	/// </summary>
-	public void SortBefore(AWorldGenerationOption option)
-	{
-		SetOrdering(option,false);
-	}
-
-	/// <inheritdoc cref="SortAfter(AWorldGenerationOption)"/>
-	public void SortAfterVanillaSeed<T>() where T : AWorldGenerationOption
-	{
-		SortAfter(WorldGenerationOptions.Get<T>());
-	}
-
-	/// <inheritdoc cref="SortAfter(AWorldGenerationOption)"/>
-	public void SortAfterModdedSeed<T>() where T : ModSpecialSeed
-	{
-		SortAfter(ModContent.GetInstance<T>().UIOption);
-	}
-
-	/// <inheritdoc cref="SortAfter(AWorldGenerationOption)"/>
-	/// <param name="option">The ModSpecialSeed instance to sort this seed after.</param>
-	public void SortAfter(ModSpecialSeed option)
-	{
-		SortAfter(option.UIOption);
-	}
-
-	/// <summary>
-	/// Allows you to specify the seed that this seed's option should be placed after.
-	/// <br/><br/>Note that this only affects the ordering of the seed buttons in the seed menu, not the seed's actual loading priority.
-	/// </summary>
-	public void SortAfter(AWorldGenerationOption option)
-	{
-		SetOrdering(option, true);
-	}
-
-	private void SetOrdering(AWorldGenerationOption target, bool after)
-	{
-		Ordering = (target, after);
-		ModSpecialSeedUIOption moddedTarget = null;
-		if (target is ModSpecialSeedUIOption castTarget) {
-			moddedTarget = castTarget;
-		}
-		if (moddedTarget == null) {
-			return;
-		}
-		if (moddedTarget.Ordering.target == UIOption) {
-			throw new Exception("Special seed ordering loop!");
-		}
-	}
-
-	#endregion
 
 	/// <summary>
 	/// Gets the icon used to represent worlds with this seed enabled.
@@ -184,11 +105,10 @@ public abstract class ModSpecialSeed : ModSeedType
 		List<AWorldGenerationOption> incompatibilities = GetIncompatibilities().ToList();
 		int sharedIndex = dependencies.FindIndex((dependent) => incompatibilities.Contains(dependent));
 		if (sharedIndex != -1) {
-			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.ParentName : "")}) that is both a dependency and an incompatibility.");
+			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.Parent.FullName : "")}) that is both a dependency and an incompatibility.");
 		}
 		Dependencies = dependencies;
 		Incompatibilities = incompatibilities;
-		PostSetupContent();
 	}
 
 	public List<AWorldGenerationOption> Dependencies { get; private set; }
@@ -198,7 +118,7 @@ public abstract class ModSpecialSeed : ModSeedType
 
 	private void SetupWorldGenerationOption()
 	{
-		_uIOption = new ModSpecialSeedUIOption(SpecialSeedNames(), SpecialSeedNumbers(), FullName, Description, DisplayName, textureAsset);
+		_uIOption = new ModSpecialSeedUIOption(SpecialSeedNames(), SpecialSeedNumbers(), this, Description, DisplayName, textureAsset);
 		_uIOption.OnUIButtonPress += OnUIButtonPress;
 		_uIOption.OnAnyOptionStateChange += OnAnyOptionStateChange;
 	}
@@ -334,9 +254,50 @@ public abstract class ModSpecialSeed : ModSeedType
 	public virtual void ModifyWorldIconDrawParams(bool isCrimson, bool isHardmode, ref Rectangle frame) { }
 
 	/// <summary>
-	/// Allows you to run code after the mod's content has been setup.<br/>
-	/// Use <see cref="SortBefore(AWorldGenerationOption)"/> and <see cref="SortAfter(AWorldGenerationOption)"/> in this hook to implement proper seed button sorting after all the mod's seeds have been loaded.
+	/// Returns the seed's default position in regard to vanilla's seed ordering. Make use of e.g. <see cref="Before"/>/<see cref="After"/>, and provide a seed UI option (for example <c>new After(WorldGenerationOptions.Get&lt;WorldSeedOption_NotTheBees&gt;());</c>). You can also use <see cref="BeforeFirstVanillaSeed"/> or <see cref="AfterLastVanillaSeed"/> to put your seed at the start/end of the vanilla seed order.<br/><br/>
+	/// <b>NOTE:</b> The position must specify a vanilla <see cref="AWorldGenerationOption"/> otherwise an exception will be thrown. Use <see cref="GetModdedConstraints"/> to order modded seeds.<br/><br/>
+	/// By default, this hook positions this special seed after all vanilla seeds.
 	/// </summary>
-	public virtual void PostSetupContent() { }
+	public virtual Position GetDefaultPosition() => AfterLastVanillaSeed;
+
+	/// <summary>
+	/// Modded special seeds are placed between vanilla seeds via <see cref="GetDefaultPosition"/> and, by default, are sorted in load order.<br/>
+	/// This hook allows you to sort this special seed before/after other modded seeds that were placed between the same two vanilla seeds.<br/>
+	/// Example:
+	/// <para>
+	/// <c>yield return new After(ModContent.GetInstance&lt;ExampleSpecialSeed&gt;().UIOption);</c>
+	/// </para>
+	/// By default, this hook returns <see langword="null"/>, which indicates that this special seed has no modded ordering constraints.
+	/// </summary>
+	public virtual IEnumerable<Position> GetModdedConstraints() => null;
+	#endregion
+
+	#region Sort Positions
+
+	public abstract class Position;
+
+	public static Position BeforeFirstVanillaSeed => new Before(SeedLoader.FirstVanillaSeed);
+
+	public static Position AfterLastVanillaSeed => new After(SeedLoader.LastVanillaSeed);
+
+	public sealed class Before : Position
+	{
+		public AWorldGenerationOption Option { get; }
+
+		public Before(AWorldGenerationOption option)
+		{
+			Option = option;
+		}
+	}
+
+	public sealed class After : Position
+	{
+		public AWorldGenerationOption Option { get; }
+
+		public After(AWorldGenerationOption option)
+		{
+			Option = option;
+		}
+	}
 	#endregion
 }

@@ -15,7 +15,7 @@ public class ExampleSecretSeed : ModSecretSeed
 {
 	public override void SetStaticDefaults() {
 		SeedCode = "examplesecret";
-		Known = true;
+		Known = true; // Unlock this seed automatically so that it appears in the secret seeds menu without needing to put it in first.
 	}
 
 	//Fill the world with large circles made of ExampleBlock.
