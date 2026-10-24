@@ -1,13 +1,38 @@
 --- src/TerrariaNetCore/Terraria/MapRenderer.cs
 +++ src/tModLoader/Terraria/MapRenderer.cs
-@@ -17,8 +_,8 @@
+@@ -14,13 +_,24 @@
+ {
+ 	public static readonly int textureMaxWidth;
+ 	public static readonly int textureMaxHeight;
++	/*
  	private static readonly int numTargetsX;
  	private static readonly int numTargetsY;
++	*/
++	private static int numTargetsX; // TML: not readonly
++	private static int numTargetsY; // TML: not readonly
  	private static readonly Color[] _mapColorCacheArray;
--	private static RenderTarget2D mapSectionTexture;
--	private static readonly RenderTarget2D[,] mapTarget;
-+	public static RenderTarget2D mapSectionTexture; // TML: public
-+	public static readonly RenderTarget2D[,] mapTarget; // TML: public
++	/*
+ 	private static RenderTarget2D mapSectionTexture;
+ 	private static readonly RenderTarget2D[,] mapTarget;
  	private static readonly bool[,] initMap;
  	private static readonly bool[,] mapWasContentLost;
++	*/
++	public static RenderTarget2D mapSectionTexture; // TML: public
++	private static RenderTarget2D[,] _mapTarget;
++	public static RenderTarget2D[,] mapTarget => _mapTarget; // TML: public, not readonly, getter
++	private static bool[,] initMap; // TML: not readonly
++	private static bool[,] mapWasContentLost; // TML: not readonly
  	private static readonly List<Point16>[,] changeQueues;
+ 	private static readonly int ChangeRefreshThreshold;
+ 
+@@ -49,7 +_,10 @@
+ 		numTargetsX = 5;
+ 		numTargetsY = 2;
+ 		_mapColorCacheArray = new Color[30000];
++		_mapTarget = new RenderTarget2D[numTargetsX, numTargetsY];
++		/*
+ 		mapTarget = new RenderTarget2D[numTargetsX, numTargetsY];
++		*/
+ 		initMap = new bool[numTargetsX, numTargetsY];
+ 		mapWasContentLost = new bool[numTargetsX, numTargetsY];
+ 		changeQueues = new List<Point16>[numTargetsX, numTargetsY];
