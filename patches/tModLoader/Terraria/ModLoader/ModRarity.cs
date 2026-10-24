@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Graphics;
 
 namespace Terraria.ModLoader;
 
@@ -29,4 +31,10 @@ public abstract class ModRarity : ModType
 	/// <param name="valueMult">The combined stat and prefix value scale. Can be used to implement super high or low value rarity adjustments outside normal vanilla ranges</param>
 	/// <returns>The adjusted rarity type. Return <code>Type</code> for no change.</returns>
 	public virtual int GetPrefixedRarity(int offset, float valueMult) => Type;
+
+	public virtual bool PreDrawText(SpriteBatch sb, ref RarityTextContext textContext) {
+		return true;
+	}
+
+	public virtual void PostDrawText(SpriteBatch sb, in RarityTextContext textContext) { }
 }
