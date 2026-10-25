@@ -6,6 +6,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.IO;
 using Terraria.Localization;
@@ -322,6 +323,24 @@ public static class SeedLoader
 
 	internal static void AddModdedSecretSeeds(List<SecretSeed> list)
 	{
+		foreach (string seedCode in SecretSeedsTracker.ModSeedsForConfig) {
+			string[] components = seedCode.Split("::");
+			string name = components[0];
+			string unlockText = components[1];
+			if (ModContent.TryFind(name, out ModSecretSeed seed)) {
+				if (seed.AutoUnlock)
+					continue; // Filter out auto-unlocked seeds from the saved seeds list.
+				seed.SecretSeed.TextThatWasUsedToUnlock = unlockText;
+				list.Add(seed.SecretSeed);
+				continue;
+			}
+			string mod = name.Split('/')[0];
+			if (ModLoader.TryGetMod(mod, out Mod loadedMod)) {
+				continue; // If the mod is loaded and the seed isn't present, then there's no reason to track the seed.
+			}
+			SecretSeedsTracker.UnloadedModSeeds.Add(seedCode);
+		}
+		SecretSeedsTracker.RefreshModConfigSeeds(); // Do this before adding auto-unlocked seeds since they don't need to be saved.
 		foreach (ModSecretSeed secretSeed in secretSeeds) {
 			if (!secretSeed.AutoUnlock)
 				continue;

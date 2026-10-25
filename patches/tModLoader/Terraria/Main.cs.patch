@@ -1289,10 +1289,11 @@
  		configuration.Put("MouseColor", new Dictionary<string, byte> {
  			{ "R", mouseColor.R },
  			{ "G", mouseColor.G },
-@@ -3642,6 +_,9 @@
+@@ -3642,6 +_,10 @@
  		configuration.Put("ShowLoadoutShareHint", Player.Settings.ShowLoadoutShareHint);
  		configuration.Put("PortraitPreference", DialoguePortraitPreference);
  		configuration.Put("SecretSeeds", SecretSeedsTracker.GetStringsToSave());
++		configuration.Put("ModSecretSeeds", SecretSeedsTracker.ModSeedsForConfig); // Added by TML
 +
 +		ModLoader.ModLoader.SaveConfiguration();
 +
@@ -1345,6 +1346,14 @@
  
  		configuration.Get("SmartCursorToggle", ref cSmartCursorModeIsToggleAndNotHold);
  		configuration.Get("MapEnabled", ref mapEnabled);
+@@ -3939,6 +_,7 @@
+ 		catch (JsonReaderException arg) {
+ 			Console.WriteLine("Failed to parse configuration entry for secret seed list. {0}", arg);
+ 		}
++		SecretSeedsTracker.ParseModdedSeeds(configuration.Get("ModSecretSeeds", new JArray()));
+ 
+ 		if (currentValue <= 162) {
+ 			bool currentValue9 = false;
 @@ -4055,6 +_,8 @@
  			};
  		}
