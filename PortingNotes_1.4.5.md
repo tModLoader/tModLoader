@@ -152,7 +152,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Double check that allDamage and allCrit are used in new armor set code
 - GetNanoFlaskDamageBoost in ProcessHitAgainstNPC might not be accounted for correctly. 
 - New PickAmmo_PickAmmoItem, PickAmmo_IterateRange, PlayerAmmoCyclingMode. ItemLoader.CanChooseAmmo patches need to be reworked 
-- Nano bullet might need some changes for the new 25% damage increase 
 - New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
 - Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
 - Not sure about VanillaOnHitEffectsWhipsStart label location
