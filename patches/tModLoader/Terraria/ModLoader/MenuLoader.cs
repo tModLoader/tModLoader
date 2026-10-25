@@ -35,6 +35,8 @@ public static class MenuLoader
 
 	private static ModMenu switchToMenu = null;
 
+	private static ModMenu preGenerationMenu = null;
+
 	internal static bool loading = true;
 
 	internal static string LastSelectedModMenu = MenutML.FullName;
@@ -178,7 +180,12 @@ public static class MenuLoader
 		}
 
 		if (WorldGen.generatingWorld && SeedLoader.CurrentWorldGenMenu != null && SeedLoader.CurrentWorldGenMenu != currentMenu) {
+			preGenerationMenu = currentMenu;
 			switchToMenu = SeedLoader.CurrentWorldGenMenu;
+		}
+		else if (preGenerationMenu != null && !WorldGen.generatingWorld) {
+			switchToMenu = preGenerationMenu;
+			preGenerationMenu = null;
 		}
 
 		if (Main.menuMode == 0) {

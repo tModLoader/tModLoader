@@ -71,7 +71,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// Can be used with <see cref="OnSeedButtonPress"/> to have whether this seed's UI option is enabled be dependent on custom logic.
 	/// <br/><br/>Defaults to true.
 	/// </summary>
-	public ref bool ToggleOnClick => ref _uIOption.ToggleOnClick;
+	public bool ToggleOnClick { get; protected set; } = true;
 
 	/// <summary>
 	/// Gets the icon used to represent worlds with this seed enabled.
@@ -90,6 +90,7 @@ public abstract class ModSpecialSeed : ModSeedType
 		textureAsset = ModContent.Request<Texture2D>(Texture);
 		SetupWorldGenerationOption();
 		SetStaticDefaults();
+		_uIOption.ToggleOnClick = ToggleOnClick;
 	}
 
 	internal void Unsubscribe()
