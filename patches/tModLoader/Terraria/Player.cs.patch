@@ -8278,6 +8278,24 @@
  	}
  
  	private Item PickAmmo_IterateRange(Item sItem, Item[] items, int[] slotIterationOrder, bool allowAmmoCycling = true)
+@@ -44898,7 +_,7 @@
+ 			array = slotIterationOrder;
+ 			foreach (int num3 in array) {
+ 				Item item = items[num3];
+-				if (item.ammo == sItem.useAmmo && item.stack > 0)
++				if (item.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item, this))
+ 					num2++;
+ 			}
+ 
+@@ -44913,7 +_,7 @@
+ 		array = slotIterationOrder;
+ 		foreach (int num4 in array) {
+ 			Item item2 = items[num4];
+-			if (item2.ammo == sItem.useAmmo && item2.stack > 0) {
++			if (item2.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item2, this)) {
+ 				if (num == 0)
+ 					return item2;
+ 
 @@ -44973,7 +_,7 @@
  					NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  				}
