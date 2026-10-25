@@ -607,6 +607,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
+* `BuffID.Sets.GrantImmunityWith` now includes the vanilla 1.4.5 NPC immunity rules: `Poisoned` grants immunity to `Bleeding` and `Hemorrhage`, and `Ichor` grants immunity to `BrokenArmor`. Modded NPCs inherit these defaults too. To keep an NPC vulnerable to an inherited debuff, set `NPCID.Sets.SpecificDebuffImmunity[Type][buffType] = false` in `SetStaticDefaults`.
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
   * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
