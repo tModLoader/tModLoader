@@ -612,8 +612,8 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
-    RenameStaticField("Terraria.ID.ArmorIDs.Head.Sets", from: "DrawHead", to: "HidesHead").FollowBy(InvertAssignedBool);
-    
+		RenameStaticField("Terraria.ID.ArmorIDs.Head.Sets", from: "DrawHead", to: "HidesHead").FollowBy(InvertAssignedBool);
+
 		RenameMethod("Terraria.Player", "ChooseAmmo", "PickAmmo_PickAmmoItem");
 		
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
