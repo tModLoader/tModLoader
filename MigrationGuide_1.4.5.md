@@ -506,6 +506,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 
 All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise indicated.
 
+* 🤖: `ArmorID.Head.Sets.DrawHead` -> `ArmorID.Head.Sets.HidesHead`. Meaning and default value have inverted.
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.

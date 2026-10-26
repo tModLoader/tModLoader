@@ -40,7 +40,7 @@ public class GlobalItemTest : GlobalItem
 	public override void OnCreated(Item item, ItemCreationContext context) { }
 
 #if COMPILE_ERROR
-	public override bool DrawHead(int head)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false */ { return true; /* Empty */ }
+	public override bool DrawHead(int head)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[head] = true if you returned false */ { return true; /* Empty */ }
 
 	public override bool DrawBody(int body)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[body] = true if you returned false */ { return true; /* Empty */ }
 
