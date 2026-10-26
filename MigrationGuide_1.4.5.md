@@ -455,6 +455,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
   * Use the new `ModProjectile.PreTryDespawning` hook to set any flags necessary to adjust `ModProjectile.OnKill` behavior to support picking up projectiles.
 * `ProjectileID.Sets.Explosive` and `PrepareBombToBlow` behavior have changed. `Projectile.Kill()` will now automatically call `PrepareBombToBlow` if `Projectile.ai[0]` isn't `1000` (see above). Replace `Projectile.PrepareBombToBlow` with `Projectile.Kill`. Explosives should also set `Projectile.timeLeft = 5;` in `AI` for projectiles not owned by the client to facilitate better multiplayer sync behavior. Modders should consult relevant ExampleMod `ModProjectile` examples and adjust accordingly.
 * Zooming with items like Rifle Scope and Sniper Rifle, and Binoculars has changed. There is now a "Forward Zoom" toggle in the controls menu to change how zooming is triggered (Always On, Always Off, Click to Toggle, and Hold to Use). As such, `ModPlayer.ModifyZoom` has been adjusted with a new `needsMouseRight` parameter. Remove all checks for the right mouse being held down to correctly support these new control options.
+* An ammo cycling (given by Chaos Cylinder) feature has been added.
 
 ### Example Mod
 
@@ -570,6 +571,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `NPC.ShouldBestiaryGirlBeLycantrope` now static.
 * ⚙️: `NPC.SpawnWithHigherTime` removed. No longer used.
 * 🤖: `Player.AddBuff` changed. The `quiet` and `foodHack` parameters have been removed.
+* 🤖: `Player.ChooseAmmo` -> `Player.PickAmmo_PickAmmoItem`
 * 🤖: `Player.GetItem` changed. The `plr` parameter has been removed.
 * 🤖: `Player.IsProjectileInteractibleAndInInteractionRange` -> `Player.IsProjectileInteractableAndInInteractionRange`
 * ⚙️: `Player.CheckForGoodTeleportationSpot` removed. Use `Utils.CheckForGoodTeleportationSpot` instead.
@@ -607,7 +609,6 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
-* `(ModItem|GlobalItem).CanChooseAmmo` and `CanBeChosenAsAmmo` are now respected by the 1.4.5 ammo-selection logic, including ammo cycling. Only accepted ammo stacks participate in cycling. These hooks can be called more than once per selection while counting and selecting eligible stacks; they should return a consistent result without side effects.
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
   * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
