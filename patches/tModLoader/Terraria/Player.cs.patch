@@ -8278,24 +8278,43 @@
  	}
  
  	private Item PickAmmo_IterateRange(Item sItem, Item[] items, int[] slotIterationOrder, bool allowAmmoCycling = true)
-@@ -44898,7 +_,7 @@
+@@ -44898,7 +_,10 @@
  			array = slotIterationOrder;
  			foreach (int num3 in array) {
  				Item item = items[num3];
--				if (item.ammo == sItem.useAmmo && item.stack > 0)
++				/*
+ 				if (item.ammo == sItem.useAmmo && item.stack > 0)
++				*/
 +				if (item.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item, this))
  					num2++;
  			}
  
-@@ -44913,7 +_,7 @@
+@@ -44913,7 +_,10 @@
  		array = slotIterationOrder;
  		foreach (int num4 in array) {
  			Item item2 = items[num4];
--			if (item2.ammo == sItem.useAmmo && item2.stack > 0) {
++			/*
+ 			if (item2.ammo == sItem.useAmmo && item2.stack > 0) {
++			*/
 +			if (item2.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item2, this)) {
  				if (num == 0)
  					return item2;
  
+@@ -44924,7 +_,13 @@
+ 		return null;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
++	/// <para/> This honors the player's ammo cycling mode (<see cref="ammoCyclingMode"/>) and <see cref="ItemLoader.CanChooseAmmo"/> logic.
++	/// </summary>
++	/// <param name="sItem">The weapon for which this call should try to find ammo.</param>
++	/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
+-	private Item PickAmmo_PickAmmoItem(Item sItem)
++	public Item PickAmmo_PickAmmoItem(Item sItem)
+ 	{
+ 		if (ammoCyclingMode == PlayerAmmoCyclingMode.AmmoSlots) {
+ 			if (sItem.useAmmo == AmmoID.Coin) {
 @@ -44973,7 +_,7 @@
  					NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  				}

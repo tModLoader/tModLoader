@@ -612,6 +612,8 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
+		RenameMethod("Terraria.Player", "ChooseAmmo", "PickAmmo_PickAmmoItem");
+
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
 
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));

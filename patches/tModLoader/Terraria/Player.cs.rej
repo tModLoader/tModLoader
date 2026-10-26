@@ -450,35 +450,6 @@
  			}
  		}
  	}
-@@ -43405,12 +_,27 @@
-+
-+	//TML: Method split, 1st part of original PickAmmo.
-+	/*
- 	public void PickAmmo(Item sItem, ref int projToShoot, ref float speed, ref bool canShoot, ref int Damage, ref float KnockBack, out int usedAmmoItemId, bool dontConsume = false)
-+	*/
-+	/// <summary>
-+	/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
-+	/// </summary>
-+	/// <param name="weapon">The weapon for which this call should try to find ammo.</param>
-+	/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
-+	public Item ChooseAmmo(Item weapon)
- 	{
--		Item item = new Item();
-+		var sItem = weapon;
-+		Item item = null;
- 		bool flag = false;
-+		/*
- 		usedAmmoItemId = 0;
-+		*/
-+		bool canShoot = false; // Dummy.
-+
- 		if (sItem.useAmmo == AmmoID.Coin) {
- 			for (int i = 0; i < 4; i++) {
- 				int num = 50 + i;
- 				if (inventory[num].ammo == sItem.useAmmo && inventory[num].stack > 0) {
- 					item = inventory[num];
- 					canShoot = true;
- 					flag = true;
 @@ -43489,11 +_,14 @@
  			if (Main.netMode == 1)
  				NetMessage.SendData(21, -1, -1, null, number, 1f);
