@@ -196,7 +196,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 - EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
 - Main.blackTarget removed. All other render targets are now static and WorldSceneLayerTarget instead of RenderTarget2D. (What does WorldSceneLayerTarget do?)
-- ArmorIDs.Head.Sets.DrawHead renamed to ArmorIDs.Head.Sets.HidesHead and values inverted
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?

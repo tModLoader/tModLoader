@@ -261,9 +261,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModProjectile",		"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile",	"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 
-		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false");
+		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.HidesHead[slot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[head] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawBody",		"After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[slot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[body] = true if you returned false");
@@ -611,6 +611,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.Item", "AllowReforgeForStackableItem", Removed("In 1.4.5 items with prefixes can stack"));
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
+
+		RenameStaticField("Terraria.ID.ArmorIDs.Head.Sets", from: "DrawHead", to: "HidesHead").FollowBy(InvertAssignedBool);
 
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
 
