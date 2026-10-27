@@ -49,8 +49,8 @@ partial class ArmorIDs
 			// Values taken from Player.GetHelmetOffsetAddonFromMount()
 			/// <summary>
 			/// Head equipment in this set can have an additional offset when worn by the <see cref="MountID.Velociraptor"/>.
-			/// <br/> Defaults to <see cref="Vector2.Zero"/>.
-			/// <para/>To allow a head equipment to be worn by the <see cref="MountID.Velociraptor"/>, see: <see cref="ArmorIDs.Head.Sets.CanDrawOnVelociraptorMount"/>
+			/// <para/> Defaults to <see cref="Vector2.Zero"/>.
+			/// <para/> To allow a head equipment to be worn by the <see cref="MountID.Velociraptor"/>, see <see cref="CanDrawOnVelociraptorMount"/>
 			/// </summary>
 			public static Vector2[] VelociraptorMountHeadOffset = Factory.CreateCustomSet(Vector2.Zero,
 				13, new Vector2(0f, -2f),

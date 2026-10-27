@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,23 +_,88 @@
+@@ -1,23 +_,89 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -56,8 +56,9 @@
 +		/// </summary>
  		public static bool[] Cart = Factory.CreateBoolSet(6, 13, 11, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 51, 53);
 +		/// <summary>
-+		/// Unused, but seemingly indicates mounts that transform the player into a completely new visuals. See also <see cref="PlayerIsHidden"/>.
-+		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// Indicates that this mount transforms the player into completely new visuals. See also <see cref="PlayerIsHidden"/>.
++		/// <para/> Affects sentry positioning when carrying sentries using the <see cref="ItemID.HeavySling"/> or similar accessories.
++		/// <para/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] IsTransformationMount = Factory.CreateBoolSet(52, 54, 55, 56, 61);
 +		/// <summary>

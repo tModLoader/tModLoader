@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Mounts
 				DashDust = ExampleFlyingTransformationDashDust // Change the behavior of dust while dashing.
 			};
 
-			// Sets that specific for this mount
+			// Sets that are unique to this mount
 			MountID.Sets.CanDash[Type] = true; // This mount can dash with normal dashes.
 			MountID.Sets.HoverIgnoresFatigue[Type] = true; // This mount has infinite flight.
 			MountID.Sets.DontHoldItems[Type] = true; // This mount does not hold items.
@@ -106,7 +106,7 @@ namespace ExampleMod.Content.Mounts
 
 		/// <summary>
 		/// This delegate sets the size of the player's hitbox.
-		/// <br/> To offset the hitbox, set MountData.xOffset and MountData.yOffset
+		/// <para/> To offset the hitbox, set MountData.xOffset and MountData.yOffset
 		/// </summary>
 		public static bool ExampleFlyingTransformationPlayerSize(Player player, out Vector2? size) {
 			size = new Vector2(14f, 14f); // Each tile is 16x16, so this is slightly smaller than 1x1 tiles.

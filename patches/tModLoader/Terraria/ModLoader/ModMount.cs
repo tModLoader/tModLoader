@@ -223,6 +223,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 
 	/// <summary>
 	/// Allows for modification of the PlayerDrawSet data on the player before it is finalized. This runs during the setup and before <see cref="ModPlayer.ModifyDrawInfo(ref PlayerDrawSet)"/>.
+	/// <para/> This is useful for transformation mounts that want to hide the player or change how the player is drawn.
 	/// </summary>
 	/// <param name="drawInfo"></param>
 	public virtual void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)
@@ -237,7 +238,6 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <param name="flightTime">Same as <c>player.mount._flyTime</c></param>
 	public virtual void ResetFlightTime(Player player, ref int flightTime)
 	{
-
 	}
 
 	/// <summary>

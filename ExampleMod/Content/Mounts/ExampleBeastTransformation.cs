@@ -13,7 +13,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Mounts
 {
-	// This transformation mount which behaves similarly to the Velociraptor transformation (Slasher's Mysterious Skull).
+	// This transformation mount behaves similarly to the Velociraptor transformation (Slasher's Mysterious Skull).
 	// Transformation mounts have the characteristic of hiding the player to make it appear like the player has transformed into something else.
 	// This mount has the following characteristics:
 	// * Hides the player.
@@ -24,6 +24,7 @@ namespace ExampleMod.Content.Mounts
 	// * Can wear most hats/helmets.
 	// * Can wear beards.
 	// * Has dynamic eyes (blinking and closing when taking damage, etc.).
+	// This mount does NOT change the player's hitbox.
 	public class ExampleBeastTransformation : ModMount
 	{
 		public override void SetStaticDefaults() {
@@ -38,7 +39,7 @@ namespace ExampleMod.Content.Mounts
 				HandPosition = DelegateMethods.Mount.NoPosition // You might expect this mount to change the hand position, but it actually uses the mouth position for items.
 			};
 
-			// Sets that specific for this mount
+			// Sets that are unique to this mount
 			MountID.Sets.CanUseHooks[Type] = true; // Grappling hooks can be used while using this mount.
 			MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer[Type] = true; // Allows hats and helmets to be shown on the mount even though the mount hides the player.
 
@@ -97,8 +98,8 @@ namespace ExampleMod.Content.Mounts
 		/// Sets the position of the items.
 		/// </summary>
 		public static bool ExampleBeastTransformationMouthPosition(Player player, out Vector2? position) {
-			Vector2 spinningpoint = new Vector2(player.direction * 24, player.gravDir * -12f);
-			position = player.RotatedRelativePoint(player.MountedCenter, reverseRotation: false, addGfxOffY: false) + spinningpoint.RotatedBy(player.fullRotation);
+			Vector2 spinningPoint = new Vector2(player.direction * 24, player.gravDir * -12f);
+			position = player.RotatedRelativePoint(player.MountedCenter, reverseRotation: false, addGfxOffY: false) + spinningPoint.RotatedBy(player.fullRotation);
 			return true;
 		}
 
@@ -110,7 +111,7 @@ namespace ExampleMod.Content.Mounts
 		// Mounts that have flightTimeMax > 0 can automatically fly.
 		// This mount can only fly if the player if the has wings.
 		public override bool? CanFly(Player player) {
-			return ((ExampleBeastTransformationSelectiveFlyingMountData)player.mount._mountSpecificData).allowedToFly;
+			return PlayerAllowedToFly(player);
 		}
 
 		public override void UpdateAfterEquips(Player player) {
@@ -179,17 +180,17 @@ namespace ExampleMod.Content.Mounts
 			if (mountedPlayer.isDisplayDollOrInanimate)
 				mount._idleTime = 0;
 
-			var selectiveFlyingMountData = (ExampleBeastTransformationSelectiveFlyingMountData)mount._mountSpecificData;
+			bool allowedToFly = PlayerAllowedToFly(mountedPlayer);
 
 			// Flying in water
 			if (state == 4) {
 				// Change it to either In the air, flying or in the air, not flying.
-				state = (selectiveFlyingMountData.allowedToFly ? 3 : 2);
+				state = (allowedToFly ? 3 : 2);
 			}
 
 			bool inTheAir = state == 2 || state == 3;
 			int wingType = ((mountedPlayer.wings > 0) ? mountedPlayer.wings : mountedPlayer.wingsLogic);
-			if (inTheAir && selectiveFlyingMountData.allowedToFly && ((wingType > 0 && !ArmorIDs.Wing.Sets.AlwaysAnimated[wingType]) || mountedPlayer.ShouldDrawWingsThatAreAlwaysAnimated(ignoreMounts: true))) {
+			if (inTheAir && allowedToFly && ((wingType > 0 && !ArmorIDs.Wing.Sets.AlwaysAnimated[wingType]) || mountedPlayer.ShouldDrawWingsThatAreAlwaysAnimated(ignoreMounts: true))) {
 				state = 3; // If the player has wings equipped or can fly by some other means, change the state to in the air, flying.
 			}
 			else if (state == 3) {
@@ -288,6 +289,11 @@ namespace ExampleMod.Content.Mounts
 			public ExampleBeastTransformationSelectiveFlyingMountData() {
 				allowedToFly = false;
 			}
+		}
+
+		// A helper method to access the allowedToFly value from the mount's _mountSpecificData.
+		private bool PlayerAllowedToFly(Player player) {
+			return ((ExampleBeastTransformationSelectiveFlyingMountData)player.mount._mountSpecificData).allowedToFly;
 		}
 
 		// Here is where we change the player's draw info to hide the entire player.
@@ -410,7 +416,8 @@ namespace ExampleMod.Content.Mounts
 
 			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				// Reuse the offsets created for the Velociraptor.
-				return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[self.head] * self.Directions;
+				if (self.head >= 0)
+					return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[self.head] * self.Directions;
 			}
 
 			return originalReturn; // Return the vanilla position if it for wasn't our mount.
