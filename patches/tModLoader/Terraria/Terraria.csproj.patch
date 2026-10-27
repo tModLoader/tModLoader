@@ -78,7 +78,7 @@
 +		<PackageReference Include="log4net" Version="3.3.0" />
 +		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
 +		<PackageReference Include="JetBrains.Annotations" Version="2025.2.4" />
- 		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2025.162.4" />
+ 		<PackageReference Include="Steamworks.NET.AnyCPU" Version="2026.165.3" />
 +		<PackageReference Include="Basic.Reference.Assemblies.Net100" Version="1.8.4" />
 +		<PackageReference Include="MonoMod.RuntimeDetour" Version="25.3.4" />
 +		<PackageReference Include="Microsoft.Win32.Registry" Version="6.0.0-preview.5.21301.5 " />
