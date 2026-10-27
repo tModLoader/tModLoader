@@ -3990,17 +3990,6 @@
  					float knockback2 = 5f;
  					int num4 = direction;
  					if (velocity.X < 0f)
-@@ -16709,8 +_,10 @@
- 				autoJump = false;
- 
- 			bool flag = false;
-+			/*
- 			bool flag2 = wet && accFlipper;
- 			bool flag3 = !mount.Active || !mount.Cart;
-+			*/
- 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
- 				wetSlime = 0;
- 				flag = true;
 @@ -16734,7 +_,7 @@
  					}
  				}
@@ -4018,37 +4007,36 @@
  				if (wet && accFlipper) {
  					if (swimTime == 0)
  						swimTime = 30;
-@@ -16757,8 +_,11 @@
+@@ -16757,8 +_,10 @@
  				bool flag10 = false;
  				bool flag11 = false;
  				bool flag12 = false;
 +				*/
--				bool flag13 = false;
-+				bool flag13 = false; 
-+			
+ 				bool flag13 = false;
  				if (!flag2 && !flag) {
 +					/*
  					if (canJumpAgain_Basilisk) {
  						flag12 = true;
  						canJumpAgain_Basilisk = false;
-@@ -16775,9 +_,11 @@
+@@ -16775,9 +_,12 @@
  						flag9 = true;
  						canJumpAgain_Unicorn = false;
  					}
 +					*/
--					else if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
-+					if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
++					if (false) { }
+ 					else if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
  						flag13 = true;
  					}
 +					/*
  					else if (canJumpAgain_Sandstorm) {
  						flag5 = true;
  						canJumpAgain_Sandstorm = false;
-@@ -16798,6 +_,10 @@
+@@ -16797,7 +_,11 @@
+ 					else {
  						canJumpAgain_Cloud = false;
  					}
++					*/
  				}
-+				*/
 +
 +				// Patch context: flag
 +				bool attemptDoubleJumps = !flag;
@@ -4709,11 +4697,13 @@
  				if (flag19 && wings != 4 && wings != 22 && wings != 0 && wings != 24 && wings != 28 && wings != 30 && wings != 33 && wings != 45) {
  					bool flag21 = wingFrame == 3;
  					if (wings == 43 || wings == 44)
-@@ -21832,7 +_,7 @@
+@@ -21832,7 +_,10 @@
  				if (empressBrooch)
  					rocketTime = rocketTimeMax;
  
--				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities) {
++				/*
+ 				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities) {
++				*/
 +				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities && !AnyExtraJumpUsable()) {
  					if (rocketTime > 0) {
  						rocketTime--;
