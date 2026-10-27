@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ArmorIDs.cs
 +++ src/tModLoader/Terraria/ID/ArmorIDs.cs
-@@ -1,23 +_,59 @@
+@@ -1,23 +_,73 @@
  using System.Collections.Generic;
 +using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -35,18 +35,32 @@
 +			/// Equips in this set should be grayscale, similar to the player's textures.
 +			/// </remarks>
  			public static bool[] UseSkinColor = Factory.CreateBoolSet(false, 274, 277);
++			/// <summary>
++			/// If <see langword="false"/> for a given <see cref="Head"/>, then that equip will prevent the player's head and face from being drawn.
++			/// <para/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include <see cref="Werewolf"/>, <see cref="SpaceCreatureMask"/>, and <see cref="DeadCellsBeheadedHead"/>.
++			/// </summary>
  			public static bool[] HidesHead = Factory.CreateBoolSet(false, 38, 135, 269, 282, 288);
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will cause face mask layer equips (<see cref="Face.Sets.DrawInFaceMaskLayer"/>) to draw under the head layer.
++			/// <para/> Some examples include <see cref="GoldCrown"/> and <see cref="Sunglasses"/>.
++			/// </summary>
  			public static bool[] DrawFaceMaskUnderHeadLayer = Factory.CreateBoolSet(false, 26, 51, 289, 81, 92, 106, 291, 10, 12, 178, 198, 267, 279, 160, 52, 53, 71, 55, 166, 167, 278, 203);
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide face flower layer equips (<see cref="Face.Sets.DrawInFaceFlowerLayer"/>).
 +			/// <para/> Some examples include <see cref="UmbrellaHat"/> and <see cref="Eyebrella"/>.
 +			/// </summary>
  			public static bool[] PreventFaceFlowerDraw = Factory.CreateBoolSet(false, 92, 275);
++			/// <summary>
++			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide face mask layer equips (<see cref="Face.Sets.DrawInFaceMaskLayer"/>).
++			/// <para/> Some examples include <see cref="DivingHelmet"/> and <see cref="FishBowl"/>.
++			/// </summary>
  			public static bool[] PreventFaceMaskDraw = Factory.CreateBoolSet(false, 27, 20, 107, 108, 127, 162, 168, 118, 123, 164, 155, 150, 137, 186, 125, 136, 153, 154, 169, 148, 165, 151, 173, 146, 147, 175, 193, 271, 268, 260, 221, 236, 208, 209, 207, 187, 192, 188, 276, 270, 58, 77, 142, 152, 241, 210, 22, 196);
 +
 +			/// <summary>
 +			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will hide the player's beard when equipped.
-+			/// <br/> Defaults to <see langword="false"/>.
++			/// <para/> Defaults to <see langword="false"/>.
++			/// <para/> Some examples include <see cref="KingSlimeMask"/>, <see cref="CreeperMask"/>, and <see cref="CatMask"/>.
 +			/// </summary>
  			public static bool[] PreventBeardDraw = Factory.CreateBoolSet(false, 118, 119, 107, 129, 127, 125, 136, 162, 168, 210, 213, 28, 135, 31, 17, 261, 169, 186, 47, 22, 105, 102, 120, 137, 199, 207, 260, 132, 155, 179, 108, 153, 164, 172, 208, 241, 271, 48, 154, 188, 187, 209, 46, 123, 269, 185, 276);
 +

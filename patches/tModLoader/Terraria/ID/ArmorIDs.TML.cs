@@ -46,13 +46,6 @@ partial class ArmorIDs
 			/// </remarks>
 			public static bool[] IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180);
 
-			/// <summary>
-			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow the player's head and face to be drawn.
-			/// <br/> Defaults to <see langword="true"/>.
-			/// </summary>
-			// Created based on 'PlayerDrawLayers.DrawPlayer_21_Head_TheFace'.
-			public static bool[] DrawHead = Factory.CreateBoolSet(true, 38, 135, 269);
-
 			// Values taken from Player.GetHelmetOffsetAddonFromMount()
 			/// <summary>
 			/// Head equipment in this set can have an additional offset when worn by the <see cref="MountID.Velociraptor"/>.
