@@ -22,7 +22,10 @@ public class MemberUseRewriter : BaseRewriter {
 	public static void RefactorStaticMember(string type, string name, AddComment comment) => RefactorStaticMember(type, name, (_, _, n) => comment.Apply(n));
 
 	public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node) {
-		if (!IdentifierNameInvalid(node, out var op, out var targetType, out bool isInvoke) || op == null || isInvoke)
+		if (!IdentifierNameInvalid(node, out var op, out var targetType, out bool isInvoke) || isInvoke)
+			return node;
+
+		if (op == null && !IsWriteToGetOnlyProperty(node, out op, out targetType))
 			return node;
 
 		if (targetType == null)
@@ -35,6 +38,28 @@ public class MemberUseRewriter : BaseRewriter {
 
 		return handler.handler.Invoke(this, op, node);
 	}
+
+	// Writes to a get-only property leave the name without a symbol, but the member access itself still binds
+	private bool IsWriteToGetOnlyProperty(IdentifierNameSyntax node, out IOperation op, out ITypeSymbol targetType) {
+		op = null;
+		targetType = null;
+		if (node.Parent is not MemberAccessExpressionSyntax memberAccess || memberAccess.Name != node || !IsWriteTarget(memberAccess))
+			return false;
+
+		if (model.GetSymbolInfo(node).CandidateSymbols is not [IPropertySymbol { SetMethod: null }])
+			return false;
+
+		op = model.GetOperation(memberAccess);
+		targetType = model.GetTypeInfo(memberAccess.Expression).Type;
+		return op != null;
+	}
+
+	private static bool IsWriteTarget(ExpressionSyntax expr) => expr.Parent switch {
+		AssignmentExpressionSyntax assign => assign.Left == expr,
+		PrefixUnaryExpressionSyntax unary => unary.IsKind(SyntaxKind.PreIncrementExpression) || unary.IsKind(SyntaxKind.PreDecrementExpression),
+		PostfixUnaryExpressionSyntax unary => unary.IsKind(SyntaxKind.PostIncrementExpression) || unary.IsKind(SyntaxKind.PostDecrementExpression),
+		_ => false
+	};
 
 	public static RewriteMemberUse DamageTypeField(string className, string comment = null) => (rw, op, memberName) => {
 		var damageClassExpr = MemberAccessExpression(rw.UseType("Terraria.ModLoader.DamageClass"), className);
@@ -105,6 +130,22 @@ public class MemberUseRewriter : BaseRewriter {
 
 		return memberName;
 	};
+
+	public static SyntaxNode RewriteSelectedItemAssignment(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName)
+	{
+		// selectedItem is now get-only, vanilla replaced 'selectedItem = x' with 'selectedItemState.Select(x)'
+		if (memberName.Parent is not MemberAccessExpressionSyntax memberAccess || !IsWriteTarget(memberAccess))
+			return memberName;
+
+		if (memberAccess.Parent is not AssignmentExpressionSyntax assign || !assign.IsKind(SyntaxKind.SimpleAssignmentExpression)) {
+			rw.RegisterAction(memberAccess.Parent, n => n.WithBlockComment("Suggestion: selectedItem is read-only, use selectedItemState.Select(...)"));
+			return memberName;
+		}
+
+		rw.RegisterAction<AssignmentExpressionSyntax>(assign, n =>
+			InvocationExpression(MemberAccessExpression(((MemberAccessExpressionSyntax)n.Left).Expression.WithoutTrivia(), "selectedItemState"), "Select", n.Right.WithoutTrivia()).WithTriviaFrom(n));
+		return memberName;
+	}
 
 	public static SyntaxNode RewriteIsJourneyMode(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName)
 	{

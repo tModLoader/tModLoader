@@ -592,6 +592,8 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
+* 🤖: `Player.selectedItem` is now read-only. Assignments become `Player.selectedItemState.Select(slot)`. For the local player, the change applies once the current item use finishes.
+* ⚙️: `Player.nonTorch` removed. Temporary selections such as smart cursor and auto-select are now tracked by `Player.selectedItemState`. See `HasActiveOverride` and `Hotbar`.
 
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).
@@ -621,6 +623,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
 * 🤖: `ModPylon.DefaultDrawMapIcon` now has an `out bool onScreen` parameter, which should be passed as the new second parameter of `ModPylon.DefaultMapClickHandle`. On the fullscreen map, off-screen modded pylon icons are now clamped to the edge of the screen like vanilla pylons, and clicking them pans the map instead of teleporting.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
+* 🤖: `UIElement.OnDraw` is now a `DrawEvent`, handlers take `(UIElement affectedElement, SpriteBatch sb)`. Lambdas are updated automatically, handler methods need the `SpriteBatch` parameter added manually.
 * `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
   * 🤖: The following fields changed from `NPCSpawnInfo` to `NPC.Spawner`: `DesertCave` -> `spawnUndergroundDesert`, `Granite` -> `nearGranite`, `Invasion` -> `invaders`, `Lihzahrd` -> `ZoneLihzhardTemple`, `Marble` -> `nearMarble`, `PlayerInTown` -> `spawnFriendly`, `PlayerSafe` -> `noWorms`, `Sky` -> `skyMob`, `SpiderCave` -> `spawnSpider`, `Water` -> `waterTile`

@@ -380,6 +380,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Player", "nonTorch", Removed("Temporary selections (smart cursor, auto-select) are now tracked by Player.selectedItemState. See HasActiveOverride and Hotbar"));
+		RefactorInstanceMember("Terraria.Player", "selectedItem", RewriteSelectedItemAssignment);
 
 		RefactorStaticMethodCall("Terraria.Item", "NewItem", RewriteNewItem);
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));

@@ -3,6 +3,7 @@ using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
 using static tModPorter.Rewriters.HookRewriter;
 using static tModPorter.Rewriters.AddComment;
+using static tModPorter.Rewriters.EventHandlerRewriter;
 using System;
 using System.IO;
 
@@ -609,6 +610,8 @@ public static partial class Config
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifier", Removed("Set Color = Terraria.ID.Colors.PrefixGood instead"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifierBad", Removed("Set Color = Terraria.ID.Colors.PrefixBad instead"));
 		RefactorInstanceMember("Terraria.Item", "AllowReforgeForStackableItem", Removed("In 1.4.5 items with prefixes can stack"));
+
+		AppendEventHandlerParameters("Terraria.UI.UIElement", "OnDraw");
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
