@@ -1896,6 +1896,15 @@
  					if (item.UseSound != null)
  						SoundEngine.PlaySound(item.UseSound, base.Center);
  				}
+@@ -4244,7 +_,7 @@
+ 
+ 	public bool CanFitSpace(int heightBoost)
+ 	{
+-		int num = 42 + heightBoost;
++		int num = (int)GetBaseHitboxSize().Y + heightBoost;
+ 		return Collision.IsClearSpotTest(position + new Vector2(0f, height - num) + velocity, 16f, width, num, fallThrough: true, fall2: true);
+ 	}
+ 
 @@ -4309,12 +_,20 @@
  	public Item QuickMount_GetItemToUse()
  	{
@@ -4874,6 +4883,41 @@
  	}
  
  	private void UpdateBrokenMirrorLuck()
+@@ -23784,11 +_,23 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The size of this player's hitbox before mount and step stool height boosts, after <see cref="ModPlayer.ModifyHitboxSize"/>.
++	/// </summary>
++	public Vector2 GetBaseHitboxSize()
++	{
++		Vector2 size = new Vector2(defaultWidth, defaultHeight);
++		PlayerLoader.ModifyHitboxSize(this, ref size);
++		return size;
++	}
++
+ 	private void ResizeHitbox()
+ 	{
++		int oldWidth = width;
+ 		position.Y += height;
+-		width = 20;
+-		height = 42 + HeightOffsetBoost;
++		Vector2 baseSize = GetBaseHitboxSize();
++		width = (int)baseSize.X;
++		height = (int)baseSize.Y + HeightOffsetBoost;
+ 		if (mount.Active) {
+ 			Mount.MountDelegatesData.OverrideSizeMethod playerSize = mount.Delegations.PlayerSize;
+ 			if (playerSize != null && playerSize(this, out var size) && size.HasValue) {
+@@ -23797,6 +_,8 @@
+ 			}
+ 		}
+ 
++		// Keep the bottom center in place when the width changes.
++		position.X += (oldWidth - width) / 2f;
+ 		position.Y -= height;
+ 	}
+ 
 @@ -23889,6 +_,8 @@
  
  		if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
