@@ -8,8 +8,5 @@ public class PlayerSelectedItemTest
 		player.selectedItem = slot + 1;
 		player.selectedItem++;
 		Main.LocalPlayer.selectedItem = player.selectedItem;
-
-		if (player.nonTorch != -1)
-			slot = player.nonTorch;
 	}
 }

@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.UI;
 
-public class UIElementOnDrawTest
+public class AppendEventHandlerParametersTest
 {
 	void Method(UIElement element) {
 		element.OnDraw += (e, sb) => { };
