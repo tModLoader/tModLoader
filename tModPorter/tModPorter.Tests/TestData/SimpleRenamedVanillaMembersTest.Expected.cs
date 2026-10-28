@@ -154,7 +154,7 @@ public class SimpleRenamedVanillaMembersTest
 		player.oldAdjTile/* tModPorter Note: Removed. No longer used. */[0] = false;
 #endif
 #if COMPILE_ERROR
-		int nonTorch = player.nonTorch/* tModPorter Note: Removed. Temporary selections (smart cursor, auto-select) are now tracked by Player.selectedItemState. See Player.selectedItemState.HasActiveOverride and Player.selectedItemState.Hotbar */;
+		int nonTorch = player.nonTorch/* tModPorter Note: Removed. Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead */;
 #endif
 
 		// not-yet-implemented

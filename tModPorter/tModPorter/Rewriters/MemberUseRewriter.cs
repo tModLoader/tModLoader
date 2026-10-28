@@ -142,7 +142,7 @@ public class MemberUseRewriter : BaseRewriter {
 			return memberName;
 		}
 
-		string comment = SelectionReadAfter(rw.model, assign) ? "Suggestion: Select is buffered for the local player, selectedItem and HeldItem keep the old value until the next player update" : null;
+		string comment = SelectionReadAfter(rw.model, assign) ? "Suggestion: Select is buffered, selectedItem won't change until the next update" : null;
 		rw.RegisterAction<AssignmentExpressionSyntax>(assign, n =>
 			InvocationExpression(MemberAccessExpression(((MemberAccessExpressionSyntax)n.Left).Expression.WithoutTrivia(), "selectedItemState"), "Select", n.Right.WithoutTrivia()).WithTriviaFrom(n).WithBlockComment(comment));
 		return memberName;
