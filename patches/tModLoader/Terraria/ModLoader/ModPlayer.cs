@@ -578,6 +578,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows you to change the size of this player's hitbox, such as for a transformation. Mount and step stool height boosts are added on top.
 	/// <br/> The player's bottom center stays in place when the size changes. Called several times per update, so the result should only depend on synced state.
+	/// <br/> Check <see cref="Player.CanFitInSpaceWithSize"/> before making the hitbox bigger, or the player can get stuck in tiles. See ExampleHitboxSizePlayer for an example.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="size">The base hitbox size, <see cref="Player.defaultWidth"/> by <see cref="Player.defaultHeight"/> by default.</param>
