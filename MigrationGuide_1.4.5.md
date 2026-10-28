@@ -592,7 +592,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
-* 🤖: `Player.selectedItem` is now read-only. Assignments become `Player.selectedItemState.Select(slot)`. For the local player, the change applies once the current item use finishes.
+* 🤖: `Player.selectedItem` is now read-only. Assignments become `Player.selectedItemState.Select(slot)`. For the local player, `Select` is buffered: `selectedItem` and `HeldItem` keep their old value until the next player update, and only change once the current item use finishes. Code that switches to an item, uses it, then switches back in the same tick no longer works this way. tModPorter adds a comment where a method reads the selection again after setting it.
 * ⚙️: `Player.nonTorch` removed. Temporary selections such as smart cursor and auto-select are now tracked by `Player.selectedItemState`. See `Player.selectedItemState.HasActiveOverride` and `Player.selectedItemState.Hotbar`.
 
 ### Classes
