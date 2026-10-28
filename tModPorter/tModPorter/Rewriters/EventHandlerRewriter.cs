@@ -35,7 +35,8 @@ public class EventHandlerRewriter : BaseRewriter
 			// delegate { } without a parameter list is compatible with any signature
 			AnonymousMethodExpressionSyntax { ParameterList: { } paramList } anon when paramList.Parameters.Count < parameters.Length =>
 				anon.WithParameterList(AppendParameters(paramList, parameters)),
-			IdentifierNameSyntax or MemberAccessExpressionSyntax when model.GetSymbolInfo(node.Right).Symbol is not IMethodSymbol =>
+			// method groups and delegate typed variables can't be rewritten, comment unless they already match the new signature
+			IdentifierNameSyntax or MemberAccessExpressionSyntax when !model.ClassifyConversion(node.Right, ev.Type).Exists =>
 				newNode.Right.WithBlockComment($"Suggestion: Handler parameters are now ({string.Join(", ", parameters.Select(p => p.Type.Name + " " + p.Name))})"),
 			_ => newNode.Right
 		};
