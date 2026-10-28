@@ -33,7 +33,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - What does `Main.item[num].OverrideWith(theItemWeDrop);` do differently than `Main.item[num] = theItemWeDrop;`? Do we need to document or adjust how modders interact with Main.item[]?
 - ProjectileLoader.CanUseGrapple can be reworked. The vanilla code now consolidates "max hooks" checks, so we should be able to make the logic for most modded grappling hooks easier by supplying those parameters to the hook or using a set.
 - https://github.com/tModLoader/tModLoader/issues/4494 should be easily fixable with the new QuickGrapple code organization
-- Should Ram Rune be a VanillaExtraJump? Adjust Player.isPerformingJump_DownDash if necessary. What is CanUseBootFlyingAbilities? Also double check CancelAllJumpVisualEffects logic
 - TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
 - Collision.SwitchTiles `objType` parameter in Player.Update changed from 1 to 5. Why, isn't it still Player? Adjust docs accordingly after investigating.
   - Seems to control MessageID.PlayerControls being sent but I don't know why. 1 is unused.
@@ -151,7 +150,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.ApplyDamageToNPC changed, new parameters, new overloads
 - Double check that allDamage and allCrit are used in new armor set code
 - GetNanoFlaskDamageBoost in ProcessHitAgainstNPC might not be accounted for correctly. 
-- New PickAmmo_PickAmmoItem, PickAmmo_IterateRange, PlayerAmmoCyclingMode. ItemLoader.CanChooseAmmo patches need to be reworked 
 - New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
 - Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
 - Not sure about VanillaOnHitEffectsWhipsStart label location
@@ -195,7 +193,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
 - EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
 - Main.blackTarget removed. All other render targets are now static and WorldSceneLayerTarget instead of RenderTarget2D. (What does WorldSceneLayerTarget do?)
-- ArmorIDs.Head.Sets.DrawHead renamed to ArmorIDs.Head.Sets.HidesHead and values inverted
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?

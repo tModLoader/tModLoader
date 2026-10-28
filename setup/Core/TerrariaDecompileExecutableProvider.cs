@@ -113,6 +113,7 @@ public sealed class TerrariaDecompileExecutableProvider
 			paths.Add(Path.Combine("setup", "xna_redist"));
 
 		paths.Add("patches/Terraria/Terraria/Libraries/XNA"); // For Microsoft.Xna.Framework.Content.Pipeline.dll which isn't embedded in the windows dll because it's a mixed mode assembly
+		paths.Add("patches/Terraria/Terraria/Libraries/Common"); // Server-only decompilation still needs external references such as SteelSeriesEngineWrapper.dll
 
 		return paths;
 	}
