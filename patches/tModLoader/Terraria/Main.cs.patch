@@ -3905,7 +3905,7 @@
  				lineColors[numLines] = ((num15 < 0) ? color : color2);
  				numLines++;
  			}
-@@ -18253,116 +_,137 @@
+@@ -18253,124 +_,148 @@
  			if (item.prefix == 62) {
  				toolTipLine[numLines] = "+1" + Lang.tip[25].Value;
  				lineColors[numLines] = color2;
@@ -4043,7 +4043,10 @@
  		}
  
  		if (true) {
-@@ -18371,6 +_,7 @@
++			int setBonusLine = -1;
++			bool setBonusLineComplete = false;
+ 			ArmorSetBonus[] array = ArmorSetBonuses.SetsContaining[item.type];
+ 			if (array.Length != 0) {
  				if (!item.wornArmor) {
  					toolTipLine[numLines] = array[0].GetTooltipForSinglePiece(item.type);
  					lineColors[numLines] = new Microsoft.Xna.Framework.Color(130, 130, 130, 190);
@@ -4051,15 +4054,33 @@
  					numLines++;
  				}
  				else {
-@@ -18397,6 +_,7 @@
+@@ -18397,14 +_,32 @@
  					}
  
  					toolTipLine[numLines] = armorSetBonus.GetTooltipForWornArmor(context, result);
 +					toolTipNames[numLines] = "SetBonus";
  					lineColors[numLines] = (result.Complete ? Microsoft.Xna.Framework.Color.LimeGreen : new Microsoft.Xna.Framework.Color(130, 130, 130));
- 					numLines++;
+-					numLines++;
++					setBonusLine = numLines++;
++					setBonusLineComplete = result.Complete;
++				}
++			}
++
++			// TML: Set bonuses given through ModItem/GlobalItem.UpdateArmorSet. Added to a complete set bonus (such as a GlobalItem adding to a vanilla set), otherwise replaces the partial set line.
++			if (item.wornArmor && !string.IsNullOrEmpty(LocalPlayer.setBonus)) {
++				if (setBonusLineComplete) {
++					toolTipLine[setBonusLine] += "\n" + LocalPlayer.setBonus;
++				}
++				else {
++					if (setBonusLine == -1)
++						setBonusLine = numLines++;
++
++					toolTipLine[setBonusLine] = Lang.tip[48].Value + " " + LocalPlayer.setBonus;
++					toolTipNames[setBonusLine] = "SetBonus";
++					lineColors[setBonusLine] = Microsoft.Xna.Framework.Color.LimeGreen;
  				}
-@@ -18405,6 +_,7 @@
+ 			}
+ 		}
  
  		if (flag2 && Player.Settings.ShowLoadoutShareHint) {
  			toolTipLine[numLines] = Language.GetTextValue("UI.ItemLoadoutShareHint");

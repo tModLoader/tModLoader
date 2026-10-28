@@ -722,7 +722,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to give set bonuses to your armor set with the given name.
+	/// Allows you to give set bonuses to your armor set with the given name. Set <see cref="Player.setBonus"/> to a string for the bonus description.
 	/// The set name will be the same as returned by <see cref="IsArmorSet(Item, Item, Item)"/>.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.

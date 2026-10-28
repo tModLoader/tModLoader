@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -22,6 +23,15 @@ namespace ExampleMod.Content.Items.Armor
 			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
 
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
+
+			// ArmorSetBonus.Create registers a set bonus for specific armor pieces. Each Set(head, body, legs) call adds a combination of pieces that grants the bonus, use 0 for a piece that isn't needed.
+			// The SetBonus tooltip line is shown on every piece, even when not worn, along with how many pieces of the set are worn.
+			// ExampleBreastplate and ExampleLeggings are shared with ExampleHood, which gives a different set bonus, so PartType.Head is passed to mark the head piece as the one that decides the bonus.
+			// The body and legs then show "Changes with head piece" instead of this bonus.
+			// See ExampleHood for the IsArmorSet and UpdateArmorSet hooks, which allow any condition but only show the tooltip while the full set is worn.
+			ArmorSetBonus.Create(UpdateArmorSetBonus, SetBonusText, ArmorSetBonus.PartType.Head)
+				.Set(Type, ModContent.ItemType<ExampleBreastplate>(), ModContent.ItemType<ExampleLeggings>())
+				.Add();
 		}
 
 		public override void SetDefaults() {
@@ -32,16 +42,8 @@ namespace ExampleMod.Content.Items.Armor
 			Item.defense = 5; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
-		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
-#if COMPILE_ERROR_TODOS
-			player.setBonus = SetBonusText.Value; // This is the setbonus tooltip: "Increases dealt damage by 20%"
-#endif
+		// Called every update while the full set registered in SetStaticDefaults is worn.
+		private static void UpdateArmorSetBonus(Player player) {
 			player.GetDamage(DamageClass.Generic) += AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%
 		}
 

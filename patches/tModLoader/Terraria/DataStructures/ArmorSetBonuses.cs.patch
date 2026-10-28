@@ -52,6 +52,14 @@
  		}
  
  		public static void Platinum(Player player)
+@@ -385,6 +_,7 @@
+ 
+ 	public static void Initialize()
+ 	{
++		All.Clear(); // TML: Called again on every mod load, before mods add their own entries.
+ 		Create(Benefits.Shroomite, "ArmorSetBonus.Shroomite").Set(1548, 1549, 1550).Set(1546, 1549, 1550).Set(1547, 1549, 1550)
+ 			.Add();
+ 
 @@ -564,7 +_,7 @@
  	public static void BuildLookup()
  	{

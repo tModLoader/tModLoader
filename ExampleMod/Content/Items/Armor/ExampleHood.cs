@@ -28,6 +28,8 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
+		// Unlike ArmorSetBonus.Create (see ExampleHelmet), any condition can be checked here, but the set bonus tooltip is only shown while the full set is worn.
+		// IsArmorSet is also used for ArmorSetShadows below.
 		public override bool IsArmorSet(Item head, Item body, Item legs) {
 			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
 		}
@@ -37,9 +39,7 @@ namespace ExampleMod.Content.Items.Armor
 			// This is the setbonus tooltip:
 			//   Double tap or hold DOWN/UP to toggle various armor shadow effects
 			//   10% reduced mana cost
-#if COMPILE_ERROR_TODOS
 			player.setBonus = SetBonusText.Value;
-#endif
 			player.manaCost -= ManaCostReductionPercent / 100f; // Reduces mana cost by 10%
 			player.GetModPlayer<ExampleArmorSetBonusPlayer>().ExampleSetHood = true;
 		}

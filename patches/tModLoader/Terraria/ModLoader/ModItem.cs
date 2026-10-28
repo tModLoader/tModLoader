@@ -888,6 +888,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to give set bonuses to the armor set that this armor is in. Set <see cref="Player.setBonus"/> to a string for the bonus description.
+	/// <para/> For sets made of specific items, consider registering an <see cref="ArmorSetBonus"/> with <see cref="ArmorSetBonus.Create(ArmorSetBonus.ArmorSetEffect, LocalizedText, ArmorSetBonus.PartType)"/> instead. Those also show the set bonus on armor pieces that aren't worn, and how many pieces of the set are worn.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>

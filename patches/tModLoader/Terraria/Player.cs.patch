@@ -3364,7 +3364,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -13017,6 +_,9 @@
+@@ -13017,10 +_,14 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3374,6 +3374,21 @@
  	}
  
  	public void UpdateArmorSets(int i)
+ 	{
++		setBonus = "";
+ 		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+@@ -13028,6 +_,9 @@
+ 		UpdateArmorSets_Always_Chlorophyte();
+ 		UpdateArmorSets_Always_Vortex();
+ 		ApplyArmorSoundAndDustChanges();
++
++		// TML: Matches ArmorSetBonus.QueryContext, so armor shared from other loadouts counts towards modded sets as well.
++		ItemLoader.UpdateArmorSet(this, GetEffectiveArmor(0), GetEffectiveArmor(1), GetEffectiveArmor(2));
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -13387,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}

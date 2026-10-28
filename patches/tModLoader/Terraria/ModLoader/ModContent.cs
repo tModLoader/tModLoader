@@ -336,6 +336,7 @@ public static class ModContent
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSSetupContent", ModLoader.Mods.Length);
 		LanguageManager.Instance.ReloadLanguage(resetValuesToKeysFirst: false); // Don't reset values to keys in case any new translations were registered during Load. All mod translations were wiped in Unload anyway
+		ArmorSetBonuses.Initialize(); // Before SetupContent so mods can register their own set bonuses in SetStaticDefaults and PostSetupContent
 		LoadModContent(token, mod => {
 			mod.SetupContent();
 		});
@@ -391,7 +392,6 @@ public static class ModContent
 		Main.NPCInteractionDB = new NPCInteractionDatabase();
 		Main.NPCInteractionDB.Populate();
 
-		ArmorSetBonuses.Initialize();
 		ArmorSetBonuses.BuildLookup();
 		ItemID.Sets.PostSetupContent();
 		TileID.Sets.PostSetupContent();
@@ -584,6 +584,8 @@ public static class ModContent
 		StateSnapshot.Gameplay.RemoveModdedComponents();
 		StateSnapshot.Input.RemoveModdedComponents();
 		ResizeArrays(true);
+		ArmorSetBonuses.Initialize();
+		ArmorSetBonuses.BuildLookup();
 		for (int k = 0; k < Recipe.maxRecipes; k++) {
 			Main.recipe[k] = new Recipe();
 		}

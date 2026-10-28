@@ -1,0 +1,54 @@
+--- src/TerrariaNetCore/Terraria/DataStructures/ArmorSetBonus.cs
++++ src/tModLoader/Terraria/DataStructures/ArmorSetBonus.cs
+@@ -73,6 +_,7 @@
+ 
+ 		private ArmorSetEffect Effect;
+ 		private string TextKey;
++		private LocalizedText Text;
+ 		private PartType PrimaryPart;
+ 		private List<Parts> _sets = new List<Parts>();
+ 
+@@ -83,6 +_,13 @@
+ 			PrimaryPart = primaryPart;
+ 		}
+ 
++		public Builder(ArmorSetEffect effect, LocalizedText text, PartType primaryPart)
++		{
++			Effect = effect;
++			Text = text;
++			PrimaryPart = primaryPart;
++		}
++
+ 		public Builder Set(int head, int body, int legs)
+ 		{
+ 			_sets.Add(new Parts {
+@@ -119,12 +_,16 @@
+ 			return this;
+ 		}
+ 
++		/// <summary>
++		/// Registers an <see cref="ArmorSetBonus"/> in <see cref="ArmorSetBonuses.All"/> for each combination passed to <see cref="Set(int, int, int)"/>.<br/>
++		/// Mods should call this from <see cref="ModLoader.ModType.SetStaticDefaults"/> or <see cref="ModLoader.ModSystem.PostSetupContent"/>. Entries are removed automatically when mods unload.
++		/// </summary>
+ 		public void Add()
+ 		{
+ 			foreach (Parts set in _sets) {
+ 				ArmorSetBonuses.All.Add(new ArmorSetBonus {
+ 					Effect = Effect,
+-					Description = Language.GetText(TextKey),
++					Description = Text ?? Language.GetText(TextKey),
+ 					Head = set.Head,
+ 					Body = set.Body,
+ 					Legs = set.Legs,
+@@ -206,4 +_,11 @@
+ 	}
+ 
+ 	public static Builder Create(ArmorSetEffect effect, string textKey, PartType primaryPart = PartType.None) => new Builder(effect, textKey, primaryPart);
++
++	/// <summary>
++	/// Starts building a set bonus. Add one or more combinations of armor pieces using <see cref="Builder.Set(int, int, int)"/>, then call <see cref="Builder.Add"/>.<br/>
++	/// <paramref name="effect"/> runs every update while all pieces of one of the combinations are worn. <paramref name="text"/> is shown in the "SetBonus" tooltip line of every piece, including a count of the pieces worn.<br/>
++	/// Use 0 for a piece that isn't part of the set. If several sets share some pieces (for example multiple helmets for the same body and legs), pass the <paramref name="primaryPart"/> that decides the bonus so the shared pieces show "Changes with head piece" instead of a bonus that may not apply.
++	/// </summary>
++	public static Builder Create(ArmorSetEffect effect, LocalizedText text, PartType primaryPart = PartType.None) => new Builder(effect, text, primaryPart);
+ }

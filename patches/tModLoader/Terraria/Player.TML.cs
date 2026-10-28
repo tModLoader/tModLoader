@@ -26,6 +26,13 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public Item equippedWings = null;
 
 	/// <summary>
+	/// The set bonus tooltip of the armor set currently worn, as set by <see cref="ModItem.UpdateArmorSet(Player)"/> or <see cref="GlobalItem.UpdateArmorSet(Player, string)"/>. Reset at the start of every update.<br/>
+	/// If not empty, this text is shown in the "SetBonus" tooltip line of the worn armor pieces.<br/>
+	/// Vanilla sets, and modded sets registered through <see cref="ArmorSetBonus.Create(ArmorSetBonus.ArmorSetEffect, Localization.LocalizedText, ArmorSetBonus.PartType)"/>, don't use this; their tooltip comes from <see cref="ArmorSetBonus.Description"/>.
+	/// </summary>
+	public string setBonus = "";
+
+	/// <summary>
 	/// Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of <see cref="NPCID.Tim"/>.
 	/// </summary>
 	public bool hasGemRobe = false;

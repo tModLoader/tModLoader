@@ -111,7 +111,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Make a checklist of all TML hooks and have others QC each method behavior?
 - ItemID.Sets.BonusAttackSpeedMultiplier renamed to BonusMeleeSpeedMultiplier. tModPorter done. (double check that this doesn't only apply to melee weapons. I think it isn't limited currently)
 - Run NPCShopDatabase.Test tests.
-- Player.setBonus is unused by vanilla. We will likely remove it (and comment out UpdateArmorSetsOld since it is misleading) and migrate all ExampleMod set bonuses to the new system. We'll need examples of various common set bonus setups (multiple helments, partial sets, typical head/chest/leg set, etc.)
+- Player.setBonus is unused by vanilla. It was kept (tML field now) along with IsArmorSet/UpdateArmorSet, since arbitrary IsArmorSet conditions can't be expressed as ArmorSetBonus entries. Mods can opt into the new system with ArmorSetBonus.Create(effect, LocalizedText, primaryPart) during SetStaticDefaults (ExampleHelmet). We'll still want more examples of common set bonus setups (multiple helmets, partial sets, typical head/chest/leg set, etc.)
 - Check ModifyEquipTextureDraw to determine if there is any other locations where the hook needs to be applied in PlayerDrawLayers.cs
 - PlayerDrawLayers.cs DrawPlayer_13_Leggings
 
