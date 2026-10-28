@@ -24,7 +24,7 @@
  	private bool IsSteamValid;
  	private object _steamTickLock = new object();
  	private object _steamCallbackLock = new object();
-@@ -21,15 +_,22 @@
+@@ -21,17 +_,26 @@
  	public void Initialize()
  	{
  		_instance = this;
@@ -45,5 +45,10 @@
  		}
 +		PortFilesToCurrentStructure();
  
- 		SteamInput.Init(bExplicitlyCallRunFrame: false);
++		// SteamInput.Init never returns on macOS when not launched by the Steam client (dev builds, manual script launches)
++		if (!Platform.IsOSX || Environment.GetEnvironmentVariable("SteamClientLaunch") == "1")
+-		SteamInput.Init(bExplicitlyCallRunFrame: false);
++			SteamInput.Init(bExplicitlyCallRunFrame: false);
  		IsSteamValid = true;
+ 		Thread thread = new Thread(SteamCallbackLoop);
+ 		thread.IsBackground = true;
