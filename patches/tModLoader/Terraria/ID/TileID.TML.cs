@@ -30,6 +30,17 @@ partial class TileID
 		/// </summary>
 		public static bool[] PreventsTileHammeringIfOnTopOfIt = Factory.CreateBoolSet(false, 21, 26, 77, 88, 235, 237, 441, 467, 468, 470, 475, 488, 597);
 
+		/// <summary>
+		/// The number of item slots a newly placed chest or dresser of this tile type gets. Defaults to <see cref="Chest.DefaultMaxItems"/> (40). The chest UI scrolls when a chest has more slots than fit on screen.
+		/// <para/> Only affects chests created after the value is set, existing chests keep the size they were saved with. Values are clamped between 1 and <see cref="Chest.AbsoluteMaxItemsWeCanEverReachInAChestForNow"/>.
+		/// </summary>
+		public static int[] ChestSlotCount = Factory.CreateIntSet(Chest.DefaultMaxItems);
+
+		/// <summary>
+		/// Hides the up and down buttons shown next to chests of this tile type when they have more slots than fit on screen. The mouse wheel can still scroll unless <see cref="ModTile.CanScrollChest"/> returns false.
+		/// </summary>
+		public static bool[] HideChestScrollButtons = Factory.CreateBoolSet();
+
 		/// <summary>Used in <see cref="FallingBlockProjectile"/>.</summary>
 		public class FallingBlockProjectileInfo
 		{

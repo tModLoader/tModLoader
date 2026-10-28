@@ -32,6 +32,8 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileID.Sets.AvoidedByNPCs[Type] = true;
 			TileID.Sets.InteractableByNPCs[Type] = true;
 			TileID.Sets.IsAContainer[Type] = true;
+			TileID.Sets.ChestSlotCount[Type] = 80; // Twice the slots of a vanilla chest. The chest UI scrolls to show the extra rows.
+			// TileID.Sets.HideChestScrollButtons[Type] = true; // Hides the up and down buttons. Override CanScrollChest to stop mouse wheel scrolling.
 			TileID.Sets.FriendlyFairyCanLureTo[Type] = true;
 			TileID.Sets.GeneralPlacementTiles[Type] = false;
 

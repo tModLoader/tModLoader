@@ -119,6 +119,24 @@
  	public int eatingAnimationTime;
  	private bool _itemsGotSet;
  	private static Dictionary<Point, Chest> _chestsByCoords = new Dictionary<Point, Chest>();
+@@ -73,6 +_,17 @@
+ 		return chest;
+ 	}
+ 
++	// Added by TML. Newly placed chests get the slot count set for their tile type in TileID.Sets.ChestSlotCount.
++	private static Chest CreatePlacedChest(int index, int x, int y)
++	{
++		Chest chest = CreateWorldChest(index, x, y);
++		int slotCount = Math.Clamp(TileID.Sets.ChestSlotCount[Framing.GetTileSafely(x, y).TileType], 1, AbsoluteMaxItemsWeCanEverReachInAChestForNow);
++		if (chest.maxItems != slotCount)
++			chest.Resize(slotCount);
++
++		return chest;
++	}
++
+ 	public static void Assign(Chest chest)
+ 	{
+ 		Main.chest[chest.index] = chest;
 @@ -221,6 +_,11 @@
  		return false;
  	}
@@ -383,7 +401,12 @@
  	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		Point16 baseCoords = new Point16(x, y);
-@@ -467,21 +_,47 @@
+@@ -463,25 +_,51 @@
+ 			return -1;
+ 
+ 		if (Main.netMode != 1) {
+-			CreateWorldChest(num, baseCoords.X, baseCoords.Y);
++			CreatePlacedChest(num, baseCoords.X, baseCoords.Y);
  		}
  		else {
  			switch (type) {
@@ -431,7 +454,12 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -498,6 +_,12 @@
+@@ -494,10 +_,16 @@
+ 				return num;
+ 		}
+ 
+-		CreateWorldChest(num, X, Y);
++		CreatePlacedChest(num, X, Y);
  		return num;
  	}
  
