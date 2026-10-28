@@ -5,8 +5,7 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
-	// This accessory makes the player's hitbox bigger. See ExampleHitboxSizePlayer for how the size is changed.
-	// Only the hitbox changes, the player is still drawn at their normal size.
+	// This accessory makes the player bigger. See ExampleHitboxSizePlayer for how the hitbox and drawing are changed.
 	public class ExampleHitboxSizeAccessory : ModItem
 	{
 		public override string Texture => "Terraria/Images/Item_" + ItemID.TitanGlove;

@@ -269,7 +269,7 @@ Mods: {
 
 			ExampleHitboxSizeAccessory: {
 				DisplayName: Example Hitbox Size Accessory
-				Tooltip: Makes your hitbox 50% bigger, as long as there is room
+				Tooltip: Makes you 50% bigger, as long as there is room
 			}
 
 			ExampleImmunityAccessory: {

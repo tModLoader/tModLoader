@@ -1,10 +1,11 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Common.Players
 {
-	// Makes the player's hitbox bigger while ExampleHitboxSizeAccessory is equipped.
+	// Makes the player bigger while ExampleHitboxSizeAccessory is equipped: their hitbox through ModifyHitboxSize, and how they're drawn through TransformDrawData.
 	// Every client works this out for itself from the equipped accessory and the tiles around the player, so nothing extra needs to be synced.
 	public class ExampleHitboxSizePlayer : ModPlayer
 	{
@@ -40,6 +41,14 @@ namespace ExampleMod.Common.Players
 		public override void ModifyHitboxSize(ref Vector2 size) {
 			if (IsGrown) {
 				size *= GrownScale;
+			}
+		}
+
+		// The hitbox doesn't change how the player is drawn, so scale the drawing to match.
+		// This scales everything drawn as part of the player, including armor and held items, around the bottom center of the hitbox.
+		public override void TransformDrawData(ref PlayerDrawSet drawInfo) {
+			if (IsGrown) {
+				PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, GrownScale);
 			}
 		}
 	}
