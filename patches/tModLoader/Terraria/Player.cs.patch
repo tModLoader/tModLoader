@@ -4933,24 +4933,6 @@
  				for (int num89 = 0; num89 < maxBuffs; num89++) {
  					int num90 = buffType[num89];
  					if (num90 == 24 || num90 == 323)
-@@ -22560,7 +_,7 @@
- 					wetCount = 10;
- 					if (!shimmering) {
- 						if (!flag25) {
--							if (shimmerWet) {
-+							if (shimmerWet && LiquidLoader.OnPlayerSplash(LiquidID.Shimmer, this, true)) {
- 								for (int num92 = 0; num92 < 50; num92++) {
- 									int num93 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, 308);
- 									Main.dust[num93].velocity.Y -= 4f;
-@@ -22585,7 +_,7 @@
- 
- 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 2);
- 							}
--							else if (honeyWet) {
-+							else if (honeyWet && LiquidLoader.OnPlayerSplash(LiquidID.Honey, this, true)) {
- 								for (int num94 = 0; num94 < 20; num94++) {
- 									int num95 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
- 									Main.dust[num95].velocity.Y -= 1f;
 @@ -22598,6 +_,8 @@
  								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  							}
@@ -4960,7 +4942,7 @@
  								for (int num96 = 0; num96 < 50; num96++) {
  									int num97 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
  									Main.dust[num97].velocity.Y -= 3f;
-@@ -22606,11 +_,11 @@
+@@ -22606,7 +_,7 @@
  									Main.dust[num97].alpha = 100;
  									Main.dust[num97].noGravity = true;
  								}
@@ -4969,29 +4951,6 @@
  								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
  							}
  						}
--						else {
-+						else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, true)) {
- 							for (int num98 = 0; num98 < 20; num98++) {
- 								int num99 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
- 								Main.dust[num99].velocity.Y -= 1.5f;
-@@ -22642,7 +_,7 @@
- 				wetCount = 10;
- 				if (!shimmering) {
- 					if (!flag24) {
--						if (shimmerWet) {
-+						if (shimmerWet && LiquidLoader.OnPlayerSplash(LiquidID.Shimmer, this, false)) {
- 							for (int num100 = 0; num100 < 50; num100++) {
- 								int num101 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, 308);
- 								Main.dust[num101].velocity.Y -= 4f;
-@@ -22667,7 +_,7 @@
- 
- 							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 3);
- 						}
--						else if (honeyWet) {
-+						else if (honeyWet && LiquidLoader.OnPlayerSplash(LiquidID.Honey, this, false)) {
- 							for (int num102 = 0; num102 < 20; num102++) {
- 								int num103 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
- 								Main.dust[num103].velocity.Y -= 1f;
 @@ -22680,6 +_,8 @@
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  						}
@@ -5001,7 +4960,7 @@
  							for (int num104 = 0; num104 < 50; num104++) {
  								int num105 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
  								Main.dust[num105].velocity.Y -= 4f;
-@@ -22688,11 +_,13 @@
+@@ -22688,6 +_,7 @@
  								Main.dust[num105].alpha = 100;
  								Main.dust[num105].noGravity = true;
  							}
@@ -5009,13 +4968,6 @@
  
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
  						}
- 					}
--					else {
-+					/*else {*/
-+					else if (LiquidLoader.OnPlayerSplash(LiquidID.Lava, this, false)) {
- 						for (int num106 = 0; num106 < 20; num106++) {
- 							int num107 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
- 							Main.dust[num107].velocity.Y -= 1.5f;
 @@ -22718,7 +_,11 @@
  			lavaWet = false;
  			honeyWet = false;

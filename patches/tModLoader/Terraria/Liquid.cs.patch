@@ -43,14 +43,6 @@
  		tilesIgnoreWater(ignoreSolids: true);
  		if (tile.liquid == 0 || (tile.active() && tile.type == 379))
  			return;
-@@ -336,6 +_,7 @@
- 		Tile tile3 = Main.tile[x, y - 1];
- 		Tile tile4 = Main.tile[x, y + 1];
- 		Tile tile5 = Main.tile[x, y];
-+		
- 		if (tile5.nactive() && Main.tileSolid[tile5.type] && !Main.tileSolidTop[tile5.type]) {
- 			_ = tile5.type;
- 			_ = 10;
 @@ -345,12 +_,28 @@
  
  		byte liquid = tile5.liquid;

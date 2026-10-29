@@ -216,7 +216,7 @@
  						for (int num12 = 0; num12 < 10; num12++) {
  							int num13 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2)), width + 12, 24, Dust.dustWater());
  							Main.dust[num13].velocity.Y -= 4f;
-@@ -855,11 +_,11 @@
+@@ -855,7 +_,7 @@
  							Main.dust[num13].alpha = 100;
  							Main.dust[num13].noGravity = true;
  						}
@@ -225,11 +225,6 @@
  						SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  					}
  				}
--				else {
-+				else if (LiquidLoader.OnItemSplash(LiquidID.Lava, this, false)) {
- 					for (int num14 = 0; num14 < 5; num14++) {
- 						int num15 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
- 						Main.dust[num15].velocity.Y -= 1.5f;
 @@ -875,10 +_,16 @@
  		}
  

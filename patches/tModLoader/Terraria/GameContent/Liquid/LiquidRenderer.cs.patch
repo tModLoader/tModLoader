@@ -324,16 +324,14 @@
  			fixed (LiquidDrawCache* ptr8 = &_drawCache[0]) {
  				fixed (SpecialLiquidDrawCache* ptr10 = &_drawCacheForShimmer[0]) {
  					LiquidDrawCache* ptr9 = ptr8;
-@@ -512,8 +_,8 @@
+@@ -512,6 +_,7 @@
  					ptr11->IsVisible = false;
  				}
  			}
 +			*/
  		}
--
+ 
  		if (this.WaveFilters != null)
- 			this.WaveFilters(_waveMask, GetCachedDrawArea());
- 	}
 @@ -526,15 +_,23 @@
  			LiquidDrawCache* ptr2 = ptr;
  			for (int i = drawArea.X; i < drawArea.X + drawArea.Width; i++) {

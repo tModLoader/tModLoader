@@ -161,7 +161,7 @@ public abstract class ModLiquid : ModBlockType
 	{
 		return true;
 	}
-	
+
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
 	/// This hook is not called if <see cref="PreSlopeDraw" /> returns false.<para />
