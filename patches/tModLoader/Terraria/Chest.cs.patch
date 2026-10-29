@@ -123,7 +123,7 @@
  		return chest;
  	}
  
-+	// Added by TML. Newly placed chests get the slot count set for their tile type in TileID.Sets.ChestSlotCount.
++	// TML: #ModdedChestSizes. Newly placed chests get the slot count set for their tile type in TileID.Sets.ChestSlotCount.
 +	private static Chest CreatePlacedChest(int index, int x, int y)
 +	{
 +		Chest chest = CreateWorldChest(index, x, y);
@@ -401,12 +401,13 @@
  	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		Point16 baseCoords = new Point16(x, y);
-@@ -463,25 +_,51 @@
+@@ -463,25 +_,52 @@
  			return -1;
  
  		if (Main.netMode != 1) {
 -			CreateWorldChest(num, baseCoords.X, baseCoords.Y);
-+			CreatePlacedChest(num, baseCoords.X, baseCoords.Y);
++			//CreateWorldChest(num, baseCoords.X, baseCoords.Y);
++			CreatePlacedChest(num, baseCoords.X, baseCoords.Y); // TML: #ModdedChestSizes
  		}
  		else {
  			switch (type) {
@@ -454,12 +455,13 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -494,10 +_,16 @@
+@@ -494,10 +_,17 @@
  				return num;
  		}
  
 -		CreateWorldChest(num, X, Y);
-+		CreatePlacedChest(num, X, Y);
++		//CreateWorldChest(num, X, Y);
++		CreatePlacedChest(num, X, Y); // TML: #ModdedChestSizes
  		return num;
  	}
  

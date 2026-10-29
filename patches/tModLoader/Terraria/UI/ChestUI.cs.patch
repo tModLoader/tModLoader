@@ -13,7 +13,7 @@
  			DrawName(spritebatch);
  			DrawButtons(spritebatch);
  			DrawSlots(spritebatch);
-+			DrawScrollButtons(spritebatch);
++			DrawScrollButtons(spritebatch); // TML: #ModdedChestSizes
  		}
  		else {
  			for (int i = 0; i < ButtonID.Count; i++) {
@@ -30,7 +30,7 @@
  			SoundEngine.PlaySound(12);
  	}
  
-+	// Added by TML. The world chest's coordinates and tile type, or false for banks.
++	// TML: #ModdedChestSizes. The world chest's coordinates and tile type, or false for banks.
 +	private static bool TryGetOpenChestTile(out int i, out int j, out int type)
 +	{
 +		i = j = type = 0;
@@ -46,7 +46,7 @@
 +
 +	internal static bool CanScrollWithMouseWheel() => !TryGetOpenChestTile(out int i, out int j, out int type) || TileLoader.CanScrollChest(i, j, type);
 +
-+	// Added by TML. Up and down buttons for chests with more rows than fit on screen, placed like the crafting grid's buttons.
++	// TML: #ModdedChestSizes. Up and down buttons for chests with more rows than fit on screen, placed like the crafting grid's buttons.
 +	private static void DrawScrollButtons(SpriteBatch spriteBatch)
 +	{
 +		if (LastHighestChestRow <= 0 || TryGetOpenChestTile(out _, out _, out int type) && TileID.Sets.HideChestScrollButtons[type])
