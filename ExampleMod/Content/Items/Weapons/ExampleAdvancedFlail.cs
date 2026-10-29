@@ -19,8 +19,8 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useAnimation = 45; // The item's use time in ticks (60 ticks == 1 second.)
 			Item.useTime = 45; // The item's use time in ticks (60 ticks == 1 second.)
 			Item.knockBack = 5.5f; // The knockback of your flail, this is dynamically adjusted in the projectile code.
-			Item.width = 32; // Hitbox width of the item.
-			Item.height = 32; // Hitbox height of the item.
+			Item.width = 32;
+			Item.height = 32;
 			Item.damage = 15; // The damage of your flail, this is dynamically adjusted in the projectile code.
 			Item.noUseGraphic = true; // This makes sure the item does not get shown when the player swings his hand
 			Item.shoot = ModContent.ProjectileType<ExampleAdvancedFlailProjectile>(); // The flail projectile

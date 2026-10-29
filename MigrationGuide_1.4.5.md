@@ -38,6 +38,8 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
+`Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
+
 ### Item.NewItem
 
 `Item.NewItem` has been reworked.

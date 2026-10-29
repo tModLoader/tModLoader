@@ -194,7 +194,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - LanguageManager.GetText changed, now it stores on miss. Before it didn't and we kept that behavior. Do we want the old behavior still?
 - Replace Main.hasFocus with FocusHelper.AllowUIInputs (or another property)
 - Player.QuickSpawnItem no longer returns an int indicating the index of the item in Main.item. This is because the spawned item can now potentially go directly into player inventory.
-- Item.width and height no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world.
 
 # tModPorter TODOs
 

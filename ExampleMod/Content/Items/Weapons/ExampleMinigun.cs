@@ -15,8 +15,8 @@ namespace ExampleMod.Content.Items.Weapons
 			// Item.SetWeaponValues can quickly set damage, knockBack, and crit
 			Item.SetWeaponValues(11, 1f);
 
-			Item.width = 54; // Hitbox width of the item.
-			Item.height = 22; // Hitbox height of the item.
+			Item.width = 54;
+			Item.height = 22;
 			Item.rare = ItemRarityID.Green; // The color that the item's name will be in-game.
 			Item.UseSound = SoundID.Item11; // The sound that this item plays when used.
 		}
