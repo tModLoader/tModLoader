@@ -178,12 +178,9 @@ Once all patches are fixed, these items need to be fixed or double checked:
 	new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2)); 
 	to 
 	new Vector2(position.X + (float)width / 2f, position.Y + (float)height / 2f);
-- Many of the unique vanilla hairstyles are no longer available at character creation. Set ModHair.AvailableDuringCharacterCreation to false if you wish to follow suit.
 - SlimeBodyItemDropRule can be applied to any NPCID.Sets.SlimeCanContainItems now and ItemID.Sets.OreDropsFromSlime has been updated to include the alternate ores as well as Hellstone and DesertFossil
 - Magic and Summon prefixes have been split into separate categories
   - Vanilla summon weapons can no longer roll Keen, Superior, Godly, Demonic or Zealous. To match, summon weapons no longer get PrefixCategory.AnyWeapon, so AnyWeapon ModPrefixes won't roll on them. Override ModItem.WeaponPrefix to opt back in.
-- Pylons no longer require happiness to be sold. Remove Condition.HappyEnoughToSellPylons from ModPylon.GetNPCShopEntry() to match vanilla.
-- Removed Condition.HappyEnough and Condition.HappyEnoughToSellPylons. Replaced with Condition.CurrentPriceAdjustmentUnder(float priceModifier) and Condition.CurrentPriceAdjustmentOver(float priceModifier).
 - UnifiedRandom.Next methods are no longer virtual
 - UIWrappedSearchBar, is it useful to modders?
 - Various text rendering methods have been changed or improved. Investigate new functionality and previous bug fixes.

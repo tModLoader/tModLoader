@@ -456,6 +456,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * `ProjectileID.Sets.Explosive` and `PrepareBombToBlow` behavior have changed. `Projectile.Kill()` will now automatically call `PrepareBombToBlow` if `Projectile.ai[0]` isn't `1000` (see above). Replace `Projectile.PrepareBombToBlow` with `Projectile.Kill`. Explosives should also set `Projectile.timeLeft = 5;` in `AI` for projectiles not owned by the client to facilitate better multiplayer sync behavior. Modders should consult relevant ExampleMod `ModProjectile` examples and adjust accordingly.
 * Zooming with items like Rifle Scope and Sniper Rifle, and Binoculars has changed. There is now a "Forward Zoom" toggle in the controls menu to change how zooming is triggered (Always On, Always Off, Click to Toggle, and Hold to Use). As such, `ModPlayer.ModifyZoom` has been adjusted with a new `needsMouseRight` parameter. Remove all checks for the right mouse being held down to correctly support these new control options.
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
+* Pylons no longer require happiness to be sold
 
 ### Example Mod
 
@@ -620,6 +621,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `(ModProjectile|GlobalProjectile).PreDraw/PreDrawExtras/PostDraw` now has a `Player` parameter. Use this instead of `Main.player[Projectile.owner]` to properly support rendering projectiles to custom `Player` instances, such as Mannequins.
 * ⚙️: `ModPylon.ValidTeleportCheck_AnyDanger` and `GlobalPylon.ValidTeleportCheck_PreAnyDanger` have been removed. Pylons no longer check for danger when teleporting.
 * 🤖: `ModPylon.DefaultDrawMapIcon` now has an `out bool onScreen` parameter, which should be passed as the new second parameter of `ModPylon.DefaultMapClickHandle`. On the fullscreen map, off-screen modded pylon icons are now clamped to the edge of the screen like vanilla pylons, and clicking them pans the map instead of teleporting.
+* ⚙️: `ModPylon.GetNPCShopEntry` no longer uses `Condition.HappyEnoughToSellPylons` to match vanilla changes. `Condition.HappyEnough` and `Condition.HappyEnoughToSellPylons` have been removed in favor of the more customizable `Condition.CurrentPriceAdjustmentUnder` and `Condition.CurrentPriceAdjustmentOver`.
 * 🤖: `ModTile.AddToArray` is no longer used for `TileID.Sets.RoomNeeds` entries since `TileID.Sets.RoomNeeds` fields have changed to typical ID sets.
 * `NPCLoader.blockLoot` can now affect all drops such as coins, hearts, etherian mana, and skyblock specific drops. Before it could only affect loot table drops.
 * ⚙️: `NPCSpawnInfo` is no longer used, it has been replaced by `NPC.Spawner` in functionality.
