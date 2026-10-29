@@ -403,6 +403,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 ## Other Changes
 
 * Fishing power bonus now applies to any chair, not just toilets.
+* `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
 * `Main.sign` length changed from 1000 to 32000.
 * Shaders no longer need to declare every possible input, missing inputs will be ignored now.

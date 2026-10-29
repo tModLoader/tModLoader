@@ -188,7 +188,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Need to determine if hooks need to act on ModItem or WorldItem. For example: `ItemIO.SendModData(item3, writer);`
   - `public EntityGlobalsEnumerator<TGlobal> Enumerate(IEntityWithGlobals<TGlobal> entity) => new(ForType(entity.Type), entity);` doesn't work as-is for hooks that are now WorldItem. I've changed them to `.Enumerate(item.inner)`, but I'm not positive what design we want for these hooks now. (WorldItem points to Item, but Item doesn't point to WorldItem.)
 - The number3 parameter of the SyncEquipment message seems to have changed meaning. Docs needed.
-- EntitySource_FishedOut will now apply to fishing item spawns instead of just npc spawns.
 - Main.blackTarget removed. All other render targets are now static and WorldSceneLayerTarget instead of RenderTarget2D. (What does WorldSceneLayerTarget do?)
 - HardmodeAnnouncementTask is no longer a HardmodeTask.
 - AssetRepository a huge mess of patches. _changeWatcher patch might need to be restored.
