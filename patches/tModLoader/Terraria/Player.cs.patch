@@ -1896,13 +1896,14 @@
  					if (item.UseSound != null)
  						SoundEngine.PlaySound(item.UseSound, base.Center);
  				}
-@@ -4244,7 +_,8 @@
+@@ -4244,7 +_,10 @@
  
  	public bool CanFitSpace(int heightBoost)
  	{
--		int num = 42 + heightBoost;
-+		//int num = 42 + heightBoost;
-+		int num = (int)GetBaseHitboxSize().Y + heightBoost; // TML: #ModifyHitboxSize
++		/* #ModifyHitboxSize
+ 		int num = 42 + heightBoost;
++		*/
++		int num = (int)GetBaseHitboxSize().Y + heightBoost;
  		return Collision.IsClearSpotTest(position + new Vector2(0f, height - num) + velocity, 16f, width, num, fallThrough: true, fall2: true);
  	}
  
@@ -4884,7 +4885,7 @@
  	}
  
  	private void UpdateBrokenMirrorLuck()
-@@ -23784,11 +_,25 @@
+@@ -23784,11 +_,27 @@
  		}
  	}
  
@@ -4902,13 +4903,13 @@
  	{
 +		int oldWidth = width;
  		position.Y += height;
--		width = 20;
--		height = 42 + HeightOffsetBoost;
 +		Vector2 baseSize = GetBaseHitboxSize();
-+		//width = 20;
-+		width = (int)baseSize.X; // TML: #ModifyHitboxSize
-+		//height = 42 + HeightOffsetBoost;
-+		height = (int)baseSize.Y + HeightOffsetBoost; // TML: #ModifyHitboxSize
++		/* #ModifyHitboxSize
+ 		width = 20;
+ 		height = 42 + HeightOffsetBoost;
++		*/
++		width = (int)baseSize.X;
++		height = (int)baseSize.Y + HeightOffsetBoost;
  		if (mount.Active) {
  			Mount.MountDelegatesData.OverrideSizeMethod playerSize = mount.Delegations.PlayerSize;
  			if (playerSize != null && playerSize(this, out var size) && size.HasValue) {
@@ -4916,7 +4917,7 @@
  			}
  		}
  
-+		// TML: Keep the bottom center in place when the width changes. #ModifyHitboxSize
++		// Keep the bottom center in place when the width changes.
 +		position.X += (oldWidth - width) / 2f;
  		position.Y -= height;
  	}
@@ -5189,11 +5190,11 @@
  			if (playerSize != null && playerSize(this, out var size) && size.HasValue) {
  				Vector2 value = size.Value;
 +				Vector2 baseSize = GetBaseHitboxSize();
-+				/*
++				/* #ModifyHitboxSize
  				if (value.X < 20f || value.Y < 42f)
  					flag = CanFitInSpaceWithSize(DefaultSize, offset);
 +				*/
-+				if (value.X < baseSize.X || value.Y < baseSize.Y) // TML: #ModifyHitboxSize
++				if (value.X < baseSize.X || value.Y < baseSize.Y)
 +					flag = CanFitInSpaceWithSize(baseSize, offset);
  			}
  		}
