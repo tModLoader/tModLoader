@@ -78,7 +78,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPostRetroDraw, globalLiquids, (GlobalLiquid g) => g.PostRetroDraw);
 		ModLoader.BuildGlobalHook(ref HookPreSlopeDraw, globalLiquids, (GlobalLiquid g) => g.PreSlopeDraw);
 		ModLoader.BuildGlobalHook(ref HookPostSlopeDraw, globalLiquids, (GlobalLiquid g) => g.PostSlopeDraw);
-		ModLoader.BuildGlobalHook(ref HookDisableRetroLavaBubbles, globalLiquids, (GlobalLiquid g) => g.DisableRetroLavaBubbles);
 		ModLoader.BuildGlobalHook(ref HookDrawWaterfall, globalLiquids, (GlobalLiquid g) => g.ChooseWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookPreUpdate, globalLiquids, (GlobalLiquid g) => g.PreUpdateLiquid);
 		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.CanLiquidEvaporate);
@@ -88,11 +87,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPreLiquidMerge, globalLiquids, (GlobalLiquid g) => g.PreLiquidMerge);
 		ModLoader.BuildGlobalHook(ref HookAdjLiquids, globalLiquids, (GlobalLiquid g) => g.AdjLiquids);
 		ModLoader.BuildGlobalHook(ref HookBlocksTilePlacement, globalLiquids, (GlobalLiquid g) => g.BlocksTilePlacement);
-		ModLoader.BuildGlobalHook(ref HookOnPlayerSplash, globalLiquids, (GlobalLiquid g) => g.OnPlayerSplash);
-		ModLoader.BuildGlobalHook(ref HookOnNPCSplash, globalLiquids, (GlobalLiquid g) => g.OnNPCSplash);
-		ModLoader.BuildGlobalHook(ref HookOnProjectileSplash, globalLiquids, (GlobalLiquid g) => g.OnProjectileSplash);
-		ModLoader.BuildGlobalHook(ref HookOnFishingBobberSplash, globalLiquids, (GlobalLiquid g) => g.OnFishingBobberSplash);
-		ModLoader.BuildGlobalHook(ref HookOnItemSplash, globalLiquids, (GlobalLiquid g) => g.OnItemSplash);
 		ModLoader.BuildGlobalHook(ref HookPlayerCollision, globalLiquids, (GlobalLiquid g) => g.PlayerLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookPlayerGravityModifier, globalLiquids, (GlobalLiquid g) => g.PlayerGravityModifier);
 		ModLoader.BuildGlobalHook(ref HookItemLiquidMovement, globalLiquids, (GlobalLiquid g) => g.ItemLiquidCollision);
@@ -101,8 +95,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookProjectileLiquidMovement, globalLiquids, (GlobalLiquid g) => g.ProjectileLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookCanPlayerDrown, globalLiquids, (GlobalLiquid g) => g.CanPlayerDrown);
 		ModLoader.BuildGlobalHook(ref HookAllowFishingInLiquid, globalLiquids, (GlobalLiquid g) => g.AllowFishingInLiquid);
-		ModLoader.BuildGlobalHook(ref HookLiquidLightMaskMode, globalLiquids, (GlobalLiquid g) => g.LiquidLightMaskMode);
-		ModLoader.BuildGlobalHook(ref HookWaterRippleMultipler, globalLiquids, (GlobalLiquid g) => g.WaterRippleMultiplier);
 		ModLoader.BuildGlobalHook(ref HookModifyTilesNearby, globalLiquids, (GlobalLiquid g) => g.ModifyNearbyTiles);
 		ModLoader.BuildGlobalHook(ref HookOnPump, globalLiquids, (GlobalLiquid g) => g.OnPump);
 		ModLoader.BuildGlobalHook(ref HookOnPlayerCollision, globalLiquids, (GlobalLiquid g) => g.OnPlayerCollision);
@@ -136,20 +128,6 @@ public static class LiquidLoader
 		}
 	}
 
-	private delegate void DelegateLiquidMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
-	private static DelegateLiquidMaskMode[] HookLiquidLightMaskMode;
-	public static void LiquidLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
-	{
-		ModLiquid modLiquid = GetLiquid(type);
-		if (modLiquid != null) {
-			liquidMaskMode = modLiquid.LiquidLightMaskMode(i, j);
-		}
-		DelegateLiquidMaskMode[] hookLiquidLightMaskMode = HookLiquidLightMaskMode;
-		for (int k = 0; k < hookLiquidLightMaskMode.Length; k++) {
-			hookLiquidLightMaskMode[k](i, j, type, ref liquidMaskMode);
-		}
-	}
-
 	private static Func<int, int, int, LiquidRenderer.LiquidDrawCache, Vector2, bool, int, float, bool>[] HookPreDraw;
 	public static bool PreDraw(int i, int j, int type, LiquidRenderer.LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw, int waterStyle, float globalAlpha)
 	{
@@ -170,6 +148,18 @@ public static class LiquidLoader
 		for (int k = 0; k < hookPostDraw.Length; k++) {
 			hookPostDraw[k](i, j, type, liquidDrawCache, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
 		}
+	}
+	private static Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] HookEmitEffects;
+	public static bool EmitEffects(int i, int j, byte type, LiquidRenderer.LiquidCache liquidCache)
+	{
+		GetLiquid(type)?.EmitEffects(i, j, liquidCache);
+		Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] hookEmitEffects = HookEmitEffects;
+		for (int k = 0; k < hookEmitEffects.Length; k++) {
+			if (!hookEmitEffects[k](i, j, type, liquidCache)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static Func<int, int, int, SpriteBatch, bool>[] HookPreRetroDraw;
@@ -195,19 +185,6 @@ public static class LiquidLoader
 		}
 	}
 
-	private static Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] HookEmitEffects;
-	public static bool EmitEffects(int i, int j, byte type, LiquidRenderer.LiquidCache liquidCache)
-	{
-		GetLiquid(type)?.EmitEffects(i, j, liquidCache);
-		Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] hookEmitEffects = HookEmitEffects;
-		for (int k = 0; k < hookEmitEffects.Length; k++) {
-			if (!hookEmitEffects[k](i, j, type, liquidCache)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	private static Action<int, int, int, SpriteBatch>[] HookPostRetroDraw;
 	public static void PostRetroDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
@@ -218,7 +195,6 @@ public static class LiquidLoader
 		}
 	}
 
-	// TODO: Implement later
 	private delegate bool DelegatePreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePreSlopeDraw[] HookPreSlopeDraw;
 	public static bool PreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
@@ -232,7 +208,6 @@ public static class LiquidLoader
 		return GetLiquid(type)?.PreSlopeDraw(behindBlocks, ref drawPosition, ref liquidSize, ref colors) ?? true;
 	}
 
-	// TODO: Implement later
 	private delegate void DelegatePostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
 	private static DelegatePostSlopeDraw[] HookPostSlopeDraw;
 	public static void PostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
@@ -242,18 +217,6 @@ public static class LiquidLoader
 		for (int k = 0; k < hookPostSlopeDraw.Length; k++) {
 			hookPostSlopeDraw[k](type, behindBlocks, ref drawPosition, ref liquidSize, ref colors);
 		}
-	}
-
-	private static Func<int, int, bool>[] HookDisableRetroLavaBubbles;
-	public static bool DisableRetroLavaBubbles(int i, int j)
-	{
-		Func<int, int, bool>[] hookDisableRetroBubbles = HookDisableRetroLavaBubbles;
-		for (int k = 0; k < hookDisableRetroBubbles.Length; k++) {
-			if (!hookDisableRetroBubbles[k](i, j)) {
-				return false;
-			}
-		}
-		return true;
 	}
 
 	private static Func<int, int, int, int?>[] HookDrawWaterfall;
@@ -391,70 +354,6 @@ public static class LiquidLoader
 		return GetLiquid(type)?.BlocksTilePlacement(player, i, j) ?? type == LiquidID.Lava ? true : false;
 	}
 
-	private static Func<Player, int, bool, bool>[] HookOnPlayerSplash;
-	public static bool OnPlayerSplash(int type, Player player, bool isEnter)
-	{
-		Func<Player, int, bool, bool>[] hookOnPlayerSplash = HookOnPlayerSplash;
-		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
-			if (!hookOnPlayerSplash[k](player, type, isEnter)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static Func<NPC, int, bool, bool>[] HookOnNPCSplash;
-	public static bool OnNPCSplash(int type, NPC npc, bool isEnter)
-	{
-		Func<NPC, int, bool, bool>[] hookOnPlayerSplash = HookOnNPCSplash;
-		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
-			if (!hookOnPlayerSplash[k](npc, type, isEnter)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static Func<Projectile, int, bool, bool>[] HookOnProjectileSplash;
-	public static bool OnProjectileSplash(int type, Projectile projectile, bool isEnter)
-	{
-		Func<Projectile, int, bool, bool>[] hookOnPlayerSplash = HookOnProjectileSplash;
-		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
-			if (!hookOnPlayerSplash[k](projectile, type, isEnter)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static Func<Projectile, int, bool>[] HookOnFishingBobberSplash;
-	public static bool OnFishingBobberSplash(int type, Projectile projectile)
-	{
-		ModLiquid modLiquid = GetLiquid(type);
-		if (modLiquid != null) {
-			modLiquid.OnFishingBobberSplash(projectile);
-		}
-		Func<Projectile, int, bool>[] hookOnPlayerSplash = HookOnFishingBobberSplash;
-		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
-			if (!hookOnPlayerSplash[k](projectile, type)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	private static Func<WorldItem, int, bool, bool>[] HookOnItemSplash;
-	public static bool OnItemSplash(int type, WorldItem item, bool isEnter)
-	{
-		Func<WorldItem, int, bool, bool>[] hookOnPlayerSplash = HookOnItemSplash;
-		for (int k = 0; k < hookOnPlayerSplash.Length; k++) {
-			if (!hookOnPlayerSplash[k](item, type, isEnter)) {
-				return false;
-			}
-		}
-		return true;
-	}
-
 	private static Func<Player, int, bool, bool, bool>[] HookPlayerCollision;
 	public static bool PlayerLiquidMovement(int type, Player player, bool fallThrough, bool ignorePlats)
 	{
@@ -551,16 +450,6 @@ public static class LiquidLoader
 			}
 		}
 		return result;
-	}
-
-	private delegate void DelegateWaterRippleMultipler(int type, ref float multiplier);
-	private static DelegateWaterRippleMultipler[] HookWaterRippleMultipler;
-	public static void WaterRippleMultiplier(int type, ref float multiplier)
-	{
-		DelegateWaterRippleMultipler[] hookWaterRippleMultipler = HookWaterRippleMultipler;
-		for (int k = 0; k < hookWaterRippleMultipler.Length; k++) {
-			hookWaterRippleMultipler[k](type, ref multiplier);
-		}
 	}
 
 	private static Action<int, int, int, int, int>[] HookModifyTilesNearby;

@@ -6777,15 +6777,6 @@
  				Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
  				float num11 = 256 - tile[j, i].liquid;
  				num11 /= 32f;
-@@ -51318,7 +_,7 @@
- 					if (num17 > 1f)
- 						num17 = 1f;
- 
--					if (FocusHelper.AllowMiscDustEffects && Dust.lavaBubbles < 200) {
-+					if (FocusHelper.AllowMiscDustEffects && Dust.lavaBubbles < 200 && !LiquidLoader.DisableRetroLavaBubbles(j, i)) {
- 						if (tile[j, i].liquid > 200 && rand.Next(700) == 0)
- 							Dust.NewDust(new Vector2(j * 16, i * 16), 16, 16, 35);
- 
 @@ -51335,6 +_,33 @@
  					}
  				}

@@ -83,17 +83,17 @@ namespace ExampleMod.Content.Liquids
 
 		//Here with LiquidMerge, we are able to decide when the liquid generates with a different tile.
 		//Using the otherLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
-		public override int LiquidMerge(int otherLiquid) {
-			if (otherLiquid == LiquidID.Water) {
+		public override int LiquidMerge(int adjacentLiquid) {
+			if (adjacentLiquid == LiquidID.Water) {
 				return TileID.TeamBlockBlue; //When the liquid collides with water. Blue team block is created
 			}
-			else if (otherLiquid == LiquidID.Lava) {
+			else if (adjacentLiquid == LiquidID.Lava) {
 				return TileID.TeamBlockRed; //When the liquid collides with lava. Red team block is created
 			}
-			else if (otherLiquid == LiquidID.Honey) {
+			else if (adjacentLiquid == LiquidID.Honey) {
 				return TileID.TeamBlockYellow; //When the liquid collides with honey. Yellow team block is created
 			}
-			else if (otherLiquid == LiquidID.Shimmer) {
+			else if (adjacentLiquid == LiquidID.Shimmer) {
 				return TileID.TeamBlockPink; //When the liquid collides with shimmer. Pink team block is created
 			}
 			//The base return is what the liquid generates by default. This is useful for when this liquid collides with another modded liquid that this liquid has no support for.
@@ -119,17 +119,6 @@ namespace ExampleMod.Content.Liquids
 		//ChooseWaterfallStyle allows for the selection of what waterfall style this liquid chooses when next to a slope.
 		public override int ChooseWaterfallStyle(int i, int j) {
 			return ModContent.GetInstance<ExampleLiquidfall>().Slot;
-		}
-
-		//LiquidLightMaskMode is how the game decides what lightMaskMode to use when this liquid is over a tile
-		//We set this to none, this is due to the liquid emitting light, needing no special lightMaskMode for its interaction with light.
-		//LightMaskMode is how light interacts with the liquid or tile when hitting it. i.e. honey makes light slowly turn yellow when passing through
-		public override LightMaskMode LiquidLightMaskMode(int i, int j) {
-			if (j < Main.maxTilesY - 200) {
-				return LightMaskMode.Water;
-			}
-
-			return LightMaskMode.None;
 		}
 
 		//ModifyLight allows the liquid to emit light similarly to any tile or wall.

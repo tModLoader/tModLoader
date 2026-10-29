@@ -259,20 +259,7 @@
  						ptr2->HasTopEdge = (!liquidCache.HasVisibleLiquid && !liquidCache.IsSolid) || num10 != 0f;
  						ptr2->HasBottomEdge = (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid) || num11 != 1f;
  						ptr2->HasLeftEdge = (!liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid) || num8 != 0f;
-@@ -289,7 +_,6 @@
- 							else
- 								zero.Y += 16;
- 						}
--
- 						if (zero.Y == 16 && (ptr2->HasLeftEdge ^ ptr2->HasRightEdge) && (num7 + rectangle.Y) % 2 == 0)
- 							zero.Y += 16;
- 
-@@ -318,15 +_,28 @@
- 						if (liquidCache.HasVisibleLiquid && liquidCache2.HasVisibleLiquid) {
- 							if (ptr2->HasLeftEdge)
- 								ptr2->VisibleLeftWall = (ptr2->LeftWall * 2f + liquidCache.LeftWall + liquidCache2.LeftWall) * 0.25f;
--
- 							if (ptr2->HasRightEdge)
+@@ -323,10 +_,24 @@
  								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
  						}
  
@@ -381,8 +368,8 @@
 +						/*Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);*/
 +						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
 +
-+						LiquidLoader.PostDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
 +						PostDraw:;
++						LiquidLoader.PostDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
  					}
  
  					ptr2++;

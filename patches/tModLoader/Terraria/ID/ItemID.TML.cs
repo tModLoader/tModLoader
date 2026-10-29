@@ -219,12 +219,6 @@ partial class ItemID
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
 
-
-		/// <summary>
-		/// If <see langword="true"/> for a given item that is a bucket, it can execute the OnBucketUse hook
-		/// </summary>
-		public static bool[] BucketItems = Factory.CreateBoolSet(false, 205);
-
 		/// <summary>
 		/// If <see langword="true"/> for sponge item type
 		/// </summary>

@@ -39,14 +39,14 @@ namespace ExampleMod.Content.Liquids
 			}
 		}
 
-		public override int LiquidMerge(int otherLiquid) {
-			if (otherLiquid == LiquidID.Water) {
+		public override int LiquidMerge(int adjacentLiquid) {
+			if (adjacentLiquid == LiquidID.Water) {
 				return ModContent.TileType<ExampleBlock>();
 			}
-			else if (otherLiquid == LiquidID.Honey) {
+			else if (adjacentLiquid == LiquidID.Honey) {
 				return ModContent.TileType<ExampleOre>();
 			}
-			else if (otherLiquid == LiquidID.Shimmer) {
+			else if (adjacentLiquid == LiquidID.Shimmer) {
 				return TileID.ShimmerBlock;
 			}
 			return TileID.Stone;

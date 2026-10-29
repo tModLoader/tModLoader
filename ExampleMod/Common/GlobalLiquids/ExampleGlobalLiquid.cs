@@ -27,22 +27,10 @@ namespace ExampleMod.Common.GlobalLiquids
 				return false;
 			}
 			// We check if the player is on fire and if the liquid is lava
-			if ((liquidType == LiquidID.Lava || liquidType == ModContent.LiquidType<ExampleComplexLiquid>()) && player.onFire) {
+			if ((liquidType == LiquidID.Lava || liquidType == ModContent.LiquidType<ExampleComplexLiquid>()) && player.onFire) {
 				return false;
 			}
 			return null;
-		}
-
-		//When fishing in water, extra water dusts are produced when the bobber splashes.
-		//This hook/method is for doing for other liquids, providing extra flare when fishing in a liquid
-		//Here we make shimmer emit the npc shimmer particle when fished in
-		public override bool OnFishingBobberSplash(Projectile proj, int type) {
-			if (type == LiquidID.Shimmer) {
-				ParticleOrchestrator.BroadcastParticleSpawn(ParticleOrchestraType.ShimmerTownNPC, new ParticleOrchestraSettings {
-					PositionInWorld = proj.position
-				});
-			}
-			return true;
 		}
 
 		// EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld under certain condition (or not).
@@ -79,7 +67,7 @@ namespace ExampleMod.Common.GlobalLiquids
 		public override bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid) {
 			// We start by checking if lava and water are the 2 liquid colliding together
 			if (type == LiquidID.Water && otherLiquid == LiquidID.Lava ||
-			    type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
+				type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
 				// Then we check if the Eye of Cthulhu has been defeated and run a Main.rand.NextBool() to determine if we generate an obsdian pillar or not
 				if (NPC.downedBoss1 && Main.rand.NextBool()) {
 					// If the check pass, we start making the pillar
@@ -101,6 +89,13 @@ namespace ExampleMod.Common.GlobalLiquids
 					return false;
 				}
 			}
+
+			// This second example here make it so Lava and Honey does not merge at all if they are in the underworld, allowing them to co-exist next to each other
+			// if (type == LiquidID.Lava && otherLiquid == LiquidID.Honey ||
+			//	type == LiquidID.Honey && otherLiquid == LiquidID.Lava && liquidY > Main.UnderworldLayer) {
+			//	// By returning false, it effectively prevent the liquid from doing any sort of merging and make it so that LiquidMerge does not run in this case
+			//	return false;
+			//}
 			return base.PreLiquidMerge(liquidX, liquidY, tileX, tileY, type, otherLiquid);
 		}
 
@@ -110,13 +105,13 @@ namespace ExampleMod.Common.GlobalLiquids
 		public override int? LiquidMerge(int type, int otherLiquid) {
 			// Due to the nature of how liquids work, we need to check both way for the interaction, as it depend on which liquid flow first in the other liquid.
 			// In this case, we are checking if lava and shimmer collide, then make orichalcum
-			if ((type == LiquidID.Lava && otherLiquid == LiquidID.Shimmer) || (type == LiquidID.Shimmer && otherLiquid == LiquidID.Lava)) {
+			if ((type == LiquidID.Lava && otherLiquid == LiquidID.Shimmer) || (type == LiquidID.Shimmer && otherLiquid == LiquidID.Lava)) {
 				return TileID.Orichalcum;
 			}
 
 			// In this case, we check for lava and water colliding.
 			if (type == LiquidID.Water && otherLiquid == LiquidID.Lava ||
-			    type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
+				type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
 				// Then we check if the eye of cthulhu as been defeated
 				if (NPC.downedBoss1) {
 					// And finally we do use Main.rand.NextBool() to determine if obsidian (true) or Ancient Obsidian Brick (false will generate)
@@ -136,24 +131,11 @@ namespace ExampleMod.Common.GlobalLiquids
 			}
 
 			// In this case, we check if the liquid is lava and if it's located in the underworld 
-			if (type == LiquidID.Lava && i > Main.maxTilesY - 200) {
+			if (type == LiquidID.Lava && i > Main.maxTilesY - 200) {
 				// Then we return true if the lava is located in the underworld
 				return true;
 			}
-
-			// TODO: Make an example about where a liquid is in a specific structure boundary
 			return null;
-		}
-
-		//Here, using OnPlayerSplash, we can make players emit extra particles when entering or exiting a liquid (such as shimmer in this example)
-		//Here we make shimmer emit the NPC shimmer particle when both entering and exiting
-		public override bool OnPlayerSplash(Player player, int type, bool isEnter) {
-			if (type == LiquidID.Shimmer) {
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerTownNPC, new ParticleOrchestraSettings {
-					PositionInWorld = player.position + new Vector2(player.width / 2, player.height / 2),
-				}, player.whoAmI);
-			}
-			return true;
 		}
 
 		//ChecksForDrowning allows which liquid the player can drown in.

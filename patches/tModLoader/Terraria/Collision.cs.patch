@@ -16,20 +16,10 @@
  {
  	public enum TileContactSide
  	{
-@@ -1151,6 +_,8 @@
- 		return true;
- 	}
- 
-+
-+
- 	public static bool DrownCollision(Vector2 Position, int Width, int Height, float gravDir = -1f, bool includeSlopes = false)
- 	{
- 		Vector2 vector = new Vector2(Position.X + (float)(Width / 2), Position.Y + (float)(Height / 2));
-@@ -1179,7 +_,12 @@
+@@ -1179,7 +_,11 @@
  		for (int i = num3; i < value2; i++) {
  			for (int j = value3; j < value4; j++) {
  				Tile tile = Main.tile[i, j];
-+				// TODO: Fix patch tomorrow
 +				/*
 +				if (tile.lava() || tile.shimmer())
 +					return true;

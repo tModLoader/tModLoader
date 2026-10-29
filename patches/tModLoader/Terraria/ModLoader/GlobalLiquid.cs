@@ -154,17 +154,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows for disabling lava bubbles in "Retro" and "Trippy" lighting modes. Only calls when lava's PreRetroDraw isnt false. Returns false by default.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <returns></returns>
-	public virtual bool DisableRetroLavaBubbles(int i, int j)
-	{
-		return false;
-	}
-
-	/// <summary>
 	/// The ID of the waterfall/liquidfall style the game should use when the liquid is near a half block.
 	/// Returns null by default.
 	/// </summary>
@@ -295,66 +284,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows you to decide what happens when the player enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a player enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="player">The player instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnPlayerSplash(Player player, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a NPC enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a NPC enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="npc">The NPC instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnNPCSplash(NPC npc, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a projectile enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a projectile enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnProjectileSplash(Projectile proj, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a fishing bobber catches a fish. Water uses this to create extra water bubbles and to make a splash sound. <br/>
-	/// Return false to disable the water splashing fishing bobbers create.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats fishing in the liquid.</param>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual bool OnFishingBobberSplash(Projectile proj, int type)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when an item enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when an item enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnItemSplash(WorldItem item, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
 	/// Allows the user to specify how a liquid interacts with the player (especially player movement). <br/>
 	/// Please see <see cref="Terraria.Player.WaterCollision" />, <see cref="Terraria.Player.HoneyCollision" />, or <see cref="Terraria.Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
@@ -467,29 +396,6 @@ public abstract class GlobalLiquid : ModType
 	public virtual bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows you to change the Light Mask Mode for any liquid. The Light Mask Mode is the mask for lighting to determine how light interacts with a liquid. <br/>
-	/// Vanilla has options for Water (slight blue fade) and Honey (dark black) while lava uses the None option. <br/>
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type"></param>
-	/// <param name="liquidMaskMode">Edit this param to change the Light Mask Mode of the liquid.</param>
-	public virtual void LiquidLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
-	{
-	}
-
-	/// <summary>
-	/// The multiplier used when the Waves qaulity setting is set to Medium. <br/>
-	/// Honey and Lava set this multiplier to be 0.3x. <br/>
-	/// This setting is to make waves go the same distance no matter the liquid. For some reason vanilla manually applies a multiplier rather than doing seperate math for the wave speed.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="multiplier">The multiplier used, for most liquids this will be 1f, but for honey and lava it's 0.3.</param>
-	public virtual void WaterRippleMultiplier(int type, ref float multiplier)
-	{
 	}
 
 	/// <summary>

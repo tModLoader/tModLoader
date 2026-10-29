@@ -29,38 +29,6 @@ public partial class Player
 		get => adjLiquid[LiquidID.Lava];
 		set => adjLiquid[LiquidID.Lava] = value;
 	}
-	/// <summary>
-	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
-	/// </summary>
-	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
-	public bool oldAdjWater {
-		get => oldAdjLiquid[LiquidID.Water];
-		set => oldAdjLiquid[LiquidID.Water] = value;
-	}
-	/// <summary>
-	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
-	/// </summary>
-	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
-	public bool oldAdjHoney {
-		get => oldAdjLiquid[LiquidID.Honey];
-		set => oldAdjLiquid[LiquidID.Honey] = value;
-	}
-	/// <summary>
-	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
-	/// </summary>
-	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
-	public bool oldAdjLava {
-		get => oldAdjLiquid[LiquidID.Lava];
-		set => oldAdjLiquid[LiquidID.Lava] = value;
-	}
-	/// <summary>
-	/// Legacy code, use <see cref="oldAdjLiquid"/> instead.
-	/// </summary>
-	[Obsolete("Legacy code, use oldAdjLiquid instead", true)]
-	public bool oldAdjShimmer {
-		get => oldAdjLiquid[LiquidID.Shimmer];
-		set => oldAdjLiquid[LiquidID.Shimmer] = value;
-	}
 
 	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
 

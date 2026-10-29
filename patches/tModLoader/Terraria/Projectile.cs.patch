@@ -2371,7 +2371,7 @@
  		for (int i = 0; i < 100; i++) {
  			int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
  			Main.dust[num].velocity.Y -= 4f;
-@@ -46469,9 +_,34 @@
+@@ -46469,9 +_,30 @@
  		}
  
  		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
@@ -2380,25 +2380,21 @@
 +		// TML: Rewritten splash logic for bobber
 +		bool inModdedLiquid = false;
 +		for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Lava; i--) {
-+			if (wets[i]) {
-+				LiquidLoader.OnFishingBobberSplash(i, this);
-+				if (i >= LiquidID.Count)
++			if (wets[i] && i >= LiquidID.Count) {
 +					inModdedLiquid = true;
 +			}
 +		}
 +		if (!inModdedLiquid && !lavaWet && !honeyWet && !shimmerWet && wet) {
-+			if (LiquidLoader.OnFishingBobberSplash(LiquidID.Water, this)) {
-+				for (int i = 0; i < 100; i++) {
-+					int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
-+					Main.dust[num].velocity.Y -= 4f;
-+					Main.dust[num].velocity.X *= 2.5f;
-+					Main.dust[num].scale = 0.8f;
-+					Main.dust[num].alpha = 100;
-+					Main.dust[num].noGravity = true;
-+				}
-+
-+				SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
++			for (int i = 0; i < 100; i++) {
++				int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y - 10f), width + 12, 24, Dust.dustWater());
++				Main.dust[num].velocity.Y -= 4f;
++				Main.dust[num].velocity.X *= 2.5f;
++				Main.dust[num].scale = 0.8f;
++				Main.dust[num].alpha = 100;
++				Main.dust[num].noGravity = true;
 +			}
++
++			SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
 +		}
  	}
  

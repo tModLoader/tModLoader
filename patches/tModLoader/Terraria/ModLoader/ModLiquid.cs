@@ -176,19 +176,6 @@ public abstract class ModLiquid : ModBlockType
 	public virtual void PostSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 	}
-	
-
-	/// <summary>
-	/// Allows you to change the Light Mask Mode for this liquid. The Light Mask Mode is the mask for lighting to determine how light interacts with this liquid. <br/>
-	/// Vanilla has options for Water (slight blue fade) and Honey (dark black) while lava uses the None option. <br/>
-	/// Defaults to LightMaskMode.None.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual LightMaskMode LiquidLightMaskMode(int i, int j)
-	{
-		return LightMaskMode.None;
-	}
 
 	/// <summary>
 	/// The ID of the waterfall/liquidfall style the game should use when this liquid is near a half block
@@ -255,9 +242,9 @@ public abstract class ModLiquid : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
+	/// <param name="adjacentLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int LiquidMerge(int otherLiquid)
+	public virtual int LiquidMerge(int adjacentLiquid)
 	{
 		return TileID.Stone;
 	}
@@ -310,58 +297,6 @@ public abstract class ModLiquid : ModBlockType
 	public virtual bool BlocksTilePlacement(Player player, int i, int j)
 	{
 		return false;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when the player enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a player enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="player">The player instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnPlayerSplash(Player player, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a NPC enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a NPC enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="npc">The NPC instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnNPCSplash(NPC npc, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a projectile enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a projectile enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnProjectileSplash(Projectile proj, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when an item enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when an item enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnItemSplash(WorldItem item, bool isEnter)
-	{
-		return true;
 	}
 
 	/// <summary>
@@ -591,7 +526,7 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks. It is important to use Main.tileBatch for drawing operation here.<para />
-	/// This hook is not called if <see cref="PreDraw" /> returns false.<para />
+	/// This hook is called regardless if <see cref="PreDraw" /> returns true or false.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

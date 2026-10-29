@@ -96,7 +96,7 @@
  				delay = 0;
  			}
  		}
-@@ -424,7 +_,51 @@
+@@ -424,7 +_,45 @@
  				}
  			}
  		}
@@ -114,12 +114,6 @@
 +				if (!quickFall) {
 +					int fallDelay = 0;
 +					fallDelay = LiquidID.Sets.FallDelay[i];
-+					// TODO: Keep this hook???
-+					/*
-+					if (LiquidLoader.LiquidEditingFallDelay(i) != null) {
-+						fallDelay = (int)LiquidLoader.LiquidEditingFallDelay(i);
-+					}
-+					*/
 +					/*if (delay < 10) {*/
 +					if (delay < fallDelay) {
 +						delay++;
