@@ -44,8 +44,9 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		// The hitbox doesn't change how the player is drawn, so scale the drawing to match.
-		// This scales everything drawn as part of the player, including armor and held items, around the bottom center of the hitbox.
+		// The hitbox doesn't change how the player is drawn: they're drawn at the default size at the bottom of their hitbox, along with their held item and mount. So scale the drawing to match.
+		// This scales everything drawn as part of the player, including armor, held items and mounts, around the bottom center of the hitbox.
+		// Projectiles are drawn separately, so things like yoyo strings, flails and held guns aren't scaled and stay where they would be for a normal sized player.
 		public override void TransformDrawData(ref PlayerDrawSet drawInfo) {
 			if (IsGrown) {
 				PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, GrownScale);

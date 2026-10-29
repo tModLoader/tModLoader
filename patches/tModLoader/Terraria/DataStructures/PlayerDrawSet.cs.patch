@@ -150,6 +150,23 @@
  				colorEyeWhites = drawPlayer.GetImmuneAlpha(Color.White, shadow);
  				colorEyes = drawPlayer.GetImmuneAlpha(drawPlayer.eyeColor, shadow);
  				colorHair = drawPlayer.GetImmuneAlpha(drawPlayer.GetHairColor(useLighting: false), shadow);
+@@ -1425,9 +_,16 @@
+ 			}
+ 
+ 			if (!drawPlayer.dead) {
++				/* #ModifyHitboxSize
+ 				drawPlayer.legPosition.Y = 6f;
+ 				drawPlayer.headPosition.Y = 6f;
+ 				drawPlayer.bodyPosition.Y = 6f;
++				*/
++				// The player is drawn at the bottom of their hitbox, so move them up to stand on the ceiling.
++				float reverseGravityOffset = 6f - drawPlayer.HeightOffsetHitboxSize;
++				drawPlayer.legPosition.Y = reverseGravityOffset;
++				drawPlayer.headPosition.Y = reverseGravityOffset;
++				drawPlayer.bodyPosition.Y = reverseGravityOffset;
+ 			}
+ 		}
+ 
 @@ -1463,6 +_,13 @@
  			drawPlayer.headRotation = 0f;
  		}

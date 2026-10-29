@@ -419,6 +419,17 @@
  			PlayerQueenSlimeMountTextureContent queenSlimeMount = TextureAssets.RenderTargets.QueenSlimeMount;
  			queenSlimeMount.Request();
  			if (queenSlimeMount.IsReady)
+@@ -4929,7 +_,10 @@
+ 			num *= -1;
+ 
+ 		Position.X = (int)(Position.X - Main.screenPosition.X + (float)(drawPlayer.width / 2) + (float)num);
++		/* #ModifyHitboxSize
+ 		Position.Y = (int)(Position.Y - Main.screenPosition.Y + (float)(drawPlayer.height / 2) + (float)num2);
++		*/
++		Position.Y = (int)(Position.Y - Main.screenPosition.Y + (float)(drawPlayer.height / 2) + drawPlayer.HeightOffsetHitboxSize / 2f * drawPlayer.gravDir + (float)num2);
+ 		int num3 = 0;
+ 		bool flag = true;
+ 		int num4 = _data.totalFrames;
 @@ -5264,10 +_,13 @@
  				break;
  		}
