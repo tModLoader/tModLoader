@@ -142,25 +142,10 @@ public class MemberUseRewriter : BaseRewriter {
 			return memberName;
 		}
 
-		string comment = SelectionReadAfter(rw.model, assign) ? "Suggestion: Select is buffered, selectedItem won't change until the next update" : null;
 		rw.RegisterAction<AssignmentExpressionSyntax>(assign, n =>
-			InvocationExpression(MemberAccessExpression(((MemberAccessExpressionSyntax)n.Left).Expression.WithoutTrivia(), "selectedItemState"), "Select", n.Right.WithoutTrivia()).WithTriviaFrom(n).WithBlockComment(comment));
+			InvocationExpression(MemberAccessExpression(((MemberAccessExpressionSyntax)n.Left).Expression.WithoutTrivia(), "selectedItemState"), "Select", n.Right.WithoutTrivia()).WithTriviaFrom(n)
+				.WithBlockComment("Suggestion: Select is buffered, selectedItem won't change until the next update"));
 		return memberName;
-	}
-
-	// Code which reads the selection after setting it (eg. swap to an item, use it, swap back) relied on the assignment applying immediately
-	private static bool SelectionReadAfter(SemanticModel model, AssignmentExpressionSyntax assign) {
-		var body = assign.Ancestors().FirstOrDefault(n => n is BaseMethodDeclarationSyntax or AccessorDeclarationSyntax or LocalFunctionStatementSyntax or AnonymousFunctionExpressionSyntax);
-		if (body == null)
-			return false;
-
-		return body.DescendantNodes().OfType<IdentifierNameSyntax>().Any(id => {
-			if (id.SpanStart < assign.Span.End || id.Identifier.Text is not ("selectedItem" or "HeldItem"))
-				return false;
-
-			var info = model.GetSymbolInfo(id);
-			return (info.Symbol ?? info.CandidateSymbols.FirstOrDefault()) is IPropertySymbol prop && prop.ContainingType.InheritsFrom("Terraria.Player");
-		});
 	}
 
 	public static SyntaxNode RewriteIsJourneyMode(MemberUseRewriter rw, IOperation op, IdentifierNameSyntax memberName)

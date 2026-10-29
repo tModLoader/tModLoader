@@ -19,6 +19,14 @@ public class EventHandlerRewriter : BaseRewriter
 		if (!node.IsKind(SyntaxKind.AddAssignmentExpression) && !node.IsKind(SyntaxKind.SubtractAssignmentExpression))
 			return newNode;
 
+		string name = node.Left switch {
+			MemberAccessExpressionSyntax memberAccess => memberAccess.Name.Identifier.Text,
+			SimpleNameSyntax simpleName => simpleName.Identifier.Text,
+			_ => null
+		};
+		if (!appendedParameters.Any(e => e.name == name))
+			return newNode;
+
 		if (model.GetSymbolInfo(node.Left).Symbol is not IEventSymbol ev || ev.Type is not INamedTypeSymbol { DelegateInvokeMethod: { } invoke })
 			return newNode;
 
