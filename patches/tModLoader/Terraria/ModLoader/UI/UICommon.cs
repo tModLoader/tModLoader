@@ -137,6 +137,7 @@ public static class UICommon
 	public static Asset<Texture2D> ButtonDownloadMultipleTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModInfoTexture { get; internal set; }
 	public static Asset<Texture2D> ButtonModConfigTexture { get; internal set; }
+	public static Asset<Texture2D> ButtonModConfigNotificationTexture { get; internal set; }
 	public static Asset<Texture2D> ModLocationModPackIcon { get; internal set; }
 	public static Asset<Texture2D> ModLocationLocalIcon { get; internal set; }
 	public static Asset<Texture2D> DividerTexture { get; internal set; }
@@ -175,6 +176,7 @@ public static class UICommon
 		ButtonDownloadMultipleTexture = LoadEmbeddedTexture("UI.ButtonDownloadMultiple");
 		ButtonModInfoTexture = LoadEmbeddedTexture("UI.ButtonModInfo");
 		ButtonModConfigTexture = LoadEmbeddedTexture("UI.ButtonModConfig");
+		ButtonModConfigNotificationTexture = LoadEmbeddedTexture("UI.ButtonModConfigNotification");
 		ModLocationModPackIcon = LoadEmbeddedTexture("UI.ModLocationModPackIcon");
 		ModLocationLocalIcon = LoadEmbeddedTexture("UI.ModLocationLocalIcon");
 
