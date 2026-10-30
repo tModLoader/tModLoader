@@ -31,6 +31,8 @@ public class ModItemTest : ModItem
 		ID.AmmoID.Sets.IsRocket[Type] = true;
 		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
 		*/
+
+		ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
 	}
 
 	public override bool IgnoreDamageModifiers => false;

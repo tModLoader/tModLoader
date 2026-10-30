@@ -508,6 +508,28 @@
  		bool flag2 = drawinfo.drawPlayer.head == 28;
  		bool flag3 = drawinfo.drawPlayer.head == 39 || drawinfo.drawPlayer.head == 38;
  		bool flag4 = true;
+@@ -1932,8 +_,8 @@
+ 		}
+ 
+ 		position += drawinfo.hairOffset;
+-		bool flag5 = drawinfo.drawPlayer.faceMask > 0 && drawinfo.drawPlayer.faceMask < ArmorIDs.Face.Count;
+-		if (flag5 && drawinfo.drawPlayer.head > 0 && drawinfo.drawPlayer.head < ArmorIDs.Head.Count && !ArmorIDs.Head.Sets.DrawFaceMaskUnderHeadLayer[drawinfo.drawPlayer.head])
++		bool flag5 = drawinfo.drawPlayer.faceMask > 0;
++		if (flag5 && drawinfo.drawPlayer.head > 0 && !ArmorIDs.Head.Sets.DrawFaceMaskUnderHeadLayer[drawinfo.drawPlayer.head])
+ 			flag5 = false;
+ 		else if (flag5 && drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54 && !ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.faceMask])
+ 			flag5 = false;
+@@ -1943,7 +_,10 @@
+ 			Vector2 faceDrawOffset = drawinfo.drawPlayer.GetFaceDrawOffset(drawinfo.drawPlayer.faceMask);
+ 			item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceMask].Value, faceDrawOffset + pos + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFaceMask;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceMask); // Face, DrawInFaceMaskLayer, no head or head is DrawFaceMaskUnderHeadLayer
++			/*
+ 			drawinfo.DrawDataCache.Add(item);
++			*/
+ 		}
+ 
+ 		if (flag4 && drawinfo.fullHair) {
 @@ -1956,7 +_,10 @@
  
  			item = new DrawData(TextureAssets.ArmorHead[drawinfo.drawPlayer.head].Value, helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, color, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
@@ -582,8 +604,14 @@
  
  		if (!drawinfo.drawPlayer.babyBird)
  			return;
-@@ -2346,24 +_,30 @@
+@@ -2343,27 +_,36 @@
+ 			if (drawinfo.drawPlayer.face > 0 && ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] && (!drawinfo.drawPlayer.mount.Active || drawinfo.drawPlayer.mount.Type != 54 || ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face])) {
+ 				DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, pos + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 				item.shader = drawinfo.cFace;
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face, mountHandlesHeadDraw
++				/*
  				drawinfo.DrawDataCache.Add(item);
++				*/
  			}
  		}
 -		else if (!flag && drawinfo.drawPlayer.faceHead > 0 && drawinfo.drawPlayer.faceHead < ArmorIDs.Face.Count) {
@@ -591,7 +619,7 @@
  			Vector2 vector = drawinfo.drawPlayer.GetFaceHeadOffsetFromHelmet() + pos;
  			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceHead].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect + vector, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFaceHead;
-+			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceHead); // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceHead); // Face under helmet, DrawInFaceHeadLayer, !ArmorIDs.Head.Sets.HidesHead
 +			/*
  			drawinfo.DrawDataCache.Add(item);
 +			*/
@@ -608,7 +636,7 @@
  
  			item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, pos + new Vector2((float)(int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  			item.shader = drawinfo.cFace;
-+			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, DrawInFaceHeadLayer, !ArmorIDs.Head.Sets.HidesHead, DrawInFaceUnderHairLayer
 +			/*
  			drawinfo.DrawDataCache.Add(item);
 +			*/
@@ -619,14 +647,14 @@
  			if (drawinfo.drawPlayer.face > 0 && ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[drawinfo.drawPlayer.face] && (!drawinfo.drawPlayer.mount.Active || drawinfo.drawPlayer.mount.Type != 54 || ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.face])) {
  				item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.face].Value, pos + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
  				item.shader = drawinfo.cFace;
-+				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, Not DrawInFaceHeadLayer, ArmorIDs.Head.Sets.DrawHead, DrawInFaceUnderHairLayer
++				ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.face); // Face under helmet, Not DrawInFaceHeadLayer, !ArmorIDs.Head.Sets.HidesHead, DrawInFaceUnderHairLayer
 +				/*
  				drawinfo.DrawDataCache.Add(item);
 +				*/
  			}
  		}
  	}
-@@ -2546,14 +_,17 @@
+@@ -2546,18 +_,21 @@
  		bool hasRockGolemHead = false;
  		bool flag = drawinfo.drawPlayer.head == 287;
  		Vector2 vector = DrawPlayer_GetMountOffsetForFaceAcc(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead);
@@ -644,9 +672,21 @@
 +			*/
  		}
  
- 		bool flag2 = drawinfo.drawPlayer.faceMask > 0 && drawinfo.drawPlayer.faceMask < ArmorIDs.Face.Count;
-@@ -2572,8 +_,8 @@
+-		bool flag2 = drawinfo.drawPlayer.faceMask > 0 && drawinfo.drawPlayer.faceMask < ArmorIDs.Face.Count;
+-		if (flag2 && drawinfo.drawPlayer.head > 0 && drawinfo.drawPlayer.head < ArmorIDs.Head.Count && (ArmorIDs.Head.Sets.PreventFaceMaskDraw[drawinfo.drawPlayer.head] || ArmorIDs.Head.Sets.DrawFaceMaskUnderHeadLayer[drawinfo.drawPlayer.head]))
++		bool flag2 = drawinfo.drawPlayer.faceMask > 0;
++		if (flag2 && drawinfo.drawPlayer.head > 0 && (ArmorIDs.Head.Sets.PreventFaceMaskDraw[drawinfo.drawPlayer.head] || ArmorIDs.Head.Sets.DrawFaceMaskUnderHeadLayer[drawinfo.drawPlayer.head]))
+ 			flag2 = false;
+ 		else if (flag2 && drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == 54 && !ArmorIDs.Face.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.faceMask])
+ 			flag2 = false;
+@@ -2569,11 +_,14 @@
+ 
+ 			DrawData item = new DrawData(TextureAssets.AccFace[drawinfo.drawPlayer.faceMask].Value, faceDrawOffset2 + vector + drawinfo.helmetOffset + new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)), (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.headPosition + drawinfo.headVect, drawinfo.drawPlayer.bodyFrame, drawinfo.colorArmorHead, drawinfo.drawPlayer.headRotation, drawinfo.headVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cFaceMask;
++			ItemLoader.ModifyEquipTextureDraw(ref drawinfo, ref item, EquipType.Face, drawinfo.drawPlayer.faceMask); // Face, DrawInFaceMaskLayer unless head with PreventFaceMaskDraw or DrawFaceMaskUnderHeadLayer
++			/*
  			drawinfo.DrawDataCache.Add(item);
++			*/
  		}
  
 -		bool flag3 = drawinfo.drawPlayer.faceFlower > 0 && drawinfo.drawPlayer.faceFlower < ArmorIDs.Face.Count;
@@ -811,6 +851,14 @@
  			Rectangle bodyFrame = drawinfo.drawPlayer.bodyFrame;
  			int num = drawinfo.armorAdjust;
  			bodyFrame.X += num;
+@@ -3308,6 +_,7 @@
+ 				drawinfo.DrawDataCache.Add(item);
+ 			}
+ 
++			// Non-composite Arm. No need for ModifyEquipTextureDraw hook.
+ 			item = new DrawData(TextureAssets.ArmorArm[drawinfo.drawPlayer.body].Value, new Vector2((int)(drawinfo.Position.X - Main.screenPosition.X - (float)(drawinfo.drawPlayer.bodyFrame.Width / 2) + (float)(drawinfo.drawPlayer.width / 2)) + num, (int)(drawinfo.Position.Y - Main.screenPosition.Y + (float)drawinfo.drawPlayer.height - (float)drawinfo.drawPlayer.bodyFrame.Height + 4f)) + drawinfo.drawPlayer.bodyPosition + new Vector2(drawinfo.drawPlayer.bodyFrame.Width / 2, drawinfo.drawPlayer.bodyFrame.Height / 2), bodyFrame, drawinfo.colorArmorBody, drawinfo.drawPlayer.bodyRotation, drawinfo.bodyVect, 1f, drawinfo.playerEffect);
+ 			item.shader = drawinfo.cBody;
+ 			drawinfo.DrawDataCache.Add(item);
 @@ -3359,8 +_,8 @@
  			vector += new Vector2(((drawinfo.playerEffect & SpriteEffects.FlipHorizontally) == 0) ? 1 : (-1), ((drawinfo.playerEffect & SpriteEffects.FlipVertically) == 0) ? 1 : (-1));
  

@@ -34,7 +34,7 @@
  		{
  			public static int[] CountsAsChairTypes = new int[6] {
  				15,
-@@ -145,32 +_,117 @@
+@@ -145,32 +_,121 @@
  			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
  		}
  
@@ -85,6 +85,10 @@
 +		/// Set to true to prevent this tile from drawing with more detailed lighting, if the user is using a detailed lighting mode. If true, a single lighting value will be used to draw this tile instead of drawing the tile in 9 sections with different interpolated lighting values. <see cref="Traps"/> and <see cref="Boulder"/> are examples of tiles that use this. This is only relevant for tiles set as <see cref="Main.tileSolid"/>.
 +		/// </summary>
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631, 711, 712, 713, 714, 715, 716, 723, 726);
++		/// <summary>
++		/// Affects tile drawing in some way.
++		/// <para/> Some examples include <see cref="Teleporter"/>, <see cref="Traps"/>, <see cref="KiteAnchor"/>, <see cref="GolfHole"/>, and boulder tiles. 
++		/// </summary>
  		public static bool[] DontDrawTileSlopes = Factory.CreateBoolSet(false, 137, 235, 388, 476, 138, 664, 665, 630, 631, 711, 712, 713, 714, 715, 716, 723, 726);
 +
 +		// TML: Why would someone want to set this? Maybe it's for 1x1 tile entities?
@@ -190,7 +194,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -204,30 +_,79 @@
+@@ -204,30 +_,83 @@
  			(ushort)579,
  			true
  		});
@@ -244,6 +248,10 @@
 +		/// <para/> <b>NOTE:</b> Requires calling <see cref="GameContent.Drawing.TileDrawing.CrawlToBottomOfReverseVineAndAddSpecialPoint(int, int)"/> in <c>ModTile.PreDraw</c> to register the coordinates of the root of the vine for special drawing.
 +		/// </summary>
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
++		/// <summary>
++		/// Set to true for tiles that have sloped state frames in their tile sheet, rather than drawing using the automatic slope drawing approach.
++		/// <para/> Used by <see cref="ConveyorBeltLeft"/> and <see cref="ConveyorBeltRight"/>. Consult their tile sheets for the expected layout.
++		/// </summary>
  		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
 +		/// <summary>
 +		/// Changes the gamepad button prompt when hovering over this tile from "Use" to "Read". Set by all <see cref="Main.tileSign"/> tiles. Defaults to false.

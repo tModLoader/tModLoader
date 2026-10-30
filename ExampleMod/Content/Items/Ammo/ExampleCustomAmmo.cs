@@ -13,8 +13,8 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			Item.width = 14; // The width of item hitbox
-			Item.height = 14; // The height of item hitbox
+			Item.width = 14;
+			Item.height = 14;
 
 			Item.damage = 8; // The damage for projectiles isn't actually 8, it actually is the damage combined with the projectile and the item together
 			Item.DamageType = DamageClass.Ranged; // What type of damage does this ammo affect?

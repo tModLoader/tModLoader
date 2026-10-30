@@ -6,7 +6,7 @@
  namespace Terraria.DataStructures;
  
 +/// <summary>
-+/// Used when an NPC spawns as a result of fishing.
++/// Used when an item is given to the player or an NPC spawns as a result of fishing.
 +/// </summary>
  public class EntitySource_FishedOut : IEntitySource
  {

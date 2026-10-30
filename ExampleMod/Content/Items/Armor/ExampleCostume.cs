@@ -52,8 +52,8 @@ namespace ExampleMod.Content.Items.Armor
 			int equipSlotBodyAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Body);
 			int equipSlotLegsAlt = EquipLoader.GetEquipSlot(Mod, "BlockyAlt", EquipType.Legs);
 
-			ArmorIDs.Head.Sets.DrawHead[equipSlotHead] = false;
-			ArmorIDs.Head.Sets.DrawHead[equipSlotHeadAlt] = false;
+			ArmorIDs.Head.Sets.HidesHead[equipSlotHead] = true;
+			ArmorIDs.Head.Sets.HidesHead[equipSlotHeadAlt] = true;
 			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBody] = true;
 			ArmorIDs.Body.Sets.HidesArms[equipSlotBody] = true;
 			ArmorIDs.Body.Sets.HidesTopSkin[equipSlotBodyAlt] = true;
