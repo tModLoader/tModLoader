@@ -17,6 +17,17 @@ public enum DistributionPlatform
 	GoG
 }
 
+internal struct RuntimeVerifierMetadata
+{
+	public string tMLSteamApiFileName;
+	public byte[] tMLSteamApiHash;
+
+	public string vanillaSteamApiFileName;
+	public byte[] vanillaSteamApiHash;
+
+	public byte[] gogHash;
+}
+
 internal static class InstallVerifier
 {
 	private static string VanillaExe = "Terraria.exe";
@@ -26,61 +37,73 @@ internal static class InstallVerifier
 
 	public static DistributionPlatform DistributionPlatform;
 
-	private static string steamAPIPath;
-	private static string vanillaSteamAPI;
-	private static byte[] steamAPIHash;
-	private static byte[] gogHash;
-	private static byte[] steamHash;
+	private static string portableRid;
 
 	private static bool IsSteamUnsupported = false;
 
+	// Hashes are all MD5
+	private readonly static Dictionary<string, RuntimeVerifierMetadata> runtimeMetadataLookup = new Dictionary<string, RuntimeVerifierMetadata>() {
+		{"win-x86", new RuntimeVerifierMetadata {
+			// Included for completeness
+			tMLSteamApiFileName= "/libsteam_api.dll", tMLSteamApiHash=ToByteArray("46ac40df9f50026772f50ae1cab3d819"), 
+			vanillaSteamApiFileName="steam_api.dll", vanillaSteamApiHash=ToByteArray("1ea72236140aafb8737e5664557266c3"),
+			gogHash=ToByteArray("18013fe58e2b64be3ed0d7b7161c6800")}
+		},
+		{"win-x64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "/steam_api64.dll", tMLSteamApiHash=ToByteArray("c61c81530e1b48a0ae8c35c789d35bf3"), 
+			vanillaSteamApiFileName="steam_api.dll", vanillaSteamApiHash=ToByteArray("1ea72236140aafb8737e5664557266c3"),
+			gogHash=ToByteArray("18013fe58e2b64be3ed0d7b7161c6800")}
+		},
+
+		// Note that OSX-X64 and OSX-ARM64 are the same files currently but are separate entries for completeness.
+		{"osx-x64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "libsteam_api.dylib", tMLSteamApiHash=ToByteArray("cdc7108dd27bf806cb6be3baf0df5f37"),
+			vanillaSteamApiFileName="libsteam_api.dylib", vanillaSteamApiHash=ToByteArray("352f3707864771ce2e51fc299dbf6fcb"),
+			gogHash=ToByteArray("bac96f0a8b5bf31f64e19dddd89184a7")}
+		},
+		{"osx-arm64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "libsteam_api.dylib", tMLSteamApiHash=ToByteArray("cdc7108dd27bf806cb6be3baf0df5f37"),
+			vanillaSteamApiFileName="libsteam_api.dylib", vanillaSteamApiHash=ToByteArray("352f3707864771ce2e51fc299dbf6fcb"),
+			gogHash=ToByteArray("bac96f0a8b5bf31f64e19dddd89184a7")}
+		},
+
+		{"linux-x64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "libsteam_api.so", tMLSteamApiHash=ToByteArray("15458d987791ee03fb149128eed0e916"),
+			vanillaSteamApiFileName="libsteam_api.so", vanillaSteamApiHash=ToByteArray("15c5b36710fa6d5d911c474e60022df2"),
+			gogHash=ToByteArray("0dbf043f8b07e128e124358ff1e32858")}
+		},
+		{"linux-arm64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "libsteam_api.so", tMLSteamApiHash=ToByteArray("0fd8c9472a336c8066b797068351fd0c"),
+			vanillaSteamApiFileName="libsteam_api.so", vanillaSteamApiHash=ToByteArray("15c5b36710fa6d5d911c474e60022df2"),
+			gogHash=ToByteArray("0dbf043f8b07e128e124358ff1e32858")}
+		},
+
+		// For completeness
+		{"android-arm64", new RuntimeVerifierMetadata {
+			tMLSteamApiFileName= "libsteam_api.so", tMLSteamApiHash=ToByteArray("539a8db9f76e312b1bf819bdd20369f5"),
+			// Used the Linux-x64 as a baseline -- included for completeness
+			vanillaSteamApiFileName="libsteam_api.so", vanillaSteamApiHash=ToByteArray("15c5b36710fa6d5d911c474e60022df2"),
+			gogHash=ToByteArray("0dbf043f8b07e128e124358ff1e32858")}
+		},
+	};
+
 	static InstallVerifier()
 	{
-		string portableRid = RuntimeInformation.RuntimeIdentifier;
-		if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows)) {
-			if (RuntimeInformation.ProcessArchitecture == Architecture.X86) {
-				steamAPIPath = "/libsteam_api.dll";
-				steamAPIHash = ToByteArray("6750595142dad4552d0f6f04973a7331");
-			}
-			else {
-				steamAPIPath = "/steam_api64.dll";
-				steamAPIHash = ToByteArray("3bae3a5ecad22eec751e154f68e09361");
-			}
-
-			vanillaSteamAPI = "steam_api.dll";
-			gogHash = ToByteArray("18013fe58e2b64be3ed0d7b7161c6800"); // Don't forget to update CheckExe above
-			steamHash = ToByteArray("1ea72236140aafb8737e5664557266c3");
+		if (OperatingSystem.IsWindows()) {
+			portableRid = "win-x64";
 		}
-		else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) {
-			portableRid = $"osx";
-			steamAPIPath = "libsteam_api.dylib";
-			steamAPIHash = ToByteArray("b7736b391a8276faccb4c055d515d531");
-			vanillaSteamAPI = "libsteam_api.dylib";
-			gogHash = ToByteArray("bac96f0a8b5bf31f64e19dddd89184a7");
-			steamHash = ToByteArray("352f3707864771ce2e51fc299dbf6fcb");
+		else if (OperatingSystem.IsMacOS()) {
+			portableRid = "osx-x64";
 		}
-		else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux)) {
-			if (RuntimeInformation.ProcessArchitecture == Architecture.Arm64) {
-				IsSteamUnsupported = true;
-				return;
-			}
-
+		else if (OperatingSystem.IsLinux()) {
 			portableRid = $"linux-{RuntimeInformation.ProcessArchitecture.ToString().ToLowerInvariant()}";
-			steamAPIPath = "libsteam_api.so";
-			steamAPIHash = ToByteArray("4b7a8cabaa354fcd25743aabfb4b1366");
-			vanillaSteamAPI = "libsteam_api.so";
-			gogHash = ToByteArray("0dbf043f8b07e128e124358ff1e32858");
-			steamHash = ToByteArray("15c5b36710fa6d5d911c474e60022df2");
+		}
+		else if (OperatingSystem.IsAndroid()) {
+			portableRid = $"android-arm64";
 		}
 		else {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.UnknownVerificationOS"));
 		}
-
-		var steamworksFolder = typeof(SteamAPI).Assembly.Location;
-		while (!Directory.Exists($"{steamworksFolder}/runtimes"))
-			steamworksFolder = Path.GetDirectoryName(steamworksFolder);
-
-		steamAPIPath = $"{steamworksFolder}/runtimes/{portableRid}/native/{steamAPIPath}";
 	}
 
 	private static bool HashMatchesFile(string path, byte[] hash)
@@ -140,6 +163,8 @@ internal static class InstallVerifier
 			vanillaSteamAPIDir = Path.Combine(Directory.GetParent(vanillaSteamAPIDir).FullName, "MacOS", "osx");
 
 		// If the steam_api file is present in the vanilla folder, than it is a Steam launch
+		var vanillaSteamAPI = runtimeMetadataLookup[portableRid].vanillaSteamApiFileName;
+
 		if (File.Exists(Path.Combine(vanillaSteamAPIDir, vanillaSteamAPI))) {
 			detectionDetails = $"{vanillaSteamAPI} found";
 			return DistributionPlatform.Steam;
@@ -219,7 +244,13 @@ internal static class InstallVerifier
 		if (IsSteamUnsupported)
 			return;
 
-		if (!HashMatchesFile(steamAPIPath, steamAPIHash)) {
+		var steamworksFolder = typeof(SteamAPI).Assembly.Location;
+		while (!Directory.Exists($"{steamworksFolder}/runtimes"))
+			steamworksFolder = Path.GetDirectoryName(steamworksFolder);
+
+		var tmlSteamApiFilePath = $"{steamworksFolder}/runtimes/{portableRid}/native/{runtimeMetadataLookup[portableRid].tMLSteamApiFileName}";
+
+		if (!HashMatchesFile(tmlSteamApiFilePath, runtimeMetadataLookup[portableRid].tMLSteamApiHash)) {
 			Utils.OpenToURL("https://terraria.org");
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.SteamAPIHashMismatch"));
 			return;
@@ -259,7 +290,8 @@ internal static class InstallVerifier
 	// Check if GOG install is correct
 	private static void CheckGoG()
 	{
-		if (!HashMatchesFile(vanillaExePath, gogHash) && !HashMatchesFile(vanillaExePath, steamHash)) {
+		if (!HashMatchesFile(vanillaExePath, runtimeMetadataLookup[portableRid].gogHash)
+		{
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath, TerrariaVersion, CheckExe));
 		}
 
