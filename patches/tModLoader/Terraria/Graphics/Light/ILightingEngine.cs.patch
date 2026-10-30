@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Light/ILightingEngine.cs
++++ src/tModLoader/Terraria/Graphics/Light/ILightingEngine.cs
+@@ -2,7 +_,7 @@
+ 
+ namespace Terraria.Graphics.Light;
+ 
+-public interface ILightingEngine
++public partial interface ILightingEngine
+ {
+ 	void Rebuild();
+ 
