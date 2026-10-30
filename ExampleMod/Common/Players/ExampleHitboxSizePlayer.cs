@@ -44,13 +44,28 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		// The hitbox doesn't change how the player is drawn: they're drawn at the default size at the bottom of their hitbox, along with their held item and mount. So scale the drawing to match.
-		// This scales everything drawn as part of the player, including armor, held items and mounts, around the bottom center of the hitbox.
-		// Projectiles are drawn separately, so things like yoyo strings, flails and held guns aren't scaled and stay where they would be for a normal sized player.
+		// The hitbox doesn't change how the player is drawn: they're drawn at the default size with their feet at the edge of their hitbox, along with their held item and mount. So scale the drawing to match.
+		// This scales everything drawn as part of the player, including armor, held items and mounts, around their feet.
+		// PlayerDrawLayers.DrawPlayer_ScaleDrawData isn't used, since it always scales around the bottom of the hitbox, which isn't where the feet are while gravity is reversed.
+		// Held projectiles, like shortswords, are drawn separately, so ExampleHitboxSizeHeldProjectile scales those. Other projectiles, like yoyo strings and flails, aren't scaled.
 		public override void TransformDrawData(ref PlayerDrawSet drawInfo) {
-			if (IsGrown) {
-				PlayerDrawLayers.DrawPlayer_ScaleDrawData(ref drawInfo, GrownScale);
+			if (!IsGrown) {
+				return;
 			}
+
+			Vector2 origin = GetScaleOrigin(drawInfo.Position) - Main.screenPosition;
+			for (int i = 0; i < drawInfo.DrawDataCache.Count; i++) {
+				DrawData data = drawInfo.DrawDataCache[i];
+				data.position = origin + (data.position - origin) * GrownScale;
+				data.scale *= GrownScale;
+				drawInfo.DrawDataCache[i] = data;
+			}
+		}
+
+		// The point the player's drawing is scaled around: the bottom center of the hitbox, or the top center while gravity is reversed, since that's where the feet are.
+		// position is the top left of the hitbox. It's passed in since the player isn't always drawn at Player.position, such as in the character select menu.
+		public Vector2 GetScaleOrigin(Vector2 position) {
+			return position + Player.Size * new Vector2(0.5f, Player.gravDir == 1f ? 1f : 0f);
 		}
 	}
 }
