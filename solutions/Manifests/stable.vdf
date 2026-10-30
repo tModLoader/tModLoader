@@ -4,7 +4,7 @@
   "desc" "Github Actions Stable Auto-Release"
   "buildoutput" "../../BuildOutput"
   "contentroot" "../../artifacts"
-  "setlive" "internal-stable"
+  "setlive" "1.4.5-legacy"
   "preview" ""
   "local" ""
 

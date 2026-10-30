@@ -289,7 +289,7 @@ internal class UIModDownloadItem : UIPanel
 		// The amount of total ratings a mod must have before its rating ratio can be displayed
 		const int ratingThreshold = 25;
 
-		var shouldDrawTime = ModDownload.TimeStamp != DateTime.MinValue;
+		var shouldDrawTime = ModDownload.LastUpdatedTimeStamp != DateTime.MinValue;
 		var shouldDrawRating = ModDownload.Downvotes + ModDownload.Upvotes >= ratingThreshold;
 
 		if (shouldDrawTime) {
@@ -298,7 +298,7 @@ internal class UIModDownloadItem : UIPanel
 				drawPos.X -= dateWidth;
 				DrawMetadataPanel(drawPos, dateWidth);
 
-				string text = TimeHelper.HumanTimeSpanString(ModDownload.TimeStamp); // get time text
+				string text = TimeHelper.HumanTimeSpanString(ModDownload.LastUpdatedTimeStamp); // get time text
 				int textWidth = (int)FontAssets.MouseText.Value.MeasureString(text).X; // measure text width
 				int diffWidth = dateWidth - textWidth; // get difference
 				var offset = new Vector2(diffWidth * 0.5f, 4);
