@@ -1505,6 +1505,18 @@
  
  	public bool UsingOrReusingItem {
  		get {
+@@ -2618,7 +_,11 @@
+ 			if (gravDir != 1f)
+ 				vector.Y = (float)bodyFrame.Height - vector.Y;
+ 
++			/* #ModifyHitboxSize
+ 			vector -= new Vector2(bodyFrame.Width - width, bodyFrame.Height - 42) / 2f;
++			*/
++			// The body is drawn centered on the hitbox, so the hand's offset from MountedCenter doesn't depend on the hitbox width.
++			vector -= new Vector2(bodyFrame.Width - defaultWidth, bodyFrame.Height - 42) / 2f;
+ 			Vector2 vector2 = -new Vector2(20f, 42f) / 2f + vector;
+ 			Vector2 pos = MountedCenter + vector2;
+ 			ApplyItemPositionOffsetFromMount(ref pos);
 @@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
