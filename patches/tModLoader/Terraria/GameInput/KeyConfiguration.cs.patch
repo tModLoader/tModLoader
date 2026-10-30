@@ -23,7 +23,12 @@
 +
 +		// Add mod keybinds
 +		foreach (var current in KeybindLoader.Keybinds) {
-+			KeyStatus.Add(current.FullName, new List<string>());
++			var defaultBindings = new List<string>();
++
++			if (!string.IsNullOrEmpty(current.DefaultBinding))
++				defaultBindings.Add(current.DefaultBinding);
++
++			KeyStatus.Add(current.FullName, defaultBindings);
 +		}
  	}
  
@@ -75,11 +80,11 @@
 +		*/
 +
 +		// Make sure to use indexer and not dict.Add, as some keys are sometimes already added (Vanilla bug, problem for modded)
-+		foreach (KeyValuePair<string, List<string>> item in KeyStatus.Where(x => x.Value.Count > 0)) {
++		foreach (KeyValuePair<string, List<string>> item in KeyStatus.Where(x => x.Value.Count > 0 || KeybindLoader.modKeybinds.ContainsKey(x.Key))) {
 +			dictionary[item.Key] = item.Value.ToList();
 +		}
 +
-+		foreach (KeyValuePair<string, List<string>> item in UnloadedModKeyStatus.Where(x => x.Value.Count > 0)) {
++		foreach (KeyValuePair<string, List<string>> item in UnloadedModKeyStatus.Where(x => x.Value.Count > 0 || x.Key.Contains('/'))) {
 +			dictionary[item.Key] = item.Value.ToList();
  		}
  
