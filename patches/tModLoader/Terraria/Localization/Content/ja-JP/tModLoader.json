@@ -772,6 +772,12 @@
 		"PreviousInfoAccPage": "前のページへ",
 		"FirstInfoAccPage": "最初のページへ",
 		"LastInfoAccPage": "最後のページへ"
+
+		// Journey Mode power menu
+		// "CreativeMenuOpen": "Open {0}",
+		// "CreativeMenuClose": "Close {0}",
+		// "CreativePowerEnabled": "{0} Enabled",
+		// "CreativePowerDisabled": "{0} Disabled"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "防御力を {0} 増加",

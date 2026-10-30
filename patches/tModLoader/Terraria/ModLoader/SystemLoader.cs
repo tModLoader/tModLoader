@@ -8,6 +8,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using Terraria.DataStructures;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -448,6 +449,30 @@ public static partial class SystemLoader
 		foreach (var system in HookModifyGameTipVisibility.Enumerate()) {
 			system.ModifyGameTipVisibility(tips);
 		}
+	}
+
+	public static void ModifyCreativePowerButton(ICreativePower power, UIElement button)
+	{
+		foreach (var system in HookModifyCreativePowerButton.Enumerate()) {
+			system.ModifyCreativePowerButton(power, button);
+		}
+	}
+
+	public static void ModifyCreativePowerHoverText(ICreativePower power, ref string text)
+	{
+		foreach (var system in HookModifyCreativePowerHoverText.Enumerate()) {
+			system.ModifyCreativePowerHoverText(power, ref text);
+		}
+	}
+
+	internal static bool CanShowCreativeCategory(int category)
+	{
+		foreach (var system in HookCanShowCreativeCategory.Enumerate()) {
+			if (!system.CanShowCreativeCategory(category))
+				return false;
+		}
+
+		return true;
 	}
 
 	public static void PostDrawInterface(SpriteBatch spriteBatch)

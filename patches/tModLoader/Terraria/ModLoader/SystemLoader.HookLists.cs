@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq.Expressions;
+using Terraria.GameContent.Creative;
 using Terraria.Graphics;
 using Terraria.IO;
 using Terraria.Localization;
@@ -48,6 +49,8 @@ partial class SystemLoader
 	private delegate void DelegatePostDrawFullscreenMap(ref string mouseText);
 
 	private delegate void DelegateModifyTimeRate(ref double timeRate, ref double tileUpdateRate, ref double eventUpdateRate);
+
+	private delegate void DelegateModifyCreativePowerHoverText(ICreativePower power, ref string text);
 
 	private delegate void DelegateModifyWorldGenTasks(List<GenPass> passes);
 
@@ -128,6 +131,12 @@ partial class SystemLoader
 	private static HookList HookModifyInterfaceLayers = AddHook<Action<List<GameInterfaceLayer>>>(s => s.ModifyInterfaceLayers);
 
 	private static HookList HookModifyGameTipVisibility = AddHook<Action<IReadOnlyList<GameTipData>>>(s => s.ModifyGameTipVisibility);
+
+	private static HookList HookModifyCreativePowerButton = AddHook<Action<ICreativePower, UIElement>>(s => s.ModifyCreativePowerButton);
+
+	private static HookList HookModifyCreativePowerHoverText = AddHook<DelegateModifyCreativePowerHoverText>(s => s.ModifyCreativePowerHoverText);
+
+	private static HookList HookCanShowCreativeCategory = AddHook<Func<int, bool>>(s => s.CanShowCreativeCategory);
 
 	private static HookList HookPostDrawInterface = AddHook<Action<SpriteBatch>>(s => s.PostDrawInterface);
 

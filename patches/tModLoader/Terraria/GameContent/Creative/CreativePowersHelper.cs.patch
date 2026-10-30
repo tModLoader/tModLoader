@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Creative/CreativePowersHelper.cs
++++ src/tModLoader/Terraria/GameContent/Creative/CreativePowersHelper.cs
+@@ -96,6 +_,9 @@
+ 			string textValue = Language.GetTextValue("CreativePowers.CantUsePowerBecauseOfNoPermissionFromServer");
+ 			originalText = originalText + "\n" + textValue;
+ 		}
++
++		// TML: #CreativePowerHooks - Added ModifyCreativePowerHoverText. Every power's hover text adds this line last, just before showing it.
++		ModLoader.SystemLoader.ModifyCreativePowerHoverText(power, ref originalText);
+ 	}
+ 
+ 	public static void AddDescriptionIfNeeded(ref string originalText, string descriptionKey)

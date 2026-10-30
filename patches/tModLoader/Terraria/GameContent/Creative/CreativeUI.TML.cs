@@ -1,7 +1,26 @@
+using Terraria.UI;
+
 namespace Terraria.GameContent.Creative;
 
 public partial class CreativeUI
 {
+	/// <summary>
+	/// The main category selected in the power menu, or 0 if none is. Vanilla builds a new menu, with nothing selected, after each world is entered.
+	/// </summary>
+	internal int CurrentMainCategory => _initialized ? _uiState?.CurrentMainCategory ?? 0 : 0;
+
+	/// <summary>
+	/// Discards the power menu so it's built again on the next draw. Used when mods unload, so the menu doesn't keep references to their content.
+	/// </summary>
+	internal void ResetMenu()
+	{
+		// UserInterface keeps previous states in its history, so replace it rather than only clearing its state.
+		_powersUI.SetState(null);
+		_powersUI = new UserInterface();
+		_uiState = null;
+		_initialized = false;
+	}
+
 	public static ItemSacrificeResult ResearchItem(int type)
 	{
 		if (!CreativeItemSacrificesCatalog.Instance.TryGetSacrificeCountCapToUnlockInfiniteItems(type, out int amountNeeded))

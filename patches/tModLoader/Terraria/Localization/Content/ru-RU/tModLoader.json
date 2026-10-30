@@ -772,6 +772,12 @@
 		"PreviousInfoAccPage": "Предыдущая страница",
 		"FirstInfoAccPage": "Перейти на первую страницу",
 		"LastInfoAccPage": "Перейти на последнюю страницу"
+
+		// Journey Mode power menu
+		// "CreativeMenuOpen": "Open {0}",
+		// "CreativeMenuClose": "Close {0}",
+		// "CreativePowerEnabled": "{0} Enabled",
+		// "CreativePowerDisabled": "{0} Disabled"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Увеличивает защиту на {0} ед.",
