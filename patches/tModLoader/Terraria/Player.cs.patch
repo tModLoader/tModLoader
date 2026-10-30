@@ -8033,7 +8033,7 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -44709,27 +_,103 @@
+@@ -44709,27 +_,104 @@
  		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
  			return true;
  
@@ -8069,10 +8069,11 @@
 +		projToShoot = weapon.shoot;
 +		speed = weapon.shootSpeed;
 +		damage = GetWeaponDamage(weapon);
-+		knockBack = GetWeaponKnockback(weapon);
++		knockBack = weapon.knockBack;
 +
 +		bool canShoot = false;
 +		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++		knockBack = GetWeaponKnockback(weapon, knockBack);
 +
 +		if (!canShoot) {
 +			projToShoot = 0;
