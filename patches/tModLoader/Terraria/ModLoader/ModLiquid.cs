@@ -29,42 +29,9 @@ public abstract class ModLiquid : ModBlockType
 	/// <summary> The default dust ID thats used when an entity enters and exists this liquid. Overriding any OnSplash hooks/methods will prevent this from being used. </summary>
 	public int SplashDustType { get; set; } = -1;
 
-	/// <summary> Liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode. </summary>
-	public int FallDelay { get => LiquidID.Sets.FallDelay[Type]; set => LiquidID.Sets.FallDelay[Type] = value; }
 
 	/// <summary> An array of the IDs of liquids that this tile can be considered as when looking for available liquids. </summary>
 	public int[] AdjLiquids { get; set; } = Array.Empty<int>();
-
-	/// <summary> The check in Collision that checks if a coord will be drowning in water.</summary>
-	public bool ChecksForDrowning { get => LiquidID.Sets.CheckForDrowning[Type]; set => LiquidID.Sets.CheckForDrowning[Type] = value; }
-
-	/// <summary> Whether or not, when drowning, a player or npc will emit dusts from their mouth. </summary>
-	public bool AllowEmitBreathBubbles { get => LiquidID.Sets.AllowEmitBreathBubbles[Type]; set => LiquidID.Sets.AllowEmitBreathBubbles[Type] = value; }
-
-	/// <summary> Define the amount of liquid tile requirement before it become a valid pool to fish in </summary>
-	public int FishingPoolMinimumSize { get => LiquidID.Sets.FishingPoolMinimumSize[Type]; set => LiquidID.Sets.FishingPoolMinimumSize[Type] = value; }
-
-	/// <summary> The multiplier used only when Waves quality setting is set to Medium. Honey and Lava use this to set the modifier to 0.3x. </summary>
-	public float LiquidRippleMultiplier { get => LiquidID.Sets.LiquidRippleMultiplier[Type]; set => LiquidID.Sets.LiquidRippleMultiplier [Type] = value; }
-
-	/// <summary> The multiplier thats used to specify how slow (or fast) the player moves while in this liquid. </summary>
-	public float EntityMovementMultiplier { get => LiquidID.Sets.PlayerMovementMultiplier[Type]; set => LiquidID.Sets.PlayerMovementMultiplier[Type] = value; }
-
-	/// <summary> The multiplier used for stopwatches to know how to offset the MPH reading. </summary>
-	public float StopWatchMPHMultiplier { get => LiquidID.Sets.StopWatchMPHMultiplier[Type]; set => LiquidID.Sets.StopWatchMPHMultiplier[Type] = value; }
-
-	/// <summary> The default value that NPC.liquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
-	public float NPCMovementMultiplierDefault { get => LiquidID.Sets.NPCMovementMultiplierDefault[Type]; set => LiquidID.Sets.NPCMovementMultiplierDefault[Type] = value; }
-
-	/// <summary> The multiplier thats used to specify how slow (or fast) projectiles move while in this liquid. </summary>
-	public float ProjectileMovementMultiplier { get => LiquidID.Sets.ProjectileMovementMultiplier[Type]; set => LiquidID.Sets.ProjectileMovementMultiplier[Type] = value; }
-
-	/// <summary> Uses lava based collision check for when applying this liquid's wet boolean. <br/>
-	/// This means collision is more sensitive, and the wet is active even when touching the smallest amount of this liquid. </summary>
-	public bool UsesLavaCollisionForWet { get; set; } = false;
-
-	/// <summary> Whether or not this liquid removes the On Fire! debuffs when entering. </summary>
-	public bool ExtinguishesOnFireDebuffs { get => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type]; set => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type] = value; }
 
 	protected sealed override void Register()
 	{
@@ -106,74 +73,6 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="liquidCache">Various information about the liquid that is being drawn, such as opacity, visual liquid, etc.</param>
 	public virtual void EmitEffects(int i, int j, LiquidCache liquidCache)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="PreDraw" /> for the other Lighting modes pre drawing
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="spriteBatch"></param>
-	public virtual bool PreRetroDraw(int i, int j, SpriteBatch spriteBatch)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="PreRetroDraw" /> returns false.<para />
-	/// This method is only called in "Retro" and "Trippy" lighting modes. Use <see cref="PostDraw" /> for the other Lighting modes post drawing
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="spriteBatch"></param>
-	public virtual void PostRetroDraw(int i, int j, SpriteBatch spriteBatch)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to make stuff happen whenever the liquid at the given coordinates is drawn. For example, creating bubble dusts or changing the color the liquid is drawn in. <para />
-	/// This hook is not called if <see cref="PreRetroDraw" /> returns false.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="spriteBatch"></param>
-	/// <param name="drawData">Various information about the liquid that is being drawn, such as color, opacity, waterfall length, etc.</param>
-	/// <param name="liquidAmountModified">Gets the amount of liquid in a tile for retro rendering</param>
-	/// <param name="liquidGFXQuality">Gets the number of quality the game has for retro rendering</param>
-	public virtual void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. <para />
-	/// Only called for liquid slopes. If you want to predraw the liquid itself, see <see cref="PreDraw" /> or <see cref="PreRetroDraw" />
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="behindBlocks">Whether or not the slope is rendered behind tiles</param>
-	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
-	/// <param name="liquidSize">The size of the liquid</param>
-	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual bool PreSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="PreSlopeDraw" /> returns false.<para />
-	/// Only called for liquid slopes. If you want to postdraw the liquid itself, see <see cref="PostDraw" /> or <see cref="PostRetroDraw" />
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="behindBlocks">Whether or not the slope is rendered behind tiles</param>
-	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
-	/// <param name="liquidSize">The size of the liquid</param>
-	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual void PostSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 	}
 

@@ -14,7 +14,7 @@ public partial class Collision
 		LavaCollision(Position, Width, Height, out bool[] liquidsInAlt);
 		Array.Copy(liquidsInNorm, liquidsIn, LiquidLoader.LiquidCount);
 		for (int i = LiquidID.Count; i < LiquidLoader.LiquidCount; i++) {
-			if (LiquidLoader.GetLiquid(i).UsesLavaCollisionForWet) {
+			if (LiquidID.Sets.UsesLavaCollisionForWet[i]) {
 				liquidsIn[i] = liquidsInAlt[i];
 			}
 		}

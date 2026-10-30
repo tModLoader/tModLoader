@@ -73,11 +73,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPreDraw, globalLiquids, (GlobalLiquid g) => g.PreDraw);
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalLiquids, (GlobalLiquid g) => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookEmitEffects, globalLiquids, (GlobalLiquid g) => g.EmitEffects);
-		ModLoader.BuildGlobalHook(ref HookPreRetroDraw, globalLiquids, (GlobalLiquid g) => g.PreRetroDraw);
-		ModLoader.BuildGlobalHook(ref HookRetroDrawEffects, globalLiquids, (GlobalLiquid g) => g.RetroDrawEffects);
-		ModLoader.BuildGlobalHook(ref HookPostRetroDraw, globalLiquids, (GlobalLiquid g) => g.PostRetroDraw);
-		ModLoader.BuildGlobalHook(ref HookPreSlopeDraw, globalLiquids, (GlobalLiquid g) => g.PreSlopeDraw);
-		ModLoader.BuildGlobalHook(ref HookPostSlopeDraw, globalLiquids, (GlobalLiquid g) => g.PostSlopeDraw);
 		ModLoader.BuildGlobalHook(ref HookDrawWaterfall, globalLiquids, (GlobalLiquid g) => g.ChooseWaterfallStyle);
 		ModLoader.BuildGlobalHook(ref HookPreUpdate, globalLiquids, (GlobalLiquid g) => g.PreUpdateLiquid);
 		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.CanLiquidEvaporate);
@@ -160,63 +155,6 @@ public static class LiquidLoader
 			}
 		}
 		return true;
-	}
-
-	private static Func<int, int, int, SpriteBatch, bool>[] HookPreRetroDraw;
-	public static bool PreRetroDraw(int i, int j, int type, SpriteBatch spriteBatch)
-	{
-		Func<int, int, int, SpriteBatch, bool>[] hookPreRetroDraw = HookPreRetroDraw;
-		for (int k = 0; k < hookPreRetroDraw.Length; k++) {
-			if (!hookPreRetroDraw[k](i, j, type, spriteBatch)) {
-				return false;
-			}
-		}
-		return GetLiquid(type)?.PreRetroDraw(i, j, spriteBatch) ?? true;
-	}
-
-	private delegate void DelegateRetroDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality);
-	private static DelegateRetroDrawEffects[] HookRetroDrawEffects;
-	public static void RetroDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality)
-	{
-		GetLiquid(type)?.RetroDrawEffects(i, j, spriteBatch, ref drawData, liquidAmountModified, liquidGFXQuality);
-		DelegateRetroDrawEffects[] hookRetroDrawEffects = HookRetroDrawEffects;
-		for (int k = 0; k < hookRetroDrawEffects.Length; k++) {
-			hookRetroDrawEffects[k](i, j, type, spriteBatch, ref drawData, liquidAmountModified, liquidGFXQuality);
-		}
-	}
-
-	private static Action<int, int, int, SpriteBatch>[] HookPostRetroDraw;
-	public static void PostRetroDraw(int i, int j, int type, SpriteBatch spriteBatch)
-	{
-		GetLiquid(type)?.PostRetroDraw(i, j, spriteBatch);
-		Action<int, int, int, SpriteBatch>[] hookPostRetroDraw = HookPostRetroDraw;
-		for (int k = 0; k < hookPostRetroDraw.Length; k++) {
-			hookPostRetroDraw[k](i, j, type, spriteBatch);
-		}
-	}
-
-	private delegate bool DelegatePreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
-	private static DelegatePreSlopeDraw[] HookPreSlopeDraw;
-	public static bool PreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
-	{
-		DelegatePreSlopeDraw[] hookPreSlopeDraw = HookPreSlopeDraw;
-		for (int k = 0; k < hookPreSlopeDraw.Length; k++) {
-			if (!hookPreSlopeDraw[k](type, behindBlocks, ref drawPosition, ref liquidSize, ref colors)) {
-				return false;
-			}
-		}
-		return GetLiquid(type)?.PreSlopeDraw(behindBlocks, ref drawPosition, ref liquidSize, ref colors) ?? true;
-	}
-
-	private delegate void DelegatePostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors);
-	private static DelegatePostSlopeDraw[] HookPostSlopeDraw;
-	public static void PostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
-	{
-		GetLiquid(type)?.PostSlopeDraw(behindBlocks, ref drawPosition, ref liquidSize, ref colors);
-		DelegatePostSlopeDraw[] hookPostSlopeDraw = HookPostSlopeDraw;
-		for (int k = 0; k < hookPostSlopeDraw.Length; k++) {
-			hookPostSlopeDraw[k](type, behindBlocks, ref drawPosition, ref liquidSize, ref colors);
-		}
 	}
 
 	private static Func<int, int, int, int?>[] HookDrawWaterfall;

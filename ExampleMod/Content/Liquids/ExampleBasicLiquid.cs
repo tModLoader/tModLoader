@@ -19,24 +19,17 @@ namespace ExampleMod.Content.Liquids
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 3;
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.75f;
 			LiquidRenderer.VISCOSITY_MASK[Type] = 200;
-			FallDelay = 5;
+			LiquidID.Sets.FallDelay[Type] = 5;
 			SplashDustType = ModContent.DustType<ExampleSolutionDust>();
 			SplashSound = SoundID.Splash;
-			ChecksForDrowning = false;
-			AllowEmitBreathBubbles = false;
+			LiquidID.Sets.CheckForDrowning[Type] = false;
+			LiquidID.Sets.AllowEmitBreathBubbles[Type] = false;
 			AddMapEntry(new Color(80, 53, 80));
 			//Please see ExampleFishingPlayer to see modded liquid fishing pool examples
 		}
 
 		public override int ChooseWaterfallStyle(int i, int j) {
 			return ModContent.GetInstance<ExampleBasicLiquidfall>().Slot;
-		}
-
-		public override void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality) {
-			drawData.liquidAlphaMultiplier *= 1.5f;
-			if (drawData.liquidAlphaMultiplier > 1f) {
-				drawData.liquidAlphaMultiplier = 1f;
-			}
 		}
 
 		public override int LiquidMerge(int adjacentLiquid) {

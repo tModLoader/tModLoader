@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Liquids
 
 			//For the Waves Quality setting, when set to Medium, waves are set to be the same distance no matter the liquid type.
 			//To do this, the game applied a multiplier to make them all consistant between liquids. Here we set our own multiplier to make the waves the same distance as honey and lava.
-			LiquidRippleMultiplier = 0.3f;
+			LiquidID.Sets.LiquidRippleMultiplier[Type] = 0.3f;
 
 			//This is used to specify what dust is used when splashing in this liquid.
 			//SplashDustType is -1 normally, which prevents the liquid from doing any splash dust
@@ -39,10 +39,10 @@ namespace ExampleMod.Content.Liquids
 			//This is used to specify what sound is played when an entity enters a liquid
 			SplashSound = SoundID.SplashWeak;
 
-			FallDelay = 2; //The delay (in ticks) when this liquid is falling
+			LiquidID.Sets.FallDelay[Type] = 2; //The delay (in ticks) when this liquid is falling
 
-			ChecksForDrowning = true; //If the player/npcs can drown in this liquid
-			AllowEmitBreathBubbles = false; //Bubbles will come out of the player/npc's mouth normally when drowning, here we can stop that by setting it to false.
+			LiquidID.Sets.CheckForDrowning[Type] = true; //If the player/npcs can drown in this liquid
+			LiquidID.Sets.AllowEmitBreathBubbles[Type] = false; //Bubbles will come out of the player/npc's mouth normally when drowning, here we can stop that by setting it to false.
 
 			//These multipliers are used in the default mod liquid player movement.
 			//Here we make our liquid slow the player down by half what honey would allow the player to move at.
@@ -51,20 +51,20 @@ namespace ExampleMod.Content.Liquids
 			//Water/Lava/Regular modded liquid = 0.5f
 			//Honey = 0.25f
 			//Shimmer = 0.375f
-			EntityMovementMultiplier = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
-			StopWatchMPHMultiplier = EntityMovementMultiplier; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
-			NPCMovementMultiplierDefault = EntityMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
-			ProjectileMovementMultiplier = EntityMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
+			LiquidID.Sets.PlayerMovementMultiplier[Type] = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
+			LiquidID.Sets.StopWatchMPHMultiplier[Type] = 0.125f; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
+			LiquidID.Sets.NPCMovementMultiplierDefault[Type] = 0.125f; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
+			LiquidID.Sets.ProjectileMovementMultiplier[Type] = 0.125f; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
 
-			FishingPoolMinimumSize = 150; // We set the amount of tile required before it's a valid fishing pool, here we set it to 150 so it's double of what normally water would require
+			LiquidID.Sets.FishingPoolMinimumSize[Type] = 150; // We set the amount of tile required before it's a valid fishing pool, here we set it to 150 so it's double of what normally water would require
 
 			//For more dangerous liquids, we may want to have our liquid call On(Player/NPC/Projectile)Collision whenever an entity touches the liquid, rather than when an entity splashes in a liquid
 			//For this we use similar collision calculations as lava using this boolean.
 			//By default, this is disabled
-			UsesLavaCollisionForWet = true;
+			LiquidID.Sets.UsesLavaCollisionForWet[Type] = true;
 
 			//Here we allow the extinguishing of the OnFire debuffs for both players and NPCs using this property
-			ExtinguishesOnFireDebuffs = false;
+			LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type] = true;
 
 			//This ID set controls what items classify as a sponge when trying to suck up this liquid
 			//Here we remove the Ultra Absorbant sponge, Allow the Lava Absorbant sponge and the staff of regrowth to suck up this liquid
@@ -138,16 +138,6 @@ namespace ExampleMod.Content.Liquids
 				return true;
 			}
 			return false;
-		}
-
-		//Using RetroDrawEffects, we can do stuff only during the rendering of liquids in the retro lighting style.
-		//Here we set the opacity we want during retro lighting so that its consistent with the opacity of the liquid when not in non-retro lighting
-		//NOTE: Despite being having RETRO in the name, this also applies to the "Trippy" Lighting style as well.
-		public override void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality) {
-			drawData.liquidAlphaMultiplier *= 1.8f;
-			if (drawData.liquidAlphaMultiplier > 1f) {
-				drawData.liquidAlphaMultiplier = 1f;
-			}
 		}
 
 		//Here using ModifyNearbyTiles we do something similar to lava
@@ -276,7 +266,7 @@ namespace ExampleMod.Content.Liquids
 			int height = (!player.onTrack) ? player.height : (player.height - 20);
 			Vector2 velocity = player.velocity;
 			player.velocity = Collision.TileCollision(player.position, player.velocity, player.width, height, fallThrough, ignorePlats, (int)player.gravDir);
-			Vector2 vector2 = player.velocity * EntityMovementMultiplier; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
+			Vector2 vector2 = player.velocity * LiquidID.Sets.PlayerMovementMultiplier[Type]; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
 			if (player.velocity.X != velocity.X) {
 				vector2.X = player.velocity.X;
 			}
@@ -331,7 +321,7 @@ namespace ExampleMod.Content.Liquids
 		public override bool ProjectileLiquidMovement(Projectile projectile, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
 			Vector2 vector = projectile.velocity;
 			projectile.velocity = Collision.TileCollision(collisionPosition, projectile.velocity, Width, Height, fallThrough, fallThrough);
-			wetVelocity = projectile.velocity * ProjectileMovementMultiplier; //We reuse the ProjectileMovementMultiplier here for it to serve the same purpose
+			wetVelocity = projectile.velocity * LiquidID.Sets.ProjectileMovementMultiplier[Type]; //We reuse the ProjectileMovementMultiplier here for it to serve the same purpose
 			if (projectile.velocity.X != vector.X) {
 				wetVelocity.X = projectile.velocity.X;
 			}
