@@ -610,7 +610,6 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
-* Nano Bullet's 25% damage bonus applies to both the ammo and weapon damage contributions before `(ModItem|GlobalItem).PickAmmo` runs. The bonus is included in the supplied `StatModifier`, with rounding deferred until the final damage calculation.
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
   * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
