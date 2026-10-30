@@ -78,6 +78,11 @@ public partial class LiquidID
 		/// </summary>
 		public static float[] LiquidRippleMultiplier = Factory.CreateFloatSet(1f, Lava, 0.3f, Honey, 0.3f);
 
+		/// <summary>
+		/// Use the more sensitive lava collision to determine if it's wet or not. It means that touching the smallest amount of liquid count,
+		/// </summary>
+		public static bool[] UsesLavaCollisionForWet = Factory.CreateBoolSet(false, Lava);
+
 		static Sets()
 		{
 			for (int i = 0; i < CanBeAbsorbedBy.Length; i++) {

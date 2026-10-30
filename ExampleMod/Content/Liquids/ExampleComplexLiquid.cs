@@ -21,10 +21,10 @@ namespace ExampleMod.Content.Liquids
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 3;
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.75f;
 			LiquidRenderer.VISCOSITY_MASK[Type] = 200;
-			FallDelay = 5;
+			LiquidID.Sets.FallDelay[Type] = 5;
 			SplashSound = SoundID.Splash;
-			ChecksForDrowning = false;
-			AllowEmitBreathBubbles = false;
+			LiquidID.Sets.CheckForDrowning[Type] = false;
+			LiquidID.Sets.AllowEmitBreathBubbles[Type] = false;
 			AddMapEntry(new Color(55, 35, 200));
 		}
 
@@ -143,20 +143,6 @@ namespace ExampleMod.Content.Liquids
 			colors.TopRightColor = new Color(colors.TopRightColor.ToVector4() * Main.DiscoColor.ToVector4());
 		}
 
-
-		//Here, using RetroDrawEffects, we edit the color of the liquid in the retro lightmode to also be rainbow
-		//We don't do anything too fancy for Retro rendering, but Pre/PostRetroDraw can also be used similarly to Predraw to render the liquid completely differently in the retro lightmode
-		//RetroLiquidDrawInfo has a series of different properties that can be useful for different rendering use cases
-		public override void RetroDrawEffects(int i, int j, SpriteBatch spriteBatch, ref RetroLiquidDrawInfo drawData, float liquidAmountModified, int liquidGFXQuality) {
-			drawData.liquidColor = Main.DiscoColor;
-		}
-
-		//Similarly to RetroDrawEffects, we use PreSlopeDraw to edit the rendering of slopes to also modify the color to be rainbow too
-		//As of oct 1st 2025, slopes are only really used for retro rendering so we only change the color simialrly to retro lighting to make slopes not look out of place
-		public override bool PreSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors) {
-			SetComplexLiquidVertexColors(ref colors, 1f);
-			return true;
-		}
 
 		//Here with UpdateLiquid, we use this method to make our liquid evaporate when in the ocean biome
 		public override bool PreUpdateLiquid(int i, int j, Liquid liquid) {

@@ -6766,18 +6766,7 @@
  			instance.LoadTiles(Main.tile[x, y].type);
  			Tile tile = Main.tile[x, y];
  			int num = (int)tile.liquid / 16;
-@@ -51168,6 +_,10 @@
- 				if (tile[j, i].liquid <= 0 || (tile[j, i].nactive() && tileSolid[tile[j, i].type] && !tileSolidTop[tile[j, i].type]) || !(Lighting.Brightness(j, i) > 0f || bg))
- 					continue;
- 
-+				if (!LiquidLoader.PreRetroDraw(j, i, tile[j, i].liquidType(), spriteBatch)) {
-+					continue;
-+				}
-+
- 				Microsoft.Xna.Framework.Color color = Lighting.GetColor(j, i);
- 				float num11 = 256 - tile[j, i].liquid;
- 				num11 /= 32f;
-@@ -51335,6 +_,33 @@
+@@ -51335,6 +_,32 @@
  					}
  				}
  
@@ -6797,7 +6786,6 @@
 +				info.liquidPositionOffset = vector2;
 +				info.waterfallLength = (int)num29;
 +				info.waterfallStrength = num30;
-+				LiquidLoader.RetroDrawEffects(j, i, tile[j, i].liquidType(), spriteBatch, ref info, num11, num6);
 +				num17 = info.liquidAlphaMultiplier;
 +				liquidColor = info.liquidColor;
 +				value = info.liquidFraming;
@@ -6896,7 +6884,7 @@
  				for (int m = 0; (float)m < num29; m++) {
  					int num31 = i + 2 + m;
  					if (WorldGen.SolidTile(j, num31))
-@@ -51447,10 +_,11 @@
+@@ -51447,9 +_,9 @@
  					float num32 = 1f - (float)m / num29;
  					num32 *= num30;
  					vector2 = new Vector2(j * 16, num31 * 16 - 2);
@@ -6906,10 +6894,8 @@
 -						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
 +						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
  				}
-+				LiquidLoader.PostRetroDraw(j, i, tile[j, i].liquidType(), spriteBatch);
  			}
  		}
- 
 @@ -51495,6 +_,7 @@
  			}
  		}

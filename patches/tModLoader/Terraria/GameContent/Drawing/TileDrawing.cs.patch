@@ -391,7 +391,7 @@
  			LiquidRenderer.SetShimmerVertexColors(ref colors, solidLayer ? 0.75f : 1f, tileX, tileY);
  
 -		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, num10, ref colors);
-+		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, tile4.liquidType(), num10, ref colors);
++		DrawPartialLiquid(!solidLayer, tileCache, ref position, ref liquidSize, tileCache.liquidType(), num10, ref colors);
  	}
  
  	private void CacheSpecialDraws_Part1(int tileX, int tileY, int tileType, int drawDataTileFrameX, int drawDataTileFrameY, bool skipDraw)
@@ -428,7 +428,7 @@
  	{
  		if (Main.InSmartCursorHighlightArea(x, y, out var actuallySelected)) {
  			int num = (tileLight.R + tileLight.G + tileLight.B) / 3;
-@@ -3966,19 +_,33 @@
+@@ -3966,7 +_,9 @@
  		}
  	}
  
@@ -437,12 +437,9 @@
 +	// TML: Added the waterStyleOverride for vanilla liquid slope 
 +	internal void DrawPartialLiquid(bool behindBlocks, Tile tileCache, ref Vector2 position, ref Rectangle liquidSize, int liquidType, int waterStyleOverride, ref VertexColors colors)
  	{
-+		if (!LiquidLoader.PreSlopeDraw(liquidType, behindBlocks, ref position, ref liquidSize, ref colors)) {
-+			goto PostSlopeDraw;
-+		}
  		int num = tileCache.slope();
  		bool flag = !TileID.Sets.BlocksWaterDrawingBehindSelf[tileCache.type];
- 		if (!behindBlocks)
+@@ -3974,11 +_,20 @@
  			flag = false;
  
  		if (flag || num == 0) {
@@ -464,13 +461,11 @@
  		switch (num) {
  			case 1:
  				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero);
-@@ -3993,11 +_,14 @@
+@@ -3993,11 +_,12 @@
  				Main.tileBatch.Draw(TextureAssets.LiquidSlope[liquidType].Value, position, liquidSize, colors, Vector2.Zero);
  				break;
  		}
 +		*/
-+		LiquidLoader.PostSlopeDraw(liquidType, behindBlocks, ref position, ref liquidSize, ref colors);
-+		PostSlopeDraw:;
  	}
  
 -	private bool InAPlaceWithWind(int x, int y, int width, int height) => WorldGen.InAPlaceWithWind(x, y, width, height);
