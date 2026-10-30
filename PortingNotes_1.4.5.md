@@ -289,17 +289,6 @@ Longer TODOs that would clutter above
  				list.RemoveAt(0);
 ```
 
-- These buffimmune change are new and likely need to be used to update TML-specific sets.
-```cs
-		if (buffImmune[20]) {
-			buffImmune[30] = true;
-			buffImmune[375] = buffImmune[30];
-		}
-
-		if (buffImmune[69])
-			buffImmune[36] = true;
-```
-
 - Move this patch to PrepareAliases, or adjust ModCommand to use new system:
 ```diff
 @@ -56,6 +58,13 @@
