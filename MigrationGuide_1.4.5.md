@@ -596,6 +596,9 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
+* ⚙️: `Player.selectedItem` is now read-only. Use `Player.selectedItemState.Select(slot)` instead. For the local player the change is buffered until the next update, so code that switches to an item, uses it and switches back in the same tick needs reworking.
+* ⚙️: `Player.nonTorch` removed. Temporary selections such as smart cursor and auto-select are now tracked by `Player.selectedItemState`. See `Player.selectedItemState.HasActiveOverride` and `Player.selectedItemState.Hotbar`.
+* ⚙️: `UIElement.OnDraw` changed from `ElementEvent` to `DrawEvent`. Handlers now take `(UIElement affectedElement, SpriteBatch sb)`. Lambdas are updated automatically, handler methods need the `SpriteBatch` parameter added.
 
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).

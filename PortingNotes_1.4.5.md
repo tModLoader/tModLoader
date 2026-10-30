@@ -171,7 +171,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 
 # Changes that need to be communicated to modders
 
-- UIElement.OnDraw is now a DrawEvent not a ElementEvent (can this be tModPorted?)
 - Point16.X and Y are no longer readonly
 - Entity.Center changed, taking into account 0.5 from odd widths and heights now instead of using integer division
 	new Vector2(position.X + (float)(width / 2), position.Y + (float)(height / 2)); 
