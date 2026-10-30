@@ -1,3 +1,4 @@
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.Audio;
 using Terraria.ID;
 
@@ -126,5 +127,29 @@ public abstract class ModTileOrWall : ModBlockType
 	public virtual bool? CanShowWireStuffHere(int i, int j)
 	{
 		return null;
+	}
+
+	/// <summary>
+	/// Allows you to draw things behind the tile/wall at the given coordinates. Return false to stop the game from drawing the tile normally. Returns true by default.
+	/// <para/> Note that tiles are drawn one at a time in sequence (top to bottom, left to right), so this runs immediately before a single tile's sprite is drawn, not before all tiles on screen are rendered.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	public virtual bool PreDraw(int i, int j, SpriteBatch spriteBatch)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// Allows you to draw things in front of the tile/wall at the given coordinates. This can also be used to do things such as creating dust.<para/>
+	/// Note that this method will be called for tiles even when the tile is <see cref="Tile.IsTileInvisible"/> due to Echo Coating. Use the <see cref="GameContent.Drawing.TileDrawing.IsVisible(Tile)"/> method to skip effects that shouldn't show when the tile is invisible. This method won't be called for invisible walls.
+	/// <para/> Note that tiles are drawn one at a time in sequence (top to bottom, left to right), so this runs immediately after a single tile's sprite is drawn. Any effects drawn here will be overdrawn by sprites of tiles drawn after it. Use <see cref="ModTile.SpecialDraw(int, int, SpriteBatch)"/> via <see cref="ModTile.DrawEffects"/> to draw after all tiles on screen have been rendered.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	public virtual void PostDraw(int i, int j, SpriteBatch spriteBatch)
+	{
 	}
 }

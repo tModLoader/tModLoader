@@ -5,9 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ObjectData;
+using static Terraria.WaterfallManager;
 
 namespace Terraria.ModLoader;
 
@@ -294,6 +296,18 @@ public abstract class ModTile : ModTileOrWall
 	}
 
 	/// <summary>
+	/// Allows you to change the Light Mask Mode for this tile. The Light Mask Mode is the mask for lighting to determine how light interacts with this tile. <br/>
+	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
+	/// Defaults to LightMaskMode.Solid.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual LightMaskMode TileLightMaskMode(int i, int j)
+	{
+		return LightMaskMode.Solid;
+	}
+
+	/// <summary>
 	/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
 	/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
 	/// </summary>
@@ -391,7 +405,7 @@ public abstract class ModTile : ModTileOrWall
 
 	/// <summary>
 	/// Animates an individual tile. <paramref name="i"/> and <paramref name="j"/> are the coordinates of the Tile in question. <paramref name="frameXOffset"/> and <paramref name="frameYOffset"/> should be used to specify an offset from the tiles <see cref="Tile.TileFrameX"/> and <see cref="Tile.TileFrameY"/>. <c>frameYOffset = modTile.AnimationFrameHeight * Main.tileFrame[type];</c> will already be set before this hook is called, taking into account the TileID-wide animation set via <see cref="AnimateTile(ref int, ref int)"/>.
-	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
+	/// <para/> Use this hook for off-sync animations (lightning bug in a bottle), state specific animations (campfires), temporary animations (trap chests), or TileEntities to achieve unique animation behaviors without having to manually draw the tile via <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>.
 	/// </summary>
 	/// <param name="type">The tile type.</param>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -404,7 +418,7 @@ public abstract class ModTile : ModTileOrWall
 
 	/// <summary>
 	/// Allows you to adjust how the tile at the given coordinates is drawn. For example, changing the color the tile is drawn in.
-	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>.
+	/// <para/> Can also be used to register this tile location for additional rendering after all tiles are drawn normally. <see cref="SpecialDraw(int, int, SpriteBatch)"/> will be called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> here or in <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>.
 	/// <para/> <b>Note:</b> Previously ExampleMod examples showed spawning particles (dust or gore) in this method, but they should be spawned in <see cref="EmitParticles(int, int, Tile, short, short, Color, bool)"/> instead now. This is because particles are only spawned under specific conditions and those conditions are baked into the logic calling EmitParticles.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -412,6 +426,18 @@ public abstract class ModTile : ModTileOrWall
 	/// <param name="spriteBatch"></param>
 	/// <param name="drawData">Various information about the tile that is being drawn, such as color, framing, glow textures, etc.</param>
 	public virtual void DrawEffects(int i, int j, SpriteBatch spriteBatch, ref TileDrawInfo drawData)
+	{
+	}
+
+	/// <summary>
+	/// Allows the rendering of tiles attached to liquids. <br/>
+	/// Lily pads use this hook to draw themselves to liquids so water ripples/waves effect those tiles.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="spriteBatch"></param>
+	/// <param name="drawOffset">The draw offset of the tile, used to position the tile correctly.</param>
+	public virtual void DrawTileInWater(int i, int j, SpriteBatch spriteBatch, Vector2 drawOffset)
 	{
 	}
 
@@ -433,7 +459,7 @@ public abstract class ModTile : ModTileOrWall
 	}
 
 	/// <summary>
-	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModBlockType.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
+	/// Special Draw. Allows for additional rendering after all tiles are drawn normally. Only called if coordinates are added using <c>Main.instance.TilesRenderer.AddSpecialLegacyPoint</c> or <c>Main.instance.TilesRenderer.AddSpecialPoint(i, j, TileCounterType.CustomNonSolid or CustomSolid)</c> during <see cref="DrawEffects(int, int, SpriteBatch, ref TileDrawInfo)"/> or <see cref="ModTileOrWall.PreDraw(int, int, SpriteBatch)"/>. Useful for drawing things that would otherwise be impossible to draw due to draw order, such as items in item frames.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -774,5 +800,19 @@ public abstract class ModTile : ModTileOrWall
 	/// <param name="conversionType">A <see cref="BiomeConversionID"/> (or <see cref="ModBiomeConversion.Type"/>)</param>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
 	{
+	}
+
+	/// <summary>
+	/// Used to create waterfalls from this tile. <br/>
+	/// This method is used only by rain clouds and snow clouds to create their effects beneath them. Modded tiles can use this method to create their own custom rain clouds.<br/>
+	/// Waterfall data is used to set the position and type of the waterfall. Return type -1 when you don't want to create a waterfall. <br/>
+	/// Returns waterfall data with the type as -1 by default.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <returns>The data of a waterfall created by this tile.</returns>
+	public virtual WaterfallData CreateWaterfall(int i, int j)
+	{
+		return new WaterfallData() { type = -1, x = i, y = j };
 	}
 }

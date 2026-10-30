@@ -72,6 +72,21 @@ internal static class MapLoader
 				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Liquid {LiquidLoader.GetLiquid(type)}"));
 			}
 		}
+		
+		foreach (ushort type2 in liquidEntries.Keys) {
+			MapHelper.liquidLookup[type2] = (ushort)(MapHelper.modPosition + colors.Count);
+			foreach (MapEntry entry2 in liquidEntries[type2]) {
+				ushort mapType2 = (ushort)(MapHelper.modPosition + colors.Count);
+				entryToLiquid[mapType2] = type2;
+				MapLoader.nameFuncs[mapType2] = entry2.getName;
+				colors.Add(entry2.color);
+				if (entry2.name != null) {
+					names.Add(entry2.name);
+					continue;
+				}
+				throw new Exception("How did this happen?");
+			}
+		}
 		foreach (ushort type in wallEntries.Keys) {
 			MapHelper.wallLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
 			MapHelper.wallOptionCounts[type] = wallEntries[type].Count;
