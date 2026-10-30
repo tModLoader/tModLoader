@@ -8154,7 +8154,7 @@
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-@@ -44786,8 +_,12 @@
+@@ -44786,12 +_,18 @@
  			num += num2;
  		}
  
@@ -8167,6 +8167,13 @@
  
  		if (projToShoot == 285) {
  			float num3 = 1.25f;
+-			Damage = (int)((float)Damage * num3);
++			// Apply the bonus to both ammo and weapon damage, rounding only in the final calculation.
++			ammoDamage *= num3;
++			Damage *= num3;
+ 		}
+ 
+ 		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
 @@ -44809,7 +_,61 @@
  				ammoCyclingOffset = Main.rand.Next();
  		}
