@@ -1,10 +1,14 @@
 --- src/TerrariaNetCore/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
 +++ src/tModLoader/Terraria/GameContent/ItemDropRules/DropAttemptInfo.cs
-@@ -5,6 +_,7 @@
+@@ -5,7 +_,11 @@
  public struct DropAttemptInfo
  {
  	public NPC npc;
 +	public int item; // Added by TML.
  	public Player player;
++
++	// Added by TML. Non-null only when resolving pot loot.
++	public Terraria.ModLoader.PotLoot pot;
  	public UnifiedRandom rng;
  	public bool IsInSimulation;
+ 	public bool IsExpertMode;
