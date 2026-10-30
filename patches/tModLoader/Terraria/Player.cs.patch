@@ -8154,10 +8154,13 @@
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-@@ -44786,12 +_,18 @@
+@@ -44786,12 +_,21 @@
  			num += num2;
  		}
  
++		// Preserve vanilla bonuses to base ammo damage before applying damage-class modifiers and mod hooks.
++		ammoDamage.Base += num - item.damage;
++
 +		// Item damage applied below, with ammoDamage.ApplyTo(item.damage)
 +		// Damage class boosts come from the ammo damage class
 +		/*
