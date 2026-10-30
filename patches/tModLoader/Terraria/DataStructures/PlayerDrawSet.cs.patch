@@ -123,6 +123,17 @@
  
  		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
  		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
+@@ -268,6 +_,10 @@
+ 				AdjustmentsForPixieMount();
+ 		}
+ 
++		if (drawPlayer.mount.Active && drawPlayer.mount.Type >= MountID.Count) {
++			MountLoader.ModifyPlayerDrawInfo(drawPlayer.mount, ref this);
++		}
++
+ 		if (drawPlayer.isDisplayDollOrInanimate) {
+ 			Point point = Center.ToTileCoordinates();
+ 			if (Main.InSmartCursorHighlightArea(point.X, point.Y, out var actuallySelected)) {
 @@ -597,6 +_,11 @@
  			colorArmorLegs = drawPlayer.GetImmuneAlphaPure(new Color(b14, b14, b14, 255), shadow);
  		}

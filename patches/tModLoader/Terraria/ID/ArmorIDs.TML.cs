@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
 
 namespace Terraria.ID;
 
@@ -44,6 +45,68 @@ partial class ArmorIDs
 			/// This is used by, for example, wizard hats and gladiator helmet. Without this setting, some animation frames would render cropped at the top.
 			/// </remarks>
 			public static bool[] IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180);
+
+			// Values taken from Player.GetHelmetOffsetAddonFromMount()
+			/// <summary>
+			/// Head equipment in this set can have an additional offset when worn by the <see cref="MountID.Velociraptor"/>.
+			/// <para/> Defaults to <see cref="Vector2.Zero"/>.
+			/// <para/> To allow a head equipment to be worn by the <see cref="MountID.Velociraptor"/>, see <see cref="CanDrawOnVelociraptorMount"/>
+			/// </summary>
+			public static Vector2[] VelociraptorMountHeadOffset = Factory.CreateCustomSet(Vector2.Zero,
+				13, new Vector2(0f, -2f),
+				15, new Vector2(0f, -2f),
+				16, new Vector2(0f, -2f),
+				59, new Vector2(0f, -2f),
+				60, new Vector2(0f, -2f),
+				63, new Vector2(0f, -2f),
+				64, new Vector2(0f, -2f),
+				81, new Vector2(0f, -2f),
+				126, new Vector2(0f, -2f),
+				231, new Vector2(0f, -2f),
+				279, new Vector2(0f, -2f),
+				2, new Vector2(-2f, 0f),
+				5, new Vector2(-2f, 0f),
+				10, new Vector2(-2f, 0f),
+				12, new Vector2(-2f, 0f),
+				25, new Vector2(-2f, 0f),
+				84, new Vector2(-2f, 0f),
+				85, new Vector2(-2f, 0f),
+				116, new Vector2(-2f, 0f),
+				117, new Vector2(-2f, 0f),
+				138, new Vector2(-2f, 0f),
+				141, new Vector2(-2f, 0f),
+				143, new Vector2(-2f, 0f),
+				160, new Vector2(-2f, 0f),
+				178, new Vector2(-2f, 0f),
+				183, new Vector2(-2f, 0f),
+				191, new Vector2(-2f, 0f),
+				194, new Vector2(-2f, 0f),
+				197, new Vector2(-2f, 0f),
+				217, new Vector2(-2f, 0f),
+				218, new Vector2(-2f, 0f),
+				233, new Vector2(-2f, 0f),
+				245, new Vector2(-2f, 0f),
+				265, new Vector2(-2f, 0f),
+				274, new Vector2(-2f, 0f),
+				277, new Vector2(-2f, 0f),
+				163, new Vector2(-2f, 2f),
+				228, new Vector2(-2f, 2f),
+				229, new Vector2(-2f, 2f),
+				235, new Vector2(-2f, 2f),
+				222, new Vector2(0f, 2f),
+				242, new Vector2(0f, 2f),
+				243, new Vector2(0f, 2f),
+				244, new Vector2(0f, 2f),
+				73, new Vector2(-2f, -2f),
+				91, new Vector2(-2f, -2f),
+				227, new Vector2(-2f, -2f),
+				280, new Vector2(-2f, -2f),
+				195, new Vector2(-4f, -2f),
+				241, new Vector2(-4f, -14f),
+				272, new Vector2(-4f, 4f),
+				203, new Vector2(0f, -4f),
+				267, new Vector2(-2f, -4f)
+			);
 		}
 	}
 

@@ -499,7 +499,7 @@
  		}
  	}
  
-@@ -1909,7 +_,7 @@
+@@ -1909,13 +_,16 @@
  		drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
  		Vector2 helmetOffset = drawinfo.helmetOffset + pos;
  		DrawPlayer_21_Head_TheFace(ref drawinfo);
@@ -508,6 +508,15 @@
  		bool flag2 = drawinfo.drawPlayer.head == 28;
  		bool flag3 = drawinfo.drawPlayer.head == 39 || drawinfo.drawPlayer.head == 38;
  		bool flag4 = true;
+ 		if (drawinfo.drawPlayer.mount.Active) {
+ 			int type = drawinfo.drawPlayer.mount.Type;
++			/*
+ 			if (type == 54) {
++			*/
++			if (MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer[type]) {
+ 				if (drawinfo.drawPlayer.head >= 0 && !ArmorIDs.Head.Sets.CanDrawOnVelociraptorMount[drawinfo.drawPlayer.head])
+ 					flag4 = false;
+ 			}
 @@ -1932,8 +_,8 @@
  		}
  
@@ -654,6 +663,17 @@
  			}
  		}
  	}
+@@ -2407,6 +_,10 @@
+ 				shader = drawinfo.drawPlayer.cMount;
+ 			}
+ 
++			PlayerEyeHelper.EyeFrame eyeFrame = (PlayerEyeHelper.EyeFrame)frameY;
++			PlayerLoader.ModifyEyelid(drawinfo.drawPlayer, drawinfo, ref pos, ref color, ref shader, ref eyeFrame);
++			frameY = (int)eyeFrame;
++
+ 			if (drawinfo.drawPlayer.mount.Active && drawinfo.mountHandlesHeadDraw && drawinfo.mountDrawsEyelid && drawinfo.drawPlayer.head == 288) {
+ 				color = Color.Black;
+ 				frameY = 2;
 @@ -2546,18 +_,21 @@
  		bool hasRockGolemHead = false;
  		bool flag = drawinfo.drawPlayer.head == 287;
