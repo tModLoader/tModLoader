@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Biomes;
+using ExampleMod.Content.Liquids;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Drawing;
+using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -11,105 +14,153 @@ namespace ExampleMod.Common.GlobalLiquids
 	//Here we do a range of different edits to vanilla liquids to show how to use this global class.
 	public class ExampleGlobalLiquid : GlobalLiquid
 	{
-		//AllowFishingInShimmer does exactly as it's name suggests. 
-		//As this mod adds loot to the shimmer fishing pool, we need to make sure that we can actually fish in shimmer, and not get the shimmer debuff.
-		//Please see ExampleFishingPlayer to see modded liquid fishing pool examples
-		public override bool AllowFishingInShimmer() {
-			return true;
-		}
-
-		//When fishing in water, extra water dusts are produced when the bobber splashes.
-		//This hook/method is for doing for other liquids, providing extra flare when fishing in a liquid
-		//Here we make shimmer emit the npc shimmer particle when fished in
-		public override bool OnFishingBobberSplash(Projectile proj, int type) {
-			if (type == LiquidID.Shimmer) {
-				ParticleOrchestrator.BroadcastParticleSpawn(ParticleOrchestraType.ShimmerTownNPC, new ParticleOrchestraSettings {
-					PositionInWorld = proj.position
-				});
-			}
-			Main.NewText("test");
-			return true;
-		}
-
-		//EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld.
-		//This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
-		public override bool? EvaporatesInHell(int i, int j, int type) {
-			if (type == LiquidID.Shimmer) {
+		//AllowFishingInLiquid allow to control the fact you can fish in a liquid at a global level instead of a ModLiquid level
+		public override bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber) {
+			// We check if we allow fishing in shimmer only if the EoC has been defeated
+			if (liquidType == LiquidID.Shimmer && NPC.downedBoss1) {
+				// Returning true allow fishing in the liquid
 				return true;
 			}
-			if (type == LiquidID.Water) {
+			// We check if the bobber is the golden rod bobber and if the EoC has been defeated
+			if (liquidType == LiquidID.Water && bobber.type == ProjectileID.BobberGolden && NPC.downedBoss1) {
+				// Returning false block fishing in the liquid
+				return false;
+			}
+			// We check if the player is on fire and if the liquid is lava
+			if ((liquidType == LiquidID.Lava || liquidType == ModContent.LiquidType<ExampleComplexLiquid>()) && player.onFire) {
 				return false;
 			}
 			return null;
 		}
 
-		//The LiquidFallDelay hook/method is used for changing the falldelay of a liquid.
-		//Here we change the delay of water to be 10 (maximum delay time)
-		public override int? LiquidFallDelay(int type) {
-			if (type == LiquidID.Water) {
-				return 10;
+		// EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld under certain condition (or not).
+		// This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
+		public override bool? CanLiquidEvaporate(int i, int j, int type) {
+			// In this first example, we make it so honey just evaporate in the underworld without any extra condition
+			if (type == LiquidID.Honey) {
+				return true;
 			}
+
+			// In this second example, we disable water evaporation in the underworld if the wall of flesh as been defeated
+			if (type == LiquidID.Water && Main.hardMode) {
+				return false;
+			}
+
+			// In this third example, we make water evaporate if it's essentially in space
+			if (type == LiquidID.Water && j < 200) {
+				return true;
+			}
+
+			// In this fourth example, we make lava evaporate if it's standing on a block of ice
+			if (type == LiquidID.Lava && WorldGen.InWorld(i, j + 1)) {
+				Tile tile = Main.tile[i, j + 1];
+				if (tile.TileType == TileID.IceBlock && tile.HasTile) {
+					return true;
+				}
+			}
+
 			return null;
+		}
+
+		// In this example, we change how lava and water should interact before making a LiquidMerge.
+		// If the EoC is defeated and the water and lava come in contact, there is 50% chance it will spawn an obsidian pillar instead of doing a regular tile merge
+		public override bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid) {
+			// We start by checking if lava and water are the 2 liquid colliding together
+			if (type == LiquidID.Water && otherLiquid == LiquidID.Lava ||
+				type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
+				// Then we check if the Eye of Cthulhu has been defeated and run a Main.rand.NextBool() to determine if we generate an obsdian pillar or not
+				if (NPC.downedBoss1 && Main.rand.NextBool()) {
+					// If the check pass, we start making the pillar
+					for (int i = tileY; i > tileY - 10; i--) {
+						// We need to check if the pillar is within the bound of the world, if it isn't get out of the loop
+						if (!WorldGen.InWorld(tileX, i)) {
+							break;
+						}
+
+						Tile tile = Main.tile[tileX, i];
+						tile.HasTile = true;
+						tile.TileType = TileID.Obsidian;
+						WorldGen.SquareTileFrame(tileX, i);
+						if (Main.netMode != NetmodeID.MultiplayerClient) {
+							NetMessage.SendTileSquare(-1, tileX, i, TileChangeType.None);
+						}
+					}
+					// Then return false to prevent LiquidMerge from executing
+					return false;
+				}
+			}
+
+			// This second example here make it so Lava and Honey does not merge at all if they are in the underworld, allowing them to co-exist next to each other
+			// if (type == LiquidID.Lava && otherLiquid == LiquidID.Honey ||
+			//	type == LiquidID.Honey && otherLiquid == LiquidID.Lava && liquidY > Main.UnderworldLayer) {
+			//	// By returning false, it effectively prevent the liquid from doing any sort of merging and make it so that LiquidMerge does not run in this case
+			//	return false;
+			//}
+			return base.PreLiquidMerge(liquidX, liquidY, tileX, tileY, type, otherLiquid);
 		}
 
 		//Like modded liquids, we can also change the merge type of a vanilla liquid.
 		//Here we set the merge between lava and shimmer to be orichalcum ore.
-		public override int? LiquidMerge(int i, int j, int type, int otherLiquid) {
-			if (type == LiquidID.Lava) {
-				if (type == LiquidID.Shimmer) {
-					return TileID.Orichalcum;
+		// We also make so that lava and water have a 50/50 chance to produce either obsidian or obsidian brick
+		public override int? LiquidMerge(int type, int otherLiquid) {
+			// Due to the nature of how liquids work, we need to check both way for the interaction, as it depend on which liquid flow first in the other liquid.
+			// In this case, we are checking if lava and shimmer collide, then make orichalcum
+			if ((type == LiquidID.Lava && otherLiquid == LiquidID.Shimmer) || (type == LiquidID.Shimmer && otherLiquid == LiquidID.Lava)) {
+				return TileID.Orichalcum;
+			}
+
+			// In this case, we check for lava and water colliding.
+			if (type == LiquidID.Water && otherLiquid == LiquidID.Lava ||
+				type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
+				// Then we check if the eye of cthulhu as been defeated
+				if (NPC.downedBoss1) {
+					// And finally we do use Main.rand.NextBool() to determine if obsidian (true) or Ancient Obsidian Brick (false will generate)
+					return Main.rand.NextBool() ? TileID.Obsidian : TileID.AncientObsidianBrick;
 				}
 			}
 			return null;
 		}
 
 		//BlocksTilePlacement allows us to specify which liquids block placing tiles over them.
-		//Normally Lava is true, but here we set it to false, allowing the player to be able to place tiles over the liquid.
+		//Normally Lava and water are true, but here we set them to false depending on where the liquid itself is located or if the player is in a specific biome. 
 		public override bool? BlocksTilePlacement(Player player, int i, int j, int type) {
-			if (type == LiquidID.Lava) {
-				return false;
+			// In this case, we check if the liquid is water and if the player is in the Example Surface Biome
+			if (type == LiquidID.Water && player.InModBiome<ExampleSurfaceBiome>()) {
+				// Then we return true to not allow placement in water if the player is in Example Surface Biome
+				return true;
 			}
-			return null;
-		}
 
-		//Here, using OnPlayerSplash, we can make players emit extra particles when entering or exiting a liquid (such as shimmer in this example)
-		//Here we make shimmer emit the NPC shimmer particle when both entering and exiting
-		public override bool OnPlayerSplash(Player player, int type, bool isEnter) {
-			if (type == LiquidID.Shimmer) {
-				ParticleOrchestrator.RequestParticleSpawn(clientOnly: true, ParticleOrchestraType.ShimmerTownNPC, new ParticleOrchestraSettings {
-					PositionInWorld = player.position + new Vector2(player.width / 2, player.height / 2),
-				}, player.whoAmI);
-			}
-			return true;
-		}
-
-		//ChecksForDrowning allows which liquid the player can drown in.
-		//Normally water and honey will only let you drown, but here we make shimmer allow the player to drown in, and make water breathable.
-		public override bool? ChecksForDrowning(int type) {
-			if (type == LiquidID.Water) {
-				return false;
-			}
-			if (type == LiquidID.Shimmer) {
+			// In this case, we check if the liquid is lava and if it's located in the underworld 
+			if (type == LiquidID.Lava && i > Main.maxTilesY - 200) {
+				// Then we return true if the lava is located in the underworld
 				return true;
 			}
 			return null;
 		}
 
-		//When drowning, we can prevent the emitting of breath bubbles when submerged for both NPCs and Players
-		//We make shimmer and water not emit breath bubbles from the player's mouth
-		public override bool? AllowEmitBreathBubbles(int type) {
-			if (type == LiquidID.Shimmer || type == LiquidID.Water) {
-				return false;
+		//ChecksForDrowning allows which liquid the player can drown in.
+		//Normally water and honey will only let you drown, but here we make shimmer allow the player to drown in, and make water breathable.
+		public override void CanPlayerDrown(Player player, int type, ref bool isDrowning) {
+			if (type == LiquidID.Water && player.armor[0].type == ItemID.IronHelmet) {
+				isDrowning = false;
 			}
-			return null;
 		}
 
-		//Here using OnPump we make shimmer un-pump-able, returning false, skipping the liquid movement logic
+		// In this first example, we make it so that water located in the underworld cannot be pumped out of the underworld
+		// In the second example, we make it so that shimmer cannot be pumped if the moonlord was not defeated in the world
 		public override bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY) {
-			if (inLiquidType == LiquidID.Shimmer) {
+			// We check if the current liquid type is water and if the input is located in the underworld and the outside of the underworld
+			if (inLiquidType == LiquidID.Water && inY > Main.UnderworldLayer && outY < Main.UnderworldLayer) {
+				// If this is the case, then we cannot pump the water outside of the underworld
 				return false;
 			}
-			return true;
+
+			// We check if the current liquid type is shimmer, if it is then we can check if the moon was not defeated.
+			if (inLiquidType == LiquidID.Shimmer && !NPC.downedMoonlord) {
+				// If this is the case, then we cannot pump shimmer until the moon lord has been defeated
+				return false;
+			}
+			return base.OnPump(inLiquidType, inX, inY, outX, outY);
 		}
 
 		//Here, we make lava have no liquid movement at all
@@ -138,20 +189,14 @@ namespace ExampleMod.Common.GlobalLiquids
 		//PlayerLiquidMovement isn't enough to make the player fully ignore lava movement, so we have to also reset the gravity of the player as well
 		//Here we copy over the settings when gravity, maxfallspeed, jump height and speed into this method, resetting their values to before the player being in a liquid.
 		public override void PlayerGravityModifier(Player player, int type, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed) {
-			maxFallSpeed = 10f;
-			gravity = Player.defaultGravity;
-			jumpHeight = 15;
-			jumpSpeed = 5.01f;
-			if (player.PortalPhysicsEnabled) {
-				maxFallSpeed = 35f;
-			}
-		}
-
-		//related to the PlayerLiquidMovement hook, we fix lava displaying the incorrect MPH number when moving through it
-		//Since lava does not slow us down, we set its multiplier to 1x
-		public override void StopWatchMPHMultiplier(int type, ref float multiplier) {
 			if (type == LiquidID.Lava) {
-				multiplier = 1f;
+				maxFallSpeed = 10f;
+				gravity = Player.defaultGravity;
+				jumpHeight = 15;
+				jumpSpeed = 5.01f;
+				if (player.PortalPhysicsEnabled) {
+					maxFallSpeed = 35f;
+				}
 			}
 		}
 

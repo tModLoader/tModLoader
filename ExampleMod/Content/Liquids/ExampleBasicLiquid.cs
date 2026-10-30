@@ -18,7 +18,6 @@ namespace ExampleMod.Content.Liquids
 		public override void SetStaticDefaults() {
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 3;
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.75f;
-			SlopeOpacity = 0.8f;
 			LiquidRenderer.VISCOSITY_MASK[Type] = 200;
 			FallDelay = 5;
 			SplashDustType = ModContent.DustType<ExampleSolutionDust>();
@@ -40,14 +39,14 @@ namespace ExampleMod.Content.Liquids
 			}
 		}
 
-		public override int LiquidMerge(int i, int j, int otherLiquid) {
-			if (otherLiquid == LiquidID.Water) {
+		public override int LiquidMerge(int adjacentLiquid) {
+			if (adjacentLiquid == LiquidID.Water) {
 				return ModContent.TileType<ExampleBlock>();
 			}
-			else if (otherLiquid == LiquidID.Honey) {
+			else if (adjacentLiquid == LiquidID.Honey) {
 				return ModContent.TileType<ExampleOre>();
 			}
-			else if (otherLiquid == LiquidID.Shimmer) {
+			else if (adjacentLiquid == LiquidID.Shimmer) {
 				return TileID.ShimmerBlock;
 			}
 			return TileID.Stone;

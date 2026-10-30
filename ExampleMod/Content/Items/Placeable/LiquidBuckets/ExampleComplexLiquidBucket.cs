@@ -14,7 +14,7 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExampleBottomlessBucket>();
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 
-			LiquidID.Sets.CreateLiquidBucketItem[ModContent.LiquidType<ExampleLiquid>()] = Type;
+			LiquidID.Sets.CreateLiquidBucketItem[ModContent.LiquidType<ExampleComplexLiquid>()] = Type;
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
 		}

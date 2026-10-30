@@ -43,29 +43,35 @@
  		tilesIgnoreWater(ignoreSolids: true);
  		if (tile.liquid == 0 || (tile.active() && tile.type == 379))
  			return;
-@@ -336,6 +_,9 @@
- 		Tile tile3 = Main.tile[x, y - 1];
- 		Tile tile4 = Main.tile[x, y + 1];
- 		Tile tile5 = Main.tile[x, y];
-+		if (!LiquidLoader.UpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
-+			return;
-+		}
- 		if (tile5.nactive() && Main.tileSolid[tile5.type] && !Main.tileSolidTop[tile5.type]) {
- 			_ = tile5.type;
- 			_ = 10;
-@@ -345,7 +_,11 @@
+@@ -345,12 +_,28 @@
  
  		byte liquid = tile5.liquid;
  		float num = 0f;
-+		bool? canEvaporate = LiquidLoader.EvaporatesInHell(x, y, tile5.liquidType());
-+		if (canEvaporate == null)
++		bool? canEvaporate = LiquidLoader.CanLiquidEvaporate(x, y, tile5.liquidType());
++		if (canEvaporate == null && y > Main.UnderworldLayer)
 +			canEvaporate = tile5.liquidType() == 0;
--		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
-+		/*if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {*/
-+		if (y > Main.UnderworldLayer && (bool)canEvaporate && tile5.liquid > 0) {
++
++		if (!LiquidLoader.PreUpdateLiquid(x, y, Main.tile[x, y].liquidType(), this)) {
++			return;
++		}
++		/*
+ 		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
  			byte b = 2;
  			if (tile5.liquid < b)
  				b = tile5.liquid;
+ 
+ 			tile5.liquid -= b;
++		}*/
++
++		if (tile5.liquid > 0 && canEvaporate == true) {
++			byte b = 2;
++			if (tile5.liquid < b)
++				b = tile5.liquid;
++
++			tile5.liquid -= b;
+ 		}
+ 
+ 		if (tile5.liquid == 0) {
 @@ -358,6 +_,7 @@
  			return;
  		}
@@ -82,7 +88,7 @@
  				delay = 0;
  			}
  		}
-@@ -424,7 +_,56 @@
+@@ -424,7 +_,45 @@
  				}
  			}
  		}
@@ -99,18 +105,7 @@
 +				}
 +				if (!quickFall) {
 +					int fallDelay = 0;
-+					if (i == LiquidID.Lava) {
-+						fallDelay = 5;
-+					}
-+					if (i == LiquidID.Honey) {
-+						fallDelay = 10;
-+					}
-+					if (i >= LiquidID.Count) {
-+						fallDelay = LiquidLoader.GetLiquid(i).FallDelay;
-+					}
-+					if (LiquidLoader.LiquidEditingFallDelay(i) != null) {
-+						fallDelay = (int)LiquidLoader.LiquidEditingFallDelay(i);
-+					}
++					fallDelay = LiquidID.Sets.FallDelay[i];
 +					/*if (delay < 10) {*/
 +					if (delay < fallDelay) {
 +						delay++;
@@ -317,7 +312,7 @@
 +
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (thisLiquidType != i && liquidsNearby[i]) {
-+				modLiquidTileType = LiquidLoader.LiquidMergeTilesType(x, y, i, thisLiquidType);
++				modLiquidTileType = LiquidLoader.LiquidMergeTilesType(i, thisLiquidType);
 +				if (modLiquidTileType != null) {
 +					liquidMergeTileType = (int)modLiquidTileType;
 +				}

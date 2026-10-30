@@ -387,33 +387,29 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 		bool inModdedLiquid = false;
 		for (int k = LiquidID.Count; k < LiquidLoader.LiquidCount; k++) {
 			if (wets[k]) {
-				if (LiquidLoader.OnNPCSplash(k, this, true)) {
-					ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
-					if (modLiquid.OnNPCSplash(this, isEnter)) {
-						for (int i = 0; i < 30; i++) {
-							int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
-							Main.dust[newDust].velocity.Y -= 4f;
-							Main.dust[newDust].velocity.X *= 2.5f;
-							Main.dust[newDust].scale *= 0.8f;
-							Main.dust[newDust].alpha = 100;
-							Main.dust[newDust].noGravity = true;
-						}
-
-						if (aiStyle != NPCAIStyleID.Slime &&
-						    type != NPCID.BlueSlime && type != NPCID.MotherSlime && type != NPCID.IceSlime && type != NPCID.LavaSlime &&
-						    type != NPCID.Mouse &&
-						    aiStyle != NPCAIStyleID.GiantTortoise &&
-						    !noGravity) {
-							SoundEngine.PlaySound(modLiquid.SplashSound, position);
-						}
-					}
+				ModLiquid modLiquid = LiquidLoader.GetLiquid(k);
+				for (int i = 0; i < 30; i++) {
+					int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, modLiquid.SplashDustType);
+					Main.dust[newDust].velocity.Y -= 4f;
+					Main.dust[newDust].velocity.X *= 2.5f;
+					Main.dust[newDust].scale *= 0.8f;
+					Main.dust[newDust].alpha = 100;
+					Main.dust[newDust].noGravity = true;
 				}
 
-				inModdedLiquid = true;
+				if (aiStyle != NPCAIStyleID.Slime &&
+				    type != NPCID.BlueSlime && type != NPCID.MotherSlime && type != NPCID.IceSlime && type != NPCID.LavaSlime &&
+				    type != NPCID.Mouse &&
+				    aiStyle != NPCAIStyleID.GiantTortoise &&
+				    !noGravity) {
+					SoundEngine.PlaySound(modLiquid.SplashSound, position);
+				}
 			}
+
+			inModdedLiquid = true;
 		}
 
-		if (!inModdedLiquid && LiquidLoader.OnNPCSplash(LiquidID.Water, this, isEnter)) {
+		if (!inModdedLiquid) {
 			for (int i = 0; i < 30; i++) {
 				int newDust = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
 				Main.dust[newDust].velocity.Y -= 4f;
@@ -429,9 +425,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	public bool TryPutoutFire()
 	{
 		bool putsOutOnfire = true;
-		for (int i = LiquidLoader.LiquidCount - 1; i >= LiquidID.Count; i--) {
+		for (int i = LiquidLoader.LiquidCount - 1; i >= 0; i--) {
 			if (this.wets[i]) {
-				if (!LiquidLoader.GetLiquid(i).ExtinguishesOnFireDebuffs) {
+				if (LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[i]) {
 					putsOutOnfire = false;
 				}
 			}

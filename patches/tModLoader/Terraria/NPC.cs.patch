@@ -1102,7 +1102,7 @@
  	}
  
  	public static void ClearAll()
-@@ -6499,8 +_,27 @@
+@@ -6499,8 +_,23 @@
  			return;
  		}
  
@@ -1119,14 +1119,10 @@
 +		GravityIgnoresSpace = false;
 +		GravityIgnoresType = false;
 +
++		// Added by TML
 +		liquidMovementSpeed = new float[LiquidLoader.LiquidCount];
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
-+			liquidMovementSpeed[i] = 0.5f;
-+			if (i >= LiquidID.Count)
-+				liquidMovementSpeed[i] = LiquidLoader.GetLiquid(i).NPCMovementMultiplierDefault;
-+		}
-+		liquidMovementSpeed[LiquidID.Honey] = 0.25f;
-+		liquidMovementSpeed[LiquidID.Shimmer] = 0.375f;
++		Array.Copy(LiquidID.Sets.NPCMovementMultiplierDefault, liquidMovementSpeed, liquidMovementSpeed.Length);
++
  		altTexture = 0;
  		townNpcVariationIndex = 0;
  		nameOver = 0f;
@@ -3192,24 +3188,6 @@
  			}
  		}
  
-@@ -78149,7 +_,7 @@
- 			if (!wet && wetCount == 0) {
- 				wetCount = 10;
- 				if (!lava) {
--					if (shimmerWet) {
-+					if (shimmerWet && LiquidLoader.OnNPCSplash(LiquidID.Shimmer, this, true)) {
- 						if (type != 617 && type != 616 && type != 625) {
- 							for (int i = 0; i < 30; i++) {
- 								int num = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
-@@ -78177,7 +_,7 @@
- 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 4);
- 						}
- 					}
--					else if (honeyWet) {
-+					else if (honeyWet && LiquidLoader.OnNPCSplash(LiquidID.Honey, this, true)) {
- 						for (int j = 0; j < 10; j++) {
- 							int num2 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
- 							Main.dust[num2].velocity.Y -= 1f;
 @@ -78191,6 +_,8 @@
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  					}
@@ -3219,7 +3197,7 @@
  						for (int k = 0; k < 30; k++) {
  							int num3 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
  							Main.dust[num3].velocity.Y -= 4f;
-@@ -78199,12 +_,13 @@
+@@ -78199,7 +_,7 @@
  							Main.dust[num3].alpha = 100;
  							Main.dust[num3].noGravity = true;
  						}
@@ -3228,31 +3206,6 @@
  						if ((type != 376 && type != 579 && aiStyle != 1 && type != 1 && type != 16 && type != 147 && type != 59 && type != 300 && aiStyle != 39 && aiStyle != 68 && type != 362 && type != 364 && type != 361 && type != 445 && !noGravity) || type == 615)
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
  					}
- 				}
--				else {
-+				/*else {*/
-+				else if(LiquidLoader.OnNPCSplash(LiquidID.Lava, this, false)) {
- 					for (int l = 0; l < 10; l++) {
- 						int num4 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
- 						Main.dust[num4].velocity.Y -= 1.5f;
-@@ -78230,7 +_,7 @@
- 			if (wetCount == 0) {
- 				wetCount = 10;
- 				if (!lavaWet) {
--					if (shimmerWet) {
-+					if (shimmerWet && LiquidLoader.OnNPCSplash(LiquidID.Shimmer, this, false)) {
- 						if (type != 617 && type != 616 && type != 625) {
- 							for (int m = 0; m < 30; m++) {
- 								int num5 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 308);
-@@ -78258,7 +_,7 @@
- 								SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 5);
- 						}
- 					}
--					else if (honeyWet) {
-+					else if (honeyWet && LiquidLoader.OnNPCSplash(LiquidID.Honey, this, false)) {
- 						for (int n = 0; n < 10; n++) {
- 							int num6 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 152);
- 							Main.dust[num6].velocity.Y -= 1f;
 @@ -78272,6 +_,8 @@
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
  					}
@@ -3262,7 +3215,7 @@
  						for (int num7 = 0; num7 < 30; num7++) {
  							int num8 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, Dust.dustWater());
  							Main.dust[num8].velocity.Y -= 4f;
-@@ -78280,12 +_,13 @@
+@@ -78280,7 +_,7 @@
  							Main.dust[num8].alpha = 100;
  							Main.dust[num8].noGravity = true;
  						}
@@ -3271,13 +3224,6 @@
  						if ((type != 376 && type != 579 && aiStyle != 1 && type != 1 && type != 16 && type != 59 && type != 300 && aiStyle != 39 && aiStyle != 68 && type != 362 && type != 364 && type != 361 && type != 445 && !noGravity) || type == 615)
  							SoundEngine.PlaySound(19, (int)position.X, (int)position.Y, 0);
  					}
- 				}
--				else {
-+				/*else {*/
-+				else if(LiquidLoader.OnNPCSplash(LiquidID.Lava, this, true)) {
- 					for (int num9 = 0; num9 < 10; num9++) {
- 						int num10 = Dust.NewDust(new Vector2(position.X - 6f, position.Y + (float)(height / 2) - 8f), width + 12, 24, 35);
- 						Main.dust[num10].velocity.Y -= 1.5f;
 @@ -78306,7 +_,7 @@
  
  	private void TryRemovingWaterPerishableEffects(bool isInLava)
@@ -3349,7 +3295,7 @@
  		if (nPC.homeless && nPC.type != 37 && nPC.type != 368)
  			return nPC.type != 453;
  
-@@ -80085,8 +_,23 @@
+@@ -80085,8 +_,20 @@
  				breathCounter = 0;
  			}
  		}
@@ -3359,10 +3305,7 @@
 +		bool? canEmitBreath = null;
 +		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (wets[i]) {
-+				canEmitBreath = LiquidLoader.PlayersEmitBreathBubbles(i);
-+				if (canEmitBreath == null && i >= LiquidID.Count) {
-+					canEmitBreath = LiquidLoader.GetLiquid(i).AllowEmitBreathBubbles;
-+				}
++				canEmitBreath = LiquidID.Sets.AllowEmitBreathBubbles[i];
 +			}
 +		}
 +		if (canEmitBreath == null) {

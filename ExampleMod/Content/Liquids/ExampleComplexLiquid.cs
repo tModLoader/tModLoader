@@ -20,7 +20,6 @@ namespace ExampleMod.Content.Liquids
 		public override void SetStaticDefaults() {
 			LiquidRenderer.WATERFALL_LENGTH[Type] = 3;
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.75f;
-			SlopeOpacity = 0.8f;
 			LiquidRenderer.VISCOSITY_MASK[Type] = 200;
 			FallDelay = 5;
 			SplashSound = SoundID.Splash;
@@ -154,13 +153,13 @@ namespace ExampleMod.Content.Liquids
 
 		//Similarly to RetroDrawEffects, we use PreSlopeDraw to edit the rendering of slopes to also modify the color to be rainbow too
 		//As of oct 1st 2025, slopes are only really used for retro rendering so we only change the color simialrly to retro lighting to make slopes not look out of place
-		public override bool PreSlopeDraw(int i, int j, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors) {
+		public override bool PreSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors) {
 			SetComplexLiquidVertexColors(ref colors, 1f);
 			return true;
 		}
 
 		//Here with UpdateLiquid, we use this method to make our liquid evaporate when in the ocean biome
-		public override bool UpdateLiquid(int i, int j, Liquid liquid) {
+		public override bool PreUpdateLiquid(int i, int j, Liquid liquid) {
 			//Firstly we check if the liquid both has more than 0 liquid amount, and is in the ocean biome part of the world
 			if ((i < WorldGen.beachDistance || i > Main.maxTilesX - WorldGen.beachDistance) && Main.tile[i, j].LiquidAmount > 0) {
 				byte evaporateAmount = 2; //the amount of liquid removed each frame
@@ -171,70 +170,6 @@ namespace ExampleMod.Content.Liquids
 			}
 			return true; //since we dont reimplement the liquid's movement, we just return true so the normal liquid updating can also run as well
 		}
-
-		//Used to color the splash to be rainbow, Please see ExampleLiquid's splash comments for more info
-		public override bool OnPlayerSplash(Player player, bool isEnter) {
-			for (int i = 0; i < 20; i++) {
-				int dust = Dust.NewDust(new Vector2(player.position.X - 6f, player.position.Y + (player.height / 2) - 8f), player.width + 12, 24, DustID.RainbowTorch);
-				Main.dust[dust].velocity.Y -= 1f;
-				Main.dust[dust].velocity.X *= 2.5f;
-				Main.dust[dust].scale = 1.3f;
-				Main.dust[dust].alpha = 100;
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].color = Main.DiscoColor;
-			}
-			SoundEngine.PlaySound(SplashSound, player.position);
-			return false;
-		}
-
-		public override bool OnNPCSplash(NPC npc, bool isEnter) {
-			for (int i = 0; i < 10; i++) {
-				int dust = Dust.NewDust(new Vector2(npc.position.X - 6f, npc.position.Y + (npc.height / 2) - 8f), npc.width + 12, 24, DustID.RainbowTorch);
-				Main.dust[dust].velocity.Y -= 1f;
-				Main.dust[dust].velocity.X *= 2.5f;
-				Main.dust[dust].scale = 1.3f;
-				Main.dust[dust].alpha = 100;
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].color = Main.DiscoColor;
-			}
-			if (npc.aiStyle != NPCAIStyleID.Slime &&
-					npc.type != NPCID.BlueSlime && npc.type != NPCID.MotherSlime && npc.type != NPCID.IceSlime && npc.type != NPCID.LavaSlime &&
-					npc.type != NPCID.Mouse &&
-					npc.aiStyle != NPCAIStyleID.GiantTortoise &&
-					!npc.noGravity) {
-				SoundEngine.PlaySound(SplashSound, npc.position);
-			}
-			return false;
-		}
-
-		public override bool OnProjectileSplash(Projectile proj, bool isEnter) {
-			for (int i = 0; i < 10; i++) {
-				int dust = Dust.NewDust(new Vector2(proj.position.X - 6f, proj.position.Y + (proj.height / 2) - 8f), proj.width + 12, 24, DustID.RainbowTorch);
-				Main.dust[dust].velocity.Y -= 1f;
-				Main.dust[dust].velocity.X *= 2.5f;
-				Main.dust[dust].scale = 1.3f;
-				Main.dust[dust].alpha = 100;
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].color = Main.DiscoColor;
-			}
-			SoundEngine.PlaySound(SplashSound, proj.position);
-			return false;
-		}
-
-		public override bool OnItemSplash(WorldItem item, bool isEnter) {
-			for (int i = 0; i < 5; i++) {
-				int dust = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (item.height / 2) - 8f), item.width + 12, 24, DustID.RainbowTorch);
-				Main.dust[dust].velocity.Y -= 1f;
-				Main.dust[dust].velocity.X *= 2.5f;
-				Main.dust[dust].scale = 1.3f;
-				Main.dust[dust].alpha = 100;
-				Main.dust[dust].noGravity = true;
-				Main.dust[dust].color = Main.DiscoColor;
-			}
-			SoundEngine.PlaySound(SplashSound, item.position);
-			return false;
-		}
-
 		public override int ChooseWaterfallStyle(int i, int j) {
 			return ModContent.GetInstance<ExampleComplexLiquidfall>().Slot;
 		}

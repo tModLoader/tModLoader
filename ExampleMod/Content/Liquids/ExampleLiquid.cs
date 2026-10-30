@@ -5,6 +5,7 @@ using System;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent.Liquid;
+using Terraria.Graphics;
 using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -26,13 +27,10 @@ namespace ExampleMod.Content.Liquids
 			//This is the opacity of the liquid. How well you can see objects in the liquid.
 			//DefaultOpacity is a vanilla array containing the definitions of each liquid type's default opacity for just white and color lighting modes
 			LiquidRenderer.DEFAULT_OPACITY[Type] = 0.95f;
-			SlopeOpacity = 1f; //Slope opacity is mainly for liquids near slopes when in retro or trippy lighting modes or when LiquidSlopeFix setting is disabled
-			LiquidfallOpacityMultiplier = 0.5f; //Here we make the liquidfalls of this liquid draw at a 0.5x multiplier, making them seem much thicker
-			//To change the old liquid rendering opacity, please see the RetroDrawEffects override.
 
 			//For the Waves Quality setting, when set to Medium, waves are set to be the same distance no matter the liquid type.
-			//To do this, the game applied a multiplier to make them all consistant between liquids. Here we set our own multiplier to make the waves the same distance.
-			WaterRippleMultiplier = 0.3f;
+			//To do this, the game applied a multiplier to make them all consistant between liquids. Here we set our own multiplier to make the waves the same distance as honey and lava.
+			LiquidRippleMultiplier = 0.3f;
 
 			//This is used to specify what dust is used when splashing in this liquid.
 			//SplashDustType is -1 normally, which prevents the liquid from doing any splash dust
@@ -53,12 +51,12 @@ namespace ExampleMod.Content.Liquids
 			//Water/Lava/Regular modded liquid = 0.5f
 			//Honey = 0.25f
 			//Shimmer = 0.375f
-			PlayerMovementMultiplier = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
-			StopWatchMPHMultiplier = PlayerMovementMultiplier; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
-			NPCMovementMultiplierDefault = PlayerMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
-			ProjectileMovementMultiplier = PlayerMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
+			EntityMovementMultiplier = 0.125f; //For modders who don't want to reimplement the entire player movement for this liquid, this property is for them
+			StopWatchMPHMultiplier = EntityMovementMultiplier; //We set stopwatch to the same multiplier as we don't want a difference between whats felt and what the player can read their movement as.
+			NPCMovementMultiplierDefault = EntityMovementMultiplier; //NPCs have a similar modifier but as a field, here we set the default value as some other NPCs set this multiplier to 0. We set this to PlayerMovementMultiplier as we need them to all be the same.
+			ProjectileMovementMultiplier = EntityMovementMultiplier; //Simiarly to Players, Projectiles have this property for easy editing of a projectile velocity multiplier without needing to reimplement all of the projectile liquid movement code.
 
-			FishingPoolSizeMultiplier = 2f; //The multiplier used for calculating the size of a fishing pool of this liquid. Here, each liquid tile counts as 2 for every tile in a fished pool.
+			FishingPoolMinimumSize = 150; // We set the amount of tile required before it's a valid fishing pool, here we set it to 150 so it's double of what normally water would require
 
 			//For more dangerous liquids, we may want to have our liquid call On(Player/NPC/Projectile)Collision whenever an entity touches the liquid, rather than when an entity splashes in a liquid
 			//For this we use similar collision calculations as lava using this boolean.
@@ -78,22 +76,24 @@ namespace ExampleMod.Content.Liquids
 			//Unlike vanilla, we can also add a map entry name, which will display a name if the liquid is being selected on the map.
 			AddMapEntry(new Color(200, 200, 200), DisplayName);
 
+			VanillaFallbackOnModDeletion = (ushort)LiquidID.Water;
+
 			//Please see ExampleFishingPlayer to see modded liquid fishing pool examples
 		}
 
 		//Here with LiquidMerge, we are able to decide when the liquid generates with a different tile.
 		//Using the otherLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
-		public override int LiquidMerge(int i, int j, int otherLiquid) {
-			if (otherLiquid == LiquidID.Water) {
+		public override int LiquidMerge(int adjacentLiquid) {
+			if (adjacentLiquid == LiquidID.Water) {
 				return TileID.TeamBlockBlue; //When the liquid collides with water. Blue team block is created
 			}
-			else if (otherLiquid == LiquidID.Lava) {
+			else if (adjacentLiquid == LiquidID.Lava) {
 				return TileID.TeamBlockRed; //When the liquid collides with lava. Red team block is created
 			}
-			else if (otherLiquid == LiquidID.Honey) {
+			else if (adjacentLiquid == LiquidID.Honey) {
 				return TileID.TeamBlockYellow; //When the liquid collides with honey. Yellow team block is created
 			}
-			else if (otherLiquid == LiquidID.Shimmer) {
+			else if (adjacentLiquid == LiquidID.Shimmer) {
 				return TileID.TeamBlockPink; //When the liquid collides with shimmer. Pink team block is created
 			}
 			//The base return is what the liquid generates by default. This is useful for when this liquid collides with another modded liquid that this liquid has no support for.
@@ -121,13 +121,6 @@ namespace ExampleMod.Content.Liquids
 			return ModContent.GetInstance<ExampleLiquidfall>().Slot;
 		}
 
-		//LiquidLightMaskMode is how the game decides what lightMaskMode to use when this liquid is over a tile
-		//We set this to none, this is due to the liquid emitting light, needing no special lightMaskMode for its interaction with light.
-		//LightMaskMode is how light interacts with the liquid or tile when hitting it. i.e. honey makes light slowly turn yellow when passing through
-		public override LightMaskMode LiquidLightMaskMode(int i, int j) {
-			return LightMaskMode.None;
-		}
-
 		//ModifyLight allows the liquid to emit light similarly to any tile or wall.
 		//You can use this to emit light similarly to lava or shimmer.
 		public override void ModifyLight(int i, int j, ref float r, ref float g, ref float b) {
@@ -139,7 +132,7 @@ namespace ExampleMod.Content.Liquids
 
 		//Using EvaporatesInHell, we are able to choose whether this liquid evaporates in hell, based on a condition.
 		//For custom evaporation, use the UpdateLiquid hook.
-		public override bool EvaporatesInHell(int i, int j) {
+		public override bool CanEvaporate(int i, int j) {
 			//Here, our liquid in the bottom half of the underworld evaporates, while in the upper half does not
 			if (j > Main.maxTilesY - 100) {
 				return true;
@@ -215,11 +208,23 @@ namespace ExampleMod.Content.Liquids
 				npc.AddBuff(BuffID.DryadsWardDebuff, 60 * 4);
 			}
 		}
+
 		//Secondly, we apply the 2nd tier of Well Fed for 30 seconds
+		// And thirdly, we remove the onFire debuff if the player have it
 		public override void OnPlayerCollision(Player player) {
 			//No conditions needed for our liquid
 			//Shimmer and honey also don't have any other conditions outside of already not shimmering
 			player.AddBuff(BuffID.WellFed2, 60 * 30);
+			//Here we check if the player is either on fire or is afflicted with hellfire
+			if (player.onFire || player.onFire3) {
+				// If they are, we iterate trough all the buff slot the player have and remove them if they are found
+				for (int i = 0; i < Player.MaxBuffs; i++) {
+					int buffType = player.buffType[i];
+					if (buffType == BuffID.OnFire || buffType == BuffID.OnFire3) {
+						player.DelBuff(i);
+					}
+				}
+			}
 		}
 
 		//Here we animate our liquid separately from other liquids in the game.
@@ -271,7 +276,7 @@ namespace ExampleMod.Content.Liquids
 			int height = (!player.onTrack) ? player.height : (player.height - 20);
 			Vector2 velocity = player.velocity;
 			player.velocity = Collision.TileCollision(player.position, player.velocity, player.width, height, fallThrough, ignorePlats, (int)player.gravDir);
-			Vector2 vector2 = player.velocity * PlayerMovementMultiplier; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
+			Vector2 vector2 = player.velocity * EntityMovementMultiplier; //We reuse the PlayerMovementMultiplier here for it to serve the same purpose
 			if (player.velocity.X != velocity.X) {
 				vector2.X = player.velocity.X;
 			}
@@ -336,6 +341,28 @@ namespace ExampleMod.Content.Liquids
 			return false; //We return false as we do not want the normal liquid movement to execute after this hook/method
 		}
 
+		// We use this hook to make so that the liquid can only be pumped up to 15 tiles away from it's original location
+		public override bool OnPump(int inX, int inY, int outX, int outY) {
+			// We start by converting our coordinates into Vector
+			Vector2 inPosition = new Vector2(inX, inY);
+			Vector2 outPosition = new Vector2(outX, outY);
+
+			// We then calculate the distance between the 2 vector
+			double distance = inPosition.Distance(outPosition);
+
+			// Then we check if the distance between them is higher than 15, if is then you can pump the liquid to that location
+			if (distance > 15.0) {
+				return true;
+			}
+
+			// Here we have another example where if the moon lord has been defeated you can move the liquid using pumps;
+			// if (NPC.downedMoonlord) {
+			//	 return true;
+			// }
+
+			// otherwise you cannot pump it at all
+			return false;
+		}
 
 
 		//The following contains all the logic for what this liquid does when being entered and exited by different entities.

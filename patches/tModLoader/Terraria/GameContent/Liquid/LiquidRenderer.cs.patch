@@ -197,11 +197,12 @@
  					if (tile == null)
  						tile = new Tile();
  
-@@ -154,9 +_,16 @@
+@@ -154,9 +_,18 @@
  					if (ptr2->IsHalfBrick && !ptr2->HasLiquid)
  						ptr2->Type = ptr2[-1].Type;
  
 +					ptr2->EdgeData = null;
++					// Added by TML
 +					if (edgeData)
 +						LiquidEdgeRenderer.CollectEdgeData(ptr2, tile, i, j);
 +
@@ -209,6 +210,7 @@
  				}
  			}
 +
++			// Added by TML
 +			if (edgeData)
 +				LiquidEdgeRenderer.FinishEdgeData();
  
@@ -223,16 +225,6 @@
  						LiquidCache liquidCache = ptr2[-1];
  						LiquidCache liquidCache2 = ptr2[1];
  						LiquidCache liquidCache3 = ptr2[-rectangle.Height];
-@@ -205,7 +_,8 @@
- 						float num3 = 1f / (float)(WATERFALL_LENGTH[ptr2->Type] + 1);
- 						float num4 = 1f;
- 						for (int num5 = 1; num5 <= WATERFALL_LENGTH[ptr2->Type]; num5++) {
--							num4 -= num3;
-+							/*num4 -= num3;*/
-+							num4 -= ptr2->Type >= LiquidID.Count ? (float)(num3 * LiquidLoader.GetLiquid(ptr2->Type).LiquidfallOpacityMultiplier) : num3;
- 							if (ptr2[num5].IsSolid)
- 								break;
- 
 @@ -214,8 +_,12 @@
  							ptr2[num5].VisibleType = ptr2->Type;
  						}
@@ -258,29 +250,41 @@
  
  						if (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid && !liquidCache2.IsHalfBrick)
  							num11 -= liquidCache.VisibleLiquidLevel * (1f - visibleLiquidLevel);
-@@ -323,7 +_,22 @@
+@@ -265,7 +_,7 @@
+ 						ptr2->RightWall = num9;
+ 						ptr2->BottomWall = num11;
+ 						ptr2->TopWall = num10;
+-						Point zero = Point.Zero;
++						Point zero = Point.Zero; // Frame offset
+ 						ptr2->HasTopEdge = (!liquidCache.HasVisibleLiquid && !liquidCache.IsSolid) || num10 != 0f;
+ 						ptr2->HasBottomEdge = (!liquidCache2.HasVisibleLiquid && !liquidCache2.IsSolid) || num11 != 1f;
+ 						ptr2->HasLeftEdge = (!liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid) || num8 != 0f;
+@@ -323,10 +_,24 @@
  								ptr2->VisibleRightWall = (ptr2->RightWall * 2f + liquidCache.RightWall + liquidCache2.RightWall) * 0.25f;
  						}
  
 +						goto newEdgeCondition;
  						if (liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid) {
+-							if (ptr2->HasTopEdge)
 +							if (ptr2->HasTopEdge) {
-+								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
+ 								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
 +							}
 +							if (ptr2->HasBottomEdge) {
 +								ptr2->VisibleBottomWall = (ptr2->BottomWall * 2f + liquidCache3.BottomWall + liquidCache4.BottomWall) * 0.25f;
 +							}
 +						}
 +						newEdgeCondition:
-+
+ 
 +						// Ignore edges when smoothing liquids
 +						bool smoothCondition = edgeData ?
 +							liquidCache3.HasVisibleLiquid && !liquidCache3.IsSolid && liquidCache4.HasVisibleLiquid && !liquidCache4.IsSolid :
 +							liquidCache3.HasVisibleLiquid && liquidCache4.HasVisibleLiquid;
 +						if (smoothCondition) {
- 							if (ptr2->HasTopEdge)
- 								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
- 
++							if (ptr2->HasTopEdge)
++								ptr2->VisibleTopWall = (ptr2->TopWall * 2f + liquidCache3.TopWall + liquidCache4.TopWall) * 0.25f;
+ 							if (ptr2->HasBottomEdge)
+ 								ptr2->VisibleBottomWall = (ptr2->BottomWall * 2f + liquidCache3.BottomWall + liquidCache4.BottomWall) * 0.25f;
+ 						}
 @@ -426,7 +_,7 @@
  								if (ptr2->IsHalfBrick && ptr2->IsSolid && num23 > 0.5f)
  									num23 = 0.5f;
@@ -307,7 +311,7 @@
  			for (int num25 = rectangle.X; num25 < rectangle.X + rectangle.Width; num25++) {
  				for (int num26 = rectangle.Y; num26 < rectangle.Y + rectangle.Height; num26++) {
 -					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200) {
-+					if (ptr2->VisibleType == 1 && ptr2->HasVisibleLiquid && Dust.lavaBubbles < 200 && LiquidLoader.EmitEffects(num25, num26, ptr2->VisibleType, *ptr2)) {
++					if (ptr2->HasVisibleLiquid && ((ptr2->VisibleType == 1 && Dust.lavaBubbles < 200) || LiquidLoader.EmitEffects(num25, num26, ptr2->VisibleType, *ptr2))) {
  						if (_random.Next(700) == 0)
  							Dust.NewDust(new Vector2(num25 * 16, num26 * 16), 16, 16, 35, 0f, 0f, 0, Color.White);
  
@@ -362,7 +366,7 @@
 +						/*Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);*/
 +						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
 +
-+					PostDraw:
++						PostDraw:;
 +						LiquidLoader.PostDraw(i, j, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
  					}
  
@@ -416,12 +420,13 @@
  				Lighting.GetCornerColors(num3, num4, out var vertices);
  				SetShimmerVertexColors(ref vertices, val, num3, num4);
  				Main.DrawTileInWater(drawOffset, num3, num4);
-@@ -608,6 +_,9 @@
+@@ -608,6 +_,10 @@
  					Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(num3 << 4, num4 << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
  				}
  
-+				PostDraw:
 +				LiquidLoader.PostDraw(num3, num4, ptr2->Type, *ptr2, drawOffset, isBackgroundDraw, 1, 0f);
++				PostDraw:
++				
 +
  				ptr2++;
  			}

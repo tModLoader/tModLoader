@@ -22,7 +22,7 @@ public abstract class GlobalLiquid : ModType
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
+	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. It is important to use Main.tileBatch for drawing operation here.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="GlobalLiquid.PreRetroDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -37,7 +37,7 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
+	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks. It is important to use Main.tileBatch for drawing operation here.<para />
 	/// This hook is not called if <see cref="GlobalLiquid.PreDraw" /> returns false.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="GlobalLiquid.PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
@@ -117,7 +117,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual bool PreSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual bool PreSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 		return true;
 	}
@@ -134,7 +134,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual void PostSlopeDraw(int i, int j, int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual void PostSlopeDraw(int type, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 	}
 
@@ -154,17 +154,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows for disabling lava bubbles in "Retro" and "Trippy" lighting modes. Only calls when lava's PreRetroDraw isnt false. Returns false by default.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <returns></returns>
-	public virtual bool DisableRetroLavaBubbles(int i, int j)
-	{
-		return false;
-	}
-
-	/// <summary>
 	/// The ID of the waterfall/liquidfall style the game should use when the liquid is near a half block.
 	/// Returns null by default.
 	/// </summary>
@@ -177,14 +166,14 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids during updates such as custom evaporation. Returns true by default. 
+	/// Allows the changing of vanilla and modded liquid movement in-game as well as allowing you to do other stuff with liquids they update, return false if you don't want your liquid to you vanilla update behavior.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool UpdateLiquid(int i, int j, int type, Liquid liquid)
+	public virtual bool PreUpdateLiquid(int i, int j, int type, Liquid liquid)
 	{
 		return true;
 	}
@@ -196,7 +185,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="type"></param>
 	/// <returns></returns>
-	public virtual bool? EvaporatesInHell(int i, int j, int type)
+	public virtual bool? CanLiquidEvaporate(int i, int j, int type)
 	{
 		return null;
 	}
@@ -226,7 +215,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int? LiquidMerge(int i, int j, int type, int otherLiquid)
+	public virtual int? LiquidMerge(int type, int otherLiquid)
 	{
 		return null;
 	}
@@ -270,19 +259,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows the editing of how fast liquids fall, return null for the regular liquid falling to apply. <br/>
-	/// For Modded Liquids, use ModLiquid.FallDelay property to edit how fast your liquid falls. This method can be used to edit other mod liquids falling as well.<br/>
-	/// Returns null by default <br/>
-	/// NOTE: liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual int? LiquidFallDelay(int type)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// Allows you to determine which liquids the given liquid type can be considered as when looking for avaliable liquids.
 	/// </summary>
 	/// <param name="type"></param>
@@ -305,66 +281,6 @@ public abstract class GlobalLiquid : ModType
 	public virtual bool? BlocksTilePlacement(Player player, int i, int j, int type)
 	{
 		return null;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when the player enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a player enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="player">The player instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnPlayerSplash(Player player, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a NPC enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a NPC enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="npc">The NPC instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnNPCSplash(NPC npc, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a projectile enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a projectile enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnProjectileSplash(Projectile proj, int type, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a fishing bobber catches a fish. Water uses this to create extra water bubbles and to make a splash sound. <br/>
-	/// Return false to disable the water splashing fishing bobbers create.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats fishing in the liquid.</param>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual bool OnFishingBobberSplash(Projectile proj, int type)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when an item enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when an item enters and leaves. <br/>
-	/// Return true to allow the liquids to call their normal splash code. Returns true by default.
-	/// </summary>
-	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	public virtual bool OnItemSplash(WorldItem item, int type, bool isEnter)
-	{
-		return true;
 	}
 
 	/// <summary>
@@ -458,30 +374,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Hook for deciding whether a liquid should allow or disallow, when overtop of the Collision.CheckDrowning position, to be considered drowning or not. <br/>
-	/// Not to be confused with CanPlayersDrown, which is a hook called every frame to check if the player is drowning or not. Useful for making items such as a Breething Reed. <br/>
-	/// Return null to execute the normal Collision.CheckDrowning behaviour. Returns null by default.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual bool? ChecksForDrowning(int type)
-	{
-		return null;
-	}
-
-	/// <summary>
-	/// Hook for deciding whether a liquid should emit breath dusts when a player or npc is slowly drowning. <br/>
-	/// ChecksForDrowning must be set to true for this to run.
-	/// Return null to execute the normal breath behaviour. Returns null by default.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual bool? AllowEmitBreathBubbles(int type)
-	{
-		return null;
-	}
-
-	/// <summary>
 	/// Allows you to give conditions for when the game attempts to check to see if the player is drowning. <br/>
 	/// Set isDrowning to either true or false depending on whether the player should or should not be drowning. <br/>
 	/// This is used by items such as the Breething Reed to make the player be submerged deeper underwater. <br/>
@@ -496,16 +388,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// The multiper responsable for the poolsize of liquid being fished in. <br/>
-	/// Honey uses this to multiply its pool size by 1.5x, this means that honey only needs a minimum of 50 tiles rather than 75 tiles of liquid.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="multiplier">The multiplier used, for most liquids this will be 1, but for honey it's 1.5.</param>
-	public virtual void LiquidFishingPoolSizeMulitplier(int type, ref float multiplier)
-	{
-	}
-
-	/// <summary>
 	/// Allow or not fishing in this liquid. Return true by default; 
 	/// </summary>
 	/// <param name="player">The player attempting to fish in it</param>
@@ -514,41 +396,6 @@ public abstract class GlobalLiquid : ModType
 	public virtual bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// The opacity liquid slopes render at. Lava uses this to render at 1f opacity, and honey does the following calculation for it's opacity: <br/>
-	/// Math.Max(0.5f * 1.7f, 1f) <br/>
-	/// The game does additional calulations after this hook to get the final opacity. Use this method to edit liquid slope's default opacity to render at. <br/>
-	/// slopeOpacity defaults at 0.5f.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="slopeOpacity">The opacity already given to a liquid. Edit this to change the default liquid slope opacity.</param>
-	public virtual void LiquidSlopeOpacity(int type, ref float slopeOpacity)
-	{
-	}
-
-	/// <summary>
-	/// Allows you to change the Light Mask Mode for any liquid. The Light Mask Mode is the mask for lighting to determine how light interacts with a liquid. <br/>
-	/// Vanilla has options for Water (slight blue fade) and Honey (dark black) while lava uses the None option. <br/>
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type"></param>
-	/// <param name="liquidMaskMode">Edit this param to change the Light Mask Mode of the liquid.</param>
-	public virtual void LiquidLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
-	{
-	}
-
-	/// <summary>
-	/// The multiplier used when the Waves qaulity setting is set to Medium. <br/>
-	/// Honey and Lava set this multiplier to be 0.3x. <br/>
-	/// This setting is to make waves go the same distance no matter the liquid. For some reason vanilla manually applies a multiplier rather than doing seperate math for the wave speed.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="multiplier">The multiplier used, for most liquids this will be 1f, but for honey and lava it's 0.3.</param>
-	public virtual void WaterRippleMultiplier(int type, ref float multiplier)
-	{
 	}
 
 	/// <summary>
@@ -580,16 +427,6 @@ public abstract class GlobalLiquid : ModType
 	public virtual bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// A hook to modify a liquid's stopwatch MPH multiplier whether that be modder or vanilla liquids. <br/>
-	/// Water has its multiplier set to 0.5, honey 0.25 and shimmer 0.375 as an example of existing values.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <param name="multiplier">The multiplier for the stopwatch MPH.</param>
-	public virtual void StopWatchMPHMultiplier(int type, ref float multiplier)
-	{
 	}
 
 	/// <summary>

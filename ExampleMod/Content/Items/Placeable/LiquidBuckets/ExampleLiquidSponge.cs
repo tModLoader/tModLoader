@@ -17,6 +17,7 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 
 			//Unlike buckets, sponges have extra functionality to allow the removing and adding of sponge items to liquids
 			LiquidID.Sets.CanBeAbsorbedBy[ModContent.LiquidType<ExampleLiquid>()].Add(Type);
+			ItemID.Sets.SpongeItems[Type] = true;
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}

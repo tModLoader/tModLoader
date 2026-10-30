@@ -30,48 +30,41 @@ public abstract class ModLiquid : ModBlockType
 	public int SplashDustType { get; set; } = -1;
 
 	/// <summary> Liquids can only have a maximum fall delay of 10 (which is the same as the fall of Honey), this is due to the delay being reset to 10 when in quickfall mode. </summary>
-	public int FallDelay { get; set; } = 0;
+	public int FallDelay { get => LiquidID.Sets.FallDelay[Type]; set => LiquidID.Sets.FallDelay[Type] = value; }
 
 	/// <summary> An array of the IDs of liquids that this tile can be considered as when looking for available liquids. </summary>
 	public int[] AdjLiquids { get; set; } = Array.Empty<int>();
 
 	/// <summary> The check in Collision that checks if a coord will be drowning in water.</summary>
-	public bool ChecksForDrowning { get; set; } = true;
+	public bool ChecksForDrowning { get => LiquidID.Sets.CheckForDrowning[Type]; set => LiquidID.Sets.CheckForDrowning[Type] = value; }
 
 	/// <summary> Whether or not, when drowning, a player or npc will emit dusts from their mouth. </summary>
-	public bool AllowEmitBreathBubbles { get; set; } = true;
+	public bool AllowEmitBreathBubbles { get => LiquidID.Sets.AllowEmitBreathBubbles[Type]; set => LiquidID.Sets.AllowEmitBreathBubbles[Type] = value; }
 
-	/// <summary> The multiplier used to change how many tiles are needed to fish in a pool of liquid. Honey uses a 1.5x multiplier for its pool size. </summary>
-	public float FishingPoolSizeMultiplier { get; set; } = 1f;
+	/// <summary> Define the amount of liquid tile requirement before it become a valid pool to fish in </summary>
+	public int FishingPoolMinimumSize { get => LiquidID.Sets.FishingPoolMinimumSize[Type]; set => LiquidID.Sets.FishingPoolMinimumSize[Type] = value; }
 
 	/// <summary> The multiplier used only when Waves quality setting is set to Medium. Honey and Lava use this to set the modifier to 0.3x. </summary>
-	public float WaterRippleMultiplier { get; set; } = 1f;
-
-	/// <summary> The opacity that this liquid slope renders at. Lava and Honey use this to look thicker. Defaults to 0.5f. </summary>
-	public float SlopeOpacity { get; set; } = 0.5f;
+	public float LiquidRippleMultiplier { get => LiquidID.Sets.LiquidRippleMultiplier[Type]; set => LiquidID.Sets.LiquidRippleMultiplier [Type] = value; }
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) the player moves while in this liquid. </summary>
-	public float PlayerMovementMultiplier { get; set; } = 0.5f;
+	public float EntityMovementMultiplier { get => LiquidID.Sets.PlayerMovementMultiplier[Type]; set => LiquidID.Sets.PlayerMovementMultiplier[Type] = value; }
 
 	/// <summary> The multiplier used for stopwatches to know how to offset the MPH reading. </summary>
-	public float StopWatchMPHMultiplier { get; set; } = 0.5f;
+	public float StopWatchMPHMultiplier { get => LiquidID.Sets.StopWatchMPHMultiplier[Type]; set => LiquidID.Sets.StopWatchMPHMultiplier[Type] = value; }
 
 	/// <summary> The default value that NPC.liquidMovementSpeed sets to before ModNPC.SetDefaults </summary>
-	public float NPCMovementMultiplierDefault { get; set; } = 0.5f;
+	public float NPCMovementMultiplierDefault { get => LiquidID.Sets.NPCMovementMultiplierDefault[Type]; set => LiquidID.Sets.NPCMovementMultiplierDefault[Type] = value; }
 
 	/// <summary> The multiplier thats used to specify how slow (or fast) projectiles move while in this liquid. </summary>
-	public float ProjectileMovementMultiplier { get; set; } = 0.5f;
+	public float ProjectileMovementMultiplier { get => LiquidID.Sets.ProjectileMovementMultiplier[Type]; set => LiquidID.Sets.ProjectileMovementMultiplier[Type] = value; }
 
 	/// <summary> Uses lava based collision check for when applying this liquid's wet boolean. <br/>
 	/// This means collision is more sensitive, and the wet is active even when touching the smallest amount of this liquid. </summary>
 	public bool UsesLavaCollisionForWet { get; set; } = false;
 
 	/// <summary> Whether or not this liquid removes the On Fire! debuffs when entering. </summary>
-	public bool ExtinguishesOnFireDebuffs { get; set; } = true;
-
-	/// <summary> The multiplier repsonsible for multiplying how much opacity each step in this liquid's fall should be drawn at.  
-	/// <br/> Only effects slopes when underground (similar to other liquids).</summary>
-	public float LiquidfallOpacityMultiplier { get; set; } = 1f;
+	public bool ExtinguishesOnFireDebuffs { get => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type]; set => LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type] = value; }
 
 	protected sealed override void Register()
 	{
@@ -164,7 +157,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual bool PreSlopeDraw(int i, int j, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual bool PreSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
 		return true;
 	}
@@ -180,20 +173,8 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="drawPosition">The rendering position of the slope. Use this rather than x/y as the rendering can be offset sometimes</param>
 	/// <param name="liquidSize">The size of the liquid</param>
 	/// <param name="colors">The color of the liquid. Usually the light color of the liquid</param>
-	public virtual void PostSlopeDraw(int i, int j, bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
+	public virtual void PostSlopeDraw(bool behindBlocks, ref Vector2 drawPosition, ref Rectangle liquidSize, ref VertexColors colors)
 	{
-	}
-
-	/// <summary>
-	/// Allows you to change the Light Mask Mode for this liquid. The Light Mask Mode is the mask for lighting to determine how light interacts with this liquid. <br/>
-	/// Vanilla has options for Water (slight blue fade) and Honey (dark black) while lava uses the None option. <br/>
-	/// Defaults to LightMaskMode.None.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual LightMaskMode LiquidLightMaskMode(int i, int j)
-	{
-		return LightMaskMode.None;
 	}
 
 	/// <summary>
@@ -218,13 +199,13 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids during updates such as custom evaporation. Returns true by default. 
+	/// Allows the changing of liquid movement in-game as well as allowing you to do other stuff with liquids they update, return false if you don't want your liquid to you vanilla update behavior
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool UpdateLiquid(int i, int j, Liquid liquid)
+	public virtual bool PreUpdateLiquid(int i, int j, Liquid liquid)
 	{
 		return true;
 	}
@@ -235,7 +216,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <returns></returns>
-	public virtual bool EvaporatesInHell(int i, int j)
+	public virtual bool CanEvaporate(int i, int j)
 	{
 		return false;
 	}
@@ -261,9 +242,9 @@ public abstract class ModLiquid : ModBlockType
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
+	/// <param name="adjacentLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int LiquidMerge(int i, int j, int otherLiquid)
+	public virtual int LiquidMerge(int adjacentLiquid)
 	{
 		return TileID.Stone;
 	}
@@ -316,58 +297,6 @@ public abstract class ModLiquid : ModBlockType
 	public virtual bool BlocksTilePlacement(Player player, int i, int j)
 	{
 		return false;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when the player enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a player enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="player">The player instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnPlayerSplash(Player player, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a NPC enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a NPC enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="npc">The NPC instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnNPCSplash(NPC npc, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when a projectile enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when a projectile enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="proj">The projectile instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnProjectileSplash(Projectile proj, bool isEnter)
-	{
-		return true;
-	}
-
-	/// <summary>
-	/// Allows you to decide what happens when an item enters and exits this liquid. Vanilla liquids use this to spawn dusts and make a splashing noise when an item enters and leaves. <br/>
-	/// Return false for the liquid to not execute the default modded liquid splash code. <br/>
-	/// Returns true by default.
-	/// </summary>
-	/// <param name="item">The item instance thats entering or exiting the liquid.</param>
-	/// <param name="isEnter">Whether the currently the liquid is being entered or exited.</param>
-	/// <returns></returns>
-	public virtual bool OnItemSplash(WorldItem item, bool isEnter)
-	{
-		return true;
 	}
 
 	/// <summary>
@@ -582,7 +511,7 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default.<para />
+	/// Allows you to draw things behind the liquid at the given coordinates. Return false to stop the game from drawing the liquid normally. Returns true by default. It is important to use Main.tileBatch for drawing operation here.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PreRetroDraw" /> for the other Lighting modes pre drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -596,8 +525,8 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks.<para />
-	/// This hook is not called if <see cref="PreDraw" /> returns false.<para />
+	/// Allows you to draw things in front of the liquid at the given coordinates. This can also be used to do things such as rendering glowmasks. It is important to use Main.tileBatch for drawing operation here.<para />
+	/// This hook is called regardless if <see cref="PreDraw" /> returns true or false.<para />
 	/// This method is only called in "Color" and "White" lighting modes. Use <see cref="PostRetroDraw" /> for the other Lighting modes post drawing
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>

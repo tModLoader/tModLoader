@@ -59,43 +59,21 @@
  						continue;
  				}
  
-@@ -248,8 +_,38 @@
+@@ -248,8 +_,17 @@
  				num6 = 2f * (float)Math.Sqrt(0.05f * num6);
  				Vector2 velocity3 = projectile.velocity;
  				velocity3.Normalize();
 -				if (!_useViscosityFilter && (flag2 || flag))
--					num6 *= 0.3f;
++				/*if (!_useViscosityFilter && (flag2 || flag))
+ 					num6 *= 0.3f;
++				*/
 +				if (!_useViscosityFilter) {
-+				/*if (!_useViscosityFilter && (flag2 || flag))*/
-+					if ((flag2 || flag))
-+						/*num6 *= 0.3f;*/
-+						num6 *= 0.3f;
-+
-+					for (int l = LiquidLoader.LiquidCount - 1; l >= 0; l--) {
-+						if (l >= LiquidID.Count) {
-+							if (liquidsIn[l]) {
-+								num6 *= LiquidLoader.GetLiquid(l).WaterRippleMultiplier;
-+								LiquidLoader.WaterRippleMultiplier(l, ref num6);
-+								break;
-+							}
-+						}
-+						else if (l == LiquidID.Shimmer) {
-+							if (shimmer)
-+								LiquidLoader.WaterRippleMultiplier(l, ref num6);
-+						}
-+						else if (l == LiquidID.Honey) {
-+							if (flag2)
-+								LiquidLoader.WaterRippleMultiplier(l, ref num6);
-+						}
-+						else if (l == LiquidID.Lava) {
-+							if (flag)
-+								LiquidLoader.WaterRippleMultiplier(l, ref num6);
-+						}
-+						else if (l == LiquidID.Water) {
-+							if (flag3)
-+								LiquidLoader.WaterRippleMultiplier(l, ref num6);
++					for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++						if (projectile.wets[i]) {
++							num6 *= LiquidID.Sets.LiquidRippleMultiplier[i];
 +						}
 +					}
++					
 +				}
  
  				float num7 = Math.Max(12f, (float)projectile.width * 0.75f);
