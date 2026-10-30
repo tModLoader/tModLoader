@@ -186,16 +186,6 @@ public abstract class GlobalLiquid : ModType
 	}
 
 	/// <summary>
-	/// Allows you to determine which liquids the given liquid type can be considered as when looking for avaliable liquids.
-	/// </summary>
-	/// <param name="type"></param>
-	/// <returns></returns>
-	public virtual int[] AdjLiquids(int type)
-	{
-		return Array.Empty<int>();
-	}
-
-	/// <summary>
 	/// Allows the user to specify whether the liquid prevents the placement or blockswap of a tile over this liquid. Usually used by lava to stop players from placing ontop of it. <br/>
 	/// Return true for the liquid to prevent tile placement, return false if the liquid can have tiles placed over it. Return null for the default logic to run.<br/>
 	/// Returns null by default.

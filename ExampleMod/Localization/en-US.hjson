@@ -679,8 +679,7 @@ Mods: {
 				DisplayName: Example Sink
 				Tooltip:
 					'''
-					Counts as a water, lava, and honey source
-					'A shame there's no example liquids (yet)'
+					Counts as a water, lava, honey and example liquid source
 					'''
 			}
 

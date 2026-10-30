@@ -33,7 +33,7 @@ public partial class Player
 	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
 
 	/// <summary>
-	/// An array indexed by liquid type (<see cref="Tile.LiquidType"/>, <see cref="LiquidID"/>) indicating if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLiquidSource"/> tile. Note that this includes liquids acting like other liquids (<see cref="ModLiquid.AdjLiquids"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific liquids.
+	/// An array indexed by liquid type (<see cref="Tile.LiquidType"/>, <see cref="LiquidID"/>) indicating if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLiquidSourceForCrafting"/> tile. Note that this includes liquids acting like other liquids (<see cref="ModLiquid.AdjLiquids"/>, <see cref="Player.AdjTiles"/>), so the player might not actually be near specific liquids.
 	/// </summary>
 	public bool[] adjLiquid {
 		get {

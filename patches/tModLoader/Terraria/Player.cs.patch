@@ -5599,7 +5599,7 @@
  				if (tile.liquid > 200 && tile.liquidType() == 0)
  					adjWaterSource = true;
  
-@@ -29442,6 +_,31 @@
+@@ -29442,6 +_,29 @@
  
  				if (tile.liquid > 200 && tile.liquidType() == 1)
  					adjLava = true;
@@ -5611,23 +5611,21 @@
 +				}
 +				else {
 +					for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
-+						if (TileID.Sets.CountsAsLiquidSource[Main.tile[i, j].TileType][k]) {
++						if (TileID.Sets.CountsAsLiquidSourceForCrafting[Main.tile[i, j].TileType][k]) {
 +							adjLiquid[k] = true;
 +						}
 +					}
 +				}
-+				LiquidLoader.AdjLiquids(this, Main.tile[i, j].LiquidType);//Adjusts all liquid types instead of the hardcoded four
 +				if (Main.tile[i, j].LiquidAmount > 200) {
 +					adjLiquid[Main.tile[i, j].LiquidType] = true;
 +				}
 +				else {
 +					for (int k = 0; k < LiquidLoader.LiquidCount; k++) {
-+						if (TileID.Sets.CountsAsLiquidSource[Main.tile[i, j].TileType][k]) {
++						if (TileID.Sets.CountsAsLiquidSourceForCrafting[Main.tile[i, j].TileType][k]) {
 +							adjLiquid[k] = true;
 +						}
 +					}
 +				}
-+				LiquidLoader.AdjLiquids(this, Main.tile[i, j].LiquidType);
  			}
  		}
  	}

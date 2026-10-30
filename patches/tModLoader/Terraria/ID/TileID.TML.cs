@@ -71,17 +71,8 @@ partial class TileID
 		/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
 		public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
 
-		/// <summary> Whether or not this tile counts as a honey source for crafting purposes. </summary>
-		public static bool[] CountsAsHoneyForCrafting = Factory.CreateBoolSet();
-
-		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
-		public static bool[] CountsAsLavaForCrafting = Factory.CreateBoolSet();
-
-		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
-		public static bool[] CountsAsShimmerForCrafting = Factory.CreateBoolSet();
-
 		/// <summary> Whether or not this tile counts as a specified liquid's source for crafting purposes. </summary>
-		public static bool[][] CountsAsLiquidSource;
+		public static bool[][] CountsAsLiquidSourceForCrafting;
 
 		/// <summary> Whether or not the tile is non-solid to liquids, allowing them to flow through. </summary>
 		public static List<int> IgnoresLiquid = new List<int> { 138, 484, 546 };
@@ -208,9 +199,9 @@ partial class TileID
 
 		static Sets()
 		{
-			CountsAsLiquidSource = Factory.CreateCustomSet<bool[]>(null, Array.Empty<object>());
+			CountsAsLiquidSourceForCrafting = Factory.CreateCustomSet<bool[]>(null, Array.Empty<object>());
 			for (int type = 0; type < TileLoader.TileCount; type++) {
-				CountsAsLiquidSource[type] = new bool[LiquidLoader.LiquidCount];
+				CountsAsLiquidSourceForCrafting[type] = new bool[LiquidLoader.LiquidCount];
 			}
 		}
 	}

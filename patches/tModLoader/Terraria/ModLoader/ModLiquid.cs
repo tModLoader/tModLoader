@@ -29,10 +29,6 @@ public abstract class ModLiquid : ModBlockType
 	/// <summary> The default dust ID thats used when an entity enters and exists this liquid. Overriding any OnSplash hooks/methods will prevent this from being used. </summary>
 	public int SplashDustType { get; set; } = -1;
 
-
-	/// <summary> An array of the IDs of liquids that this tile can be considered as when looking for available liquids. </summary>
-	public int[] AdjLiquids { get; set; } = Array.Empty<int>();
-
 	protected sealed override void Register()
 	{
 		ModTypeLookup<ModLiquid>.Register(this);

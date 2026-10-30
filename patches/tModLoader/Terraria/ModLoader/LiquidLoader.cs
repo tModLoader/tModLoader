@@ -80,7 +80,6 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookMergeTiles, globalLiquids, (GlobalLiquid g) => g.LiquidMerge);
 		ModLoader.BuildGlobalHook(ref HookMergeTilesSounds, globalLiquids, (GlobalLiquid g) => g.LiquidMergeSound);
 		ModLoader.BuildGlobalHook(ref HookPreLiquidMerge, globalLiquids, (GlobalLiquid g) => g.PreLiquidMerge);
-		ModLoader.BuildGlobalHook(ref HookAdjLiquids, globalLiquids, (GlobalLiquid g) => g.AdjLiquids);
 		ModLoader.BuildGlobalHook(ref HookBlocksTilePlacement, globalLiquids, (GlobalLiquid g) => g.BlocksTilePlacement);
 		ModLoader.BuildGlobalHook(ref HookPlayerCollision, globalLiquids, (GlobalLiquid g) => g.PlayerLiquidMovement);
 		ModLoader.BuildGlobalHook(ref HookPlayerGravityModifier, globalLiquids, (GlobalLiquid g) => g.PlayerGravityModifier);
@@ -258,25 +257,6 @@ public static class LiquidLoader
 			return otherModLiquid?.PreLiquidMerge(liquidX, liquidY, tileX, tileY, type) ?? true;
 		}
 		return modLiquid?.PreLiquidMerge(liquidX, liquidY, tileX, tileY, otherLiquid) ?? true;
-	}
-
-	private static Func<int, int[]>[] HookAdjLiquids;
-	public static void AdjLiquids(Player player, int type)
-	{
-		ModLiquid modLiquid = GetLiquid(type);
-		if (modLiquid != null) {
-			int[] adjLiquids = modLiquid.AdjLiquids;
-			foreach (int j in adjLiquids) {
-				player.adjLiquid[j] = true;
-			}
-		}
-		Func<int, int[]>[] hookAdjLiquids = HookAdjLiquids;
-		for (int k = 0; k < hookAdjLiquids.Length; k++) {
-			int[] adjLiquids = hookAdjLiquids[k](type);
-			foreach (int i in adjLiquids) {
-				player.adjLiquid[i] = true;
-			}
-		}
 	}
 
 	private static Func<Player, int, int, int, bool?>[] HookBlocksTilePlacement;

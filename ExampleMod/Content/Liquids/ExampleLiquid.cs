@@ -306,6 +306,12 @@ namespace ExampleMod.Content.Liquids
 					}
 				}
 			}
+
+			//Here we detect if the item is a regular sink and destroy if that is the case, just to show a message.
+			if (item.type == ItemID.WoodenSink) {
+				item.TurnToAir();
+				CombatText.NewText(item.Hitbox, Color.White, "Let that sink in!", true);
+			}
 		}
 
 		//Like above, we set the parameters 'gravity' and 'maxFallSpeed' to be half of what honey would set them to.
