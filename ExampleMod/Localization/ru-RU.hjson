@@ -267,6 +267,11 @@ Mods: {
 				// Tooltip: This is a modded beard which matches your hair color.
 			}
 
+			ExampleHitboxSizeAccessory: {
+				// DisplayName: Example Hitbox Size Accessory
+				// Tooltip: Makes you 50% bigger, as long as there is room
+			}
+
 			ExampleImmunityAccessory: {
 				// DisplayName: Example Immunity Accessory
 				// Tooltip: This is a modded cross necklace that increases your immunity time by 1 second.

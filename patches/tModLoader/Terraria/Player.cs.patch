@@ -1302,7 +1302,21 @@
  	private Item[] _pendingRefunds = new Item[0];
  	private static readonly PlayerFileData _visualCloneDummyData = new PlayerFileData();
  	private static readonly MemoryStream _visualCloneStream = new MemoryStream();
-@@ -1951,6 +_,10 @@
+@@ -1899,6 +_,13 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// How much taller this player's hitbox is than <see cref="defaultHeight"/> because of <see cref="ModPlayer.ModifyHitboxSize"/>, not counting mount and step stool height boosts.
++	/// <br/> The player is drawn at the bottom of their hitbox (the top while gravity is reversed), as if their hitbox were the default size. Visuals that vanilla positions from the top or center of the hitbox, like held items, <see cref="MountedCenter"/> and mounts, are moved by this much to stay with the player.
++	/// <br/> This is 0 while the player's mount overrides their size, like the Rat mount does.
++	/// </summary>
++	public float HeightOffsetHitboxSize => mount.Active && mount.Delegations.PlayerSize != null ? 0f : BaseHeight - defaultHeight;
++
+ 	public float MountXOffset {
+ 		get {
+ 			if (mount.Active)
+@@ -1951,12 +_,22 @@
  
  	public float BaseHeight => height - HeightOffsetBoost;
  
@@ -1312,7 +1326,19 @@
 +	/// </summary>
  	public Vector2 MountedCenter {
  		get {
++			/* #ModifyHitboxSize
  			return new Vector2(position.X + (float)(width / 2), position.Y + BaseHeight / 2f + HeightOffsetHitboxCenter);
++			*/
++			return new Vector2(position.X + (float)(width / 2), position.Y + BaseHeight / 2f + HeightOffsetHitboxCenter + HeightOffsetHitboxSize / 2f * gravDir);
+ 		}
+ 		set {
++			/* #ModifyHitboxSize
+ 			position = new Vector2(value.X - (float)(width / 2), value.Y - BaseHeight / 2f - HeightOffsetHitboxCenter);
++			*/
++			position = new Vector2(value.X - (float)(width / 2), value.Y - BaseHeight / 2f - HeightOffsetHitboxCenter - HeightOffsetHitboxSize / 2f * gravDir);
+ 		}
+ 	}
+ 
 @@ -1983,9 +_,14 @@
  
  	public override Vector2 VisualPosition => position + new Vector2(0f, gfxOffY);
@@ -1479,6 +1505,18 @@
  
  	public bool UsingOrReusingItem {
  		get {
+@@ -2618,7 +_,11 @@
+ 			if (gravDir != 1f)
+ 				vector.Y = (float)bodyFrame.Height - vector.Y;
+ 
++			/* #ModifyHitboxSize
+ 			vector -= new Vector2(bodyFrame.Width - width, bodyFrame.Height - 42) / 2f;
++			*/
++			// The body is drawn centered on the hitbox, so the hand's offset from MountedCenter doesn't depend on the hitbox width.
++			vector -= new Vector2(bodyFrame.Width - defaultWidth, bodyFrame.Height - 42) / 2f;
+ 			Vector2 vector2 = -new Vector2(20f, 42f) / 2f + vector;
+ 			Vector2 pos = MountedCenter + vector2;
+ 			ApplyItemPositionOffsetFromMount(ref pos);
 @@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
@@ -1896,6 +1934,17 @@
  					if (item.UseSound != null)
  						SoundEngine.PlaySound(item.UseSound, base.Center);
  				}
+@@ -4244,7 +_,10 @@
+ 
+ 	public bool CanFitSpace(int heightBoost)
+ 	{
++		/* #ModifyHitboxSize
+ 		int num = 42 + heightBoost;
++		*/
++		int num = (int)GetBaseHitboxSize().Y + heightBoost;
+ 		return Collision.IsClearSpotTest(position + new Vector2(0f, height - num) + velocity, 16f, width, num, fallThrough: true, fall2: true);
+ 	}
+ 
 @@ -4309,12 +_,20 @@
  	public Item QuickMount_GetItemToUse()
  	{
@@ -4874,6 +4923,43 @@
  	}
  
  	private void UpdateBrokenMirrorLuck()
+@@ -23784,11 +_,27 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// The size of this player's hitbox before mount and step stool height boosts, after <see cref="ModPlayer.ModifyHitboxSize"/>.
++	/// </summary>
++	public Vector2 GetBaseHitboxSize()
++	{
++		Vector2 size = new Vector2(defaultWidth, defaultHeight);
++		PlayerLoader.ModifyHitboxSize(this, ref size);
++		return size;
++	}
++
+ 	private void ResizeHitbox()
+ 	{
++		int oldWidth = width;
+ 		position.Y += height;
++		Vector2 baseSize = GetBaseHitboxSize();
++		/* #ModifyHitboxSize
+ 		width = 20;
+ 		height = 42 + HeightOffsetBoost;
++		*/
++		width = (int)baseSize.X;
++		height = (int)baseSize.Y + HeightOffsetBoost;
+ 		if (mount.Active) {
+ 			Mount.MountDelegatesData.OverrideSizeMethod playerSize = mount.Delegations.PlayerSize;
+ 			if (playerSize != null && playerSize(this, out var size) && size.HasValue) {
+@@ -23797,6 +_,8 @@
+ 			}
+ 		}
+ 
++		// Keep the bottom center in place when the width changes.
++		position.X += (oldWidth - width) / 2f;
+ 		position.Y -= height;
+ 	}
+ 
 @@ -23889,6 +_,8 @@
  
  		if (wingsLogic == 45 && (float)timeSinceLastDashStarted >= 60f)
@@ -5137,6 +5223,20 @@
  	{
  		short frameX = Main.tile[myX, myY].frameX;
  		bool flag = frameX / 72 == 1;
+@@ -27433,8 +_,13 @@
+ 			Mount.MountDelegatesData.OverrideSizeMethod playerSize = mount.Delegations.PlayerSize;
+ 			if (playerSize != null && playerSize(this, out var size) && size.HasValue) {
+ 				Vector2 value = size.Value;
++				Vector2 baseSize = GetBaseHitboxSize();
++				/* #ModifyHitboxSize
+ 				if (value.X < 20f || value.Y < 42f)
+ 					flag = CanFitInSpaceWithSize(DefaultSize, offset);
++				*/
++				if (value.X < baseSize.X || value.Y < baseSize.Y)
++					flag = CanFitInSpaceWithSize(baseSize, offset);
+ 			}
+ 		}
+ 
 @@ -27519,7 +_,14 @@
  		}
  	}
@@ -6809,7 +6909,7 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -35842,10 +_,13 @@
+@@ -35842,10 +_,16 @@
  
  	public Rectangle AnimatePlayerAndGetItemFrame(float mountOffset, Item sItem)
  	{
@@ -6820,6 +6920,9 @@
  		compositeBackArm.enabled = false;
 +
 +		ItemLoader.HoldItem(item, this);
++
++		// Vanilla positions held items relative to the top of the hitbox, so move them down to the player. #ModifyHitboxSize
++		mountOffset += HeightOffsetHitboxSize;
 +
  		if (itemAnimation > 0)
  			ItemCheck_ApplyUseStyle(mountOffset, item, drawHitbox);
