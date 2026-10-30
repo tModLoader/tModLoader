@@ -659,5 +659,6 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * Mod ratings are now displayed in the Mod Browser and mods can be rated from the Mods menu.
 * `Projectile.GetDefaultDrawData` helper method for calculating the default projectile draw parameters.
 * `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
+* `TileID.Sets.ChestSlotCount` sets how many slots newly placed chests and dressers of a tile type get, using the variable chest sizes added in vanilla 1.4.5. Chests with more slots than fit on screen can be scrolled with the mouse wheel or new up and down buttons. `TileID.Sets.HideChestScrollButtons` hides the buttons and `ModTile.CanScrollChest` can stop mouse wheel scrolling. ExampleChest now has 80 slots.
 * `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
 * `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   

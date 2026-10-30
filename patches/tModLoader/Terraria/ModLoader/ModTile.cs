@@ -669,6 +669,14 @@ public abstract class ModTile : ModTileOrWall
 	public virtual bool IsLockedChest(int i, int j) => false;
 
 	/// <summary>
+	/// Return false to stop the mouse wheel from scrolling this chest's slots when it has more slots than fit on screen. See <see cref="TileID.Sets.ChestSlotCount"/>.
+	/// <para/> The up and down buttons next to the chest still work, use <see cref="TileID.Sets.HideChestScrollButtons"/> to hide them.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	public virtual bool CanScrollChest(int i, int j) => true;
+
+	/// <summary>
 	/// Allows customization of how a chest unlock is accomplished. By default, frameXAdjustment will be -36, shifting the frameX over to the left
 	/// by 1 chest style. If your chests are in a different order, adjust frameXAdjustment accordingly.
 	/// This hook is called on the client, and if successful will be called on the server and other clients as the action is synced.

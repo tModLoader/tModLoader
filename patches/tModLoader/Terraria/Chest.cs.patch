@@ -14,7 +14,8 @@
 +/// <summary>
 +/// Represents a non-<see cref="Player"/> inventory, such as chests, portable storage, or NPC shops.
 +/// </summary>
- public class Chest : IFixLoadedData
+-public class Chest : IFixLoadedData
++public partial class Chest : IFixLoadedData
  {
  	public struct ItemTransferVisualizationSettings
 @@ -34,25 +_,100 @@
@@ -383,7 +384,12 @@
  	public static int AfterPlacement_Hook(int x, int y, int type = 21, int style = 0, int direction = 1, int alternate = 0)
  	{
  		Point16 baseCoords = new Point16(x, y);
-@@ -467,21 +_,47 @@
+@@ -463,25 +_,51 @@
+ 			return -1;
+ 
+ 		if (Main.netMode != 1) {
+-			CreateWorldChest(num, baseCoords.X, baseCoords.Y);
++			CreatePlacedChest(num, baseCoords.X, baseCoords.Y); // TML: #ModdedChestSizes - CreateWorldChest -> CreatePlacedChest
  		}
  		else {
  			switch (type) {
@@ -431,7 +437,12 @@
  	public static int CreateChest(int X, int Y, int id = -1)
  	{
  		int num = id;
-@@ -498,6 +_,12 @@
+@@ -494,10 +_,16 @@
+ 				return num;
+ 		}
+ 
+-		CreateWorldChest(num, X, Y);
++		CreatePlacedChest(num, X, Y); // TML: #ModdedChestSizes - CreateWorldChest -> CreatePlacedChest
  		return num;
  	}
  

@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/ChestUI.cs
 +++ src/tModLoader/Terraria/UI/ChestUI.cs
-@@ -10,6 +_,8 @@
+@@ -10,12 +_,14 @@
  using Terraria.GameContent;
  using Terraria.GameContent.UI;
  using Terraria.GameInput;
@@ -9,6 +9,21 @@
  using Terraria.UI.Chat;
  using Terraria.UI.Gamepad;
  
+ namespace Terraria.UI;
+ 
+-public class ChestUI
++public partial class ChestUI
+ {
+ 	public class ButtonID
+ 	{
+@@ -66,6 +_,7 @@
+ 			DrawName(spritebatch);
+ 			DrawButtons(spritebatch);
+ 			DrawSlots(spritebatch);
++			DrawScrollButtons(spritebatch); // TML: #ModdedChestSizes
+ 		}
+ 		else {
+ 			for (int i = 0; i < ButtonID.Count; i++) {
 @@ -97,6 +_,8 @@
  					text = Lang.chestType2[tile.frameX / 36].Value;
  				else if (tile.type == 88)
