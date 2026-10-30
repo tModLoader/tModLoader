@@ -3223,7 +3223,7 @@
  
  		if (num == -12)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)DiscoR * num3), (byte)((float)DiscoG * num3), (byte)((float)DiscoB * num3), mouseTextColor);
-@@ -17535,9 +_,20 @@
+@@ -17535,16 +_,49 @@
  		if (num == 10)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)(255f * num3), (byte)(40f * num3), (byte)(100f * num3), mouseTextColor);
  
@@ -3244,6 +3244,35 @@
  		if (diff == 1)
  			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)mcColor.R * num3), (byte)((float)(int)mcColor.G * num3), (byte)((float)(int)mcColor.B * num3), mouseTextColor);
  
+ 		if (diff == 2)
+ 			baseColor = new Microsoft.Xna.Framework.Color((byte)((float)(int)hcColor.R * num3), (byte)((float)(int)hcColor.G * num3), (byte)((float)(int)hcColor.B * num3), mouseTextColor);
+ 
++		/*
+ 		ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, cursorText, new Vector2(X, Y), baseColor, 0f, Vector2.Zero, Vector2.One);
++		*/
++
++		var textContext = new RarityTextContext {
++			Font = FontAssets.MouseText.Value,
++			Text = cursorText,
++			Position = new Vector2(X, Y),
++			PrimaryColor = baseColor,
++			OutlineColor = Color.Black,
++			SecondaryOutlineColor = null,
++			Rotation = 0f,
++			Origin = Vector2.Zero,
++			Scale = Vector2.One,
++			CharOffsets = null,
++			CharColors = null,
++			MaxTextWidth = -1,
++			TextSpread = 2f,
++		};
++		if (RarityLoader.PreDrawText(num, spriteBatch, ref textContext)) {
++			ChatManager.DrawColorCodedStringWithShadow(spriteBatch, textContext.Font, textContext.Text, textContext.Position, textContext.PrimaryColor, textContext.OutlineColor, textContext.Rotation, textContext.Origin, textContext.Scale, textContext.MaxTextWidth, textContext.TextSpread);
++		}
++		RarityLoader.PostDrawText(num, spriteBatch, in textContext);
+ 	}
+ 
+ 	private void MouseText_DrawItemTooltip(MouseTextCache info, int rare, byte diff, int X, int Y)
 @@ -17558,6 +_,7 @@
  			rare = -12;
  
@@ -3339,7 +3368,7 @@
  
  					switch (m) {
  						case 0:
-@@ -17654,14 +_,26 @@
+@@ -17654,14 +_,56 @@
  				}
  			}
  			else {
@@ -3350,7 +3379,37 @@
 +				if (!ItemLoader.PreDrawTooltipLine(HoverItem, drawableLines[l], ref num3) || !globalCanDraw)
 +					goto PostDraw;
 +
++				var textContext = new RarityTextContext {
++					Font = drawableLines[l].Font,
++					Text = drawableLines[l].Text,
++					Position = new Vector2(drawableLines[l].X, drawableLines[l].Y),
++					PrimaryColor = mouseTextTooltipLine_Color[l],
++					OutlineColor = Color.Black,
++					SecondaryOutlineColor = null,
++					Rotation = drawableLines[l].Rotation,
++					Origin = drawableLines[l].Origin,
++					Scale = drawableLines[l].BaseScale,
++					CharOffsets = null,
++					CharColors = null,
++					MaxTextWidth = drawableLines[l].MaxWidth,
++					TextSpread = drawableLines[l].Spread
++				};
++
++				bool shouldDrawText = true;
++				bool isItemName = false;
++				if (drawableLines[l].Mod == "Terraria" && drawableLines[l].Name == "ItemName") {
++					isItemName = true;
++					shouldDrawText = RarityLoader.PreDrawText(rare, spriteBatch, ref textContext);
++				}
++
++				/*
 +				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, drawableLines[l].Font, drawableLines[l].Text, new Vector2(drawableLines[l].X, drawableLines[l].Y), mouseTextTooltipLine_Color[l], drawableLines[l].Rotation, drawableLines[l].Origin, drawableLines[l].BaseScale, drawableLines[l].MaxWidth, drawableLines[l].Spread);
++				*/
++
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, textContext.Font, textContext.Text, textContext.Position, textContext.PrimaryColor, textContext.OutlineColor, textContext.Rotation, textContext.Origin, textContext.Scale, textContext.MaxTextWidth, textContext.TextSpread);
++
++				if (isItemName)
++					RarityLoader.PostDrawText(rare, spriteBatch, in textContext);
  			}
  
 +			PostDraw:
