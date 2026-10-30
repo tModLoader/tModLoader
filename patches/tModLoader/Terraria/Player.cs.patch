@@ -7967,24 +7967,15 @@
  	public float GetWeaponDamageMultiplier(Item item)
  	{
  		if (item.melee)
-@@ -44678,18 +_,55 @@
+@@ -44678,18 +_,60 @@
  
  		return 1f;
  	}
 +	*/
  
 -	public int GetWeaponDamage(Item sItem)
-+	//TML: Added 'forTooltip' parameter.
-+	public int GetWeaponDamage(Item sItem, bool forTooltip = false)
++	public StatModifier GetWeaponDamageModifier(Item sItem)
  	{
-+		/*
- 		int damage = sItem.damage;
- 		if (damage <= 0)
- 			return damage;
- 
- 		return (int)((float)damage * GetWeaponDamageMultiplier(sItem) + 5E-06f);
-+		*/
-+
 +		StatModifier modifier = GetTotalDamage(sItem.DamageType);
 +
 +		if (AmmoID.Sets.IsArrow[sItem.useAmmo])
@@ -7997,7 +7988,21 @@
 +			modifier = modifier.CombineWith(specialistDamage);
 +
 +		CombinedHooks.ModifyWeaponDamage(this, sItem, ref modifier);
++		return modifier;
++	}
 +
++	//TML: Added 'forTooltip' parameter.
++	public int GetWeaponDamage(Item sItem, bool forTooltip = false)
++	{
++		/*
+ 		int damage = sItem.damage;
+ 		if (damage <= 0)
+ 			return damage;
+ 
+ 		return (int)((float)damage * GetWeaponDamageMultiplier(sItem) + 5E-06f);
++		*/
++
++		StatModifier modifier = GetWeaponDamageModifier(sItem);
 +		float baseDamage = sItem.damage;
 +		if (forTooltip)
 +			baseDamage *= ItemID.Sets.ToolTipDamageMultiplier[sItem.type];
@@ -8033,7 +8038,7 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -44709,27 +_,104 @@
+@@ -44709,27 +_,105 @@
  		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
  			return true;
  
@@ -8106,6 +8111,7 @@
  		canShoot = true;
  		usedAmmoItemId = item.type;
 +
++		StatModifier weaponDamage = GetWeaponDamageModifier(sItem);
 +		StatModifier ammoDamage = GetTotalDamage(item.DamageType);
 +		if (AmmoID.Sets.IsArrow[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(arrowDamage);
@@ -8116,10 +8122,10 @@
 +		if (AmmoID.Sets.IsSpecialist[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
-+		// totalDamage already includes Base and Flat bonuses from GetWeaponDamage. Replace them so they aren't applied twice.
++		// weaponDamage already includes the Base and Flat class bonuses. Clear them so they aren't applied twice.
 +		// This means ammo doesn't benefit from Base/Flat class bonuses, which is generally fine.
 +		ammoDamage.Base = 0;
-+		ammoDamage.Flat = totalDamage;
++		ammoDamage.Flat = 0;
 +
 +		/*
  		int num = item.damage;
@@ -8158,7 +8164,7 @@
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-@@ -44786,12 +_,21 @@
+@@ -44786,12 +_,20 @@
  			num += num2;
  		}
  
@@ -8174,19 +8180,21 @@
 +			/*
  			Damage = (int)((float)Damage * num3);
 +			*/
-+			// Apply nano bullet multiplier to flat (total) weapon damage too
++			weaponDamage *= num3;
 +			ammoDamage *= num3;
-+			ammoDamage.Flat *= num3;
  		}
  
  		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
-@@ -44809,7 +_,61 @@
+@@ -44809,7 +_,64 @@
  				ammoCyclingOffset = Main.rand.Next();
  		}
  
 +
-+		ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref ammoDamage, ref KnockBack);
-+		totalDamage = (int)(ammoDamage.ApplyTo(item.damage) + 5E-06f);
++		ItemLoader.PickAmmo(sItem, item, this, ref projToShoot, ref speed, ref weaponDamage, ref ammoDamage, ref KnockBack);
++
++		// We completely recalculate totalDamage here (it's effectively an 'out' param)
++		// Calculations match vanilla as all vanilla callers just pass in GetWeaponDamage(sItem)
++		totalDamage = Math.Max(0, (int)(weaponDamage.ApplyTo(sItem.damage) + ammoDamage.ApplyTo(item.damage) + 5E-06f));
 +
 +		if (!dontConsume && !shootWithNoAmmo && item.consumable && !IsAmmoFreeThisShot(sItem, item, projToShoot)) {
 +			CombinedHooks.OnConsumeAmmo(this, sItem, item);

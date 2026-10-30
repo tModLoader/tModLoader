@@ -649,6 +649,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
 * ⚙️: `ModPlayer.ModifyZoom` now has a `needsMouseRight` parameter. This is used to bypass the "Forward Zoom" toggle for effects that should always zoom regardless of the player's setting, like Binoculars. Remove all checks for the right mouse being held down to correctly support the new "Forward Zoom" control options.
+* 🤖: `(ModItem|GlobalItem).PickAmmo` now has a `ref StatModifier weaponDamage` parameter, and `damage` has been renamed to `ammoDamage`. Weapon damage is no longer included in `ammoDamage.Flat`. Use `weaponDamage` to modify it, and modify both to scale the total projectile damage.
 
 ## New tModLoader features
 

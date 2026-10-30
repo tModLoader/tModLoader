@@ -1,14 +1,27 @@
 using Terraria;
 using Terraria.ModLoader;
 
-// TODO figure out how to accordingly port ref int damage -> ref StatModifier damage
 public class AmmoModItemTest : ModItem
 {
-	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
+		ammoDamage *= 1.1f;
+	}
+}
+
+public class AmmoGlobalItemTest : GlobalItem
+{
+	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
+		ammoDamage *= 1.1f;
+	}
+}
+
+public class AmmoModItemTest143 : ModItem
+{
+	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
 	}
 
 #if COMPILE_ERROR
-	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
 	}
 #endif
 
@@ -17,13 +30,13 @@ public class AmmoModItemTest : ModItem
 	public override void OnConsumeAmmo(Item ammo, Player player) { /* Empty */ }
 }
 
-public class AmmoGlobalItemTest : GlobalItem
+public class AmmoGlobalItemTest143 : GlobalItem
 {
-	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
 	}
 
 #if COMPILE_ERROR
-	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)/* tModPorter Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead. */ {
 	}
 #endif
 
