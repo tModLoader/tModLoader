@@ -8033,7 +8033,7 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -44709,27 +_,99 @@
+@@ -44709,27 +_,103 @@
  		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
  			return true;
  
@@ -8115,12 +8115,16 @@
 +		if (AmmoID.Sets.IsSpecialist[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
-+		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
++		// totalDamage already includes Base and Flat bonuses from GetWeaponDamage. Replace them so they aren't applied twice.
++		// This means ammo doesn't benefit from Base/Flat class bonuses, which is generally fine.
 +		ammoDamage.Base = 0;
 +		ammoDamage.Flat = totalDamage;
-+		ref float Damage = ref ammoDamage.Flat; // Vanilla projectile damage applied from here on is interpreted as flat additions
 +
++		/*
  		int num = item.damage;
++		*/
++		ref float num = ref ammoDamage.Base; // Vanilla ammo damage bonuses from here on are interpreted as base additions
++
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
@@ -8141,15 +8145,14 @@
  			if (item.type == 370) {
  				projToShoot = 65;
  				num += 5;
-@@ -44765,6 +_,12 @@
+@@ -44765,6 +_,11 @@
  				projToShoot = 354;
  				num += 5;
  			}
 +			*/
-+
 +			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
 +				projToShoot = data.ProjectileType;
-+				Damage += data.BonusDamage;
++				num += data.BonusDamage;
 +			}
  		}
  
@@ -8158,9 +8161,6 @@
  			num += num2;
  		}
  
-+		// Preserve vanilla bonuses to base ammo damage before applying damage-class modifiers and mod hooks.
-+		ammoDamage.Base += num - item.damage;
-+
 +		// Item damage applied below, with ammoDamage.ApplyTo(item.damage)
 +		// Damage class boosts come from the ammo damage class
 +		/*
@@ -8170,10 +8170,12 @@
  
  		if (projToShoot == 285) {
  			float num3 = 1.25f;
--			Damage = (int)((float)Damage * num3);
-+			// Apply the bonus to both ammo and weapon damage, rounding only in the final calculation.
++			/*
+ 			Damage = (int)((float)Damage * num3);
++			*/
++			// Apply nano bullet multiplier to flat (total) weapon damage too
 +			ammoDamage *= num3;
-+			Damage *= num3;
++			ammoDamage.Flat *= num3;
  		}
  
  		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
