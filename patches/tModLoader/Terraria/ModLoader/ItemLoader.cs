@@ -691,18 +691,18 @@ public static class ItemLoader
 		return true;
 	}
 
-	private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback);
+	private delegate void DelegatePickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback);
 	private static HookList HookPickAmmo = AddHook<DelegatePickAmmo>(g => g.PickAmmo);
 
 	/// <summary>
 	/// Calls ModItem.PickAmmo, then all GlobalItem.PickAmmo hooks.
 	/// </summary>
-	public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+	public static void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)
 	{
-		ammo.ModItem?.PickAmmo(weapon, player, ref type, ref speed, ref damage, ref knockback);
+		ammo.ModItem?.PickAmmo(weapon, player, ref type, ref speed, ref weaponDamage, ref ammoDamage, ref knockback);
 
 		foreach (var g in HookPickAmmo.Enumerate(ammo)) {
-			g.PickAmmo(weapon, ammo, player, ref type, ref speed, ref damage, ref knockback);
+			g.PickAmmo(weapon, ammo, player, ref type, ref speed, ref weaponDamage, ref ammoDamage, ref knockback);
 		}
 	}
 

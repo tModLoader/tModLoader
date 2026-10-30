@@ -333,20 +333,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
-	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
+	/// <br/> The projectile's damage will be the sum of weapon and ammo damage. To scale the total, modify both <paramref name="weaponDamage"/> and <paramref name="ammoDamage"/>.
+	/// <br/> <see cref="StatModifier.Flat"/> and <see cref="StatModifier.Base"/> damage bonuses from the player should be applied to one or the other, not both.
+	/// <br/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using the given ammo.</param>
 	/// <param name="ammo">The ammo item being used by the given weapon.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="type">The ID of the fired projectile.</param>
 	/// <param name="speed">The speed of the fired projectile.</param>
-	/// <param name="damage">
-	/// The damage modifier for the projectile.<br></br>
-	/// Total weapon damage is included as Flat damage.<br></br>
-	/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
-	/// </param>
+	/// <param name="weaponDamage">The damage modifier for the weapon, applied to <paramref name="weapon"/>'s <see cref="Item.damage"/>. See <see cref="Player.GetWeaponDamageModifier"/></param>
+	/// <param name="ammoDamage">The damage modifier for the ammo, applied to <paramref name="ammo"/>'s <see cref="Item.damage"/>.</param>
 	/// <param name="knockback">The knockback of the fired projectile.</param>
-	public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+	public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)
 	{
 	}
 

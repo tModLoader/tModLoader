@@ -1,8 +1,21 @@
 using Terraria;
 using Terraria.ModLoader;
 
-// TODO figure out how to accordingly port ref int damage -> ref StatModifier damage
 public class AmmoModItemTest : ModItem
+{
+	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+		damage *= 1.1f;
+	}
+}
+
+public class AmmoGlobalItemTest : GlobalItem
+{
+	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback) {
+		damage *= 1.1f;
+	}
+}
+
+public class AmmoModItemTest143 : ModItem
 {
 	public override void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
@@ -15,7 +28,7 @@ public class AmmoModItemTest : ModItem
 	public override void OnConsumeAmmo(Player player) { /* Empty */ }
 }
 
-public class AmmoGlobalItemTest : GlobalItem
+public class AmmoGlobalItemTest143 : GlobalItem
 {
 	public override void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref int damage, ref float knockback) {
 	}
