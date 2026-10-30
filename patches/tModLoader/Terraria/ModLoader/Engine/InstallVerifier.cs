@@ -291,7 +291,6 @@ internal static class InstallVerifier
 	private static void CheckGoG()
 	{
 		if (!HashMatchesFile(vanillaExePath, runtimeMetadataLookup[portableRid].gogHash)
-			&& !HashMatchesFile(vanillaExePath, runtimeMetadataLookup[portableRid].vanillaSteamApiHash)) // TODO: Huh?
 		{
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath, TerrariaVersion, CheckExe));
 		}
