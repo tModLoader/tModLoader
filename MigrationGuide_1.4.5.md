@@ -536,6 +536,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `NPCID.Sets.UsesNewTargetting` -> `NPCID.Sets.UsesNewTargeting`
 * 🤖: `NPCID.Sets.GoldCrittersCollection` -> `NPCID.Sets.IsGoldCritter`. Also changed from `List` to typical to typical ID set.
 * ⚙️: `NPCID.Sets.ImmuneToAllBuffs` was removed. Continue to use `NPCID.Sets.ImmuneToRegularBuffs` and if immunity to tags effects and tag buffs is desired, additionally set the new `NPCID.Sets.ImmuneToWhipTags`.
+  * Fixed a regression where enabling both flags removed regular-debuff immunity. NPCs can now be immune to both categories while retaining per-buff overrides through `SpecificDebuffImmunity`.
 * 🤖: `NPCID.Sets.ShouldBeCountedAsBoss` -> `NPCID.Sets.ShouldBeCountedAsBossForBestiary`
 * 🤖: `NPCID.Sets.SpawnFromLastEmptySlot` -> `NPCID.Sets.SearchSpawnSlotsInReverse`
 * 🤖: `ProjectileID.Web` -> `ProjectileID.WebSlingerHook`
