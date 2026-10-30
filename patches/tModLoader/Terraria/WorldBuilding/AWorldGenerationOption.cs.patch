@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/AWorldGenerationOption.cs
++++ src/tModLoader/Terraria/WorldBuilding/AWorldGenerationOption.cs
+@@ -33,11 +_,11 @@
+ 
+ 	public int[] SpecialSeedValues { get; protected set; }
+ 
+-	public LocalizedText Description { get; private set; }
++	public LocalizedText Description { get; protected set; }
+ 
+-	public LocalizedText Title { get; private set; }
++	public LocalizedText Title { get; protected set; }
+ 
+-	protected Asset<Texture2D> Texture { get; private set; }
++	protected Asset<Texture2D> Texture { get; set; }
+ 
+ 	protected static event Action<AWorldGenerationOption> OnOptionStateChanged;
+ 

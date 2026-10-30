@@ -35,6 +35,8 @@ public static class MenuLoader
 
 	private static ModMenu switchToMenu = null;
 
+	private static ModMenu preGenerationMenu = null;
+
 	internal static bool loading = true;
 
 	internal static string LastSelectedModMenu = MenutML.FullName;
@@ -96,7 +98,8 @@ public static class MenuLoader
 
 	public static void ActivateBiggerAndBoulderMenu()
 	{
-		switchToMenu = MenuBiggerAndBoulder;
+		if(currentMenu != SeedLoader.CurrentWorldGenMenu)
+			switchToMenu = MenuBiggerAndBoulder;
 	}
 
 	internal static void UpdateAndDrawModMenu(SpriteBatch spriteBatch, GameTime gameTime, Color color, float logoRotation, float logoScale)
@@ -174,6 +177,15 @@ public static class MenuLoader
 				SoundEngine.PlaySound(SoundID.MenuTick);
 				OffsetModMenu(-1);
 			}
+		}
+
+		if (WorldGen.generatingWorld && SeedLoader.CurrentWorldGenMenu != null && SeedLoader.CurrentWorldGenMenu != currentMenu) {
+			preGenerationMenu = currentMenu;
+			switchToMenu = SeedLoader.CurrentWorldGenMenu;
+		}
+		else if (preGenerationMenu != null && !WorldGen.generatingWorld) {
+			switchToMenu = preGenerationMenu;
+			preGenerationMenu = null;
 		}
 
 		if (Main.menuMode == 0) {

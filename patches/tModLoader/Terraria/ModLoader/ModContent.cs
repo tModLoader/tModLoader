@@ -344,6 +344,7 @@ public static class ModContent
 		TileLoader.PostSetupContent();
 		BuffLoader.PostSetupContent();
 		BiomeConversionLoader.PostSetupContent();
+		SeedLoader.PostSetupContent();
 
 		Interface.loadMods.SetLoadStage("tModLoader.MSPostSetupContent", ModLoader.Mods.Length);
 		LoadModContent(token, mod => {
@@ -370,6 +371,7 @@ public static class ModContent
 		TileLoader.FinishSetup();
 		WallLoader.FinishSetup();
 		EmoteBubbleLoader.FinishSetup();
+		SeedLoader.FinishSetup();
 		AchievementManager.FinishSetup();
 		Main.AchievementAdvisor?.FinishSetup();
 
@@ -598,6 +600,7 @@ public static class ModContent
 		TagSerializer.Reload();
 		ModNet.Unload();
 		Config.ConfigManager.Unload();
+		SeedLoader.Unload();
 		CustomCurrencyManager.Initialize();
 		EffectsTracker.RemoveModEffects();
 		ItemTrader.ChlorophyteExtractinator = ItemTrader.CreateChlorophyteExtractinator();
