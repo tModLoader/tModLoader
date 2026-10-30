@@ -144,7 +144,7 @@ public class MemberUseRewriter : BaseRewriter {
 
 		rw.RegisterAction<AssignmentExpressionSyntax>(assign, n =>
 			InvocationExpression(MemberAccessExpression(((MemberAccessExpressionSyntax)n.Left).Expression.WithoutTrivia(), "selectedItemState"), "Select", n.Right.WithoutTrivia()).WithTriviaFrom(n)
-				.WithBlockComment("Suggestion: Select is buffered, selectedItem won't change until the next update"));
+				.WithBlockComment("Note: Select is buffered, selectedItem won't change until the next update"));
 		return memberName;
 	}
 

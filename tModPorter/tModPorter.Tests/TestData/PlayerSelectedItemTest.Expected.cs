@@ -3,7 +3,7 @@ using Terraria;
 public class PlayerSelectedItemTest
 {
 	void SetSlot(Player player, int slot) {
-		player.selectedItemState.Select(slot)/* tModPorter Suggestion: Select is buffered, selectedItem won't change until the next update */;
+		player.selectedItemState.Select(slot)/* tModPorter Note: Select is buffered, selectedItem won't change until the next update */;
 	}
 
 	void IncrementSlot(Player player) {
