@@ -3440,13 +3440,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,9 @@
+@@ -13575,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
 +		ActiveArmorSetBonus = null; // Added by TML
-+		selectItemOnNextUse = false; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
