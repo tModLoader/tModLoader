@@ -379,15 +379,15 @@ AddArmorSet(Type, alternateBody, legs, this.GetLocalization("SetBonus_Ranged"), 
 The examples above all used `ModItem` helper methods that automate registering a localization key, assigning the armor set effect to `ModItem.UpdateArmorSet`, and assigning a default identifier string. These can all be customized by providing values for the optional parameters of the methods. The set bonus text can be customized by passing in a `LocalizedText`. The code that executes can be customized as well by passing in a delegate. The identifier can also be passed in, which is useful if you need to differentiate between multiple set bonuses that use some of the same items. The `ArmorSetBonuses.Add` and `ArmorSetBonuses.Create` methods could be used instead of the `ModItem.AddArmorSet` and `ModItem.CreateArmorSet` helper methods as well, such as if used in `GlobalItem`.
 
 ```cs
-// Customize the set bonus tooltip. We can pass in any localization key rather than the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key. We can also pass in a LocalizedText object.
+// Customize the set bonus tooltip. We can pass in any LocalizedText using any localization key rather than the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key.
 // In this example, we are using the automatic key but populating it with a value. This helps keep the set bonus effect in line with the tooltip as a mod is updated.
 LocalizedText SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
 AddArmorSet(Type, body, legs, SetBonusText);
 
 // The SetBonus_Melee and SetBonus_Ranged examples above show using a custom key and a custom identifier.
 
-// And of course, we can use a specific localization key, either by typing it out or using Mod.GetLocalizationKey, which can be useful for organization.
-AddArmorSet(Type, body, legs, Mod.GetLocalizationKey("CommonSetBonuses.Example"));
+// And of course, we can use a specific localization key not derived from the item's localization prefix, either by using Language.GetText or Mod.GetLocalization, which can be useful for organization.
+AddArmorSet(Type, body, legs, Mod.GetLocalization("CommonSetBonuses.Example"));
 
 // Finally, we can customize the code that runs for each armor set. By default, the UpdateArmorSet method is called. We could check the data on the ArmorSetBonus passed into the method to implement custom code for alternate armor sets, but another option is to pass in a ArmorSetBonus.ArmorSetEffect delegate directly. Here is a full example of that:
 
