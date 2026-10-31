@@ -99,4 +99,8 @@ public class ModItemTest : ModItem
 	}
 
 	public override bool IsQuestFish() { }
+
+	public override bool IsArmorSet()/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return false; }
+
+	public override void UpdateArmorSet(Player player) { }
 }

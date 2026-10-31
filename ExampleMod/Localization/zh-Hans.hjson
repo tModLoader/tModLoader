@@ -1710,6 +1710,13 @@ Mods: {
 			// NounE: fish
 			// NounE$Collective: School
 		}
+
+		# We use "{0}\n" to add an additional line to an existing armor set bonus description
+		/* ArmorSetTweaks.MagicHatAdditionalEffectText:
+			'''
+			{0}
+			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
+			''' */
 	}
 }
 
