@@ -34,7 +34,7 @@
  		{
  			public static int[] CountsAsChairTypes = new int[6] {
  				15,
-@@ -145,32 +_,117 @@
+@@ -145,32 +_,121 @@
  			public static bool[] CountsAsDoor = Factory.CreateBoolSet(CountsAsDoorTypes);
  		}
  
@@ -85,6 +85,10 @@
 +		/// Set to true to prevent this tile from drawing with more detailed lighting, if the user is using a detailed lighting mode. If true, a single lighting value will be used to draw this tile instead of drawing the tile in 9 sections with different interpolated lighting values. <see cref="Traps"/> and <see cref="Boulder"/> are examples of tiles that use this. This is only relevant for tiles set as <see cref="Main.tileSolid"/>.
 +		/// </summary>
  		public static bool[] DontDrawTileSliced = Factory.CreateBoolSet(false, 137, 235, 388, 476, 160, 138, 664, 665, 630, 631, 711, 712, 713, 714, 715, 716, 723, 726);
++		/// <summary>
++		/// Affects tile drawing in some way.
++		/// <para/> Some examples include <see cref="Teleporter"/>, <see cref="Traps"/>, <see cref="KiteAnchor"/>, <see cref="GolfHole"/>, and boulder tiles. 
++		/// </summary>
  		public static bool[] DontDrawTileSlopes = Factory.CreateBoolSet(false, 137, 235, 388, 476, 138, 664, 665, 630, 631, 711, 712, 713, 714, 715, 716, 723, 726);
 +
 +		// TML: Why would someone want to set this? Maybe it's for 1x1 tile entities?
@@ -190,7 +194,7 @@
  		public static bool?[] DrawTileInSolidLayer = Factory.CreateCustomSet<bool?>(null, new object[10] {
  			(ushort)11,
  			true,
-@@ -204,30 +_,79 @@
+@@ -204,30 +_,83 @@
  			(ushort)579,
  			true
  		});
@@ -244,6 +248,10 @@
 +		/// <para/> <b>NOTE:</b> Requires calling <see cref="GameContent.Drawing.TileDrawing.CrawlToBottomOfReverseVineAndAddSpecialPoint(int, int)"/> in <c>ModTile.PreDraw</c> to register the coordinates of the root of the vine for special drawing.
 +		/// </summary>
  		public static bool[] ReverseVineThreads = Factory.CreateBoolSet(549);
++		/// <summary>
++		/// Set to true for tiles that have sloped state frames in their tile sheet, rather than drawing using the automatic slope drawing approach.
++		/// <para/> Used by <see cref="ConveyorBeltLeft"/> and <see cref="ConveyorBeltRight"/>. Consult their tile sheets for the expected layout.
++		/// </summary>
  		public static bool[] HasSlopeFrames = Factory.CreateBoolSet(421, 422);
 +		/// <summary>
 +		/// Changes the gamepad button prompt when hovering over this tile from "Use" to "Read". Set by all <see cref="Main.tileSign"/> tiles. Defaults to false.
@@ -302,9 +310,33 @@
  		public static bool[] CanBeClearedDuringGeneration = Factory.CreateBoolSet(true, 396, 400, 401, 397, 398, 399, 404, 368, 367, 41, 43, 44, 481, 482, 483, 226, 237);
  		public static bool[] PreventsSlopesDuringGeneration = Factory.CreateBoolSet(false, 48, 137, 232, 191, 151, 274, 135, 442, 428);
  		public static bool[] IsAPressurePlate = Factory.CreateBoolSet(false, 135, 442, 428);
-@@ -298,35 +_,90 @@
+@@ -265,7 +_,9 @@
+ 			32
+ 		};
+ 		public static bool[] CorruptBiomeSight = Factory.CreateBoolSet(23, 661, 25, 112, 163, 398, 400, 636, 24, 32);
++		/// <summary> Counts as a corruption tile for various purposes. See also <see cref="CorruptBiome"/>. </summary>
+ 		public static bool[] Corrupt = Factory.CreateBoolSet(23, 661, 25, 112, 163, 398, 400, 636);
++		/// <summary> Causes corruption to spread to nearby tiles. </summary>
+ 		public static bool[] SpreadsCorruption = Factory.CreateBoolSet(23, 661, 25, 112, 398, 400, 163, 32, 636, 24);
+ 		public static List<int> HallowCountCollection = new List<int> {
+ 			109,
+@@ -280,7 +_,9 @@
+ 			113
+ 		};
+ 		public static bool[] HallowBiomeSight = Factory.CreateBoolSet(109, 492, 117, 116, 164, 402, 403, 115, 110, 113);
++		/// <summary> Counts as a hallow tile for various purposes. See also <see cref="HallowBiome"/>. </summary>
+ 		public static bool[] Hallow = Factory.CreateBoolSet(109, 492, 117, 116, 164, 402, 403, 115);
++		/// <summary> Causes hallow to spread to nearby tiles. </summary>
+ 		public static bool[] SpreadsHallow = Factory.CreateBoolSet(109, 492, 117, 116, 402, 403, 164, 115, 110, 113);
+ 		public static bool[] CanGrowCrystalShards = Factory.CreateBoolSet(117, 116, 164, 402, 403);
+ 		public static List<int> CrimsonCountCollection = new List<int> {
+@@ -296,37 +_,94 @@
+ 			352
+ 		};
  		public static bool[] CrimsonBiomeSight = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205, 201, 352);
++		/// <summary> Counts as a crimson tile for various purposes. See also <see cref="CrimsonBiome"/>. </summary>
  		public static bool[] Crimson = Factory.CreateBoolSet(199, 662, 203, 234, 200, 399, 401, 205);
++		/// <summary> Causes crimson to spread to nearby tiles. </summary>
  		public static bool[] SpreadsCrimson = Factory.CreateBoolSet(199, 662, 203, 234, 399, 401, 200, 352, 205, 201);
 +		/// <summary>
 +		/// Indicates that NPC spawning logic at this tile should use the tile below it to drive spawn logic instead of itself. Used by <see cref="ConveyorBeltLeft"/> and <see cref="ConveyorBeltRight"/>.

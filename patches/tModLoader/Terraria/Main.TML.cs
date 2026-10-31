@@ -43,6 +43,7 @@ public partial class Main
 	public static bool hidePlayerCraftingMenu;
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
+
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 	/// <summary>
 	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with
@@ -339,6 +340,7 @@ public partial class Main
 
 	private void DrawBuilderAccToggles_Inner(Vector2 start)
 	{
+		int state = -1; // Which toggle is being hovered over
 		Player player = Main.player[myPlayer];
 		int[] builderAccStatus = player.builderAccStatus;
 		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
@@ -393,6 +395,7 @@ public partial class Main
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
+				state = i;
 
 				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
 				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
@@ -427,7 +430,7 @@ public partial class Main
 			}
 
 
-			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + drawParams.Frame.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
 				float colorByte = (float)mouseTextColor / 255f;
@@ -438,6 +441,7 @@ public partial class Main
 			}
 		}
 
+		DoStatefulTickSound(ref toggleAccMouseOver, state);
 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
 	}
 

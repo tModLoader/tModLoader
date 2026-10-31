@@ -18,7 +18,7 @@ public class ModItemTest : ModItem
 		Item.useTime += 2;
 
 #if COMPILE_ERROR
-		Console.WriteLine(Item.IsCandidateForReforge/* tModPorter Note: Removed. Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable */);
+		Console.WriteLine(Item.IsCandidateForReforge/* tModPorter Note: Removed. Use `Item.CanHavePrefixes()` to check whether an item is reforgeable */);
 		Item.CloneWithModdedDataFrom(Item)/* tModPorter Note: Removed. Use Clone, ResetPrefix or Refresh */;
 #endif
 
@@ -35,6 +35,8 @@ public class ModItemTest : ModItem
 		ID.AmmoID.Sets.IsRocket[Type] = true;
 		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
 		*/
+
+		ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true;
 	}
 
 #if COMPILE_ERROR
@@ -84,7 +86,7 @@ public class ModItemTest : ModItem
 	}
 
 #if COMPILE_ERROR
-	public override bool DrawHead()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false */ { return true; /* Empty */ }
+	public override bool DrawHead()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true if you returned false */ { return true; /* Empty */ }
 
 	public override bool DrawBody()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false */ { return true; /* Empty */ }
 

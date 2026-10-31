@@ -187,6 +187,7 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	/// <summary>
 	/// Allows you to make things happen when this mount is de-spawned. Useful for player-specific cleanup, see SetMount.
 	/// Custom dust spawning logic is also possible via the skipDust parameter.
+	/// <para/> Custom dust spawning logic is also possible by setting <paramref name="skipDust"/> to true to skip the vanilla dust spawning logic. <paramref name="skipDust"/> might be passed in as true when the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead.
 	/// </summary>
 	/// <param name="player"></param>
 	/// <param name="skipDust">Set to true to skip the vanilla dust spawning logic</param>

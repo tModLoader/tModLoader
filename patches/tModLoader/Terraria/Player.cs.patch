@@ -842,7 +842,7 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
-@@ -1467,30 +_,94 @@
+@@ -1467,30 +_,103 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
  	public bool IsAllowedToHoldItems = true;
@@ -878,8 +878,17 @@
  	public float rocketDamage = 1f;
  	public float minionDamage = 1f;
 +	*/
++	/// <summary>
++	/// Additional damage modifiers for arrow ammo (<see cref="AmmoID.Sets.IsArrow"/>). Used by Shroomite Headgear and Archery buff.
++	/// </summary>
 +	public StatModifier arrowDamage = StatModifier.Default;
++	/// <summary>
++	/// Additional damage modifiers for bullet ammo (<see cref="AmmoID.Sets.IsBullet"/>). Used by Shroomite Mask.
++	/// </summary>
 +	public StatModifier bulletDamage = StatModifier.Default;
++	/// <summary>
++	/// Additional damage modifiers for ammo (<see cref="AmmoID.Sets.IsSpecialist"/>) and weapons (<see cref="ItemID.Sets.IsRangedSpecialistWeapon"/>) considered to be "specialist". Used by Shroomite Helmet.
++	/// </summary>
 +	public StatModifier specialistDamage = StatModifier.Default; // previously rocketDamage, Shroomite Helmet changed to use this.
 +	internal ref StatModifier minionDamage => ref GetDamage(DamageClass.Summon);
 +
@@ -1413,7 +1422,7 @@
  	public bool UsingSuperCart {
  		get {
  			if (!unlockedSuperCart)
-@@ -2440,11 +_,13 @@
+@@ -2440,12 +_,18 @@
  		}
  	}
  
@@ -1425,8 +1434,13 @@
  	public float specialistEffectiveDamage => rangedDamage * rocketDamage;
 +	*/
  
++	/// <summary>
++	/// Whether player can use rocket boots' (and derivatives') flying ability.<br></br>
++	/// <returns> False when <see cref = "Player"/> is using Ram Rune's down dash ability.</returns>
++	/// </summary>
  	public bool CanUseBootFlyingAbilities => !isPerformingJump_DownDash;
  
+ 	public bool CanUseWingAbilities {
 @@ -2470,8 +_,16 @@
  		}
  	}
@@ -1903,6 +1917,15 @@
  					item = inventory[i];
  					break;
  				}
+@@ -4397,6 +_,8 @@
+ 			panFactor = 2f / 3f;
+ 			needsMouseRight = false;
+ 		}
++
++		PlayerLoader.ModifyZoom(this, ref panFactor, ref needsMouseRight);
+ 	}
+ 
+ 	public void QuickGrapple()
 @@ -4472,7 +_,10 @@
  		else if (num2 == 646) {
  			num7 = 4;
@@ -4003,17 +4026,6 @@
  					float knockback2 = 5f;
  					int num4 = direction;
  					if (velocity.X < 0f)
-@@ -16709,8 +_,10 @@
- 				autoJump = false;
- 
- 			bool flag = false;
-+			/*
- 			bool flag2 = wet && accFlipper;
- 			bool flag3 = !mount.Active || !mount.Cart;
-+			*/
- 			if (mount.Active && mount.IsConsideredASlimeMount && wetSlime > 0) {
- 				wetSlime = 0;
- 				flag = true;
 @@ -16734,7 +_,7 @@
  					}
  				}
@@ -4031,22 +4043,36 @@
  				if (wet && accFlipper) {
  					if (swimTime == 0)
  						swimTime = 30;
-@@ -16757,7 +_,9 @@
+@@ -16757,8 +_,10 @@
  				bool flag10 = false;
  				bool flag11 = false;
  				bool flag12 = false;
--				bool flag13 = false;
 +				*/
-+				bool flag13 = false; // TODO: isPerformingJump_DownDash needs integration.
-+				/*
+ 				bool flag13 = false;
  				if (!flag2 && !flag) {
++					/*
  					if (canJumpAgain_Basilisk) {
  						flag12 = true;
-@@ -16798,6 +_,10 @@
+ 						canJumpAgain_Basilisk = false;
+@@ -16775,9 +_,12 @@
+ 						flag9 = true;
+ 						canJumpAgain_Unicorn = false;
+ 					}
++					*/
++					if (false) { }
+ 					else if (hasDeadCellsDownDash && controlDown && !isPerformingJump_DownDash && velocity.Y != 0f && !mount.Active) {
+ 						flag13 = true;
+ 					}
++					/*
+ 					else if (canJumpAgain_Sandstorm) {
+ 						flag5 = true;
+ 						canJumpAgain_Sandstorm = false;
+@@ -16797,7 +_,11 @@
+ 					else {
  						canJumpAgain_Cloud = false;
  					}
++					*/
  				}
-+				*/
 +
 +				// Patch context: flag
 +				bool attemptDoubleJumps = !flag;
@@ -4714,7 +4740,7 @@
 +				/*
  				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities) {
 +				*/
-+				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && !AnyExtraJumpUsable()) {
++				if ((wingTime == 0f || wingsLogic == 0) && rocketBoots != 0 && controlJump && rocketDelay == 0 && canRocket && rocketRelease && CanUseBootFlyingAbilities && !AnyExtraJumpUsable()) {
  					if (rocketTime > 0) {
  						rocketTime--;
  						rocketDelay = 10;
@@ -6593,7 +6619,7 @@
  					cursorItemIconPush = 6;
  				}
  			}
-@@ -35241,6 +_,70 @@
+@@ -35241,6 +_,55 @@
  			}
  		}
  
@@ -6645,21 +6671,6 @@
 +		goto DecrementItemAnimation;
 +
 +		ReuseDelayAndAnimationStart:
-+
-+		// SmartSelectLookup moved here from Player.Update so that it can apply between uses, without changing selectedItem prematurely for half the Update method
-+		if (itemAnimation == 0 && reuseDelay == 0 && (!controlUseItem || selectItemOnNextUse)) {
-+			selectItemOnNextUse = false;
-+
-+			int oldSelect = selectedItem;
-+			SmartSelectLookup(out oldSelect);
-+			if (selectedItem != oldSelect) {
-+				item = inventory[selectedItem];
-+				// TML feature, allow the item to be instantly used
-+				releaseUseItem = true;
-+				// prevent remaining item time carrying over to new weapon (for items like starfury with less than one shot per use)
-+				itemTime = itemTimeMax = 0;
-+			}
-+		}
 +
  		ItemCheck_HandleMount();
  		int weaponDamage = GetWeaponDamage(item);
@@ -6817,7 +6828,12 @@
  						if (item.stack > 0)
  							item.stack--;
  
-@@ -35846,6 +_,9 @@
+@@ -35842,10 +_,13 @@
+ 
+ 	public Rectangle AnimatePlayerAndGetItemFrame(float mountOffset, Item sItem)
+ 	{
+-		Item item = ((itemAnimation > 0) ? lastVisualizedSelectedItem : sItem);
++		Item item = ((itemAnimation > 0 && sItem.IsAir) ? lastVisualizedSelectedItem : sItem); // TML added && sItem.IsAir
  		Rectangle drawHitbox = Item.GetDrawHitbox(item.type, this);
  		compositeFrontArm.enabled = false;
  		compositeBackArm.enabled = false;
@@ -6836,6 +6852,19 @@
  			if ((!overrideCanPlace.HasValue || overrideCanPlace.Value) && TileObjectData.CustomPlace(tileToCreate, previewPlaceStyle))
  				TileObject.CanPlace(tileTargetX, tileTargetY, tileToCreate, previewPlaceStyle, direction, out var _, onlyCheck: true, forcedRandom);
  		}
+@@ -35908,7 +_,12 @@
+ 	private void ItemCheck_OwnerOnlyCode(ref ItemCheckContext context, Item sItem, int weaponDamage, Rectangle heldItemFrame)
+ 	{
+ 		bool flag = true;
++		/*
+ 		if (selectedItemState.HasBufferedChange && sItem.useTime > itemAnimation)
++		*/
++		// Blocks shots whose itemTime would outlast the animation and delay the buffered selection change.
++		// Vanilla blocks one more shot, because its counter is one lower when it shoots (#2351)
++		if (selectedItemState.HasBufferedChange && CombinedHooks.TotalUseTime(sItem.useTime, this, sItem) > itemAnimation)
+ 			flag = false;
+ 
+ 		int type = sItem.type;
 @@ -35936,13 +_,18 @@
  				useTime = sItem.useTime;
  
@@ -6850,19 +6879,19 @@
  					flag = false;
  			}
  
-+			//TML: Eventide and nightglow handled by Item.useLimitPerAnimation. Zenith use limit didn't do anything anyway
++			//TML: Eventide, nightglow and daybloom staff handled by Item.useLimitPerAnimation. Zenith and true copper shortsword use limits didn't do anything anyway
 +			/*
  			if ((type == 4956 || type == 5669) && itemAnimation < itemAnimationMax - useTime * 3)
  				flag = false;
  
-@@ -35951,6 +_,7 @@
- 
- 			if (type == 4953 && itemAnimation < itemAnimationMax - useTime * 5)
- 				flag = false;
-+			*/
+@@ -35954,6 +_,7 @@
  
  			if (type == 6152 && itemAnimation < itemAnimationMax - useTime * 4)
  				flag = false;
++			*/
+ 		}
+ 
+ 		if (type == 5451 && ownedProjectileCounts[1020] > 0)
 @@ -35965,6 +_,10 @@
  		if (ItemID.Sets.ShootsOnUseRelease[sItem.type] && controlUseItem)
  			flag = false;
@@ -6934,6 +6963,17 @@
  
  					bool[] shouldIgnore2 = ItemCheck_GetTileCutIgnoreList(sItem);
  					ItemCheck_CutTiles(sItem, itemRectangle2, shouldIgnore2);
+@@ -36104,7 +_,10 @@
+ 			}
+ 		}
+ 
++		/*
+ 		if (sItem.type == 5464 && itemAnimation == itemAnimationMax - 1) {
++		*/
++		if (sItem.type == 5464 && ItemAnimationJustStarted) { // #2351
+ 			Vector2 vector3 = Main.MouseWorld - MountedCenter;
+ 			ChangeDir((vector3.X > 0f) ? 1 : (-1));
+ 			itemRotation = (vector3 * direction).ToRotation();
 @@ -36411,15 +_,21 @@
  			if (i == whoAmI || !player.active || !player.hostile || player.immune || player.dead || (team != 0 && team == player.team) || !itemRectangle.Intersects(player.Hitbox) || !CanHit(player))
  				continue;
@@ -7419,6 +7459,38 @@
 +
  				if (inventory[num6].stack <= 0)
  					inventory[num6].SetDefaults(0);
+ 
+@@ -38831,6 +_,13 @@
+ 			return false;
+ 
+ 		Tile tile = Main.tile[x, y];
++
++		var tileResult = TileLoader.CanDoWireStuffHere(x, y, tile.TileType);
++		var wallResult = WallLoader.CanDoWireStuffHere(x, y, tile.WallType);
++		if (tileResult.HasValue || wallResult.HasValue) {
++			return (tileResult ?? true) && (wallResult ?? true);
++		}
++
+ 		if (tile.wall == 350)
+ 			return false;
+ 
+@@ -38850,8 +_,17 @@
+ 		if (!WorldGen.InWorld(x, y))
+ 			return false;
+ 
++		Tile tile = Main.tile[x, y];
++		var tileResult = TileLoader.CanShowWireStuffHere(x, y, tile.TileType);
++		var wallResult = WallLoader.CanShowWireStuffHere(x, y, tile.WallType);
++		if (tileResult.HasValue || wallResult.HasValue) {
++			return (tileResult ?? true) && (wallResult ?? true);
++		}
++
+ 		if (!NPC.downedGolemBoss) {
++			/*
+ 			Tile tile = Main.tile[x, y];
++			*/
+ 			if (Main.dualDungeonsSeed && (double)y > Main.worldSurface && DungeonGenerationStyles.Temple.WallIsInStyle(tile.wall, includeWindows: true))
+ 				return false;
  
 @@ -38943,11 +_,21 @@
  
@@ -7980,7 +8052,7 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -44709,27 +_,99 @@
+@@ -44709,27 +_,104 @@
  		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
  			return true;
  
@@ -8016,10 +8088,11 @@
 +		projToShoot = weapon.shoot;
 +		speed = weapon.shootSpeed;
 +		damage = GetWeaponDamage(weapon);
-+		knockBack = GetWeaponKnockback(weapon);
++		knockBack = weapon.knockBack;
 +
 +		bool canShoot = false;
 +		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++		knockBack = GetWeaponKnockback(weapon, knockBack);
 +
 +		if (!canShoot) {
 +			projToShoot = 0;
@@ -8062,12 +8135,16 @@
 +		if (AmmoID.Sets.IsSpecialist[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
-+		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
++		// totalDamage already includes Base and Flat bonuses from GetWeaponDamage. Replace them so they aren't applied twice.
++		// This means ammo doesn't benefit from Base/Flat class bonuses, which is generally fine.
 +		ammoDamage.Base = 0;
 +		ammoDamage.Flat = totalDamage;
-+		ref float Damage = ref ammoDamage.Flat; // Vanilla projectile damage applied from here on is interpreted as flat additions
 +
++		/*
  		int num = item.damage;
++		*/
++		ref float num = ref ammoDamage.Base; // Vanilla ammo damage bonuses from here on are interpreted as base additions
++
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
@@ -8088,20 +8165,19 @@
  			if (item.type == 370) {
  				projToShoot = 65;
  				num += 5;
-@@ -44765,6 +_,12 @@
+@@ -44765,6 +_,11 @@
  				projToShoot = 354;
  				num += 5;
  			}
 +			*/
-+
 +			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
 +				projToShoot = data.ProjectileType;
-+				Damage += data.BonusDamage;
++				num += data.BonusDamage;
 +			}
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-@@ -44786,8 +_,12 @@
+@@ -44786,12 +_,21 @@
  			num += num2;
  		}
  
@@ -8114,6 +8190,15 @@
  
  		if (projToShoot == 285) {
  			float num3 = 1.25f;
++			/*
+ 			Damage = (int)((float)Damage * num3);
++			*/
++			// Apply nano bullet multiplier to flat (total) weapon damage too
++			ammoDamage *= num3;
++			ammoDamage.Flat *= num3;
+ 		}
+ 
+ 		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
 @@ -44809,7 +_,61 @@
  				ammoCyclingOffset = Main.rand.Next();
  		}
@@ -8233,6 +8318,43 @@
  	}
  
  	private Item PickAmmo_IterateRange(Item sItem, Item[] items, int[] slotIterationOrder, bool allowAmmoCycling = true)
+@@ -44898,7 +_,10 @@
+ 			array = slotIterationOrder;
+ 			foreach (int num3 in array) {
+ 				Item item = items[num3];
++				/*
+ 				if (item.ammo == sItem.useAmmo && item.stack > 0)
++				*/
++				if (item.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item, this))
+ 					num2++;
+ 			}
+ 
+@@ -44913,7 +_,10 @@
+ 		array = slotIterationOrder;
+ 		foreach (int num4 in array) {
+ 			Item item2 = items[num4];
++			/*
+ 			if (item2.ammo == sItem.useAmmo && item2.stack > 0) {
++			*/
++			if (item2.stack > 0 && ItemLoader.CanChooseAmmo(sItem, item2, this)) {
+ 				if (num == 0)
+ 					return item2;
+ 
+@@ -44924,7 +_,13 @@
+ 		return null;
+ 	}
+ 
++	/// <summary>
++	/// Attempts to select an ammo item stack from this player's inventory to shoot with the given weapon.
++	/// <para/> This honors the player's ammo cycling mode (<see cref="ammoCyclingMode"/>) and <see cref="ItemLoader.CanChooseAmmo"/> logic.
++	/// </summary>
++	/// <param name="sItem">The weapon for which this call should try to find ammo.</param>
++	/// <returns>Null if no suitable ammo is found; otherwise, returns the first ammo item found.</returns>
+-	private Item PickAmmo_PickAmmoItem(Item sItem)
++	public Item PickAmmo_PickAmmoItem(Item sItem)
+ 	{
+ 		if (ammoCyclingMode == PlayerAmmoCyclingMode.AmmoSlots) {
+ 			if (sItem.useAmmo == AmmoID.Coin) {
 @@ -44973,7 +_,7 @@
  					NetMessage.SendData(17, -1, -1, null, 0, x, y, 1f);
  				}

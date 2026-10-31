@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Terraria.ModLoader.IO;
 
@@ -6,11 +7,14 @@ namespace Terraria.ModLoader.Core;
 
 internal static class ContentConverters
 {
+	// Keep as PNG so they can be fetched easily from the modfile without loading the mod
+	private static List<String> keepAsPng = ["icon.png", "icon_small.png"];
+
 	internal static bool Convert(ref string resourceName, FileStream src, MemoryStream dst)
 	{
 		switch (Path.GetExtension(resourceName).ToLower()) {
 			case ".png":
-				if (resourceName != "icon.png" && ImageIO.ToRaw(src, dst)) {
+				if (!keepAsPng.Contains(resourceName) && ImageIO.ToRaw(src, dst)) {
 					resourceName = Path.ChangeExtension(resourceName, "rawimg");
 					return true;
 				}
