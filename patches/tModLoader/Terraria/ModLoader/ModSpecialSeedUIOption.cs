@@ -12,8 +12,9 @@ namespace Terraria.ModLoader;
 
 internal class ModSpecialSeedUIOption : AWorldGenerationOption
 {
-	protected override string KeyName { get; }
-	public override string ServerConfigName { get; }
+	protected override string KeyName { get; } // Used by vanilla seeds to find and load localization and texture data.
+	public override string ServerConfigName => CustomServerConfigName;
+	public string CustomServerConfigName;
 
 	public event EventHandler OnUIButtonPress;
 	public event Action<AWorldGenerationOption> OnAnyOptionStateChange;

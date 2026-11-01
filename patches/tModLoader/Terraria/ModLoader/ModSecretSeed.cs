@@ -22,7 +22,6 @@ public abstract class ModSecretSeed : ModSeedType
 	public string SeedCode {
 		get => _seedCode;
 		set {
-			_seedCode = value;
 			_seedCode = Regex.Replace(value, "[^a-zA-Z0-9 ]+", "");
 			SecretSeed.Code = Secrets.ToSecret(Regex.Replace(value.ToLower(), "[^a-z0-9]+", ""));
 			SecretSeed.TextThatWasUsedToUnlock = SeedCode;

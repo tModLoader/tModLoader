@@ -3,6 +3,7 @@ using Terraria.WorldBuilding;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -23,9 +24,15 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <summary>
 	/// The underlying data used to create and manage the option button for this seed in the menu.
 	/// <br/><br/>Note that UIOption.Enabled only states if the button is enabled in the menu.
-	/// Do NOT use it to check if a seed is enabled in a world.
+	/// Do NOT use it to check if a seed is enabled in a world. For that, use <see cref="SeedLoader.SeedEnabled"/> instead.
 	/// </summary>
 	public AWorldGenerationOption UIOption => _uIOption;
+
+	/// <summary>
+	/// The name that references this seed in config files for dedicated servers.
+	/// <br/><br/>If not specified, it will use the first name given for <see cref="SpecialSeedNames"/>. If no SpecialSeedNames are specified either, it will throw an exception on load time.
+	/// </summary>
+	public string ServerConfigName { get; protected set; }
 
 	/// <summary>
 	/// The translation for the display name of this special seed
@@ -90,6 +97,15 @@ public abstract class ModSpecialSeed : ModSeedType
 		textureAsset = ModContent.Request<Texture2D>(Texture);
 		SetupWorldGenerationOption();
 		SetStaticDefaults();
+		if (string.IsNullOrEmpty(ServerConfigName)) {
+			if(_uIOption.SpecialSeedNames.Length > 0) {
+				ServerConfigName = _uIOption.SpecialSeedNames[0];
+			}
+			else {
+				throw new Exception($"Special seed {FullName} did not have any SpecialSeedNames nor a dedicated ServerConfigName specified.");
+			}
+		}
+		_uIOption.CustomServerConfigName = Regex.Replace(ServerConfigName.ToLower(), "[^a-z0-9]+", "");
 		_uIOption.ToggleOnClick = ToggleOnClick;
 	}
 
@@ -220,7 +236,6 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// </summary>
 	/// <returns></returns>
 	public virtual IEnumerable<int> SpecialSeedNumbers() { return Enumerable.Empty<int>(); }
-
 
 	/// <summary>
 	/// Allows you to make things happen when the button for this option is pressed.

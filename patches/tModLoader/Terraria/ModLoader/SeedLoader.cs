@@ -321,9 +321,11 @@ public static class SeedLoader
 		return null;
 	}
 
-	internal static void AddModdedSecretSeeds(List<SecretSeed> list)
+	internal static void AddModdedSecretSeeds(List<SecretSeed> list, List<string> saved)
 	{
-		foreach (string seedCode in SecretSeedsTracker.ModSeedsForConfig) {
+		foreach (string seedCode in saved) {
+			if (!seedCode.Contains("::"))
+				continue;
 			string[] components = seedCode.Split("::");
 			string name = components[0];
 			string unlockText = components[1];
@@ -340,7 +342,6 @@ public static class SeedLoader
 			}
 			SecretSeedsTracker.UnloadedModSeeds.Add(seedCode);
 		}
-		SecretSeedsTracker.RefreshModConfigSeeds(); // Do this before adding auto-unlocked seeds since they don't need to be saved.
 		foreach (ModSecretSeed secretSeed in secretSeeds) {
 			if (!secretSeed.AutoUnlock)
 				continue;
