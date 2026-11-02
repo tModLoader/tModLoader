@@ -9,11 +9,130 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.Default;
+using Terraria.UI;
 
 namespace Terraria;
 
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
+	[ThreadStatic]
+	private static Dictionary<Player, Item[]> sharedAccessoryResolution;
+
+	private Item[] sharedAccessorySnapshot;
+	private Item[] sharedAccessoryInputs;
+	private (int Type, int Stack, int Prefix, int Flags, int WingSlot)[] sharedAccessoryInputState;
+	private int sharedAccessoryLoadout;
+
+	private static void ResetSharedAccessorySnapshot(Player player)
+	{
+		player.sharedAccessorySnapshot = null;
+		player.sharedAccessoryInputs = null;
+		player.sharedAccessoryInputState = null;
+	}
+
+	private static Item GetSharedAccessoryInput(Player player, ModAccessorySlotPlayer slots, int index)
+	{
+		int length = player.armor.Length;
+		if (index < length)
+			return player.armor[index];
+
+		index -= length;
+		if (index < length * player.Loadouts.Length)
+			return player.Loadouts[index / length].Armor[index % length];
+
+		index -= length * player.Loadouts.Length;
+		return slots.GetSharedLoadoutItem(
+			index < slots.SlotCount ? ItemSlot.Context.ModdedAccessorySlot : ItemSlot.Context.ModdedVanityAccessorySlot,
+			index, out _);
+	}
+
+	private static int GetSharedAccessoryFlags(Item item)
+	{
+		return (item.favorited ? 1 : 0) | (item.accessory ? 2 : 0) | (item.IsAir ? 4 : 0);
+	}
+
+	private static bool MatchesSharedAccessorySnapshot(Player player, ModAccessorySlotPlayer slots)
+	{
+		Item[] inputs = player.sharedAccessoryInputs;
+		if (player.sharedAccessorySnapshot == null ||
+			inputs.Length != player.armor.Length * (1 + player.Loadouts.Length) + slots.exAccessorySlot.Length ||
+			player.sharedAccessoryLoadout != player.CurrentLoadoutIndex)
+			return false;
+
+		var values = player.sharedAccessoryInputState;
+		for (int i = 0; i < inputs.Length; i++) {
+			Item item = GetSharedAccessoryInput(player, slots, i);
+			if (!ReferenceEquals(item, inputs[i]) ||
+				item.type != values[i].Type || item.stack != values[i].Stack || item.prefix != values[i].Prefix ||
+				GetSharedAccessoryFlags(item) != values[i].Flags || item.wingSlot != values[i].WingSlot)
+				return false;
+		}
+
+		return true;
+	}
+
+	private static bool CanShareAccessory(Player player, Item item, int slot)
+	{
+		if (!item.accessory)
+			return false;
+
+		sharedAccessoryResolution ??= new Dictionary<Player, Item[]>();
+		if (sharedAccessoryResolution.TryGetValue(player, out Item[] active)) {
+			// Equip hooks must see accessories already accepted by this pass without starting another resolution.
+			// Unvalidated shared candidates remain unavailable.
+			return ReferenceEquals(active[slot], item);
+		}
+
+		var slots = AccessorySlotLoader.ModSlotPlayer(player);
+		if (MatchesSharedAccessorySnapshot(player, slots))
+			return ReferenceEquals(player.sharedAccessorySnapshot[slot], item);
+
+		ResetSharedAccessorySnapshot(player);
+		var inputs = new Item[player.armor.Length * (1 + player.Loadouts.Length) + slots.exAccessorySlot.Length];
+		var values = new (int Type, int Stack, int Prefix, int Flags, int WingSlot)[inputs.Length];
+		for (int i = 0; i < inputs.Length; i++) {
+			Item entry = GetSharedAccessoryInput(player, slots, i);
+			inputs[i] = entry;
+			values[i] = (entry.type, entry.stack, entry.prefix, GetSharedAccessoryFlags(entry), entry.wingSlot);
+		}
+
+		int loadout = player.CurrentLoadoutIndex;
+		var snapshot = new Item[player.armor.Length + slots.exAccessorySlot.Length];
+		Array.Copy(player.armor, snapshot, player.armor.Length);
+		Array.Copy(inputs, inputs.Length - slots.exAccessorySlot.Length, snapshot, player.armor.Length, slots.exAccessorySlot.Length);
+
+		sharedAccessoryResolution.Add(player, snapshot);
+		try {
+			// Resolve shared accessories in slot order so conflict priority does not depend on query order.
+			for (int s = 3; s < player.armor.Length; s++) {
+				if (s % 10 < 3 || !snapshot[s].IsAir)
+					continue;
+
+				foreach (var loadoutItems in player.Loadouts) {
+					Item candidate = loadoutItems.Armor[s];
+					if (candidate.IsAir || !candidate.favorited)
+						continue;
+
+					if (candidate.accessory && !ItemSlot.AccCheck_ForPlayer(player, snapshot, candidate, s))
+						snapshot[s] = candidate;
+
+					break; // Match GetEffectiveArmor: only consider the first favorited item for this slot.
+				}
+			}
+
+			// Accessory effects can change their own equip conditions later in the same pass.
+			player.sharedAccessoryInputs = inputs;
+			player.sharedAccessoryInputState = values;
+			player.sharedAccessoryLoadout = loadout;
+			player.sharedAccessorySnapshot = snapshot;
+			return ReferenceEquals(snapshot[slot], item);
+		}
+		finally {
+			sharedAccessoryResolution.Remove(player);
+		}
+	}
+
 	internal IList<string> usedMods;
 	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
 	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();

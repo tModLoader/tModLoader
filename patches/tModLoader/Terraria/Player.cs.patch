@@ -1826,6 +1826,16 @@
  		}
  	}
  
+@@ -3924,6 +_,9 @@
+ 	private bool CanShareArmor(Item shareItem, int slot)
+ 	{
++		if (slot % 10 >= 3)
++			return CanShareAccessory(this, shareItem, slot);
++
+ 		if (!ItemSlot.CanEquipInArmorSlot(this, shareItem, slot))
+ 			return false;
+ 
+ 		bool vanity = slot >= 10;
 @@ -3973,7 +_,7 @@
  		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
  			return;
@@ -2768,6 +2778,14 @@
  	{
  		if (accType == 5574)
  			hasLuck_LuckyClover = true;
+@@ -10083,5 +_,7 @@
+ 	public void UpdateEquips(int i)
+ 	{
++		ResetSharedAccessorySnapshot(this);
++
+ 		if (inventory[selectedItem].type == 277 && (!mount.Active || !mount.Cart))
+ 			trident = true;
+ 
 @@ -10089,7 +_,10 @@
  		bool flag = false;
  		for (int j = 0; j < 58; j++) {
@@ -2793,8 +2811,12 @@
  					RefreshMechanicalAccsFromItemType(type2);
  				}
  			}
-@@ -10127,8 +_,14 @@
+@@ -10127,8 +_,18 @@
  		equippedAnyTileRangeAcc = false;
++
++		// Inventory hooks may have queried shared equipment before applying their effects.
++		ResetSharedAccessorySnapshot(this);
++
  		for (int m = 3; m < 10; m++) {
  			if (IsItemSlotUnlockedAndUsable(m))
 -				ApplyEquipFunctional(m, GetEffectiveArmor(m));
@@ -3568,7 +3590,7 @@
  	{
  		if (!ItemID.Sets.RapidAttackBonusDamage[itemType])
  			return damage;
-@@ -14644,7 +_,10 @@
+@@ -14644,9 +_,14 @@
  				rapidAttackBonus = num + num2;
  		}
  
@@ -3579,6 +3601,10 @@
  	}
  
  	public void ResetEffects()
+ 	{
++		ResetSharedAccessorySnapshot(this);
++
+ 		IsAllowedToHoldItems = true;
 @@ -14684,11 +_,17 @@
  		arcticDivingGear = false;
  		noBuilding = false;
@@ -3715,7 +3741,7 @@
  		defendedByPaladin = false;
  		hasPaladinShield = false;
  		hasLucyTheAxe = false;
-@@ -15183,20 +_,25 @@
+@@ -15183,20 +_,28 @@
  			}
  		}
  
@@ -3727,6 +3753,9 @@
 +
 +		PlayerLoader.ResetEffects(this);
 +		PlayerLoader.ResetInfoAccessories(this);
++
++		// Reset hooks may have queried equipment before all effects were cleared.
++		ResetSharedAccessorySnapshot(this);
  	}
  
  	private void UpdateLadyBugLuckTime()
