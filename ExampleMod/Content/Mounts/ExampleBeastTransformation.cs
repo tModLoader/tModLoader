@@ -283,6 +283,9 @@ namespace ExampleMod.Content.Mounts
 				drawInfo.weaponDrawOrder = WeaponDrawOrder.OverFrontArm; // Golf clubs appear over the mount's hand.
 
 			drawInfo.drawPlayer.ApplyItemPositionOffsetFromMount(ref drawInfo.ItemLocation);
+
+			drawInfo.mountHandlesHeadDraw = true; // The mount changes how the player's head is drawn.
+			drawInfo.mountDrawsEyelid = true; // The mount changes how the eye lid is drawn.
 		}
 
 		// Change where the head item sits on the mount.
@@ -465,7 +468,6 @@ namespace ExampleMod.Content.Mounts
 		// We can detour vanilla methods to insert our custom logic before or after the vanilla code runs.
 		// See the Detouring guide for more information on detours https://github.com/tModLoader/tModLoader/wiki/Advanced-Detouring-Guide 
 		public override void Load() {
-			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_AdditionalDrawInfo;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
 			// There are a few other minor things that the Velociraptor does such as an offset for the Eyebrella rain and the Solar Shield.
 		}
@@ -476,16 +478,6 @@ namespace ExampleMod.Content.Mounts
 				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
 			}
 			orig(ref drawinfo); // Run the vanilla method.
-		}
-
-		// Make the mount handle drawing the head and the eyelid.
-		private void On_PlayerDrawSet_AdditionalDrawInfo(On_PlayerDrawSet.orig_CreateCompositeData orig, ref PlayerDrawSet self) {
-			if (self.drawPlayer.mount.Active && self.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				self.mountHandlesHeadDraw = true; // The mount changes how the player's head is drawn.
-				self.mountDrawsEyelid = true; // The mount changes how the eye lid is drawn.
-			}
-
-			orig(ref self); // Run the vanilla method.
 		}
 	}
 

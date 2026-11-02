@@ -123,10 +123,14 @@
  
  		drawPlayer.GetHairSettings(out fullHair, out hatHair, out hideHair, out backHairDraw, out drawsBackHairWithoutHeadgear);
  		hairDyePacked = PlayerDrawHelper.PackShader(drawPlayer.hairDye, PlayerDrawHelper.ShaderConfiguration.HairShader);
-@@ -268,6 +_,10 @@
+@@ -268,6 +_,14 @@
  				AdjustmentsForPixieMount();
  		}
  
++		// TML: Moved these from BoringSetup_End to right before MountLoader.ModifyPlayerDrawInfo so it can be modified in the hook.
++		mountHandlesHeadDraw = false;
++		mountDrawsEyelid = false;
++
 +		if (drawPlayer.mount.Active && drawPlayer.mount.Type >= MountID.Count) {
 +			MountLoader.ModifyPlayerDrawInfo(drawPlayer.mount, ref this);
 +		}
@@ -175,7 +179,7 @@
  		Rectangle bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame = drawPlayer.bodyFrame;
  		bodyFrame.Height -= 2;
-@@ -1480,14 +_,23 @@
+@@ -1480,22 +_,34 @@
  			int height = 26;
  			hairFrontFrame.Height = height;
  		}
@@ -200,6 +204,17 @@
  			if (ArmorIDs.Front.Sets.DrawsInNeckLayerRegardlessOfPlayerFrame[drawPlayer.front])
  				drawFrontAccInNeckAccLayer = true;
  			else if (drawPlayer.bodyFrame.Y / drawPlayer.bodyFrame.Height == 5 && ArmorIDs.Front.Sets.DrawsInNeckLayer[drawPlayer.front])
+ 				drawFrontAccInNeckAccLayer = true;
+ 		}
+ 
++		// TML: Moved to right before MountLoader.ModifyPlayerDrawInfo in BoringSetup_2 so it can be modified in the hook.
++		/*
+ 		mountHandlesHeadDraw = false;
+ 		mountDrawsEyelid = false;
++		*/
+ 		if (drawPlayer.mount.Active && drawPlayer.mount.Type == 54) {
+ 			mountHandlesHeadDraw = true;
+ 			mountDrawsEyelid = true;
 @@ -1583,9 +_,9 @@
  	{
  		frontShoulderOffset = Vector2.Zero;
