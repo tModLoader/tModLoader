@@ -32,6 +32,9 @@ public struct WallTypeData : ITileData
 
 public struct LiquidData : ITileData
 {
+	private const int LiquidTypeBits = 6;
+	internal const int MaxLiquidTypes = 1 << LiquidTypeBits;
+
 	public byte Amount;
 
 	// c = checking liquid
@@ -39,7 +42,7 @@ public struct LiquidData : ITileData
 	// l = liquid id
 	private byte typeAndFlags;
 
-	public int LiquidType		{ get => Unpack(typeAndFlags, 0, 6); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, 6); }
+	public int LiquidType		{ get => Unpack(typeAndFlags, 0, LiquidTypeBits); set => typeAndFlags = (byte)Pack(value, typeAndFlags, 0, LiquidTypeBits); }
 	public bool SkipLiquid		{ get => GetBit(typeAndFlags, 6); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 6); }
 	public bool CheckingLiquid	{ get => GetBit(typeAndFlags, 7); set => typeAndFlags = (byte)SetBit(value, typeAndFlags, 7); }
 }

@@ -433,26 +433,16 @@
  			if (texture2D2 != null) {
  				item = new DrawData(texture2D2, Position, value2, color * ((float)(int)drawColor.A / 255f), num9, origin, scale, spriteEffects);
  				item.shader = currentShader;
-@@ -5467,6 +_,10 @@
+@@ -5467,6 +_,9 @@
  		bool cart = Cart;
  		_active = false;
  		mountedPlayer.ClearBuff(_data.buff);
 +
-+		bool skipDust = false;
-+		MountLoader.Dismount(this, mountedPlayer, ref skipDust);
++		MountLoader.Dismount(this, mountedPlayer, ref ignoreEffect);
 +
  		_mountSpecificData = null;
  		int type = _type;
  		if ((uint)(type - 55) <= 1u && mountedPlayer.noItems && !mountedPlayer.cursed)
-@@ -5482,7 +_,7 @@
- 		if (mountedPlayer.petting.isPetting && mountedPlayer.petting.mount)
- 			mountedPlayer.StopPettingAnimal();
- 
--		if (!ignoreEffect)
-+		if (!ignoreEffect && !skipDust)
- 			DoSpawnDust(mountedPlayer, isDismounting: true);
- 
- 		Reset();
 @@ -5508,7 +_,7 @@
  
  	public void SetMount(int m, Player mountedPlayer)

@@ -24,6 +24,9 @@ namespace ExampleMod.Content.Projectiles.Minions
 		public override void SetStaticDefaults() {
 			Main.projFrames[Type] = 4;
 			ProjectileID.Sets.MinionTargetingFeature[Type] = true;
+			
+			// Despawn the projectile when right clicked in range.
+			ProjectileID.Sets.DespawnItemIcon[Type] = ModContent.ItemType<ExampleSentryItem>();
 		}
 
 		public override void SetDefaults() {

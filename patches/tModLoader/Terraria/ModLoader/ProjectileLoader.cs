@@ -825,4 +825,20 @@ public static class ProjectileLoader
 			g.FlailSpinCollisionRange(projectile, ref range);
 		}
 	}
+
+	private delegate bool DelegatePreTryDespawning(Projectile projectile, ref bool giveItem);
+	private static HookList HookPreTryDespawning = AddHook<DelegatePreTryDespawning>(g => g.PreTryDespawning);
+
+	public static bool PreTryDespawning(Projectile projectile, out bool giveItem)
+	{
+		giveItem = true;
+
+		bool result = projectile.ModProjectile?.PreTryDespawning(ref giveItem) ?? true;
+
+		foreach (var g in HookPreTryDespawning.Enumerate(projectile)) {
+			result &= g.PreTryDespawning(projectile, ref giveItem);
+		}
+
+		return result;
+	}
 }

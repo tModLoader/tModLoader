@@ -167,6 +167,36 @@ internal static partial class TileIO
 		}
 	}
 
+	public class LiquidIOImpl : IOImpl<ModLiquid, LiquidEntry>
+	{
+		public LiquidIOImpl() : base("liquidMap", "liquidData") { }
+
+		protected override int LoadedBlockCount => LiquidLoader.LiquidCount;
+
+		protected override IEnumerable<ModLiquid> LoadedBlocks => LiquidLoader.liquids;
+
+		protected override LiquidEntry ConvertBlockToEntry(ModLiquid liquid) => new LiquidEntry(liquid);
+
+		protected override ushort GetModBlockType(Tile tile)
+		{
+			if (tile.LiquidAmount == 0 || tile.LiquidType < LiquidID.Count) {
+				return 0;
+			}
+
+			return (ushort)tile.LiquidType;
+		}
+
+		protected override void ReadData(Tile tile, LiquidEntry entry, BinaryReader reader)
+		{
+			tile.LiquidType = entry.loadedType;
+		}
+
+		protected override void WriteData(BinaryWriter writer, Tile tile, LiquidEntry entry)
+		{
+			writer.Write(entry.type);
+		}
+	}
+
 	public class TileIOImpl : IOImpl<ModTile, TileEntry>
 	{
 		public TileIOImpl() : base("tileMap", "tileData") { }
@@ -230,10 +260,12 @@ internal static partial class TileIO
 
 	internal static TileIOImpl Tiles = new TileIOImpl();
 	internal static WallIOImpl Walls = new WallIOImpl();
+	internal static LiquidIOImpl Liquids = new LiquidIOImpl();
 
 	//NOTE: LoadBasics can't be separated into LoadWalls() and LoadTiles() because of LoadLegacy.
 	internal static void LoadBasics(TagCompound tag)
 	{
+		Liquids.LoadEntries(tag, out var liquidEntriesLookup);
 		Tiles.LoadEntries(tag, out var tileEntriesLookup);
 		Walls.LoadEntries(tag, out var wallEntriesLookup);
 
@@ -245,13 +277,21 @@ internal static partial class TileIO
 			Walls.LoadData(tag, wallEntriesLookup);
 		}
 
+		if (false /*legacy loader for ModLiquidLibrary could go here*/) {
+
+		}
+		else {
+			Liquids.LoadData(tag, liquidEntriesLookup);
+		}
+
 		WorldIO.ValidateSigns(); //call this at end
 	}
 
-	//TODO: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
+	//NOTE: This can likely be refactored to be SaveWalls() and SaveTiles(), but is left as is to mirror LoadBasics()
 	internal static TagCompound SaveBasics()
 	{
 		var tag = new TagCompound();
+		Liquids.Save(tag);
 		Tiles.Save(tag);
 		Walls.Save(tag);
 		return tag;
@@ -261,11 +301,13 @@ internal static partial class TileIO
 	{
 		Tiles.unloadedTypes.Clear();
 		Walls.unloadedTypes.Clear();
+		Liquids.unloadedTypes.Clear();
 	}
 
 	internal static void ClearWorld()
 	{
 		Tiles.Clear();
 		Walls.Clear();
+		Liquids.Clear();
 	}
 }

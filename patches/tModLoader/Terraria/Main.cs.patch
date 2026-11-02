@@ -11,7 +11,7 @@
  using System.IO;
  using System.Linq;
  using System.Reflection;
-@@ -68,12 +_,19 @@
+@@ -68,11 +_,18 @@
  using Terraria.IO;
  using Terraria.Localization;
  using Terraria.Map;
@@ -26,11 +26,10 @@
  using Terraria.Physics;
  using Terraria.Social;
  using Terraria.Social.Base;
- using Terraria.Testing;
 +using Terraria.Social.Steam;
+ using Terraria.Testing;
  using Terraria.UI;
  using Terraria.UI.Chat;
- using Terraria.UI.Gamepad;
 @@ -83,9 +_,9 @@
  namespace Terraria;
  
@@ -4635,6 +4634,38 @@
  		stringColor = TryApplyingPlayerStringColor(theOwner.stringColor, stringColor);
  		float gravDir = theOwner.gravDir;
  		switch (type) {
+@@ -33712,17 +_,22 @@
+ 			localPlayer.GamepadEnableGrappleCooldown();
+ 
+ 		if (mouseRight && mouseRightRelease && Player.BlockInteractionWithProjectiles == 0) {
++			if (!ProjectileLoader.PreTryDespawning(proj, out bool giveItem))
++				goto PostDespawn;
+ 			mouseRightRelease = false;
+ 			localPlayer.tileInteractAttempted = true;
+ 			localPlayer.tileInteractionHappened = true;
+ 			localPlayer.releaseUseTile = false;
++			/*
+ 			bool giveItem = true;
++			*/
+ 			TryDespawningProjectile_ModifyBeforeKill(proj, ref giveItem);
+ 			proj.Kill();
+ 			if (giveItem && ProjectileID.Sets.DespawnItemGivesItemBack[proj.type])
+ 				Item.RequestNewItem(proj.GetItemSource_DropAsItem(), proj.Center, itemIcon, 1, 0, NewItemOwnership.ReserveForLocalPlayer);
+ 
+ 			TryDespawningProjectile_SpecialkillCode(proj);
++			PostDespawn:;
+ 		}
+ 
+ 		if (!SmartCursorIsUsed && !PlayerInput.UsingGamepad)
+@@ -33736,7 +_,7 @@
+ 
+ 	private void TryDespawningProjectile_ModifyBeforeKill(Projectile proj, ref bool giveItem)
+ 	{
+-		if (proj.aiStyle == 16 && !proj.hostile) {
++		if ((proj.aiStyle == 16 || ProjectileID.Sets.Explosive[proj.type]) && !proj.hostile) {
+ 			proj.ai[0] = 1000f;
+ 			NetMessage.SendData(27, -1, -1, null, proj.whoAmI);
+ 		}
 @@ -33939,10 +_,13 @@
  			}
  			else if (npc[i].type == 516 || npc[i].type == 519) {
@@ -5306,17 +5337,6 @@
  		if (explicitNone && _requiredObjectsForCraftingText.Count == 0) {
  			string value = Lang.inter[23].Value;
  			_requiredObjectsForCraftingText.Add(value);
-@@ -37703,6 +_,10 @@
- 		if (item.IsAir)
- 			return true;
- 
-+		// #StackablePrefixWeapons: Gameplay impact: Prevent crafted prefix application by blocking crafting if mouse item is prefixed
-+		if (mouseItem.maxStack > 1 && mouseItem.AllowReforgeForStackableItem && mouseItem.prefix > 0)
-+			return false;
-+
- 		if (!item.CanHavePrefixes() && Item.CanStack(item, currentRecipe.createItem) && item.stack + currentRecipe.createItem.stack <= item.maxStack)
- 			return true;
- 
 @@ -37732,6 +_,11 @@
  			inventoryScale = 0.755f;
  			num += 5;

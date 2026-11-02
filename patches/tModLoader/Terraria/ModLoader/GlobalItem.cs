@@ -1035,10 +1035,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 		return true;
 	}
 
-	/// <summary>
-	/// Allows you to make special things happen when the player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
-	/// <para/> Called on the local client only.
-	/// </summary>
+	/// <inheritdoc cref="ModItem.OnPickup(WorldItem, Player)"/>
 	public virtual bool OnPickup(WorldItem item, Player player)
 	{
 		return true;

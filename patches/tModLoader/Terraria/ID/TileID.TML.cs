@@ -116,18 +116,32 @@ partial class TileID
 		/// </summary>
 		public static bool[] CanPlaceNextToNonSolidTile = Factory.CreateBoolSet(false, Cobweb, CopperCoinPile, SilverCoinPile, GoldCoinPile, PlatinumCoinPile, LivingFire, LivingCursedFire, LivingDemonFire, LivingFrostFire, LivingIchor, LivingUltrabrightFire, ChimneySmoke, Bubble, CobwebReplica);
 
-		/// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
+		// New created sets to facilitate vanilla biome block counting including modded blocks. To replace the current hardcoded counts in SceneMetrics.cs
+		/// <summary>
+		/// How much this tile counts towards this biome. Defaults to 0. The value for tiles that should count towards this biome is typically 1, but can be negative to detract from counting as that biome (<see cref="Sunflower"/>).
+		/// <para/> Jungle, Crimson, and Corrupt biomes have separate sets to handle the changed logic of remix worlds. Use <see cref="AddCrimsonTile"/> and similar methods to populate both sets at once. -10 values in Corrupt and Crimson sets, such as used by <see cref="Sunflower"/>, will be tripled on "Purify this" seeds.
+		/// </summary>
 		public static int[] CorruptBiome = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] HallowBiome = Factory.CreateIntSet(0, 109, 1, 492, 1, 110, 1, 113, 1, 117, 1, 116, 1, 164, 1, 403, 1, 402, 1);
-		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 201, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
+		public static int[] CrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 201, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] SnowBiome = Factory.CreateIntSet(0, 147, 1, 148, 1, 161, 1, 162, 1, 164, 1, 163, 1, 200, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] JungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 226, 1, 225, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] MushroomBiome = Factory.CreateIntSet(0, 70, 1, 71, 1, 72, 1, 528, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] SandBiome = Factory.CreateIntSet(0, 53, 1, 112, 1, 116, 1, 234, 1, 397, 1, 398, 1, 402, 1, 399, 1, 396, 1, 400, 1, 403, 1, 401, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] DungeonBiome = Factory.CreateIntSet(0, 41, 1, 43, 1, 44, 1, 481, 1, 482, 1, 483, 1);
 
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] RemixJungleBiome = Factory.CreateIntSet(0, 60, 1, 61, 1, 62, 1, 74, 1, 225, 1);
-		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1, 201, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
+		public static int[] RemixCrimsonBiome = Factory.CreateIntSet(0, 199, 1, 662, 1, 201, 1, 203, 1, 200, 1, 401, 1, 399, 1, 234, 1, 352, 1, 27, -10, 195, 1);
+		/// <inheritdoc cref="CorruptBiome"/>
 		public static int[] RemixCorruptBiome = Factory.CreateIntSet(0, 23, 1, 661, 1, 24, 1, 25, 1, 32, 1, 112, 1, 163, 1, 400, 1, 398, 1, 27, -10, 474, 1);
 
 		/// <summary>

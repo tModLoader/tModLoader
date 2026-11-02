@@ -2762,6 +2762,17 @@
  			if (tileCache.type == 627 || tileCache.type == 628 || (tileCache.type == 184 && tileCache.frameX / 22 == 10)) {
  				int num19 = Dust.NewDust(new Vector2(i * 16, j * 16), 16, 16, num, 0f, 0f, 0, new Color(Main.DiscoR, Main.DiscoG, Main.DiscoB));
  				Main.dust[num19].noGravity = true;
+@@ -58508,7 +_,10 @@
+ 	public static bool IsOpenDoorAnchorFrame(int x, int y)
+ 	{
+ 		Tile tile = Main.tile[x, y];
++		/*
+ 		if (!tile.active() || tile.type != 11)
++		*/
++		if (!tile.active() || (tile.type != 11 && TileID.Sets.CloseDoorID[tile.type] == -1))
+ 			return false;
+ 
+ 		int num = tile.frameX % 72;
 @@ -58525,6 +_,10 @@
  		if (t.type == 10 && t.frameY >= 594 && t.frameY <= 646)
  			return t.frameX < 54;
@@ -3308,7 +3319,7 @@
  											TileMergeAttempt(num, Main.tileBrick, TileID.Sets.Mud, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
  											break;
  										case 633:
-@@ -68673,8 +_,12 @@
+@@ -68673,22 +_,34 @@
  								break;
  						}
  
@@ -3321,7 +3332,29 @@
  						bool flag = false;
  						switch (num) {
  							default:
-@@ -68705,22 +_,33 @@
+ 								flag = false;
+ 								break;
++ 							/*
+ 							case 1:
+ 							case 25:
+ 							case 117:
+ 							case 147:
++							*/
++							case int _ when TileID.Sets.Stone[num]:
++							/*
+ 							case 161:
+ 							case 163:
+ 							case 164:
+ 							case 200:
++							*/
++							case int _ when TileID.Sets.IcesSnow[num]:
++							/*
+ 							case 203:
++							*/
+ 							case 225:
+ 								flag = true;
+ 								break;
+@@ -68705,22 +_,34 @@
  						if (up == 165 && flag && flag3)
  							up = num;
  
@@ -3341,6 +3374,7 @@
  							case 25:
  							case 117:
  							case 147:
++							*/
 +							case int _ when TileID.Sets.Stone[num]:
 +							/*
  							case 161:
@@ -3348,7 +3382,7 @@
  							case 164:
  							case 200:
 +							*/
-+							case int _ when TileID.Sets.Ices[num]:
++							case int _ when TileID.Sets.IcesSnow[num]:
 +							/*
  							case 203:
 +							*/

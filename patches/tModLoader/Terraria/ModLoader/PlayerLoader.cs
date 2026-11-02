@@ -1256,13 +1256,13 @@ public static class PlayerLoader
 		}
 	}
 
-	private delegate void DelegateModifyZoom(ref float zoom);
+	private delegate void DelegateModifyZoom(ref float panFactor, ref bool needsMouseRight);
 	private static HookList HookModifyZoom = AddHook<DelegateModifyZoom>(p => p.ModifyZoom);
 
-	public static void ModifyZoom(Player player, ref float zoom)
+	public static void ModifyZoom(Player player, ref float panFactor, ref bool needsMouseRight)
 	{
 		foreach (var modPlayer in HookModifyZoom.Enumerate(player)) {
-			try { modPlayer.ModifyZoom(ref zoom); } catch { }
+			try { modPlayer.ModifyZoom(ref panFactor, ref needsMouseRight); } catch { }
 		}
 	}
 

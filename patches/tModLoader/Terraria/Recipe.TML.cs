@@ -34,6 +34,7 @@ public partial class Recipe
 		public static IngredientQuantityCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
 			if (!Main.LocalPlayer.alchemyTable && !isDecrafting)
 				return;
+
 			for (int i = amount; i > 0; i--) {
 				if (Main.rand.NextBool(3))
 					amount--;

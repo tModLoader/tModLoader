@@ -6,7 +6,7 @@ using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.ModLoader;
 
-namespace ExampleMod.NPCs
+namespace ExampleMod.Content.NPCs
 {
 	public enum WormSegmentType
 	{

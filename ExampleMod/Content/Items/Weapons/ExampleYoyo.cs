@@ -18,8 +18,8 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override void SetDefaults() {
-			Item.width = 24; // The width of the item's hitbox.
-			Item.height = 24; // The height of the item's hitbox.
+			Item.width = 24;
+			Item.height = 24;
 
 			Item.useStyle = ItemUseStyleID.Shoot; // The way the item is used (e.g. swinging, throwing, etc.)
 			Item.useTime = 25; // All vanilla yoyos have a useTime of 25.

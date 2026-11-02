@@ -1,31 +1,3 @@
-@@ -902,20 +_,27 @@
- 				int num22 = genRand.Next(5, 21);
- 				int num23 = num20;
- 				int num24 = num21;
-+				/*
- 				Tile tile5 = new Tile(Main.tile[num20, num21]);
-+				*/
-+				Tile tile5 = Main.tile[num20, num21];
- 				for (int num25 = 0; num25 < num22; num25++) {
- 					num23 += (int)vector2D.X;
- 					num24 += (int)vector2D.Y;
- 					if (Main.tile[num23, num24].active())
- 						break;
- 
-+					/*
- 					Main.tile[num20, num21].slope(0);
- 					Main.tile[num20, num21].halfBrick(halfBrick: false);
-+					*/
- 					Main.tile[num23, num24].active(tile5.active());
- 					Main.tile[num23, num24].type = tile5.type;
- 					Main.tile[num23, num24].color(tile5.color());
- 					Main.tile[num23, num24].fullbrightBlock(tile5.fullbrightBlock());
- 					Main.tile[num23, num24].invisibleBlock(tile5.invisibleBlock());
-+					tile5.Slope = SlopeType.Solid;
-+					tile5.IsHalfBlock = false;
- 				}
- 			}
- 		}
 @@ -2518,12 +_,20 @@
  	public static void SaveAndQuitCallBack(object threadContext)
  	{
@@ -119,36 +91,6 @@
  		if (Main.netMode == 2)
  			Netplay.ResetSections();
  
-@@ -33829,7 +_,7 @@
- 			if (Main.tile[k, j - 1] == null)
- 				Main.tile[k, j - 1] = new Tile();
- 
--			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || Main.tile[k, j - 1].type == 88 || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
-+			if (Main.tile[k, j - 1].active() && (TileID.Sets.BasicChest[Main.tile[k, j - 1].type] || TileID.Sets.BasicChestFake[Main.tile[k, j - 1].type] || TileID.Sets.BasicDresser[Main.tile[k, j - 1].type]  || Main.tile[k, j - 1].type == 470 || Main.tile[k, j - 1].type == 475 || Main.tile[k, j - 1].type == 597))
- 				return;
- 
- 			if (!SolidTileAllowBottomSlope(k, j + 1))
-@@ -60380,14 +_,20 @@
- 										break;
- 								}
- 
-+								/*
- 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && down == 165) {
-+								*/
-+								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && down == 165) {
- 									if (tile3 != null && tile3.frameY == 72)
- 										down = num;
- 									else if (tile3 != null && tile3.frameY == 0)
- 										down = num;
- 								}
- 
-+								/*
- 								if ((num == 1 || Main.tileMoss[num] || num == 117 || num == 25 || num == 203) && up == 165) {
-+								*/
-+								if ((TileID.Sets.Stone[num] || Main.tileMoss[num]) && up == 165) {
- 									if (tile2 != null && tile2.frameY == 90)
- 										up = num;
- 									else if (tile2 != null && tile2.frameY == 54)
 @@ -63276,7 +_,7 @@
  								if (!noTileActions && tile.active() && TileID.Sets.Falling[num])
  									SpawnFallingBlockProjectile(i, j, tile, tile2, tile3, num);

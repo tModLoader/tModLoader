@@ -169,6 +169,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool MagicPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
+	/// <summary>
+	/// Allows you to change whether or not a weapon receives summon prefixes. Return true if the item should receive summon prefixes and false if it should not
+	/// </summary>
 	public virtual bool SummonPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Summon);
 
@@ -1212,11 +1215,13 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when the player picks up this item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The WorldItem instance of this item.</param>
-	/// <param name="player">The player.</param>
+	/// <param name="player">The local player.</param>
 	/// <returns></returns>
 	public virtual bool OnPickup(WorldItem item, Player player)
 	{
