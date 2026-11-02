@@ -328,20 +328,6 @@ jobs:
         id: setupsteam
         uses: CyberAndrii/setup-steamcmd@v1
         
-      #Build first so ExampleMod build doesn't attempt to run ciprep code for the mod
-      - name: Build ExampleLibraryMod
-        shell: bash
-        run: |
-          echo ::group::Building ExampleLibraryMod
-          ModloaderDir=$(pwd)/local/ModLoader
-          echo ModloaderDir is: $ModloaderDir
-          mkdir -p $ModloaderDir
-          export ExtraBuildModFlags="-tmlsavedirectory \"$(cygpath -w $ModloaderDir)\""
-          echo ExtraBuildModFlags is: $ExtraBuildModFlags
-          dotnet build ExampleLibraryMod/ExampleLibraryMod.csproj --nologo
-          unset ExtraBuildModFlags
-          echo ::endgroup::
-        
       - name: Build ExampleMod
         shell: bash
         run: |
