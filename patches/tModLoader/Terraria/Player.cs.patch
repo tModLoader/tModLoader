@@ -1596,7 +1596,7 @@
  		int num = 0;
  		if (sItem.autoReuse && sItem.reuseDelay == 0 && sItem.useTime <= sItem.useAnimation && sItem.shoot > 0 && sItem.useStyle == 5)
  			num = 1;
-@@ -2874,6 +_,26 @@
+@@ -2874,6 +_,30 @@
  		}
  
  		reuseDelay = sItem.reuseDelay;
@@ -1616,7 +1616,11 @@
 +	{
 +		ItemLoader.UseAnimation(sItem, this);
 +
-+		SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
++		int animationTime = CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem);
++		if (DebugOptions.ManaV2 && sItem.mana > 0)
++			animationTime = GetSlowMagicUseTime(animationTime);
++
++		SetItemAnimation(animationTime);
 +
 +		reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
 +		ItemUsesThisAnimation = 0;
