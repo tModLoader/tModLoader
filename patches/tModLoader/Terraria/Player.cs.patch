@@ -1665,7 +1665,7 @@
  		}
  
  		return zero;
-@@ -3218,14 +_,19 @@
+@@ -3218,15 +_,22 @@
  			return beardOffset;
  
  		if (mount.Type == 54) {
@@ -1683,8 +1683,11 @@
  			}
 +			*/
  		}
++
++		beardOffset += MountLoader.BeardOffset(mount, this);
  
  		return beardOffset;
+ 	}
 @@ -3252,7 +_,7 @@
  	public Vector2 GetFrontDrawOffset()
  	{
@@ -7743,6 +7746,15 @@
 +	{
  		if (Main.dedServ)
  			return;
+ 
+@@ -43102,6 +_,8 @@
+ 			}
+ 		}
+ 
++		zero += MountLoader.HeldItemOffset(mount, this, pos);
++
+ 		pos += zero;
+ 	}
  
 @@ -43198,6 +_,8 @@
  			}

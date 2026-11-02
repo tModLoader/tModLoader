@@ -674,6 +674,15 @@
  			if (drawinfo.drawPlayer.mount.Active && drawinfo.mountHandlesHeadDraw && drawinfo.mountDrawsEyelid && drawinfo.drawPlayer.head == 288) {
  				color = Color.Black;
  				frameY = 2;
+@@ -2535,6 +_,8 @@
+ 					pos -= drawinfo.drawPlayer.GetHelmetOffsetAddonFromMount();
+ 					break;
+ 			}
++
++			MountLoader.FaceAccessoryOffset(drawinfo.drawPlayer.mount, drawinfo.drawPlayer, ref pos);
+ 		}
+ 
+ 		return pos;
 @@ -2546,18 +_,21 @@
  		bool hasRockGolemHead = false;
  		bool flag = drawinfo.drawPlayer.head == 287;

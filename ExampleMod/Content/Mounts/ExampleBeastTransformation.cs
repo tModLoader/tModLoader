@@ -322,8 +322,144 @@ namespace ExampleMod.Content.Mounts
 					offset += new Vector2(4f, 4f) * player.Directions;
 					break;
 			}
+
+			// Certain helmets have an additional offset to better sit on the mount's head.
+			if (player.head >= 0)
+				offset += ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[player.head] * player.Directions; // Reuse the offsets created for the Velociraptor.
+
 			return offset;
 		}
+
+		// Change where the beard sits on the mount if the mount can wear beards.
+		public override Vector2 BeardOffset(Player player) {
+			Vector2 beardOffset = new Vector2(2f, 4f) * player.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
+			if (player.mount.Frame == 6)
+				beardOffset += new Vector2(0f, 2f) * player.Directions;
+			else if (player.mount.Frame == 7)
+				beardOffset += new Vector2(-2f, 4f) * player.Directions;
+			return beardOffset;
+		}
+
+		// Offsets items that the player is holding to match up with the mount's hand.
+		public override Vector2 HeldItemOffset(Player player, Vector2 originalPos) {
+			int bodyYFrame = player.bodyFrame.Y / player.bodyFrame.Height;
+			Vector2 itemOffset = Vector2.Zero;
+			bool itemAnimating = player.itemAnimation > 0;
+			bool notAnimatingButHoldStyle = !itemAnimating && player.HeldItem.holdStyle > 0;
+			if (!itemAnimating && !notAnimatingButHoldStyle)
+				return default;
+
+			bool useStyleShoot = player.HeldItem.useStyle == ItemUseStyleID.Shoot;
+			bool useStyleEatFood = player.HeldItem.useStyle == ItemUseStyleID.EatFood;
+			bool useStyleDrinkLiquid = player.HeldItem.useStyle == ItemUseStyleID.DrinkLiquid;
+			bool usingFishingPole = player.HeldItem.fishingPole != 0;
+			bool useStyleRaiseLamp = player.HeldItem.useStyle == ItemUseStyleID.RaiseLamp;
+			bool useStyleGolfPlay = player.HeldItem.useStyle == ItemUseStyleID.GolfPlay;
+			bool heldYoyo = player.HeldItem.type > ItemID.None && ItemID.Sets.Yoyo[player.HeldItem.type];
+			bool useStyleMowTheLawn = player.HeldItem.useStyle == ItemUseStyleID.MowTheLawn;
+			bool heldNebulaBlaze = player.HeldItem.type == ItemID.NebulaBlaze;
+			bool heldKite = player.HeldItem.type > ItemID.None && ItemID.Sets.IsAKite[player.HeldItem.type];
+			bool holdStyleHoldFront = player.HeldItem.holdStyle == ItemHoldStyleID.HoldFront;
+			bool holdStyleHoldUp = player.HeldItem.holdStyle == ItemHoldStyleID.HoldUp;
+			bool holdStyleHoldGuitar = player.HeldItem.holdStyle == ItemHoldStyleID.HoldGuitar;
+
+			if (useStyleEatFood) {
+				if (itemAnimating)
+					itemOffset += new Vector2(7f, -4f) * player.Directions;
+				else
+					itemOffset += new Vector2(3f, 2f) * player.Directions;
+			}
+			else if (usingFishingPole) {
+				itemOffset += new Vector2(-2f, 0f) * player.Directions;
+			}
+			else if (useStyleDrinkLiquid) {
+				if (itemAnimating)
+					itemOffset += new Vector2(14f, -10f) * player.Directions;
+				else
+					itemOffset += new Vector2(3f, 2f) * player.Directions;
+			}
+			else if (useStyleMowTheLawn) {
+				if (itemAnimating)
+					itemOffset += new Vector2(4f, 0f) * player.Directions;
+				else
+					itemOffset += new Vector2(1f, 0f) * player.Directions;
+			}
+			else if (useStyleGolfPlay) {
+				itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (useStyleRaiseLamp) {
+				if (itemAnimating)
+					itemOffset += new Vector2(-6f, 6f) * player.Directions;
+				else
+					itemOffset += new Vector2(-10f, 10f) * player.Directions;
+			}
+			else if (heldKite) {
+				itemOffset += new Vector2(4f, -4f) * player.Directions;
+			}
+			else if (holdStyleHoldGuitar) {
+				itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (holdStyleHoldFront && !itemAnimating) {
+				itemOffset += new Vector2(1f, 4f) * player.Directions;
+			}
+			else if (holdStyleHoldUp) {
+				if (itemAnimating && player.HeldItem.type == ItemID.BreathingReed)
+					itemOffset += new Vector2(-4f, 0f).RotatedBy((originalPos - player.Center).ToRotation(), Vector2.Zero);
+				else
+					itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (heldYoyo) {
+				switch (bodyYFrame) {
+					case 2:
+						itemOffset += new Vector2(10f, -10f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(8f, 0f) * player.Directions;
+						break;
+					case 4:
+						itemOffset += new Vector2(2f, 2f) * player.Directions;
+						break;
+				}
+			}
+			else if (heldNebulaBlaze) {
+				switch (bodyYFrame) {
+					case 2:
+						itemOffset += new Vector2(-10f, 0f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(10f, 0f) * player.Directions;
+						break;
+					case 4:
+						itemOffset += new Vector2(10f, 0f) * player.Directions;
+						break;
+				}
+			}
+			else if (useStyleShoot) {
+				itemOffset += new Vector2(4f, 0f) * player.Directions;
+			}
+			else {
+				switch (bodyYFrame) {
+					case 1:
+						itemOffset += new Vector2(1f, -1f) * player.Directions;
+						break;
+					case 2:
+						itemOffset += new Vector2(4f, 2f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(2f, 0f) * player.Directions;
+						break;
+				}
+			}
+
+			return itemOffset;
+		}
+
+		// Offsets face accessory items. By default, the offsets from ModMount.HeadItemOffset will be applied.
+		// An additional offset can be applied by changing the faceOffset parameter.
+		// Returns true by default to apply the head offset. Return false to prevent that.
+		// public override bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset) {
+		// 	return true;
+		// }
 
 		// Our transformation mount requires some more logic that cannot be achieved with the hooks or sets that are currently available.
 		// We can detour vanilla methods to insert our custom logic before or after the vanilla code runs.
@@ -331,10 +467,6 @@ namespace ExampleMod.Content.Mounts
 		public override void Load() {
 			Terraria.DataStructures.On_PlayerDrawSet.CreateCompositeData += On_PlayerDrawSet_AdditionalDrawInfo;
 			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
-			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc += On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc;
-			Terraria.On_Player.ApplyItemPositionOffsetFromMount += On_Player_ApplyItemPositionOffsetFromMount;
-			Terraria.On_Player.GetHelmetOffsetAddonFromMount += On_Player_GetHelmetOffsetAddonFromMount;
-			Terraria.On_Player.GetBeardOffsetAddonFromMount += On_Player_GetBeardOffsetAddonFromMount;
 			// There are a few other minor things that the Velociraptor does such as an offset for the Eyebrella rain and the Solar Shield.
 		}
 
@@ -354,166 +486,6 @@ namespace ExampleMod.Content.Mounts
 			}
 
 			orig(ref self); // Run the vanilla method.
-		}
-
-		// Apply the same offset for face accessories as the Velociraptor.
-		private Vector2 On_PlayerDrawLayers_DrawPlayer_GetMountOffsetForFaceAcc(On_PlayerDrawLayers.orig_DrawPlayer_GetMountOffsetForFaceAcc orig, ref PlayerDrawSet drawinfo, ref bool isVelociraptor, ref bool hasRockGolemHead) {
-			Vector2 pos = orig(ref drawinfo, ref isVelociraptor, ref hasRockGolemHead); // Run the vanilla method and capture what it returned.
-
-			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				drawinfo.drawPlayer.ApplyHeadOffsetFromMount(ref pos);
-				pos -= drawinfo.drawPlayer.GetHelmetOffsetAddonFromMount();
-				isVelociraptor = true;
-			}
-
-			return pos; // Return the modified position.
-		}
-
-		// Change where the beard sits on the mount if the mount can wear beards.
-		private Vector2 On_Player_GetBeardOffsetAddonFromMount(On_Player.orig_GetBeardOffsetAddonFromMount orig, Player self, Vector2 beardOffset) {
-			Vector2 originalReturn = orig(self, beardOffset); // Run the vanilla method and capture what it returned.
-
-			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				beardOffset += new Vector2(2f, 4f) * self.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
-				if (self.mount.Frame == 6)
-					beardOffset += new Vector2(0f, 2f) * self.Directions;
-				else if (self.mount.Frame == 7)
-					beardOffset += new Vector2(-2f, 4f) * self.Directions;
-				return beardOffset;
-			}
-
-			return originalReturn; // Return the vanilla position if it for wasn't our mount.
-		}
-
-		// Certain helmets have an additional offset to better sit on the mount's head.
-		private Vector2 On_Player_GetHelmetOffsetAddonFromMount(On_Player.orig_GetHelmetOffsetAddonFromMount orig, Player self) {
-			Vector2 originalReturn = orig(self); // Run the vanilla method and capture what it returned.
-
-			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				// Reuse the offsets created for the Velociraptor.
-				if (self.head >= 0)
-					return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[self.head] * self.Directions;
-			}
-
-			return originalReturn; // Return the vanilla position if it for wasn't our mount.
-		}
-
-		// Offsets items that the player is holding to match up with the mount's hand.
-		private void On_Player_ApplyItemPositionOffsetFromMount(On_Player.orig_ApplyItemPositionOffsetFromMount orig, Player self, ref Vector2 pos) {
-			orig(self, ref pos); // Run the vanilla method.
-
-			int bodyYFrame = self.bodyFrame.Y / self.bodyFrame.Height;
-			Vector2 itemOffset = Vector2.Zero;
-			bool itemAnimating = self.itemAnimation > 0;
-			bool notAnimatingButHoldStyle = !itemAnimating && self.HeldItem.holdStyle > 0;
-			if (!itemAnimating && !notAnimatingButHoldStyle)
-				return;
-
-			bool useStyleShoot = self.HeldItem.useStyle == ItemUseStyleID.Shoot;
-			bool useStyleEatFood = self.HeldItem.useStyle == ItemUseStyleID.EatFood;
-			bool useStyleDrinkLiquid = self.HeldItem.useStyle == ItemUseStyleID.DrinkLiquid;
-			bool usingFishingPole = self.HeldItem.fishingPole != 0;
-			bool useStyleRaiseLamp = self.HeldItem.useStyle == ItemUseStyleID.RaiseLamp;
-			bool useStyleGolfPlay = self.HeldItem.useStyle == ItemUseStyleID.GolfPlay;
-			bool heldYoyo = self.HeldItem.type > ItemID.None && ItemID.Sets.Yoyo[self.HeldItem.type];
-			bool useStyleMowTheLawn = self.HeldItem.useStyle == ItemUseStyleID.MowTheLawn;
-			bool heldNebulaBlaze = self.HeldItem.type == ItemID.NebulaBlaze;
-			bool heldKite = self.HeldItem.type > ItemID.None && ItemID.Sets.IsAKite[self.HeldItem.type];
-			bool holdStyleHoldFront = self.HeldItem.holdStyle == ItemHoldStyleID.HoldFront;
-			bool holdStyleHoldUp = self.HeldItem.holdStyle == ItemHoldStyleID.HoldUp;
-			bool holdStyleHoldGuitar = self.HeldItem.holdStyle == ItemHoldStyleID.HoldGuitar;
-
-			if (self.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				if (useStyleEatFood) {
-					if (itemAnimating)
-						itemOffset += new Vector2(7f, -4f) * self.Directions;
-					else
-						itemOffset += new Vector2(3f, 2f) * self.Directions;
-				}
-				else if (usingFishingPole) {
-					itemOffset += new Vector2(-2f, 0f) * self.Directions;
-				}
-				else if (useStyleDrinkLiquid) {
-					if (itemAnimating)
-						itemOffset += new Vector2(14f, -10f) * self.Directions;
-					else
-						itemOffset += new Vector2(3f, 2f) * self.Directions;
-				}
-				else if (useStyleMowTheLawn) {
-					if (itemAnimating)
-						itemOffset += new Vector2(4f, 0f) * self.Directions;
-					else
-						itemOffset += new Vector2(1f, 0f) * self.Directions;
-				}
-				else if (useStyleGolfPlay) {
-					itemOffset += new Vector2(6f, 0f) * self.Directions;
-				}
-				else if (useStyleRaiseLamp) {
-					if (itemAnimating)
-						itemOffset += new Vector2(-6f, 6f) * self.Directions;
-					else
-						itemOffset += new Vector2(-10f, 10f) * self.Directions;
-				}
-				else if (heldKite) {
-					itemOffset += new Vector2(4f, -4f) * self.Directions;
-				}
-				else if (holdStyleHoldGuitar) {
-					itemOffset += new Vector2(6f, 0f) * self.Directions;
-				}
-				else if (holdStyleHoldFront && !itemAnimating) {
-					itemOffset += new Vector2(1f, 4f) * self.Directions;
-				}
-				else if (holdStyleHoldUp) {
-					if (itemAnimating && self.HeldItem.type == ItemID.BreathingReed)
-						itemOffset += new Vector2(-4f, 0f).RotatedBy((pos - self.Center).ToRotation(), Vector2.Zero);
-					else
-						itemOffset += new Vector2(6f, 0f) * self.Directions;
-				}
-				else if (heldYoyo) {
-					switch (bodyYFrame) {
-						case 2:
-							itemOffset += new Vector2(10f, -10f) * self.Directions;
-							break;
-						case 3:
-							itemOffset += new Vector2(8f, 0f) * self.Directions;
-							break;
-						case 4:
-							itemOffset += new Vector2(2f, 2f) * self.Directions;
-							break;
-					}
-				}
-				else if (heldNebulaBlaze) {
-					switch (bodyYFrame) {
-						case 2:
-							itemOffset += new Vector2(-10f, 0f) * self.Directions;
-							break;
-						case 3:
-							itemOffset += new Vector2(10f, 0f) * self.Directions;
-							break;
-						case 4:
-							itemOffset += new Vector2(10f, 0f) * self.Directions;
-							break;
-					}
-				}
-				else if (useStyleShoot) {
-					itemOffset += new Vector2(4f, 0f) * self.Directions;
-				}
-				else {
-					switch (bodyYFrame) {
-						case 1:
-							itemOffset += new Vector2(1f, -1f) * self.Directions;
-							break;
-						case 2:
-							itemOffset += new Vector2(4f, 2f) * self.Directions;
-							break;
-						case 3:
-							itemOffset += new Vector2(2f, 0f) * self.Directions;
-							break;
-					}
-				}
-			}
-
-			pos += itemOffset; // pos is a reference, so modifying it here will modify the value as if the vanilla method did.
 		}
 	}
 

@@ -267,4 +267,35 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	{
 		return Vector2.Zero;
 	}
+
+	/// <summary>
+	/// Allows you to change where the held item is positioned. Useful for transformation hats that can use items.
+	/// </summary>
+	/// <param name="originalPos"> The original position of the item before this hook runs. </param>
+	/// <returns> Returns <see cref="Vector2.Zero"/> by default. </returns>
+	public virtual Vector2 HeldItemOffset(Player player, Vector2 originalPos)
+	{
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// Allows you to change where beards sit on the mount. Useful for transformation hats that can wear beards.
+	/// </summary>
+	/// <returns> Returns <see cref="Vector2.Zero"/> by default. </returns>
+	public virtual Vector2 BeardOffset(Player player)
+	{
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// Allows you to change where face accessories sit on the mount. By default, it will be the offset set in <see cref="ModMount.HeadItemOffset"/>. Set 
+	/// </summary>
+	/// <param name="faceOffset"> The original position of the face accessory before this hook runs. </param>
+	/// <returns> Returns <see langword="true"/> by default, which means it applies the offset from <see cref="ModMount.HeadItemOffset"/>.
+	///	<para> Return <see langword="false"/> to prevent the head item offset from being applied. </para>
+	/// </returns>
+	public virtual bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)
+	{
+		return true;
+	}
 }

@@ -207,4 +207,36 @@ public static class MountLoader
 		}
 		return Vector2.Zero;
 	}
+	public static Vector2 HeldItemOffset(Mount mount, Player player, Vector2 originalPos)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.HeldItemOffset(player, originalPos);
+		}
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.BeardOffset(Player)"/>
+	/// </summary>
+	public static Vector2 BeardOffset(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.BeardOffset(player);
+		}
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.FaceAccessoryOffset(Player, ref Vector2)"/>
+	/// </summary>
+	public static void FaceAccessoryOffset(Mount mount, Player player, ref Vector2 pos)
+	{
+		// IsModMount already checked in PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc
+		if (IsModMount(player.mount._data)) {
+			if (!mount._data.ModMount.FaceAccessoryOffset(player, ref pos)) {
+				return;
+			}
+			player.ApplyHeadOffsetFromMount(ref pos); // Default, run the offset for the head.
+		}
+	}
 }
