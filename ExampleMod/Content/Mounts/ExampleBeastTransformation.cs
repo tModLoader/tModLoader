@@ -463,22 +463,6 @@ namespace ExampleMod.Content.Mounts
 		// public override bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset) {
 		// 	return true;
 		// }
-
-		// Our transformation mount requires some more logic that cannot be achieved with the hooks or sets that are currently available.
-		// We can detour vanilla methods to insert our custom logic before or after the vanilla code runs.
-		// See the Detouring guide for more information on detours https://github.com/tModLoader/tModLoader/wiki/Advanced-Detouring-Guide 
-		public override void Load() {
-			Terraria.DataStructures.On_PlayerDrawLayers.DrawPlayer_28_ArmOverItem += On_PlayerDrawLayers_DrawArmOverItem;
-			// There are a few other minor things that the Velociraptor does such as an offset for the Eyebrella rain and the Solar Shield.
-		}
-
-		// Draw the mount's arm over the items its holding.
-		private void On_PlayerDrawLayers_DrawArmOverItem(On_PlayerDrawLayers.orig_DrawPlayer_28_ArmOverItem orig, ref PlayerDrawSet drawinfo) {
-			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
-				drawinfo.drawPlayer.mount.Draw(drawinfo.DrawDataCache, 3, drawinfo.drawPlayer, drawinfo.Position, drawinfo.colorMount, drawinfo.playerEffect, drawinfo.shadow);
-			}
-			orig(ref drawinfo); // Run the vanilla method.
-		}
 	}
 
 	public class ExampleBeastTransformationPlayer : ModPlayer
@@ -491,6 +475,20 @@ namespace ExampleMod.Content.Mounts
 				shader = drawinfo.drawPlayer.cMount; // Set the shader (dye).
 				position += new Vector2(-2 * drawinfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
 			}
+		}
+	}
+
+	public class ExampleBeastTransformationArmDrawLayer : PlayerDrawLayer {
+
+		public override Position GetDefaultPosition() {
+			return new AfterParent(PlayerDrawLayers.ArmOverItem);
+		}
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.mount.Active && drawInfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>();
+		}
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
+			// Draw the mount's arm over the items its holding.
+			drawInfo.drawPlayer.mount.Draw(drawInfo.DrawDataCache, 3, drawInfo.drawPlayer, drawInfo.Position, drawInfo.colorMount, drawInfo.playerEffect, drawInfo.shadow);
 		}
 	}
 }
