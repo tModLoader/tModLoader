@@ -31,7 +31,7 @@ jobs:
     # The type of runner that the job will run on
     runs-on: windows-latest
     # Make sure not to run this job on other labels
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
+    if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
