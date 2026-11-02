@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Reflection;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -12,10 +13,14 @@ namespace Terraria.Audio;
 
 partial class SoundEngine
 {
+	private static readonly FieldInfo? VoiceField = typeof(SoundEffectInstance).GetField("voice", BindingFlags.NonPublic | BindingFlags.Instance);
+	private static MethodInfo? GetStateMethod;
+	private static PropertyInfo? SamplesProperty;
+
 	// Public API methods
 
-	/// <inheritdoc cref="PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)" />
 	/// <summary>
+	/// <inheritdoc cref="PlaySound(in SoundStyle, Vector2?, SoundUpdateCallback?)" />
 	/// Attempts to play a sound style with the provided sound style (if it's not null), and returns a valid <see cref="SlotId"/> handle to it on success.
 	/// </summary>
 	public static SlotId PlaySound(in SoundStyle? style, Vector2? position = null, SoundUpdateCallback? updateCallback = null)
@@ -51,6 +56,44 @@ partial class SoundEngine
 		}
 
 		return SoundPlayer.TryGetActiveSound(slotId, out result);
+	}
+
+	public static bool GetSoundTimestamp(SlotId slotId, out double timeInMilliseconds)
+	{
+		timeInMilliseconds = 0.0;
+
+		if (Main.dedServ || !IsAudioSupported) {
+			return false;
+		}
+
+		if (SoundPlayer.TryGetActiveSound(slotId, out var activeSound) && activeSound?.Sound is SoundEffectInstance soundInstance)
+		{
+			if (VoiceField == null) return false;
+			object? voice = VoiceField.GetValue(soundInstance);
+			if (voice == null) return false;
+
+			if (GetStateMethod == null || SamplesProperty == null)
+			{
+				var voiceType = voice.GetType();
+				GetStateMethod = voiceType.GetMethod("GetState", BindingFlags.Public | BindingFlags.Instance);
+				SamplesProperty = voiceType.GetProperty("SamplesPlayed", BindingFlags.Public | BindingFlags.Instance);
+			}
+
+			if (GetStateMethod != null && SamplesProperty != null)
+			{
+				GetStateMethod.Invoke(voice, null);
+				long samplesPlayed = (long)SamplesProperty.GetValue(voice)!;
+				double sampleRate = soundInstance.SoundEffect.SampleRate;
+
+				if (sampleRate > 0)
+				{
+					timeInMilliseconds = (samplesPlayed / sampleRate) * 1000.0;
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// Internal redirects
