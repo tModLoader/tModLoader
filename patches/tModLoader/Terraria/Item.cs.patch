@@ -1303,6 +1303,15 @@
  				break;
  			case 6153:
  				SetShopValues(ItemRarityColor.Blue1, sellPrice(0, 0, 40));
+@@ -47258,7 +_,7 @@
+ 		noMelee = true;
+ 	}
+ 
+-	public void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID)
++	public void DefaultToVoiceOverrideAccessory(int voiceOverrideID) // TML: sbyte -> int
+ 	{
+ 		useStyle = 4;
+ 		UseSound = null;
 @@ -47272,6 +_,19 @@
  		voiceSlot = voiceOverrideID;
  	}
