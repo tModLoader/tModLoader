@@ -44,13 +44,6 @@ partial class ArmorIDs
 			/// This is used by, for example, wizard hats and gladiator helmet. Without this setting, some animation frames would render cropped at the top.
 			/// </remarks>
 			public static bool[] IsTallHat = Factory.CreateBoolSet(14, 56, 114, 158, 69, 180);
-
-			/// <summary>
-			/// If <see langword="true"/> for a given <see cref="Head"/>, then that equip will allow the player's head and face to be drawn.
-			/// <br/> Defaults to <see langword="true"/>.
-			/// </summary>
-			// Created based on 'PlayerDrawLayers.DrawPlayer_21_Head_TheFace'.
-			public static bool[] DrawHead = Factory.CreateBoolSet(true, 38, 135, 269);
 		}
 	}
 

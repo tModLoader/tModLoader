@@ -16,6 +16,7 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Hallow[Type] = true;
+			TileID.Sets.SpreadsHallow[Type] = true;
 			TileID.Sets.HallowBiome[Type] = 1;
 			TileID.Sets.HallowBiomeSight[Type] = true;
 			TileID.Sets.HallowCountCollection.Add(Type);
@@ -48,7 +49,8 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Corrupt[Type] = true;
-			TileID.Sets.CorruptBiome[Type] = 1;
+			TileID.Sets.SpreadsCorruption[Type] = true;
+			TileID.Sets.AddCorruptionTile(Type);
 			TileID.Sets.CorruptBiomeSight[Type] = true;
 			TileID.Sets.CorruptCountCollection.Add(Type);
 			DustType = DustID.Corruption;
@@ -77,7 +79,8 @@ namespace ExampleMod.Content.Tiles
 		public override void SetStaticDefaults() {
 			Main.tileSolid[Type] = true;
 			TileID.Sets.Crimson[Type] = true;
-			TileID.Sets.CrimsonBiome[Type] = 1;
+			TileID.Sets.SpreadsCrimson[Type] = true;
+			TileID.Sets.AddCrimsonTile(Type);
 			TileID.Sets.CrimsonBiomeSight[Type] = true;
 			TileID.Sets.CrimsonCountCollection.Add(Type);
 			DustType = DustID.Crimstone;

@@ -29,6 +29,9 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
+	/// <summary>
+	/// The item <see cref="width"/> and <see cref="height"/> values as a vector.
+	/// </summary>
 	public Vector2 Size {
 		get => new Vector2(width, height);
 		set {
@@ -87,12 +90,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// Tools should typically set this to true to prevent the tool from mining quicker when the player has attack speed modifiers. By convention tool speed should not be affected by attack speed. They will still attack quicker, but their use time (mine/hammer/axe speed) should not be affected.
 	/// </summary>
 	public bool attackSpeedOnlyAffectsWeaponAnimation { get; set; }
-
-	/// <summary>
-	/// Set to true in SetDefaults to allow this item to receive a prefix on reforge even if maxStack is not 1.
-	/// <br>This prevents it from receiving a prefix on craft.</br>
-	/// </summary>
-	public bool AllowReforgeForStackableItem { get; set; }
 
 	/// <summary>
 	/// Similar to useTurn, but only allows turning when an animation starts (eg between swings). Many early-game vanilla swords use this as it makes them clunky and hard to kite with.
@@ -378,7 +375,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		if (PrefixLegacy.ItemSets.Summon[type] || ItemLoader.SummonPrefix(this))
 			categories.Add(PrefixCategory.Summon);
 
-		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Count != 0)
+		if (PrefixLegacy.ItemSets.SpearsMacesChainsawsDrillsPunchCannon[type] || PrefixLegacy.ItemSets.BoomerangsChakrams[type] || PrefixLegacy.ItemSets.ItemsThatCanHaveLegendary2[type] || ItemLoader.WeaponPrefix(this) || categories.Exists(PrefixLoader.IsWeaponSubCategory))
 			categories.Add(PrefixCategory.AnyWeapon);
 
 		if (IsAPrefixableAccessory())
@@ -386,4 +383,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 
 		return categories;
 	}
+
+	/// <summary>
+	/// Determines if this <see cref="Item"/> can receive the given prefix.
+	/// </summary>
+	/// <param name="prefix">The <see cref="PrefixID"/> to check.</param>
+	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
+	public bool CanApplyPrefix(int prefix)
+		=> CanRollPrefix(prefix) && TryGetPrefixStatMultipliersForItem(prefix, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _);
 }

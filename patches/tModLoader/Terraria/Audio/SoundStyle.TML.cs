@@ -111,6 +111,12 @@ public record struct SoundStyle
 	internal bool UsesMusicPitch { get; set; } = false;
 
 	/// <summary>
+	/// Whether or not this sound obeys the <see cref="Projectile.kiteSoundPitch"/> field to decide its pitch.<br/>
+	/// Defaults to false. Used in vanilla by kites (SoundID.Item192, Projectile.KiteLogic).<br/>
+	/// </summary>
+	internal bool UsesKiteSoundPitch { get; set; } = false;
+
+	/// <summary>
 	/// An array of possible suffixes to randomly append to after <see cref="SoundPath"/>.
 	/// <br/> Setting this property resets <see cref="VariantsWeights"/>.
 	/// </summary>

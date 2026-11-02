@@ -106,7 +106,7 @@ public static class PrefixLoader
 		return false;
 	}
 
-	public static bool Roll(Item item, UnifiedRandom unifiedRandom, out int prefix, bool justCheck)
+	public static bool Roll(Item item, UnifiedRandom unifiedRandom, out int prefix)
 	{
 		if (ItemLoader.ChoosePrefix(item, unifiedRandom) is int forcedPrefix && forcedPrefix > 0 && CanRoll(item, forcedPrefix)) {
 			prefix = forcedPrefix;
@@ -127,9 +127,6 @@ public static class PrefixLoader
 		List<PrefixCategory> categories = item.GetPrefixCategories();
 		if (categories.Count == 0)
 			return false;
-
-		if (justCheck)
-			return true; // if it has a category, there are probably prefixes in that category...
 
 		foreach (PrefixCategory category in categories) {
 			foreach (int pre in Item.GetVanillaPrefixes(category)) {

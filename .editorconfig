@@ -30,6 +30,7 @@ dotnet_diagnostic.CA2211.severity = none
 
 # New line preferences
 	end_of_line = crlf
+	charset = utf-8
 	insert_final_newline = false
 	trim_trailing_whitespace = true
 

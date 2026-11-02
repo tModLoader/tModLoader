@@ -118,4 +118,9 @@ public class ModPlayerTest : ModPlayer
 
 	public override bool FreeDodge(Player.HurtInfo info) => false;
 	public override bool ConsumableDodge(Player.HurtInfo info) => false;
+
+	public override void ModifyZoom(ref float panFactor, ref bool needsMouseRight)
+	{
+		panFactor = 0.5f;
+	}
 }

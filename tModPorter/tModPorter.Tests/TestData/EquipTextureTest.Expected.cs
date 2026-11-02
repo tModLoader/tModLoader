@@ -14,7 +14,7 @@ public class EquipTextureTest : EquipTexture
 	public override void FrameEffects(Player player, EquipType type) { /* Empty */ }
 
 #if COMPILE_ERROR
-	public override bool DrawHead()/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false */ { return true; /* Empty */ }
+	public override bool DrawHead()/* tModPorter Note: Removed. After registering this as EquipType.Head, use ArmorIDs.Head.Sets.HidesHead[slot] = true if you returned false */ { return true; /* Empty */ }
 
 	public override bool DrawBody()/* tModPorter Note: Removed. After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[slot] = true if you returned false */ { return true; /* Empty */ }
 

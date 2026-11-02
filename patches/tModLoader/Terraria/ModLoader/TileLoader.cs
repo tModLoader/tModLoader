@@ -105,6 +105,8 @@ public static class TileLoader
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
+	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
+	private static Func<int, int, int, bool?>[] HookCanShowWireStuffHere;
 
 	internal static int ReserveTileID()
 	{
@@ -148,9 +150,6 @@ public static class TileLoader
 		LoaderUtils.ResetStaticMembers(typeof(TileID));
 
 		//Etc
-		Array.Resize(ref Main._playerSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main._cameraSceneMetrics._tileCounts, nextTile);
-		Array.Resize(ref Main.PylonSystem._sceneMetrics._tileCounts, nextTile);
 		Array.Resize(ref Main.tileLighted, nextTile);
 		Array.Resize(ref Main.tileMergeDirt, nextTile);
 		Array.Resize(ref Main.tileCut, nextTile);
@@ -268,6 +267,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
+		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalTiles, g => g.CanDoWireStuffHere);
+		ModLoader.BuildGlobalHook(ref HookCanShowWireStuffHere, globalTiles, g => g.CanShowWireStuffHere);
 
 		if (!unloading) {
 			loaded = true;
@@ -1491,6 +1492,13 @@ public static class TileLoader
 				jungle = TileID.Sets.RemixJungleBiome[i];
 			}
 
+			if (Main.infectedSeed) {
+				if (corrupt == -10)
+					corrupt *= 3;
+				if (crimson == -10)
+					crimson *= 3;
+			}
+
 			metrics.EvilTileCount += tileCount * corrupt;
 			metrics.BloodTileCount += tileCount * crimson;
 			metrics.JungleTileCount += tileCount * jungle;
@@ -1531,5 +1539,41 @@ public static class TileLoader
 
 		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
+	}
+
+	public static bool? CanDoWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetTile(type)?.CanDoWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanDoWireStuffHere) {
+			bool? canDoWire = hook(i, j, type);
+			if (canDoWire.HasValue) {
+				if (!canDoWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	public static bool? CanShowWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetTile(type)?.CanShowWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanShowWireStuffHere) {
+			bool? canShowWire = hook(i, j, type);
+			if (canShowWire.HasValue) {
+				if (!canShowWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
 	}
 }

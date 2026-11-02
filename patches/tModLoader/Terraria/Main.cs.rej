@@ -208,12 +208,3 @@
  		Vector2 vector3 = Vector2.Zero;
  		float num2 = 0f;
  		float num3 = 0f;
-@@ -54329,6 +_,8 @@
- 			}
- 		}
- 
-+		PlayerLoader.ModifyZoom(LocalPlayer, ref num);
-+
- 		if (num <= 0f)
- 			return false;
- 

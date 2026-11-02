@@ -82,7 +82,7 @@
 +	/// Modifies the wave alpha. <br/>
 +	/// Vanilla leaves this array blank by default.
 +	/// </summary>
-+	private static byte[] WAVE_MASK_STRENGTH = new byte[5];
++	internal static byte[] WAVE_MASK_STRENGTH = new byte[5];
 -	private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
 +	//private static readonly byte[] WAVE_MASK_STRENGTH = new byte[5];
 +	/// <summary>
@@ -104,8 +104,10 @@
  	public static LiquidRenderer Instance;
 -	private readonly Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
 +	public Asset<Texture2D>[] _liquidTextures = new Asset<Texture2D>[15];
- 	private LiquidCache[] _cache = new LiquidCache[1];
- 	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
+-	private LiquidCache[] _cache = new LiquidCache[1];
++	internal LiquidCache[] _cache = new LiquidCache[1];
+-	private LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
++	internal LiquidDrawCache[] _drawCache = new LiquidDrawCache[1];
 -	private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
 +	// private SpecialLiquidDrawCache[] _drawCacheForShimmer = new SpecialLiquidDrawCache[1];
  	private int _animationFrame;
