@@ -9,11 +9,65 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.UI;
 
 namespace Terraria;
 
 public partial class Player : IEntityWithInstances<ModPlayer>
 {
+	[ThreadStatic]
+	private static Dictionary<Player, Item[]> sharedAccessoryResolution;
+
+	private static bool CanShareAccessory(Player player, Item item, int slot)
+	{
+		if (!item.accessory)
+			return false;
+
+		sharedAccessoryResolution ??= new Dictionary<Player, Item[]>();
+		if (sharedAccessoryResolution.TryGetValue(player, out Item[] active)) {
+			// Equip hooks must see accessories already accepted by this pass without starting another resolution.
+			// Unvalidated shared candidates remain unavailable.
+			return ReferenceEquals(active[slot], item);
+		}
+
+		var slots = AccessorySlotLoader.ModSlotPlayer(player);
+		var extra = slots.exAccessorySlot;
+		var snapshot = new Item[player.armor.Length + extra.Length];
+		Array.Copy(player.armor, snapshot, player.armor.Length);
+
+		for (int i = 0; i < extra.Length; i++) {
+			snapshot[player.armor.Length + i] = slots.GetSharedLoadoutItem(
+				i < slots.SlotCount ? ItemSlot.Context.ModdedAccessorySlot : ItemSlot.Context.ModdedVanityAccessorySlot,
+				i, out _);
+		}
+
+		sharedAccessoryResolution.Add(player, snapshot);
+
+		try {
+			// Resolve shared accessories in slot order so conflict priority does not depend on query order.
+			for (int s = 3; s < player.armor.Length; s++) {
+				if (s % 10 < 3 || !snapshot[s].IsAir)
+					continue;
+
+				foreach (var loadout in player.Loadouts) {
+					Item candidate = loadout.Armor[s];
+					if (candidate.IsAir || !candidate.favorited)
+						continue;
+
+					if (candidate.accessory && !ItemSlot.AccCheck_ForPlayer(player, snapshot, candidate, s))
+						snapshot[s] = candidate;
+
+					break; // Match GetEffectiveArmor: only consider the first favorited item for this slot.
+				}
+			}
+
+			return ReferenceEquals(snapshot[slot], item);
+		}
+		finally {
+			sharedAccessoryResolution.Remove(player);
+		}
+	}
+
 	internal IList<string> usedMods;
 	/// <summary> Contains error messages from ModPlayer.SaveData from a previous player save retrieved from the .tplr. Shown when entering a world and on player select menu. Maps ModSystem.FullName.MethodName to exception string.</summary>
 	internal Dictionary<string, string> ModSaveErrors { get; set; } = new Dictionary<string, string>();

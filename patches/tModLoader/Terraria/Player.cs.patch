@@ -1826,6 +1826,16 @@
  		}
  	}
  
+@@ -3924,6 +_,9 @@
+ 	private bool CanShareArmor(Item shareItem, int slot)
+ 	{
++		if (slot % 10 >= 3)
++			return CanShareAccessory(this, shareItem, slot);
++
+ 		if (!ItemSlot.CanEquipInArmorSlot(this, shareItem, slot))
+ 			return false;
+ 
+ 		bool vanity = slot >= 10;
 @@ -3973,7 +_,7 @@
  		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
  			return;
