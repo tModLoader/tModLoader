@@ -193,7 +193,7 @@ jobs:
 
       # Runs a set of commands using the runners shell
       - name: Build script
-        if: github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || contains(github.event.pull_request.labels.*.name, 'Safe to Test')
         shell: bash
         run: |
           echo CI setup for Terraria v$TERRARIA_VERSION
