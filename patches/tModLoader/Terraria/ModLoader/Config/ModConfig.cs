@@ -217,13 +217,28 @@ public abstract class ModConfig : ILocalizedModType
 			Main.menuMode = Interface.modConfigID;
 		}
 		else {
-			IngameFancyUI.CoverNextFrame();
-			Main.playerInventory = false;
-			Main.editChest = false;
-			Main.npcChatText = "";
-			Main.inFancyUI = true;
-			Main.InGameUI.SetState(Interface.modConfig);
-			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()
+			IngameFancyUI.OpenUIState(Interface.modConfig);
 		}
+	}
+
+	/// <summary>
+	/// Checks whether this config differs from the provided config.
+	/// </summary>
+	/// <param name="otherConfig">The config to compare to.</param>
+	/// <returns></returns>
+	public bool HasChanges(ModConfig otherConfig)
+	{
+		return !ConfigManager.AreConfigsEqual(this, otherConfig);
+	}
+
+	/// <summary>
+	/// Checks whether this config has defaults values set.
+	/// </summary>
+	/// <returns></returns>
+	public bool HasDefaultValues()
+	{
+		return ConfigManager.AreConfigsEqual(this, ConfigManager.GetDefaultValueConfig(Mod, Name));
+		// TODO: this doesn't work with object elements (and probably nullables) very well because of how objects serialized. Needs changes to the contract resolver to be fixed.
+		// return JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact) == "{}";
 	}
 }

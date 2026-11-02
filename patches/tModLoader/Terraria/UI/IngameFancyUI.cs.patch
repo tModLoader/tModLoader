@@ -41,13 +41,14 @@
  				if (Main.npcChatText == "")
  					Main.npcChatText = Main.defaultChestName;
  
-@@ -152,8 +_,11 @@
+@@ -152,8 +_,12 @@
  			Main.playerInventory = false;
  
  		Main.LocalPlayer.releaseInventory = false;
 +		bool currentStateWasModConfig = Main.InGameUI.CurrentState == Interface.modConfig;
  		Main.InGameUI.SetState(null);
  		UILinkPointNavigator.Shortcuts.FANCYUI_SPECIAL_INSTRUCTIONS = 0;
++		// This has to be here instead of in UIModConfig because IngameFancyUI is called by the escape key when pressed in game
 +		if (currentStateWasModConfig)
 +			Interface.modConfig.HandleOnCloseCallback();
  	}

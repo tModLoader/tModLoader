@@ -22,7 +22,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public bool SomeBool;
 		public int SomeInt;
 		public float SomeFloat;
-		public string SomeString;
+		public string SomeString = ""; // Make sure you set your strings to be "" by default to avoid a bug with the Restore Defaults button
 		// Use [Slider], [Dropdown], or [Cycle] to present the enum as a slider, a dropdown, or a cycle button instead of the default chooser. (See examples in ModConfigShowcaseMisc.cs)
 		public EquipType SomeEnum;
 		public byte SomeByte;

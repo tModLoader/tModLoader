@@ -616,7 +616,7 @@ SubConfigExample: {
 	}
 
 	SubB: {
-		// Label: Even More Sub
+		// Label: Even More Sub Configs...
 		// Tooltip: ""
 	}
 }
