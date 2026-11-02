@@ -103,24 +103,14 @@ namespace ExampleMod.Content.Mounts
 			return true;
 		}
 
-		public override void SetMount(Player player, ref bool skipDust) {
-			// Assign the container that says whether this mount is allowed to fly.
-			player.mount._mountSpecificData = new ExampleBeastTransformationSelectiveFlyingMountData();
-		}
-
 		// Mounts that have flightTimeMax > 0 can automatically fly.
 		// This mount can only fly if the player if the has wings.
 		public override bool? CanFly(Player player) {
-			return PlayerAllowedToFly(player);
+			return player.hasWings;
 		}
 
 		public override void UpdateAfterEquips(Player player) {
-			bool hasWings = player.wingsLogic > 0; // wingsLogic says what kind of wings the player is wear. If it is greater than 0, the player has some kind of wings equipped.
-
-			// This mount can only fly if the player if the has wings.
-			((ExampleBeastTransformationSelectiveFlyingMountData)player.mount._mountSpecificData).allowedToFly = hasWings;
-
-			if (hasWings && player.empressBrooch) {
+			if (player.hasWings && player.empressBrooch) {
 				player.mount._flyTime = player.wingTimeMax; // Infinite flight if the Soaring Insignia is equipped.
 			}
 		}
@@ -180,7 +170,7 @@ namespace ExampleMod.Content.Mounts
 			if (mountedPlayer.isDisplayDollOrInanimate)
 				mount._idleTime = 0;
 
-			bool allowedToFly = PlayerAllowedToFly(mountedPlayer);
+			bool allowedToFly = mountedPlayer.hasWings;
 
 			// Flying in water
 			if (state == 4) {
@@ -279,21 +269,6 @@ namespace ExampleMod.Content.Mounts
 			else {
 				mount._frame = 7;
 			}
-		}
-
-		// A "container" for storing whether the mount is allowed to fly or not. This data is stored in the mount's _mountSpecificData upon spawning.
-		private class ExampleBeastTransformationSelectiveFlyingMountData
-		{
-			public bool allowedToFly;
-
-			public ExampleBeastTransformationSelectiveFlyingMountData() {
-				allowedToFly = false;
-			}
-		}
-
-		// A helper method to access the allowedToFly value from the mount's _mountSpecificData.
-		private bool PlayerAllowedToFly(Player player) {
-			return ((ExampleBeastTransformationSelectiveFlyingMountData)player.mount._mountSpecificData).allowedToFly;
 		}
 
 		// Here is where we change the player's draw info to hide the entire player.
