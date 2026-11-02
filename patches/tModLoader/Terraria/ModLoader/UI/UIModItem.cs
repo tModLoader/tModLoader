@@ -308,6 +308,8 @@ internal class UIModItem : UIPanel
 						Left = { Pixels = xOffset, Percent = 1f }
 					};
 
+					// If this mod decides not to show its content count baubles, return early and do not append.
+					if (!loadedMod.ShowContentCountBaubles) return;
 					Append(_keyImage);
 					xOffset -= 18;
 				}
