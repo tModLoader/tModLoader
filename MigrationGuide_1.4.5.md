@@ -659,13 +659,20 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * New `ModMount` features:
   * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
   * `MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer` to allow for head items to draw on mounts even if they hide the player.
+  * `ArmorID.Head.Sets.VelociraptorMountHeadOffset` contains helmet offsets used by the Velociraptor.
   * `ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)` to allow for editing the player's draw data before it is finalized.
     * Example: setting `drawInfo.hideEntirePlayer`.
   * `ModMount.ResetFlightTime(Player player, ref int flightTime)` to allow things to happen when flight time resets.
   * `bool? ModMount.CanFly(Player player)` to allow change whether the mount is allowed to fly.
     * Mounts that have `flightTimeMax > 0` can automatically fly.
-	* Return `null` for vanilla decision.
+    * Return `null` for vanilla decision.
   * `ModMount.UpdateAfterEquips(Player player)` to allows you to make things happen to the mount right after the player's equipment is run.
     * Used by the Velociraptor to give infinite flight if the player has the Soaring Insignia equipped.
     * Used by the Rat to climb up walls by boosting Player.spikedBoots.
+  * `Vector2 ModMount.HeadItemOffset(Player player)` to change where head items sit on the mount if the mount can wear head items.
+  * `Vector2 ModMount.HeldItemOffset(Player player, Vector2 originalPos)` to change where the held item is positioned if the mount can hold items.
+  * `Vector2 ModMount.BeardOffset(Player player)` to change where beards items are positioned if the mount can wear beards.
+  * `bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)` to change where face accessories are positioned if the mount can face accessories.
+    * By default, it uses the same offset as HeadItemOffset
+    * Return false to prevent the HeadItemOffset from being applied.
 * `ModPlayer.ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
