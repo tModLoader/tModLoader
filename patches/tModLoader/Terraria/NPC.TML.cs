@@ -424,14 +424,14 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	// Added by tML, this normally goes in a if statement
 	public bool TryPutoutFire()
 	{
-		bool putsOutOnfire = true;
+		bool extinguishFireDebuff = false;
 		for (int i = LiquidLoader.LiquidCount - 1; i >= 0; i--) {
 			if (this.wets[i]) {
-				if (LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[i]) {
-					putsOutOnfire = false;
+				if (LiquidID.Sets.ExtinguishesOnFireDebuffs[i]) {
+					extinguishFireDebuff = true;
 				}
 			}
 		}
-		return putsOutOnfire;
+		return extinguishFireDebuff;
 	}
 }

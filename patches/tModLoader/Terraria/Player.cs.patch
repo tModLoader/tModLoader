@@ -4924,12 +4924,12 @@
  		}
  
  		if (num86) {
-+			bool putsOutOnfire = true;
++			bool extinguishFireDebuff = false;
 +			for (int j = LiquidLoader.LiquidCount - 1; j >= 0; j--)
 +				if (wets[j])
-+					putsOutOnfire = LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[j];
++					extinguishFireDebuff = LiquidID.Sets.ExtinguishesOnFireDebuffs[j];
 -			if ((onFire || onFire3) && !lavaWet) {
-+			if ((onFire || onFire3) && !lavaWet && !putsOutOnfire) {
++			if ((onFire || onFire3) && !lavaWet && extinguishFireDebuff) {
  				for (int num89 = 0; num89 < maxBuffs; num89++) {
  					int num90 = buffType[num89];
  					if (num90 == 24 || num90 == 323)

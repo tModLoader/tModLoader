@@ -677,10 +677,7 @@ Mods: {
 
 			ExampleSink: {
 				DisplayName: Example Sink
-				Tooltip:
-					'''
-					Counts as a water, lava, honey and example liquid source
-					'''
+				Tooltip: Counts as a water, lava, honey and example liquid source
 			}
 
 			ExampleTable: {

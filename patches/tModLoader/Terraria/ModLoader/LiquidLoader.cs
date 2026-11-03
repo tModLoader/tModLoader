@@ -149,11 +149,11 @@ public static class LiquidLoader
 		GetLiquid(type)?.EmitEffects(i, j, liquidCache);
 		Func<int, int, int, LiquidRenderer.LiquidCache, bool>[] hookEmitEffects = HookEmitEffects;
 		for (int k = 0; k < hookEmitEffects.Length; k++) {
-			if (!hookEmitEffects[k](i, j, type, liquidCache)) {
-				return false;
+			if (hookEmitEffects[k](i, j, type, liquidCache)) {
+				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 
 	private static Func<int, int, int, int?>[] HookDrawWaterfall;

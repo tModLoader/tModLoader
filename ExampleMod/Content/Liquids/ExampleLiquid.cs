@@ -63,9 +63,6 @@ namespace ExampleMod.Content.Liquids
 			//By default, this is disabled
 			LiquidID.Sets.UsesLavaCollisionForWet[Type] = true;
 
-			//Here we allow the extinguishing of the OnFire debuffs for both players and NPCs using this property
-			LiquidID.Sets.DoesNotExtinguishesOnFireDebuffs[Type] = true;
-
 			//This ID set controls what items classify as a sponge when trying to suck up this liquid
 			//Here we remove the Ultra Absorbant sponge, Allow the Lava Absorbant sponge and the staff of regrowth to suck up this liquid
 			LiquidID.Sets.CanBeAbsorbedBy[Type].Remove(ItemID.UltraAbsorbantSponge);

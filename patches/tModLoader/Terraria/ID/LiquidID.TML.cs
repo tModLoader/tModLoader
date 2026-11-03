@@ -66,7 +66,7 @@ public partial class LiquidID
 		/// <summary>
 		/// Liquids by default extinguish On Fire and HellFire debuff, unless it's lava.
 		/// </summary>
-		public static bool[] DoesNotExtinguishesOnFireDebuffs = Factory.CreateBoolSet(true, Lava);
+		public static bool[] ExtinguishesOnFireDebuffs = Factory.CreateBoolSet(true, Lava);
 
 		/// <summary>
 		/// Minimum amount of block required for a liquid to make it viable for fishing
