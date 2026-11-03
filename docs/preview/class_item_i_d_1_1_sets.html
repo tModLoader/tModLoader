@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -268,10 +268,14 @@ static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>Glowsticks</
  Glowsticks work underwater and will be auto-selected by Smart Cursor when the cursor is far away from the player. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ac7f218dce213d94f5e7e16c6af518941"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d1a64005c1d043b4e4c299d4477e41d"><td class="memItemLeft" align="right" valign="top"><a id="a6d1a64005c1d043b4e4c299d4477e41d" name="a6d1a64005c1d043b4e4c299d4477e41d"></a>
+static <a class="el" href="class_list.html">List</a>&lt; int &gt;[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrassSeedDirtTiles</b> = Factory.CreateCustomSet&lt;<a class="el" href="class_list.html">List</a>&lt;int&gt;&gt;(null)</td></tr>
+<tr class="memdesc:a6d1a64005c1d043b4e4c299d4477e41d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Dictates which dirt tiles each grass seed item (<a class="el" href="class_item_i_d_1_1_sets.html#ac8fde4d482e4927a44ef3ec2c6b2f590" title="If true for a given item type (Item.type), then that item can be placed using Smart Cursor on &quot;dirt&quot; ...">GrassSeeds</a>) can be planted on. Only checked for modded tiles. Used for smart cursor. <br  />
+ Defaults to <code>null</code>. <br /></td></tr>
+<tr class="separator:a6d1a64005c1d043b4e4c299d4477e41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8fde4d482e4927a44ef3ec2c6b2f590"><td class="memItemLeft" align="right" valign="top"><a id="ac8fde4d482e4927a44ef3ec2c6b2f590" name="ac8fde4d482e4927a44ef3ec2c6b2f590"></a>
 static bool[]&#160;</td><td class="memItemRight" valign="bottom"><b>GrassSeeds</b> = Factory.CreateBoolSet(false, 62, 59, 2171, 369, 195, 194, 5214)</td></tr>
-<tr class="memdesc:ac8fde4d482e4927a44ef3ec2c6b2f590"><td class="mdescLeft">&#160;</td><td class="mdescRight"><b>Only checked for vanilla IDs.</b> <br  />
- If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item can be placed using Smart Cursor on dirt. <br  />
+<tr class="memdesc:ac8fde4d482e4927a44ef3ec2c6b2f590"><td class="mdescLeft">&#160;</td><td class="mdescRight">If <code>true</code> for a given item type (<a class="el" href="class_item.html#af79ba8b09813fd867fa3da24a4e31e51" title="The Item ID of this item. The Item ID is a unique number assigned to each Item loaded into the game....">Item.type</a>), then that item can be placed using Smart Cursor on "dirt" tiles (such as Dirt, Mud, and Ash). Set <a class="el" href="class_item_i_d_1_1_sets.html#a6d1a64005c1d043b4e4c299d4477e41d" title="Dictates which dirt tiles each grass seed item (GrassSeeds) can be planted on. Only checked for modde...">GrassSeedDirtTiles</a> to dictate which tiles are considered valid "dirt" tiles for this item. <br  />
  Additionally, those items cannot be used when trying to smart-place blocks. <br  />
  Defaults to <code>false</code>. <br /></td></tr>
 <tr class="separator:ac8fde4d482e4927a44ef3ec2c6b2f590"><td class="memSeparator" colspan="2">&#160;</td></tr>

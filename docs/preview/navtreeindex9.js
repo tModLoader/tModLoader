@@ -1,5 +1,7 @@
 var NAVTREEINDEX9 =
 {
+"class_item_loader.html#a6341d4545828402c0fe9aa204cb2b9a2":[3,0,650,6],
+"class_item_loader.html#a63ab5851c7ca82709e87726764430b72":[3,0,650,25],
 "class_item_loader.html#a63b817ba951072bc20bb911f484be7fb":[3,0,650,37],
 "class_item_loader.html#a6558c311b2b25aa66ac2564bee5a016b":[3,0,650,78],
 "class_item_loader.html#a67bea91fc3e83d2dfd08a4fb2092a5f0":[3,0,650,39],
@@ -247,7 +249,5 @@ var NAVTREEINDEX9 =
 "class_magic_summon_hybrid_damage_class.html#a46b1433058e94f0bd1aa6b58f38f56de":[3,0,748,0],
 "class_mahogany_tree_biome.html":[3,0,749],
 "class_main.html":[3,0,750],
-"class_main.html#a03b02e2e8dbe5623836170e09168858c":[3,0,750,142],
-"class_main.html#a053eafe7fd9246ae67cecbb359c4e591":[3,0,750,28],
-"class_main.html#a077281b897b5c1fb1bc7840f65e0ae3a":[3,0,750,114]
+"class_main.html#a00e74c36d9e5ee81e1566b84d89274c4":[3,0,750,115]
 };

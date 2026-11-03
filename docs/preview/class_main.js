@@ -115,6 +115,7 @@ var class_main =
     [ "tileLavaDeath", "class_main.html#ae4e747a8a660d98c8fd21b613e1fc2d4", null ],
     [ "tileLighted", "class_main.html#a735063a3cb2816b52d2e861269294589", null ],
     [ "tileMergeDirt", "class_main.html#a077281b897b5c1fb1bc7840f65e0ae3a", null ],
+    [ "tileMoss", "class_main.html#a00e74c36d9e5ee81e1566b84d89274c4", null ],
     [ "tileNoAttach", "class_main.html#aa39286967de374f049ed929672601ddb", null ],
     [ "tileObsidianKill", "class_main.html#ac8f3eeb77b730712be9268d5d8ca9cf5", null ],
     [ "tileOreFinderPriority", "class_main.html#a34f9ffde4d29e185014fb024d3e6ed24", null ],

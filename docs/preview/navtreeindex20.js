@@ -1,5 +1,12 @@
 var NAVTREEINDEX20 =
 {
+"class_proj_a_i_style_i_d.html#a824694a0b45c58c808221508fec0f4e7":[3,0,1039,12],
+"class_proj_a_i_style_i_d.html#a833614840454b25f8e998166b42992a8":[3,0,1039,43],
+"class_proj_a_i_style_i_d.html#a89ab07813fffe84a4632c8331ac68e11":[3,0,1039,122],
+"class_proj_a_i_style_i_d.html#a8a135ad5d5c4c5241a7980867af135d3":[3,0,1039,29],
+"class_proj_a_i_style_i_d.html#a8aef361e25d2f6066d091d0c217a87e8":[3,0,1039,47],
+"class_proj_a_i_style_i_d.html#a8ca0c8aa1a770b5bd4d1e67d23b79c5b":[3,0,1039,95],
+"class_proj_a_i_style_i_d.html#a8e6d766ba156c7393df31329144dbdbb":[3,0,1039,35],
 "class_proj_a_i_style_i_d.html#a91219080f893abdf14cadbaf2b220ccd":[3,0,1039,132],
 "class_proj_a_i_style_i_d.html#a922c1108d070ebe1d2a963656d7fcde8":[3,0,1039,32],
 "class_proj_a_i_style_i_d.html#a930f836aa91c7298bd3c2bd5064fdbb9":[3,0,1039,52],
@@ -242,12 +249,5 @@ var NAVTREEINDEX20 =
 "class_rare_spawn_bestiary_info_element.html#ab9afb3504dd154672546f13647bd42c8":[3,0,1062,0],
 "class_rarity_loader.html":[3,0,1063],
 "class_raw_img_reader.html":[3,0,1064],
-"class_recipe.html":[3,0,1065],
-"class_recipe.html#a15eaf435d1348b0e68a4865e08ee157c":[3,0,1065,22],
-"class_recipe.html#a19108cd242ac564fae40dfb601d1b968":[3,0,1065,23],
-"class_recipe.html#a1f51a3c15aa2ee0e112e660643047b5e":[3,0,1065,16],
-"class_recipe.html#a201aa97265a199607d864e8fbe40dda6":[3,0,1065,4],
-"class_recipe.html#a26f24b17f13e9a8ecbf3cecab309f43f":[3,0,1065,19],
-"class_recipe.html#a297e1a167daf638e8859b7b55a599ab4":[3,0,1065,5],
-"class_recipe.html#a32e3bff72441114d4cda94dd4cb05ea7":[3,0,1065,10]
+"class_recipe.html":[3,0,1065]
 };

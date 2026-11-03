@@ -89,6 +89,7 @@ var class_mod_item =
     [ "OnResearched", "class_mod_item.html#a756de06ee2405aa96a4ec733c5ea9c25", null ],
     [ "OnSpawn", "class_mod_item.html#abf086cb00125fb2cf9977b15b4a44aea", null ],
     [ "OnStack", "class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d", null ],
+    [ "OverridePlacementTile", "class_mod_item.html#a5e588863a4f35a5b5c4f1cc2a220f4d9", null ],
     [ "PickAmmo", "class_mod_item.html#ac1dd6ef05783b496685b5e14c2c33d9e", null ],
     [ "PostDrawInInventory", "class_mod_item.html#a9e84f5f526f4747a2d1f1756d0cb8201", null ],
     [ "PostDrawInWorld", "class_mod_item.html#aabc6c15b324d791a0d0119a6b063fe23", null ],

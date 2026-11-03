@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.09</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.10</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -419,6 +419,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OnSpawn</b> (
 <tr class="memitem:a05cfd3ac2d68987974690b1d68620e6d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d">OnStack</a> (<a class="el" href="class_item.html">Item</a> source, int numToTransfer)</td></tr>
 <tr class="memdesc:a05cfd3ac2d68987974690b1d68620e6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to make things happen when items stack together. This hook is called on item being stacked onto from <em>source</em>  and before the items are transferred Called on the local client only.  <a href="class_mod_item.html#a05cfd3ac2d68987974690b1d68620e6d">More...</a><br /></td></tr>
 <tr class="separator:a05cfd3ac2d68987974690b1d68620e6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e588863a4f35a5b5c4f1cc2a220f4d9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#a5e588863a4f35a5b5c4f1cc2a220f4d9">OverridePlacementTile</a> (int i, int j, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)</td></tr>
+<tr class="memdesc:a5e588863a4f35a5b5c4f1cc2a220f4d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows customizing the tile type, tile style, and random style offset that this item will place. Used for advanced scenarios where the usual placement logic is insufficient. This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world. <a class="el" href="class_global_tile.html#aa2356ae8dbac0262e9ac8cc8d30d3b1f">ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)</a> also exists and is recommended for affecting manual tile placement (<a class="el" href="class_world_gen.html#a6d89efc164bd01b5920d1f761df42565" title="PlaceTile is the main way to place individual tiles while obeying anchor considerations....">WorldGen.PlaceTile(int, int, int, bool, bool, int, int)</a>) instead of just placing tiles with an item. <em>previewPlaceStyle</em>  and <em>forcedRandom</em>  only apply to tiles with <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>, and <em>overrideCanPlace</em>  only applies to tiles without <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>.  <a href="class_mod_item.html#a5e588863a4f35a5b5c4f1cc2a220f4d9">More...</a><br /></td></tr>
+<tr class="separator:a5e588863a4f35a5b5c4f1cc2a220f4d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac1dd6ef05783b496685b5e14c2c33d9e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_mod_item.html#ac1dd6ef05783b496685b5e14c2c33d9e">PickAmmo</a> (<a class="el" href="class_item.html">Item</a> weapon, <a class="el" href="class_player.html">Player</a> player, ref int type, ref float speed, ref <a class="el" href="struct_stat_modifier.html">StatModifier</a> damage, ref float knockback)</td></tr>
 <tr class="memdesc:ac1dd6ef05783b496685b5e14c2c33d9e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo. Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.  <a href="class_mod_item.html#ac1dd6ef05783b496685b5e14c2c33d9e">More...</a><br /></td></tr>
 <tr class="separator:ac1dd6ef05783b496685b5e14c2c33d9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -3817,6 +3820,79 @@ Can be called on both server and client. </p>
   <table class="params">
     <tr><td class="paramname">source</td><td>The item instance being stacked onto this item</td></tr>
     <tr><td class="paramname">numToTransfer</td><td>The quantity of <em>source</em>  that will be transferred to this item</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a5e588863a4f35a5b5c4f1cc2a220f4d9" name="a5e588863a4f35a5b5c4f1cc2a220f4d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5e588863a4f35a5b5c4f1cc2a220f4d9">&#9670;&nbsp;</a></span>OverridePlacementTile()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ModItem.OverridePlacementTile </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>i</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>j</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>tileToCreate</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int&#160;</td>
+          <td class="paramname"><em>previewPlaceStyle</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref int?&#160;</td>
+          <td class="paramname"><em>forcedRandom</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ref bool?&#160;</td>
+          <td class="paramname"><em>overrideCanPlace</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Allows customizing the tile type, tile style, and random style offset that this item will place. Used for advanced scenarios where the usual placement logic is insufficient. This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world. <a class="el" href="class_global_tile.html#aa2356ae8dbac0262e9ac8cc8d30d3b1f">ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)</a> also exists and is recommended for affecting manual tile placement (<a class="el" href="class_world_gen.html#a6d89efc164bd01b5920d1f761df42565" title="PlaceTile is the main way to place individual tiles while obeying anchor considerations....">WorldGen.PlaceTile(int, int, int, bool, bool, int, int)</a>) instead of just placing tiles with an item. <em>previewPlaceStyle</em>  and <em>forcedRandom</em>  only apply to tiles with <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>, and <em>overrideCanPlace</em>  only applies to tiles without <a class="el" href="class_tile_object_data.html" title="Contains tile properties for multitiles dictating how they are placed and how they behave....">TileObjectData</a>. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">i</td><td>The x position in tile coordinates.</td></tr>
+    <tr><td class="paramname">j</td><td>The y position in tile coordinates.</td></tr>
+    <tr><td class="paramname">tileToCreate</td><td>The tile type that will be placed</td></tr>
+    <tr><td class="paramname">previewPlaceStyle</td><td>The style of the tile to be placed</td></tr>
+    <tr><td class="paramname">forcedRandom</td><td>The random placement offset to use, if assigned</td></tr>
+    <tr><td class="paramname">overrideCanPlace</td><td>Indicates if the tile can be placed</td></tr>
   </table>
   </dd>
 </dl>
