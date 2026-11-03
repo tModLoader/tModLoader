@@ -116,43 +116,61 @@ internal class TMLContentManager : ContentManager
 		};
 
 		foreach (string problematicAsset in problematicAssets) {
-			string expectedName = Path.GetFileName(problematicAsset);
-			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
-			var faultyAssetInfo = new FileInfo(Path.Combine(rootDirectory, problematicAsset));
-
-			string actualFullPath;
-
-			// If the file exists - double-check its returned path, we may be in a case-insensitive filesystem.
-			if (faultyAssetInfo.Exists) {
-				// This assetInfo is correct cased (but only the name, need recursive if you want full case,
-				// nothing more is needed in this case though
-				var assetInfo = faultyAssetInfo.Directory.EnumerateFileSystemInfos(faultyAssetInfo.Name).First();
-
-				if (expectedName == assetInfo.Name) {
-					continue;
-				}
-
-				actualFullPath = assetInfo.FullName;
-			}
-			// If it's missing - search for it while ignoring case, we're likely in a case-sensitive filesystem.
-			else {
-				var assetInfo = faultyAssetInfo.Directory.EnumerateFileSystemInfos().FirstOrDefault(p => p.Name.Equals(expectedName, StringComparison.InvariantCultureIgnoreCase));
-
-				if (assetInfo == null) {
-					Logging.tML.Info($"An expected vanilla asset is missing: (from {rootDirectory}) {problematicAsset}");
-					continue;
-				}
-
-				actualFullPath = assetInfo.FullName;
-			}
+			if (ValidateFileCasing(rootDirectory, problematicAsset, out string actualFullPath))
+				continue;
 
 			// The asset is wrongfully cased, fix that,
 			// changing a vanilla file name is something to log for sure
 			string relativeActualPath = Path.GetRelativePath(rootDirectory, actualFullPath);
 
 			Logging.tML.Info($"Found vanilla asset with wrong case, renaming: (from {rootDirectory}) {relativeActualPath} -> {problematicAsset}");
-			// Programmatically move with different case works
+
+			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
+
+			// Programmatically & defensively move to force case change
 			File.Move(actualFullPath, expectedFullPath);
 		}
+	}
+
+	/// <summary>
+	/// Returns False if the File in Root Directory does not match the expected casing 
+	/// <param name="actualFullPath"></param>
+	/// <returns></returns>
+	private static bool ValidateFileCasing(string rootDirectoryPath, string fileToCheck, out string asFoundFullPath)
+	{
+		var fileInfo = new FileInfo(Path.Combine(rootDirectoryPath, fileToCheck));
+		string expectedName = Path.GetFileName(fileToCheck);
+
+		asFoundFullPath = fileInfo.FullName;
+
+		// There are 4 possible states
+		//		File is found using FileInfo.Exists && the FileSystemInfo for it has the same casing (happy-path)
+		//		File is found using FileInfo.Exists && the FileSystemInfo for it has different casing (case insensitve read)
+		//		File is NOT found using FileInfo.Exists && file is NOT on the user system (missing file)
+		//		File is NOT found using FileInfo.Exists && file has the wrong casing (case sensitive read)
+
+		FileSystemInfo fileSystemInfo;
+
+		if (fileInfo.Exists) {
+			// likely case insensitive read OR happy-path 
+			fileSystemInfo= fileInfo.Directory.EnumerateFileSystemInfos(fileInfo.Name).First();
+
+			// Happy-path short-circuit
+			if (fileSystemInfo.Name == expectedName)
+				return true;
+		}
+		else {
+			// Case sensitive read OR missing
+			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos().FirstOrDefault(p => p.Name.Equals(expectedName, StringComparison.InvariantCultureIgnoreCase));
+
+			// file is missing short-circuit
+			if (fileSystemInfo == null) {
+				Logging.tML.Info($"An expected vanilla asset is missing: (from {Path.GetDirectoryName(expectedName)}) {fileToCheck}");
+				return true;
+			}
+		}
+
+		asFoundFullPath = fileSystemInfo.FullName;
+		return false;
 	}
 }
