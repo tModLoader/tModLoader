@@ -1073,16 +1073,20 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11961,8 +_,22 @@
+@@ -11961,8 +_,26 @@
  		if (type == 22)
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
 +		modifiers.ScalingArmorPenetration += armorPenetrationPercent;
++		// Preserve knockback added by hooks when the projectile has no base knockback.
++		if (knockBack != 0f)
++			modifiers.Knockback *= num5 / knockBack;
++
 +		modifiers.TargetDamageMultiplier *= dmg / 1000;
 +		if (num40 != null)
 +			modifiers.HitDirectionOverride = num40;
 +
-+		var strike = modifiers.ToHitInfo(damage, crit, num5, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
++		var strike = modifiers.ToHitInfo(damage, crit, knockBack, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
 +		num40 = strike.HitDirection;
 +
 +		goto VanillaOnHitEffectsStart;
