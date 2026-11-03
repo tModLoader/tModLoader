@@ -1,0 +1,15 @@
+--- src/TerrariaNetCore/Terraria/Graphics/Renderers/OutlinedTextureRenderer.cs
++++ src/tModLoader/Terraria/Graphics/Renderers/OutlinedTextureRenderer.cs
+@@ -18,6 +_,12 @@
+ 		Reset();
+ 	}
+ 
++	internal void Reset(Asset<Texture2D>[] matchingArray)
++	{
++		_matchingArray = matchingArray;
++		Reset();
++	}
++
+ 	public void Reset()
+ 	{
+ 		_contents = new OutlinedDrawRenderTargetContent[_matchingArray.Length];
