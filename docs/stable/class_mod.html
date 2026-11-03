@@ -26,7 +26,7 @@
  <tr id="projectrow">
   <td id="projectlogo"><img alt="Logo" src="tModLoaderIcon-Small.png"/></td>
   <td id="projectalign">
-   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.08</span>
+   <div id="projectname">tModLoader<span id="projectnumber">&#160;v2026.09</span>
    </div>
    <div id="projectbrief">A mod to make and play Terraria mods</div>
   </td>
@@ -254,6 +254,10 @@ virtual uint&#160;</td><td class="memItemRight" valign="bottom"><b>ExtraPlayerBu
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>GoreAutoloadingEnabled</b> = true<code> [get]</code></td></tr>
 <tr class="memdesc:ab41198cdf95d58ca446d2ff9477f5f46"><td class="mdescLeft">&#160;</td><td class="mdescRight">Whether or not this mod will automatically add images in the "Gores" folder as gores to the game, along with any <a class="el" href="class_mod_gore.html" title="This class allows you to customize the behavior of a custom gore.">ModGore</a> classes that share names with the images. This means you do not need to manually call <a class="el" href="class_gore_loader.html#a94508aa2c742f0cf9ca27a64f32f1f71" title="Registers a new gore with the provided texture. Typically used with SimpleModGore as TGore for gore w...">GoreLoader.AddGoreFromTexture&lt;TGore&gt;(Mod, string)</a>. <br /></td></tr>
 <tr class="separator:ab41198cdf95d58ca446d2ff9477f5f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f99ecb0d3b94e51e53bd3d07f88ae1c"><td class="memItemLeft" align="right" valign="top"><a id="a0f99ecb0d3b94e51e53bd3d07f88ae1c" name="a0f99ecb0d3b94e51e53bd3d07f88ae1c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsLibrary</b><code> [get, set]</code></td></tr>
+<tr class="memdesc:a0f99ecb0d3b94e51e53bd3d07f88ae1c"><td class="mdescLeft">&#160;</td><td class="mdescRight">If this mod is a 'true Library <a class="el" href="class_mod.html" title="Mod is an abstract class that you will override. It serves as a central place from which the mod&#39;s co...">Mod</a>' that could be hidden from the player when used by other mods. <br /></td></tr>
+<tr class="separator:a0f99ecb0d3b94e51e53bd3d07f88ae1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60ebbe739c0a94f34d2e1d2409c9af73"><td class="memItemLeft" align="right" valign="top"><a id="a60ebbe739c0a94f34d2e1d2409c9af73" name="a60ebbe739c0a94f34d2e1d2409c9af73"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>IsNetSynced</b><code> [get]</code></td></tr>
 <tr class="memdesc:a60ebbe739c0a94f34d2e1d2409c9af73"><td class="mdescLeft">&#160;</td><td class="mdescRight">If true, this mod has a NetID assigned. This is mainly useful for checking if a ModSide.NoSync mod is present on the server from a client to determine if a <a class="el" href="class_mod_packet.html" title="Used to send data between the server and client. Syncing data is essential for keeping clients up to ...">ModPacket</a> can be sent to the server or not. <br /></td></tr>

@@ -2119,6 +2119,7 @@ var hierarchy =
     [ "ModDownloadItem", "class_mod_download_item.html", null ],
     [ "Modifiers", "class_modifiers.html", null ],
     [ "ModKeybind", "class_mod_keybind.html", null ],
+    [ "ModLibraryFilterModesExtensions", "class_mod_library_filter_modes_extensions.html", null ],
     [ "ModLoader", "class_mod_loader.html", null ],
     [ "ModNet", "class_mod_net.html", null ],
     [ "ModPubId_t", "struct_mod_pub_id__t.html", null ],
