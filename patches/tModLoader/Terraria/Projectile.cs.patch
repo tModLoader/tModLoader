@@ -1073,7 +1073,7 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11961,8 +_,23 @@
+@@ -11961,12 +_,33 @@
  		if (type == 22)
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
@@ -1082,6 +1082,10 @@
 +		modifiers.TargetDamageMultiplier *= dmg / 1000;
 +		if (num40 != null)
 +			modifiers.HitDirectionOverride = num40;
++
++		// TML: Moved up from below
++		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 6)
++			modifiers.TargetDamageMultiplier *= Player.GetNanoFlaskDamageBoost();
 +
 +		var strike = modifiers.ToHitInfo(damage, crit, num5, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
 +		num40 = strike.HitDirection;
@@ -1096,7 +1100,13 @@
 +		*/
  
  		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type])) {
++			/*
  			if (Main.player[owner].meleeEnchant == 6)
+ 				dmg = (int)((float)dmg * Player.GetNanoFlaskDamageBoost());
++			*/
+ 
+ 			if (Main.player[owner].meleeEnchant == 7)
+ 				NewProjectile(GetProjectileSource_FromThis(), targetNPC.Center.X, targetNPC.Center.Y, targetNPC.velocity.X, targetNPC.velocity.Y, 289, 0, 0f, owner);
 @@ -11976,14 +_,20 @@
  		NPCDamageTracker.SetSourceForNextHit(targetNPC, PlayerNPCHitSource.FromProjectile(type));
  		Invariant.Assert(Main.netMode == 0 || owner == Main.myPlayer, "Cannot simulate someone else's projectile dealing damage. ({0})", this);
