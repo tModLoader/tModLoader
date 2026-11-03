@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/RecipeItemCreationContext.cs
 +++ src/tModLoader/Terraria/DataStructures/RecipeItemCreationContext.cs
-@@ -1,11 +_,33 @@
+@@ -1,11 +_,37 @@
 +using System.Collections.Generic;
 +
  namespace Terraria.DataStructures;
@@ -16,21 +16,25 @@
 +	/// <summary>
 +	/// An item stack that the created item will be combined with (via OnStack). For normal crafting, this is Main.mouseItem
 +	/// </summary>
-+	//public Item DestinationStack;
++	public Item DestinationStack;
 +
 +	// Added by TML.
 +	/// <summary>
-+	/// Cloned list of Items consumed when crafting.
++	/// Cloned list of items consumed when crafting, including materials consumed by the server. Server-side materials contain the data synchronized by the item networking hooks.
 +	/// </summary>
 +	public readonly List<Item> ConsumedItems;
 +
 +	/*
  	public RecipeItemCreationContext(Recipe recipe)
 +	*/
-+	public RecipeItemCreationContext(Recipe recipe, List<Item> consumedItems/*, Item destinationStack*/)
++	public RecipeItemCreationContext(Recipe recipe, List<Item> consumedItems) : this(recipe, consumedItems, null)
++	{
++	}
++
++	public RecipeItemCreationContext(Recipe recipe, List<Item> consumedItems, Item destinationStack)
  	{
  		Recipe = recipe;
 +		ConsumedItems = consumedItems;
-+		//DestinationStack = destinationStack;
++		DestinationStack = destinationStack;
  	}
  }
