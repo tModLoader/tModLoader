@@ -81,6 +81,7 @@ public static class ItemLoader
 
 		//Textures
 		Array.Resize(ref TextureAssets.Item, ItemCount);
+		Main.ItemMapIconRenderer?.Reset(TextureAssets.Item);
 		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
 
 		//Sets
