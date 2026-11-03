@@ -34,7 +34,12 @@
  		int num = FindNextOpenClientSlot();
  		if (num != -1) {
  			Clients[num].Reset();
-@@ -299,8 +_,16 @@
+@@ -295,12 +_,20 @@
+ 		int num = 0;
+ 		for (int i = 0; i < 256; i++) {
+ 			if (Clients[i].PendingTermination) {
+-				if (Clients[i].PendingTerminationApproved) {
++				if (Volatile.Read(ref Clients[i].PendingTerminationApproved)) {
  					if (!Clients[i].Kicked && !Clients[i].IsAnnouncementCompleted)
  						Console.WriteLine(Language.GetTextValue("Net.ClientLostConnection", Clients[i].Socket.GetRemoteAddress()));
  
@@ -51,16 +56,15 @@
  				}
  			}
  			else if (Clients[i].IsConnected()) {
-@@ -308,9 +_,6 @@
- 				if (Clients[i].State == 10)
+@@ -309,7 +_,7 @@
  					num++;
  			}
--			else if (Clients[i].IsActive) {
+ 			else if (Clients[i].IsActive) {
 -				Clients[i].PendingTermination = true;
--			}
++				Clients[i].SetPendingTermination("Connection closed");
+ 			}
  		}
  
- 		HasFullyConnectedClients = num != 0;
 @@ -396,6 +_,12 @@
  
  	private static void ClientLoopSetup(RemoteAddress address)

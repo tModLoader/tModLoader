@@ -539,6 +539,25 @@
  				}
  			}
  		}
+@@ -2237,10 +_,14 @@
+ 	public static void CheckBytes(int bufferIndex = 256)
+ 	{
+ 		if (Main.dedServ && Netplay.Clients[bufferIndex].PendingTermination) {
+-			Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
++			try {
+-			if (Main.player[bufferIndex].active) {
++				if (Main.player[bufferIndex].active) {
+-				Main.player[bufferIndex].active = false;
++					Main.player[bufferIndex].active = false;
+-				Player.Hooks.PlayerDisconnect(bufferIndex);
++					Player.Hooks.PlayerDisconnect(bufferIndex);
++				}
++			}
++			finally {
++				Volatile.Write(ref Netplay.Clients[bufferIndex].PendingTerminationApproved, true);
+ 			}
+ 
+ 			return;
 @@ -2258,7 +_,11 @@
  			buffer[bufferIndex].checkBytes = false;
  			int num = 0;
