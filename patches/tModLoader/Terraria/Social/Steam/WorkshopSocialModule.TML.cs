@@ -387,9 +387,6 @@ public partial class WorkshopSocialModule
 
 		string modName = Directory.GetParent(modFolder).Name;
 
-		if (modName == "ExampleLibraryMod") // Temp fix for ciprep flag bleeding into ExampleLibraryMod from building ExampleMod
-			return;
-
 		// Create a namevalue collection for checking versioning
 		string newModPath = Path.Combine(ModOrganizer.modPath, $"{modName}.tmod");
 		LocalMod newMod = LocalMod.FromWorkshopModFile(newModPath);

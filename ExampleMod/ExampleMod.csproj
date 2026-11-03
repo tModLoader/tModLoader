@@ -11,6 +11,7 @@
     <None Remove="Old\**" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ExampleLibraryMod\ExampleLibraryMod.csproj" />
+    <!--tML Temp Fix for CI: Enable the following line for ExampleLibrary Testing-->
+    <!--ProjectReference Include="..\ExampleLibraryMod\ExampleLibraryMod.csproj"-->
   </ItemGroup>
 </Project>
