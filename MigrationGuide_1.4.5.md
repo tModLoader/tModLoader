@@ -220,6 +220,14 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 }
 ```
 
+### NPC Buff Re-application
+
+`NPC.AddBuff` now sends the server-side `MessageID.NPCBuffs` message after the default buff update rather than before it. Returning `true` from the NPC overloads of `ModBuff.ReApply` or `GlobalBuff.ReApply` skips both the default re-apply logic and that message.
+
+As in 1.4.4, mods that directly change NPC buff state on the server are responsible for synchronizing those changes when the calling code does not already do so. For example, manually increasing `npc.buffTime[buffIndex]` and returning `true` requires synchronization, while returning `true` only to prevent the buff from being reapplied does not.
+
+The server handler for an incoming `MessageID.AddNPCBuff` request calls `NPC.AddBuff` with `quiet: true` and broadcasts the resulting state afterward. Account for synchronization already performed by the caller to avoid duplicate packets and preserve intentionally quiet operations.
+
 ### Recipe Changes
 
 * Crafting stations are now interactable as well as smart interactable. When right clicked, the crafting window shows recipes that use the crafting station. As they are now interactable, they should have a highlight texture as well.

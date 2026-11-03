@@ -2724,28 +2724,12 @@
  	public void AddBuff(int type, int time, bool quiet = false)
  	{
  		if (buffImmune[type])
-@@ -75590,9 +_,25 @@
- 		if (!quiet && Main.netMode == 1)
- 			NetMessage.SendData(53, -1, -1, null, whoAmI, type, time);
- 
-+		bool shouldSync = !quiet && Main.netMode == 2;
-+		Span<int> oldBuffTypes = shouldSync ? stackalloc int[maxBuffs] : default;
-+		Span<int> oldBuffTimes = shouldSync ? stackalloc int[maxBuffs] : default;
-+
+@@ -75593,6 +_,9 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type) {
-+				if (shouldSync) {
-+					buffType.AsSpan().CopyTo(oldBuffTypes);
-+					buffTime.AsSpan().CopyTo(oldBuffTimes);
-+				}
-+
-+				if (BuffLoader.ReApply(type, this, time, i)) {
-+					if (shouldSync && (!buffType.AsSpan().SequenceEqual(oldBuffTypes) || !buffTime.AsSpan().SequenceEqual(oldBuffTimes)))
-+						NetMessage.SendData(54, -1, -1, null, whoAmI);
-+
++				if (BuffLoader.ReApply(type, this, time, i))
 +					return;
-+				}
 +
  				if (buffTime[i] >= time)
  					return;

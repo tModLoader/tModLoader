@@ -148,7 +148,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.CollideWithNPCs changed, new parameters
 - Player.ApplyDamageToNPC changed, new parameters, new overloads
 - Double check that allDamage and allCrit are used in new armor set code
-- GetNanoFlaskDamageBoost in ProcessHitAgainstNPC might not be accounted for correctly. 
 - New PickAmmo_PickAmmoItem method seems to replicate our old PickAmmo/ChooseAmmo split.
 - Our PickAmmo overload patch lost. Maybe just put in .TML.cs file anyway.
 - Not sure about VanillaOnHitEffectsWhipsStart label location
