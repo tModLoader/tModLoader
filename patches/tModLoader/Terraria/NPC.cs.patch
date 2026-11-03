@@ -2724,12 +2724,16 @@
  	public void AddBuff(int type, int time, bool quiet = false)
  	{
  		if (buffImmune[type])
-@@ -75593,6 +_,9 @@
+@@ -75593,6 +_,13 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type) {
-+				if (BuffLoader.ReApply(type, this, time, i)) // TODO: Adjust this for proper syncing
++				if (BuffLoader.ReApply(type, this, time, i)) {
++					if (!quiet && Main.netMode == 2)
++						NetMessage.SendData(54, -1, -1, null, whoAmI);
++
 +					return;
++				}
 +
  				if (buffTime[i] >= time)
  					return;
