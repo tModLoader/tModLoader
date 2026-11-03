@@ -242,18 +242,6 @@ public abstract class GlobalTile : GlobalBlockType
 	}
 
 	/// <summary>
-	/// Allows you to change the Light Mask Mode for any tile. The Light Mask Mode is the mask for lighting to determine how light interacts with a tile. <br/>
-	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <param name="type"></param>
-	/// <param name="tileMaskMode">Edit this param to change the Light Mask Mode of the liquid.</param>
-	public virtual void TileLightMaskMode(int i, int j, int type, ref LightMaskMode tileMaskMode)
-	{
-	}
-
-	/// <summary>
 	/// Allows you to determine which tiles the given tile type can be considered as when looking for crafting stations.
 	/// </summary>
 	/// <param name="type"></param>

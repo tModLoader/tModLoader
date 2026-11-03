@@ -295,18 +295,6 @@ public abstract class ModTile : ModTileOrWall
 	}
 
 	/// <summary>
-	/// Allows you to change the Light Mask Mode for this tile. The Light Mask Mode is the mask for lighting to determine how light interacts with this tile. <br/>
-	/// Vanilla has options for Solid and None. Where all solid tiles will use Solid and active stone tiles will use the None option. <br/>
-	/// Defaults to LightMaskMode.Solid.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	public virtual LightMaskMode TileLightMaskMode(int i, int j)
-	{
-		return LightMaskMode.Solid;
-	}
-
-	/// <summary>
 	/// Only called for torches, when there is one nearby. Use this to contribute to vanilla torch luck calculations.
 	/// Typical return values are 1f for a torch in its biome, 0.5f for a weak positive torch, -1f for a torch in an opposing biome, and -0.5f for a weak negative torch.
 	/// </summary>

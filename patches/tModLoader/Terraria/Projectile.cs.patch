@@ -2248,7 +2248,7 @@
 +		else {
 +			for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +				if (wets[i]) {
-+					bool? result = LiquidLoader.AllowFishingInLiquid(i, player, this);
++					bool? result = LiquidLoader.AllowFishing(i, player, this);
 +					if (result == false) {
 +						flag2 = true;
 +						break;

@@ -30,7 +30,7 @@ namespace ExampleMod.Content.Liquids
 
 		//For our custom liquid, we want it to explode when interacting with any other liquid
 		//Here we use PreLiquidMerge to both spawn an explosion as well as remove liquid in a radious
-		public override bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int otherLiquid) {
+		public override bool PreMerge(int liquidX, int liquidY, int tileX, int tileY, int otherLiquid) {
 			//Firstly, we remove all liquid in a 3.5f area using the same Util's method that the dry bomb uses
 			if (Main.netMode != NetmodeID.MultiplayerClient) {
 				int y = liquidY;
@@ -145,7 +145,7 @@ namespace ExampleMod.Content.Liquids
 
 
 		//Here with UpdateLiquid, we use this method to make our liquid evaporate when in the ocean biome
-		public override bool PreUpdateLiquid(int i, int j, Liquid liquid) {
+		public override bool PreUpdate(int i, int j, Liquid liquid) {
 			//Firstly we check if the liquid both has more than 0 liquid amount, and is in the ocean biome part of the world
 			if ((i < WorldGen.beachDistance || i > Main.maxTilesX - WorldGen.beachDistance) && Main.tile[i, j].LiquidAmount > 0) {
 				byte evaporateAmount = 2; //the amount of liquid removed each frame

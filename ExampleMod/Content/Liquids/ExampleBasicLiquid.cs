@@ -35,7 +35,7 @@ namespace ExampleMod.Content.Liquids
 			return ModContent.GetInstance<ExampleBasicLiquidfall>().Slot;
 		}
 
-		public override int LiquidMerge(int adjacentLiquid) {
+		public override int Merge(int adjacentLiquid) {
 			if (adjacentLiquid == LiquidID.Water) {
 				return ModContent.TileType<ExampleBlock>();
 			}
@@ -59,7 +59,7 @@ namespace ExampleMod.Content.Liquids
 			return true;
 		}
 
-		public override void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
+		public override void MergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
 			collisionSound = SoundID.LiquidsHoneyWater;
 			if (otherLiquid == LiquidID.Lava) {
 				collisionSound = SoundID.LiquidsHoneyLava;

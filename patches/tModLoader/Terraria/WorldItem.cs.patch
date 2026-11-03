@@ -132,7 +132,7 @@
  
 +		for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
 +			if (wets[j])
-+				LiquidLoader.ItemLiquidMovement(j, this, ref wetVelocity, ref gravity, ref maxFallSpeed);
++				LiquidLoader.ItemMovement(j, this, ref wetVelocity, ref gravity, ref maxFallSpeed);
 +		}
 +
  		if (!beingGrabbed) {

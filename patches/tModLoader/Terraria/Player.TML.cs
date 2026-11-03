@@ -740,19 +740,4 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			}
 		}
 	}
-
-	// Re-added by TML, was removed in vanilla
-	private bool PlaceThing_Tiles_CheckLiquidBlocking()
-	{
-		bool result = false;
-		if (Main.tile[Player.tileTargetX, Player.tileTargetY].LiquidAmount > 0 && LiquidLoader.BlocksTilePlacement(this, Player.tileTargetX, Player.tileTargetY, Main.tile[Player.tileTargetX, Player.tileTargetY].LiquidType)) {
-			if (Main.tileSolid[this.inventory[this.selectedItem].createTile]) {
-				result = true;
-			}
-			else if (!TileObjectData.CheckLiquidPlacement(this.inventory[this.selectedItem].createTile, this.inventory[this.selectedItem].placeStyle, Main.tile[Player.tileTargetX, Player.tileTargetY])) {
-				result = true;
-			}
-		}
-		return result;
-	}
 }

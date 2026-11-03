@@ -2999,7 +2999,7 @@
  			if (shimmerWet) {
  				gravity = 0.15f;
  				maxFallSpeed = 5.5f;
-@@ -76357,7 +_,26 @@
+@@ -76357,7 +_,27 @@
  			else {
  				gravity = 0.2f;
  				maxFallSpeed = 7f;
@@ -3020,7 +3020,8 @@
 +				liqMaxFallSpeed = 7f;
 +			}
 +			for (int i = 0; i < LiquidLoader.LiquidCount; i++)
-+				LiquidLoader.NPCGravityModifier(i, this, ref liqGravity, ref liqMaxFallSpeed);
++				if (wets[i])
++					LiquidLoader.NPCGravityModifier(i, this, ref liqGravity, ref liqMaxFallSpeed);
 +			gravity = liqGravity;
 +			maxFallSpeed = liqMaxFallSpeed;
  		}
@@ -3121,7 +3122,7 @@
 +		bool canLiquidMove = true;
 +		for (int i = LiquidLoader.LiquidCount - 1; i >= 0; i--) {
 +			if (wets[i]) {
-+				canLiquidMove = LiquidLoader.NPCLiquidMovement(i, this, oldDryVelocity);
++				canLiquidMove = LiquidLoader.NPCMovement(i, this, oldDryVelocity);
 +				break;
 +			}
 +		}

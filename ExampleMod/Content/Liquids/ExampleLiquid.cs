@@ -80,7 +80,7 @@ namespace ExampleMod.Content.Liquids
 
 		//Here with LiquidMerge, we are able to decide when the liquid generates with a different tile.
 		//Using the otherLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
-		public override int LiquidMerge(int adjacentLiquid) {
+		public override int Merge(int adjacentLiquid) {
 			if (adjacentLiquid == LiquidID.Water) {
 				return TileID.TeamBlockBlue; //When the liquid collides with water. Blue team block is created
 			}
@@ -103,7 +103,7 @@ namespace ExampleMod.Content.Liquids
 
 		//LiquidMergeSound is played only on clients, and serves as editing the sound of when a liquid merges with another liquid.
 		//Here we set a few custom sounds to play when this liquid merges with other liquids.
-		public override void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
+		public override void MergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
 			collisionSound = SoundID.Shatter; //by default, we set the sound to be the glass shattering sound when merging with a liquid.
 			if (otherLiquid == LiquidID.Water) {
 				collisionSound = SoundID.Item2; //...but if the liquid being merged with is water, then we play Item 2 (Eating sound)
@@ -259,7 +259,7 @@ namespace ExampleMod.Content.Liquids
 
 		//The following contains all logic related to modifying the movement of entities in this liquid, making Players, Items, NPCs and Projectiles move slower while in this liquid
 		//Here we replicate normal liquid movement behaviour using PlayerLiquidMovement
-		public override bool PlayerLiquidMovement(Player player, bool fallThrough, bool ignorePlats) {
+		public override bool PlayerMovement(Player player, bool fallThrough, bool ignorePlats) {
 			int height = (!player.onTrack) ? player.height : (player.height - 20);
 			Vector2 velocity = player.velocity;
 			player.velocity = Collision.TileCollision(player.position, player.velocity, player.width, height, fallThrough, ignorePlats, (int)player.gravDir);
@@ -286,7 +286,7 @@ namespace ExampleMod.Content.Liquids
 		}
 
 		//related above, we use this method/hook to make items move at half the speed that they would when in honey
-		public override void ItemLiquidCollision(WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
+		public override void ItemCollision(WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
 			gravity = 0.02f;
 			maxFallSpeed = 1f;
 			wetVelocity = item.velocity * 0.125f;
@@ -321,7 +321,7 @@ namespace ExampleMod.Content.Liquids
 
 		//lastly, we reimplement the projectile movement in liquids using the ProjectileLiquidMovement
 		//This hook is very similar and different to PlayerLiquidMovement, returning a bool and only having wetVelocity as a referenced parameter
-		public override bool ProjectileLiquidMovement(Projectile projectile, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
+		public override bool ProjectileMovement(Projectile projectile, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
 			Vector2 vector = projectile.velocity;
 			projectile.velocity = Collision.TileCollision(collisionPosition, projectile.velocity, Width, Height, fallThrough, fallThrough);
 			wetVelocity = projectile.velocity * LiquidID.Sets.ProjectileMovementMultiplier[Type]; //We reuse the ProjectileMovementMultiplier here for it to serve the same purpose

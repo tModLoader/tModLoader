@@ -33,33 +33,11 @@ namespace ExampleMod.Common.GlobalLiquids
 			return null;
 		}
 
-		// EvaporatesInHell allows us to specify which liquids evaportate and doesn't evaporate in the underworld under certain condition (or not).
+		// EvaporatesInHell allows us to specify which liquids evaporate and doesn't evaporate in the underworld under certain condition (or not).
 		// This allows us to do things such as prevent water from evaporating and allowing other liquids to evaporate
-		public override bool? CanLiquidEvaporate(int i, int j, int type) {
-			// In this first example, we make it so honey just evaporate in the underworld without any extra condition
-			if (type == LiquidID.Honey) {
-				return true;
-			}
-
-			// In this second example, we disable water evaporation in the underworld if the wall of flesh as been defeated
-			if (type == LiquidID.Water && Main.hardMode) {
-				return false;
-			}
-
-			// In this third example, we make water evaporate if it's essentially in space
-			if (type == LiquidID.Water && j < 200) {
-				return true;
-			}
-
-			// In this fourth example, we make lava evaporate if it's standing on a block of ice
-			if (type == LiquidID.Lava && WorldGen.InWorld(i, j + 1)) {
-				Tile tile = Main.tile[i, j + 1];
-				if (tile.TileType == TileID.IceBlock && tile.HasTile) {
-					return true;
-				}
-			}
-
-			return null;
+		public override bool? CanWaterEvaporateInUnderworld() {
+			// In this small example, water is only allowed to evaporate if it's pre hardmode
+			return !Main.hardMode;
 		}
 
 		// In this example, we change how lava and water should interact before making a LiquidMerge.
@@ -122,7 +100,7 @@ namespace ExampleMod.Common.GlobalLiquids
 		}
 
 		//BlocksTilePlacement allows us to specify which liquids block placing tiles over them.
-		//Normally Lava and water are true, but here we set them to false depending on where the liquid itself is located or if the player is in a specific biome. 
+		//Normally Lava are true, but here we set them to false depending on where the liquid itself is located or if the player is in a specific biome. 
 		public override bool? BlocksTilePlacement(Player player, int i, int j, int type) {
 			// In this case, we check if the liquid is water and if the player is in the Example Surface Biome
 			if (type == LiquidID.Water && player.InModBiome<ExampleSurfaceBiome>()) {
@@ -131,9 +109,9 @@ namespace ExampleMod.Common.GlobalLiquids
 			}
 
 			// In this case, we check if the liquid is lava and if it's located in the underworld 
-			if (type == LiquidID.Lava && i > Main.maxTilesY - 200) {
-				// Then we return true if the lava is located in the underworld
-				return true;
+			if (type == LiquidID.Lava && j > Main.maxTilesY - 200) {
+				// Then we return false if the lava is located in the underworld so we can place tile on it
+				return false;
 			}
 			return null;
 		}
@@ -223,42 +201,42 @@ namespace ExampleMod.Common.GlobalLiquids
 		}
 
 		//Again related to PlayerLiquidMovement hook
-		//Here we replace gavity and maxFallSpeed with a replication of the gravity calculations before liquid calulations are called
-		//This allows npcs in lava to have normal gravity and not be effected by liquids
+		//Here we replace gravity and maxFallSpeed with a replication of the gravity calculations before liquid calculations are called
+		//This allows npcs in honey to have normal gravity and not be effected by liquids
 		//To see how lava is prevented from multiplying velocity, please see Common.GlobalNPCs.ExampleGlobalLiquidNPC.SetDefaults
 		public override void NPCGravityModifier(NPC npc, int type, ref float gravity, ref float maxFallSpeed) {
-			if (type == LiquidID.Lava) {
+			if (type == LiquidID.Honey) {
 				maxFallSpeed = 10f;
 				gravity = 0.3f;
 				if (!npc.GravityIgnoresType) {
-					if (type == 258) {
+					if (npc.type == 258) {
 						gravity = 0.1f;
 						if (npc.velocity.Y > 3f) {
 							npc.velocity.Y = 3f;
 						}
 					}
-					else if (type == 425 && npc.ai[2] == 1f) {
+					else if (npc.type == 425 && npc.ai[2] == 1f) {
 						gravity = 0.1f;
 					}
-					else if ((type == 576 || type == 577) && npc.ai[0] > 0f && npc.ai[1] == 2f) {
+					else if ((npc.type == 576 || npc.type == 577) && npc.ai[0] > 0f && npc.ai[1] == 2f) {
 						gravity = 0.45f;
 						if (npc.velocity.Y > 32f) {
 							npc.velocity.Y = 32f;
 						}
 					}
-					else if (type == 427 && npc.ai[2] == 1f) {
+					else if (npc.type == 427 && npc.ai[2] == 1f) {
 						gravity = 0.1f;
 						if (npc.velocity.Y > 4f) {
 							npc.velocity.Y = 4f;
 						}
 					}
-					else if (type == 426) {
+					else if (npc.type == 426) {
 						gravity = 0.1f;
 						if (npc.velocity.Y > 3f) {
 							npc.velocity.Y = 3f;
 						}
 					}
-					else if (type == 541) {
+					else if (npc.type == 541) {
 						gravity = 0f;
 					}
 					else if (npc.aiStyle == 7 && npc.ai[0] == 25f) {

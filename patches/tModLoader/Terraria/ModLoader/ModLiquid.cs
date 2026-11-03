@@ -88,7 +88,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="player">The player attempting to fish in it</param>
 	/// <param name="bobber">The bobber that is trying to fish in the liquid</param>
 	/// <returns></returns>
-	public virtual bool AllowFishingInLiquid(Player player, Projectile bobber)
+	public virtual bool AllowFishing(Player player, Projectile bobber)
 	{
 		return true;
 	}
@@ -100,7 +100,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool PreUpdateLiquid(int i, int j, Liquid liquid)
+	public virtual bool PreUpdate(int i, int j, Liquid liquid)
 	{
 		return true;
 	}
@@ -139,7 +139,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="adjacentLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int LiquidMerge(int adjacentLiquid)
+	public virtual int Merge(int adjacentLiquid)
 	{
 		return TileID.Stone;
 	}
@@ -153,7 +153,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="j">The y position in tile coordinates.</param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <param name="collisionSound">The sound to be played, set this to a sound if you don't want the default merge sound to play.</param>
-	public virtual void LiquidMergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound)
+	public virtual void MergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound)
 	{
 	}
 
@@ -175,7 +175,7 @@ public abstract class ModLiquid : ModBlockType
 	/// Useful for when trying to do something else other than generating a tile.</param>
 	/// <param name="otherLiquid">The Liquid ID of the liquid colliding with this liquid</param>
 	/// <returns></returns>
-	public virtual bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int otherLiquid)
+	public virtual bool PreMerge(int liquidX, int liquidY, int tileX, int tileY, int otherLiquid)
 	{
 		return true;
 	}
@@ -195,14 +195,6 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to decide what happens when a fishing bobber catches a fish. Water uses this to create extra water bubbles and to make a splash sound.		/// </summary>
-	/// <param name="proj">The projectile instance thats fishing in the liquid.</param>
-	/// <returns></returns>
-	public virtual void OnFishingBobberSplash(Projectile proj)
-	{
-	}
-
-	/// <summary>
 	/// Allows the user to specify how the liquid interacts with the player (especially player movement). <br/>
 	/// Please see <see cref="Player.WaterCollision" />, <see cref="Player.HoneyCollision" />, or <see cref="Player.ShimmerCollision" /> to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
@@ -212,7 +204,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="fallThrough">Whether or not the player is falling through the liquid.</param>
 	/// <param name="ignorePlats">Whether or not the player ignores platforms when falling.</param>
 	/// <returns></returns>
-	public virtual bool PlayerLiquidMovement(Player player, bool fallThrough, bool ignorePlats)
+	public virtual bool PlayerMovement(Player player, bool fallThrough, bool ignorePlats)
 	{
 		return true;
 	}
@@ -239,7 +231,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="wetVelocity">The velocity of the item when in the liquid.</param>
 	/// <param name="gravity">The gravity of the item.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed of the item.</param>
-	public virtual void ItemLiquidCollision(WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
+	public virtual void ItemCollision(WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 
@@ -252,7 +244,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="npc">The npc instance thats being effected by the liquid.</param>
 	/// <param name="dryVelocity">The velocity of the NPC before being modified by the liquid.</param>
 	/// <returns></returns>
-	public virtual bool NPCLiquidMovement(NPC npc, Vector2 dryVelocity)
+	public virtual bool NPCMovement(NPC npc, Vector2 dryVelocity)
 	{
 		return true;
 	}
@@ -281,7 +273,7 @@ public abstract class ModLiquid : ModBlockType
 	/// <param name="Height">The modified height of this projectile.</param>
 	/// <param name="fallThrough">Whether or not the projectile can fall through.</param>
 	/// <returns></returns>
-	public virtual bool ProjectileLiquidMovement(Projectile proj, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough)
+	public virtual bool ProjectileMovement(Projectile proj, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough)
 	{
 		return true;
 	}

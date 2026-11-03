@@ -108,8 +108,6 @@ public static class TileLoader
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
-	private delegate void DelegateTileMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode);
-	private static DelegateTileMaskMode[] HookTileLightMaskMode;
 	private delegate WaterfallManager.WaterfallData? DelegateCreateWaterfall(int i, int j, int type);
 	private static DelegateCreateWaterfall[] HookCreateWaterfall;
 	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
@@ -274,7 +272,6 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
-		ModLoader.BuildGlobalHook(ref HookTileLightMaskMode, globalTiles, g => g.TileLightMaskMode);
 		ModLoader.BuildGlobalHook(ref HookDrawTileInWater, globalTiles, g => g.DrawTileInWater);
 		ModLoader.BuildGlobalHook(ref HookCreateWaterfall, globalTiles, g => g.CreateWaterfall);
 		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalTiles, g => g.CanDoWireStuffHere);
@@ -717,18 +714,6 @@ public static class TileLoader
 
 		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
-		}
-	}
-
-	public static void TileLightMaskMode(int i, int j, int type, ref LightMaskMode liquidMaskMode)
-	{
-		ModTile modTile = GetTile(type);
-		if (modTile != null) {
-			liquidMaskMode = modTile.TileLightMaskMode(i, j);
-		}
-		DelegateTileMaskMode[] hookTileLightMaskMode = HookTileLightMaskMode;
-		for (int k = 0; k < hookTileLightMaskMode.Length; k++) {
-			hookTileLightMaskMode[k](i, j, type, ref liquidMaskMode);
 		}
 	}
 

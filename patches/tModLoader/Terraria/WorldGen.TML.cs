@@ -160,7 +160,7 @@ public partial class WorldGen
 		else if ((liquidMergeType == LiquidID.Shimmer || adjacentLiquidType == LiquidID.Shimmer) && liquidMergeType < LiquidID.Count && adjacentLiquidType < LiquidID.Count)
 			collisionSound = SoundID.ShimmerWeak1;
 
-		LiquidLoader.LiquidMergeSounds(x, y, liquidMergeType, adjacentLiquidType, ref collisionSound);
+		LiquidLoader.MergeSounds(x, y, liquidMergeType, adjacentLiquidType, ref collisionSound);
 
 		if (collisionSound != null) {
 			SoundEngine.PlaySound(collisionSound, x * 16 + count * 8, y * 16 + count * 8);
