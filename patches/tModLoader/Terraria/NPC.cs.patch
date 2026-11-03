@@ -2936,15 +2936,16 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -77017,6 +_,8 @@
- 					none.AddSuperNaturalRegeneration(24);
- 			}
+@@ -77033,6 +_,9 @@
+ 			if (none.ExpectedDamagePerSecond != 0)
+ 				num = none.ExpectedDamagePerSecond;
  
++			// Apply mod hooks after vanilla life regeneration and damage calculations.
 +			NPCLoader.UpdateLifeRegen(this, ref num);
 +
- 			if (none.BlockNaturalRegeneration && lifeRegen > 0)
- 				lifeRegen = 0;
- 
+ 			lifeRegenCount += lifeRegen;
+ 			if (num == -1) {
+ 				int num5 = lifeRegenCount / -120;
 @@ -77349,12 +_,16 @@
  			if (buffType[i] == 324)
  				onFrostBurn2 = true;
