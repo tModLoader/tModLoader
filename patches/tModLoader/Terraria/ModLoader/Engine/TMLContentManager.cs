@@ -128,7 +128,8 @@ internal class TMLContentManager : ContentManager
 			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
 
 			// Programmatically & defensively move to force case change
-			File.Move(actualFullPath, expectedFullPath);
+			File.Move(actualFullPath, actualFullPath + ".1");
+			File.Move(actualFullPath + ".1", expectedFullPath);
 		}
 	}
 
