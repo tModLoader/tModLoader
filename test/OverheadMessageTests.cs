@@ -23,7 +23,8 @@ public class OverheadMessageTests
 	private bool originalGameMenu;
 
 	[ClassInitialize]
-	public static void ClassInit(TestContext context) {
+	public static void ClassInit(TestContext context)
+	{
 		Program.SavePath ??= ".";
 		Main.dedServ = true;
 		LanguageManager.Instance.SetLanguage("en-US");
@@ -31,7 +32,8 @@ public class OverheadMessageTests
 	}
 
 	[TestInitialize]
-	public void Initialize() {
+	public void Initialize()
+	{
 		originalFont = FontAssets.MouseText;
 		originalDefaultFont = Asset<DynamicSpriteFont>.DefaultValue;
 		originalPlayer = Main.player[0];
@@ -53,7 +55,8 @@ public class OverheadMessageTests
 	}
 
 	[TestCleanup]
-	public void Cleanup() {
+	public void Cleanup()
+	{
 		FontAssets.MouseText = originalFont;
 		Asset<DynamicSpriteFont>.DefaultValue = originalDefaultFont;
 		Main.player[0] = originalPlayer;
@@ -66,7 +69,8 @@ public class OverheadMessageTests
 	[DataRow(255, 255, 255)]
 	[DataRow(255, 0, 0)]
 	[DataRow(0, 0, 255)]
-	public void DisplayMessagePreservesOverheadBaseColorAndTags(int red, int green, int blue) {
+	public void DisplayMessagePreservesOverheadBaseColorAndTags(int red, int green, int blue)
+	{
 		const string text = "hello [c/FF0000:RED] [c/00FF00:GREEN] tail";
 		var color = new Color(red, green, blue);
 
@@ -86,7 +90,8 @@ public class OverheadMessageTests
 	}
 
 	[TestMethod]
-	public void NewMessageWithoutBaseColorStillDefaultsToWhite() {
+	public void NewMessageWithoutBaseColorStillDefaultsToWhite()
+	{
 		var overhead = new Player.OverheadMessage { color = Color.Red };
 
 		overhead.NewMessage("hello", 120);

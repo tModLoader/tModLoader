@@ -11,7 +11,8 @@ namespace Terraria.ModLoader;
 public class ChatManagerTests
 {
 	[ClassInitialize]
-	public static void ClassInit(TestContext context) {
+	public static void ClassInit(TestContext context)
+	{
 		Program.SavePath ??= ".";
 		Main.dedServ = true;
 	}
@@ -19,7 +20,8 @@ public class ChatManagerTests
 	[DataTestMethod]
 	[DataRow(255)]
 	[DataRow(128)]
-	public void ColoredShadowedTextPreservesSnippetColors(int alpha) {
+	public void ColoredShadowedTextPreservesSnippetColors(int alpha)
+	{
 		var snippets = CreateSnippets();
 		var color = new Color(255, 255, 255, alpha);
 
@@ -29,7 +31,8 @@ public class ChatManagerTests
 	}
 
 	[TestMethod]
-	public void ShadowedTextWithoutColorPreservesSnippetColors() {
+	public void ShadowedTextWithoutColorPreservesSnippetColors()
+	{
 		var snippets = CreateSnippets();
 
 		ChatManager.DrawColorCodedStringWithShadow(null, null, snippets, Vector2.Zero, 0f, Vector2.Zero, Vector2.One, out _);
@@ -38,7 +41,8 @@ public class ChatManagerTests
 	}
 
 	[TestMethod]
-	public void ShadowedTextWithCustomShadowPreservesSnippetColors() {
+	public void ShadowedTextWithCustomShadowPreservesSnippetColors()
+	{
 		var snippets = CreateSnippets();
 		var shadowColor = new Color(10, 20, 30, 128);
 
@@ -48,7 +52,8 @@ public class ChatManagerTests
 	}
 
 	[TestMethod]
-	public void ColoredShadowedTextPreservesHoveredSnippetIndex() {
+	public void ColoredShadowedTextPreservesHoveredSnippetIndex()
+	{
 		int mouseX = Main.mouseX;
 		int mouseY = Main.mouseY;
 		try {
@@ -69,7 +74,8 @@ public class ChatManagerTests
 
 	private static RecordingSnippet[] CreateSnippets() => [new(Color.Red), new(Color.Green)];
 
-	private static void AssertDraws(RecordingSnippet[] snippets, Color shadowColor) {
+	private static void AssertDraws(RecordingSnippet[] snippets, Color shadowColor)
+	{
 		foreach (var snippet in snippets) {
 			Assert.AreEqual(5, snippet.Draws.Count);
 			for (int i = 0; i < 4; i++) {
@@ -89,7 +95,8 @@ public class ChatManagerTests
 
 		public override Color GetVisibleColor() => Color;
 
-		public override bool UniqueDraw(bool justCheckingSize, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default, Color color = default, float scale = 1f) {
+		public override bool UniqueDraw(bool justCheckingSize, out Vector2 size, SpriteBatch spriteBatch, Vector2 position = default, Color color = default, float scale = 1f)
+		{
 			size = new Vector2(12, 10) * scale;
 			if (!justCheckingSize)
 				Draws.Add((color, ChatManager.IsDrawingShadow));
