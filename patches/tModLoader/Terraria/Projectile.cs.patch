@@ -1073,12 +1073,11 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11961,8 +_,23 @@
+@@ -11961,8 +_,22 @@
  		if (type == 22)
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
 +		modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+		modifiers.Knockback *= num5 / knockBack;
 +		modifiers.TargetDamageMultiplier *= dmg / 1000;
 +		if (num40 != null)
 +			modifiers.HitDirectionOverride = num40;
