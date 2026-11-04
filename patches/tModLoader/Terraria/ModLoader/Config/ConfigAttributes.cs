@@ -599,8 +599,7 @@ public class CycleAttribute : Attribute
 }
 
 /// <summary>
-/// Changes the sorting order of this config.
-/// <br/><br/> Note that creating a dependency cycle, such as by making 2 configs sort themselves based on each other, will cause an error.
+/// Changes the sorting order of this config by sorting it before or after another config.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
 public class ConfigSortAttribute : Attribute

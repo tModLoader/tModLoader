@@ -14,6 +14,7 @@ using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -309,35 +310,23 @@ public static class ConfigManager
 
 	internal static IEnumerable<ModConfig> SortConfigsForUI(List<ModConfig> configs)
 	{
-		var configsWithSortInfo = configs.Select(config => Tuple.Create(config, (ConfigSortAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(ConfigSortAttribute))));
+		// Ensure sorted by internal name to make custom sorting consistent across languages
+		var sortedConfigs = configs.OrderBy(x => x.Name);
 
-		var sortedConfigs = configsWithSortInfo
-		                    .Where(config => config.Item2 is null)
-		                    .Select(config => config.Item1)
-		                    .OrderBy(config => Utils.CleanChatTags(config.DisplayName.Value))
-		                    .ToList();
-
-		var customSortedConfigs = configsWithSortInfo.Where(config => config.Item2 is not null);
-		foreach (var config in customSortedConfigs) {
-			var modConfig = config.Item1;
-			var sortData = config.Item2;
-
-			int index = sortedConfigs.FindIndex(config => config.Name == sortData.OtherConfigName);
-			if (index == -1) {
-				string sortAfterText = sortData.SortAfter ? "after" : "before";
-				modConfig.Mod.Logger.Error($"Failed to find the config with the name '{sortData.OtherConfigName}' to sort config '{modConfig.Name}' {sortAfterText}");
-				sortedConfigs.Add(modConfig);
-				continue;
+		return SortBeforeAfter.Sort(sortedConfigs, c => {
+			if (Attribute.GetCustomAttribute(c.GetType(), typeof(ConfigSortAttribute)) is ConfigSortAttribute sortAttribute) {
+				try {
+					ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
+					return (otherConfig, sortAttribute.SortAfter);
+				}
+				catch {
+					string beforeAfter = sortAttribute.SortAfter ? "after" : "before"; // Ternarys can't go in format strings :/
+					c.Mod.Logger.Warn($"Unable to find ModConfig '{sortAttribute.OtherConfigName} to sort ModConfig '{c.Name}' {beforeAfter}");
+				}
 			}
 
-			if (sortData.SortAfter) {
-				index += 1;
-			}
-
-			sortedConfigs.Insert(index, modConfig);
-		}
-
-		return sortedConfigs;
+			return (null, false)!;
+		});
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)

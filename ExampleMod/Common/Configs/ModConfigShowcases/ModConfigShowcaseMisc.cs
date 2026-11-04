@@ -18,6 +18,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
 	/// </summary>
+	[ConfigSort(sortAfter: true, nameof(ModConfigShowcaseAccessibility))]
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
