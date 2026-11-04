@@ -1309,6 +1309,11 @@ Mods: {
 				// DisplayName: Example Special Glide Wings
 				// Tooltip: ""
 			}
+
+			ExampleVoiceAccessory: {
+				// DisplayName: Example Voice Accessory
+				// Tooltip: "'Boing!'"
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.

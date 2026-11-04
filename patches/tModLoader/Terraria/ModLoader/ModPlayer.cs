@@ -526,6 +526,19 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
+	/// Allows for a different sound to play when the player takes damage.
+	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For voice accessories, use <seealso cref="ModItem.VoiceItemHurtSoundOverride(Entity, Vector2)"/>.
+	/// </summary>
+	/// <param name="soundPosition"> The position that the sound should be played at.
+	/// <br/> If the sound is emanating from ourselves (aka local client), play the sound "globally" for us so it doesn't pan while we are moving.</param>
+	/// <returns>Returns <see langword="false"/> by default.</returns>
+	public virtual bool PlayerHurtSound(Vector2 soundPosition)
+	{
+		return false;
+	}
+
+	/// <summary>
 	/// This hook is called whenever the player is about to be killed after reaching 0 health.
 	/// <para/> Called on local, server, and remote clients.
 	/// <para/> Set the <paramref name="playSound"/> parameter to false to stop the death sound from playing. Set the <paramref name="genDust"/> parameter to false to stop the dust from being created. These are useful for creating your own sound or dust to replace the normal death effects, such as how the Frost armor set spawns <see cref="DustID.IceTorch"/> instead of <see cref="DustID.Blood"/>. For mod compatibility, it is recommended to check if these values are true before setting them to true and spawning dust or playing sounds to avoid overlapping sounds and dust effects.
@@ -554,6 +567,17 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="damageSource"></param>
 	public virtual void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 	{
+	}
+
+	/// <summary>
+	/// Allows for a different sound to play when the player dies.
+	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For voice accessories, use <seealso cref="ModItem.VoiceItemDeathSoundOverride(Entity)"/>.
+	/// </summary>
+	/// <returns>Returns <see langword="false"/> by default.</returns>
+	public virtual bool PlayerDeathSound()
+	{
+		return false;
 	}
 
 	/// <summary>
