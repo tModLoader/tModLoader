@@ -12,7 +12,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
 - Check for any remaining TML added ID sets that aren't in TML.cs files.
-- BuffLoader.ReApply (NPC) logic seems changed, likely to fix desync issues. The server sync for MessageID.NPCBuffs when !quiet now happens after the reapply logic. Modded ReApply will need doc updates or maybe new parameters to properly adjust to these changes. Maybe a ref time parameter instead?
 - Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
 - LegacyAudioSystem now has TrackLoopCounts and PlayCallbacks. They seem to involve counting how many times a specific music has looped. Investigate. Modders might be interested. Used with RainbowBoulderMusicPlayCallback
@@ -138,7 +137,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
 - Player.maxRunSpeed should mention originalRunSpeed maybe.
 - We'll need to recheck all the container drop loot tables again. At least OpenLockBox has changed
-- Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
 - Player.manaPotionDelay is new.
 - Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
 - Item 3852 Tome of Infinite Wisdom ItemCheck_OwnerOnlyCode changed. Does Item.useLimitPerAnimation still make sense?
