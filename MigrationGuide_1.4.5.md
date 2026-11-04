@@ -40,24 +40,20 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 
 `Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
 
-#### Replacing the item in a world entity
+#### Working with Main.item[]
 
-Use `ReplaceWith` to change an existing drop's item while preserving its `WorldItem` and world state:
+Use `WorldItem.ReplaceWith` to change the `Item` instance a `WorldItem` contains while preserving its world state (position, etc).
 
 ```cs
 WorldItem worldItem = Main.item[index];
 if (worldItem.active) {
     worldItem.ReplaceWith(replacementItem);
+    worldItem.SyncItem();
 }
 ```
 
-`ReplaceWith` stores the supplied `Item` directly. Cached references to the old `inner` still refer to the old item. Use `worldItem.ReplaceWith(replacementItem.Clone())` for an independent instance.
+Replacing a `Main.item` entry directly is possible, but requires setting `WorldItem.whoAmI` as well.
 
-Assigning another `WorldItem` to `Main.item[index]` replaces the entity instead, without transferring its world state.
-
-An empty replacement deactivates the entity. Replacing air with a nonempty item throws; use the spawning APIs below to create a new drop.
-
-`ReplaceWith` does not run spawn hooks or synchronize the change. Retain the synchronization required by the calling code.
 
 ### Item.NewItem
 
@@ -70,8 +66,6 @@ An empty replacement deactivates the entity. Replacing air with a nonempty item 
   - Some uses of `Mod/GlobalItem.OnSpawn` may be better served by passing a `modifier` delegate, if they only apply to some call sites.
 
 🤖 Due to the signature changes, many 1.4.4 calls will no longer compile, but tModPorter can handle the vast majority of them.
-
-The `Item` overloads of `NewItem` clone the supplied item, including its modded data.
 
 `Item.RequestNewItem` has been added to make spawning world items from multiplayer clients easier. It is also safe to call in single player, but we generally recommend considering `QuickSpawnItem` first.
 
