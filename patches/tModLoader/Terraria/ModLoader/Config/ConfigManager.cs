@@ -94,7 +94,7 @@ public static class ConfigManager
 		foreach (var mod in Configs.Keys)
 		{
 			Configs[mod] = SortBeforeAfter.Sort(Configs[mod], c => {
-				if (Attribute.GetCustomAttribute(c.GetType(), typeof(ConfigSortAttribute)) is not ConfigSortAttribute sortAttribute) {
+				if (Attribute.GetCustomAttribute(c.GetType(), typeof(SortConfigAttribute)) is not SortConfigAttribute sortAttribute) {
 					return (null, false)!;
 				}
 

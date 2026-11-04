@@ -12,7 +12,7 @@ using Terraria.ModLoader.Config;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(164, 153, 190)]
-	[ConfigSort(sortAfter: true, nameof(ModConfigShowcaseSubpages))]
+	[SortConfig(after: true, nameof(ModConfigShowcaseSubpages))]
 	public class ModConfigShowcaseAccessibility : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;

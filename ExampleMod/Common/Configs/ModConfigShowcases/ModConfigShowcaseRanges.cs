@@ -15,7 +15,7 @@ using Terraria.ModLoader.Config;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(99, 180, 209)]
-	[ConfigSort(sortAfter: true, nameof(ModConfigShowcaseDataTypes))]
+	[SortConfig(after: true, nameof(ModConfigShowcaseDataTypes))]
 	public class ModConfigShowcaseRanges : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;

@@ -602,14 +602,14 @@ public class CycleAttribute : Attribute
 /// Changes the sorting order of this config by sorting it before or after another config.
 /// </summary>
 [AttributeUsage(AttributeTargets.Class)]
-public class ConfigSortAttribute : Attribute
+public class SortConfigAttribute : Attribute
 {
 	public bool SortAfter { get; }
 	public string OtherConfigName { get; }
 
-	public ConfigSortAttribute(bool sortAfter, string otherConfigName)
+	public SortConfigAttribute(bool after, string otherConfigName)
 	{
-		SortAfter = sortAfter;
+		SortAfter = after;
 		OtherConfigName = otherConfigName;
 	}
 }
