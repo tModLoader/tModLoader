@@ -340,6 +340,7 @@ public partial class Main
 
 	private void DrawBuilderAccToggles_Inner(Vector2 start)
 	{
+		int state = -1; // Which toggle is being hovered over
 		Player player = Main.player[myPlayer];
 		int[] builderAccStatus = player.builderAccStatus;
 		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
@@ -394,6 +395,7 @@ public partial class Main
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
+				state = i;
 
 				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
 				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
@@ -428,7 +430,7 @@ public partial class Main
 			}
 
 
-			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + drawParams.Frame.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
 				float colorByte = (float)mouseTextColor / 255f;
@@ -439,6 +441,7 @@ public partial class Main
 			}
 		}
 
+		DoStatefulTickSound(ref toggleAccMouseOver, state);
 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
 	}
 

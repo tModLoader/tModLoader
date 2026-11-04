@@ -284,4 +284,44 @@ public class RenameRewriter : BaseRewriter {
 				n => PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, n.WithoutTrivia()).WithTriviaFrom(n));
 		}
 	}
+
+	public static void InvertAssignedBool(RenameRewriter rw, SyntaxToken node)
+	{
+		if (node.Parent is not IdentifierNameSyntax nameSyntax)
+			return;
+
+		ExpressionSyntax usage = nameSyntax.Parent is MemberAccessExpressionSyntax memberAccess
+			? memberAccess
+			: nameSyntax;
+
+		if (usage.Parent is not ElementAccessExpressionSyntax elementAccess)
+			return;
+
+		// if assigning to changed set, invert the assigned value
+		if (elementAccess.Parent is AssignmentExpressionSyntax assign && assign.Left == elementAccess) {
+			rw.RegisterAction<AssignmentExpressionSyntax>(assign,
+				n => n.WithRight(InvertAssignedBoolExpression(n.Right)).WithTriviaFrom(n));
+			return;
+		}
+
+		// otherwise invert itself (right of assignment, if statement)
+		rw.RegisterAction<ExpressionSyntax>(elementAccess, InvertAssignedBoolExpression);
+	}
+
+	private static ExpressionSyntax InvertAssignedBoolExpression(ExpressionSyntax expr)
+	{
+		switch (expr) {
+			case LiteralExpressionSyntax { RawKind: var rawKind } literal when rawKind == (int)SyntaxKind.TrueLiteralExpression:
+				return LiteralExpression(SyntaxKind.FalseLiteralExpression).WithTriviaFrom(literal);
+			case LiteralExpressionSyntax { RawKind: var rawKind } literal when rawKind == (int)SyntaxKind.FalseLiteralExpression:
+				return LiteralExpression(SyntaxKind.TrueLiteralExpression).WithTriviaFrom(literal);
+			case PrefixUnaryExpressionSyntax { RawKind: var rawKind } unary when rawKind == (int)SyntaxKind.LogicalNotExpression:
+				return unary.Operand.WithTriviaFrom(unary);
+			default:
+				var operand = expr is BinaryExpressionSyntax or ConditionalExpressionSyntax or AssignmentExpressionSyntax
+					? ParenthesizedExpression(expr.WithoutTrivia()).WithTriviaFrom(expr)
+					: expr.WithoutTrivia();
+				return PrefixUnaryExpression(SyntaxKind.LogicalNotExpression, operand).WithTriviaFrom(expr);
+		}
+	}
 }

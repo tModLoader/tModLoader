@@ -230,5 +230,7 @@ public class SimpleRenamedVanillaMembersTest
 		_ = tradeOption.GivingItemType;
 
 		_ = ContentSamples.CreativeHelper.ItemGroup.PlaceableObjects;
+
+		Item ammo = player.PickAmmo_PickAmmoItem(player.HeldItem);
 	}
 }

@@ -146,7 +146,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 		var branches = new List<Branch>(betaBranchCount);
 		int newestBranchIdx = -1;
 		for (int i = 0; i < betaBranchCount; i++) {
-			SteamApps.GetBetaInfo(i, out uint flagsValue, out uint buildID, out string betaName, 128, out string branchDescription, 1024);
+			SteamApps.GetBetaInfo(i, out uint flagsValue, out uint buildID, out string betaName, 128, out string branchDescription, 1024, out uint lastUpdated);
 
 			var branch = new Branch((EBetaBranchFlags)flagsValue, buildID, betaName, branchDescription);
 
