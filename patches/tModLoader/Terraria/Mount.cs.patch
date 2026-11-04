@@ -419,6 +419,17 @@
  			PlayerQueenSlimeMountTextureContent queenSlimeMount = TextureAssets.RenderTargets.QueenSlimeMount;
  			queenSlimeMount.Request();
  			if (queenSlimeMount.IsReady)
+@@ -4929,7 +_,10 @@
+ 			num *= -1;
+ 
+ 		Position.X = (int)(Position.X - Main.screenPosition.X + (float)(drawPlayer.width / 2) + (float)num);
++		/* #ModifyHitboxSize
+ 		Position.Y = (int)(Position.Y - Main.screenPosition.Y + (float)(drawPlayer.height / 2) + (float)num2);
++		*/
++		Position.Y = (int)(Position.Y - Main.screenPosition.Y + (float)(drawPlayer.height / 2) + drawPlayer.HeightOffsetHitboxSize / 2f * drawPlayer.gravDir + (float)num2);
+ 		int num3 = 0;
+ 		bool flag = true;
+ 		int num4 = _data.totalFrames;
 @@ -5264,10 +_,13 @@
  				break;
  		}
@@ -443,7 +454,40 @@
  		_mountSpecificData = null;
  		int type = _type;
  		if ((uint)(type - 55) <= 1u && mountedPlayer.noItems && !mountedPlayer.cursed)
-@@ -5508,7 +_,7 @@
+@@ -5489,26 +_,40 @@
+ 		if (!mountedPlayer.isDisplayDollOrInanimate && mountedPlayer.whoAmI == Main.myPlayer)
+ 			NetMessage.SendData(13, -1, -1, null, mountedPlayer.whoAmI);
+ 
++		Vector2 baseSize = mountedPlayer.GetBaseHitboxSize(); // #ModifyHitboxSize
++		int baseWidth = (int)baseSize.X;
++		int baseHeight = (int)baseSize.Y;
++		/*
+ 		if (Collision.TryChangingSizeFromBottomCenter(mountedPlayer.Hitbox, 20, 42, out var changedHitbox)) {
++		*/
++		if (Collision.TryChangingSizeFromBottomCenter(mountedPlayer.Hitbox, baseWidth, baseHeight, out var changedHitbox)) {
+ 			Vector2 vector = changedHitbox.TopLeft() - mountedPlayer.position;
+ 			mountedPlayer.position += vector;
++			/*
+ 			mountedPlayer.width = 20;
+ 			mountedPlayer.height = 42;
++			*/
++			mountedPlayer.width = baseWidth;
++			mountedPlayer.height = baseHeight;
+ 			for (int i = 0; i < mountedPlayer.shadowPos.Length; i++) {
+ 				mountedPlayer.shadowPos[i] += vector;
+ 			}
+ 		}
+ 		else {
+ 			mountedPlayer.position.Y += mountedPlayer.height;
++			/*
+ 			mountedPlayer.width = 20;
+ 			mountedPlayer.height = 42;
++			*/
++			mountedPlayer.width = baseWidth;
++			mountedPlayer.height = baseHeight;
+ 			mountedPlayer.position.Y -= mountedPlayer.height;
+ 		}
+ 	}
  
  	public void SetMount(int m, Player mountedPlayer)
  	{
@@ -452,6 +496,17 @@
  			return;
  
  		if (_active) {
+@@ -5573,7 +_,10 @@
+ 				mountedPlayer.shadowPos[k].Y += mountedPlayer.height;
+ 			}
+ 
++			/* #ModifyHitboxSize
+ 			mountedPlayer.height = 42 + _data.heightBoost;
++			*/
++			mountedPlayer.height = (int)mountedPlayer.GetBaseHitboxSize().Y + _data.heightBoost; 
+ 			mountedPlayer.position.Y -= mountedPlayer.height;
+ 			for (int l = 0; l < mountedPlayer.shadowPos.Length; l++) {
+ 				mountedPlayer.shadowPos[l].Y -= mountedPlayer.height;
 @@ -5598,7 +_,15 @@
  			_mountSpecificData = new SelectiveFlyingMountData();
  
@@ -468,3 +523,31 @@
  		if (_type == 38 && mountedPlayer.whoAmI == Main.myPlayer)
  			AchievementsHelper.NotifyProgressionEvent(32);
  	}
+@@ -5727,7 +_,11 @@
+ 		if (_type == 56 || _type == 61) {
+ 			if (isDismounting) {
+ 				Vector2 bottom = mountedPlayer.Bottom;
++				/* #ModifyHitboxSize
+ 				r = new Rectangle((int)bottom.X - (int)mountedPlayer.DefaultSize.X / 2, (int)bottom.Y - (int)mountedPlayer.DefaultSize.Y, (int)mountedPlayer.DefaultSize.X, (int)mountedPlayer.DefaultSize.Y);
++				*/
++				Vector2 baseSize = mountedPlayer.GetBaseHitboxSize();
++				r = new Rectangle((int)bottom.X - (int)baseSize.X / 2, (int)bottom.Y - (int)baseSize.Y, (int)baseSize.X, (int)baseSize.Y);
+ 			}
+ 			else {
+ 				r = mountedPlayer.Hitbox;
+@@ -5878,9 +_,15 @@
+ 	{
+ 		DismountCheckResult result = DismountCheckResult.Succeeded;
+ 		Rectangle changedHitbox;
++		Vector2 baseSize = mountingPlayer.GetBaseHitboxSize(); // #ModifyHitboxSize
++		int baseWidth = (int)baseSize.X;
++		int baseHeight = (int)baseSize.Y;
+ 		if (MountID.Sets.DontDismountWhenCCed[Type] && mountingPlayer.CCed)
+ 			result = DismountCheckResult.FailedCCed;
++		/*
+ 		else if (!Collision.TryChangingSizeFromBottomCenter(mountingPlayer.Hitbox, 20, 42, out changedHitbox))
++		*/
++		else if (!Collision.TryChangingSizeFromBottomCenter(mountingPlayer.Hitbox, baseWidth, baseHeight, out changedHitbox))
+ 			result = DismountCheckResult.FailedNoSpace;
+ 
+ 		return result;

@@ -588,6 +588,16 @@ public static class PlayerLoader
 		}
 	}
 
+	private delegate void DelegateModifyHitboxSize(ref Vector2 size);
+	private static HookList HookModifyHitboxSize = AddHook<DelegateModifyHitboxSize>(p => p.ModifyHitboxSize);
+
+	public static void ModifyHitboxSize(Player player, ref Vector2 size)
+	{
+		foreach (var modPlayer in HookModifyHitboxSize.Enumerate(player)) {
+			modPlayer.ModifyHitboxSize(ref size);
+		}
+	}
+
 	private static HookList HookPreItemCheck = AddHook<Func<bool>>(p => p.PreItemCheck);
 
 	public static bool PreItemCheck(Player player)
