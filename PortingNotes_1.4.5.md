@@ -3,7 +3,6 @@
 Once all patches are fixed, these items need to be fixed or double checked:
 
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
-- NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
 - Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
