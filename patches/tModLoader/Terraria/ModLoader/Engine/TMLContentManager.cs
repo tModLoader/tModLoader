@@ -25,7 +25,8 @@ internal class TMLContentManager : ContentManager
 
 	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager overrideContentManager) : base(serviceProvider, rootDirectory)
 	{
-		if (overrideContentManager != null) // Only need to check vanilla content directory.
+		//Solxan for discussion: this only runs if tModLoader has a Content/Images folder based on the Main.tml.cs call site.
+		if (overrideContentManager != null) // Only need to check vanilla content directory. 
 			TryFixFileCasings(rootDirectory);
 
 		this.overrideContentManager = overrideContentManager;
@@ -115,6 +116,8 @@ internal class TMLContentManager : ContentManager
 			"Images/Item_2648.xnb"
 		};
 
+		bool thisOsIsMoveProtected = IsThisOSMoveProtectedForCaseChange();
+
 		foreach (string problematicAsset in problematicAssets) {
 			if (ValidateFileCasing(rootDirectory, problematicAsset, out string actualFullPath))
 				continue;
@@ -128,14 +131,13 @@ internal class TMLContentManager : ContentManager
 			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
 
 			// Programmatically & defensively move to force case change
-			if (IsThisOSMoveProtectedForCaseChange()) {
+			if (thisOsIsMoveProtected) {
 				File.Move(actualFullPath, actualFullPath + ".1");
 				File.Move(actualFullPath + ".1", expectedFullPath);
 			}
 			else {
 				File.Move(actualFullPath, expectedFullPath);
 			}
-			
 		}
 	}
 
@@ -153,9 +155,9 @@ internal class TMLContentManager : ContentManager
 		string canaryFile = "LaunchUtils/canaryfile.txt";
 		bool moveCaseProtected = false;
 
-		if (!File.Exists(canaryFile))
-			File.Create(canaryFile);
-		
+		var fileStream = File.Create(canaryFile);
+		fileStream.Close();
+
 		try {
 			File.Move(canaryFile, "LaunchUtils/cAnAryfile.txt");
 		}
