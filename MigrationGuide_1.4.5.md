@@ -40,6 +40,20 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 
 `Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
 
+#### Working with Main.item[]
+
+Use `WorldItem.ReplaceWith` to change the `Item` instance a `WorldItem` contains while preserving its world state (position, etc).
+
+```cs
+WorldItem worldItem = Main.item[index];
+if (worldItem.active) {
+    worldItem.ReplaceWith(replacementItem);
+    worldItem.SyncItem();
+}
+```
+
+Replacing a `Main.item` entry directly is possible, but requires setting `WorldItem.whoAmI` as well.
+
 ### Item.NewItem
 
 `Item.NewItem` has been reworked.
