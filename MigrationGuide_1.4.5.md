@@ -54,7 +54,6 @@ if (worldItem.active) {
 
 Replacing a `Main.item` entry directly is possible, but requires setting `WorldItem.whoAmI` as well.
 
-
 ### Item.NewItem
 
 `Item.NewItem` has been reworked.
