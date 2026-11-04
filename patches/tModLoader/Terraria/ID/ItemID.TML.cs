@@ -218,5 +218,10 @@ partial class ItemID
 			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
+
+		/// <summary>
+		/// If <see langword="true"/> for sponge item type, used for making sure that the current items is not a sponge when picking up a liquid with a bucket.
+		/// </summary>
+		public static bool[] SpongeItems = Factory.CreateBoolSet(false, 3032, 4872, 5303, 5304);
 	}
 }

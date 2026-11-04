@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Utilities;
 using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Biomes.CaveHouse;
 using Terraria.GameContent.ObjectInteractions;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.Core;
@@ -76,6 +78,7 @@ public static class TileLoader
 	private delegate void DelegateDrawEffects(int i, int j, int type, SpriteBatch spriteBatch, ref TileDrawInfo drawData);
 	private static DelegateDrawEffects[] HookDrawEffects;
 	private static Action<int, int, Tile, ushort, short, short, Color, bool>[] HookEmitParticles;
+	private static Func<int, int, int, SpriteBatch, Vector2, bool>[] HookDrawTileInWater;
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, SpriteBatch>[] HookSpecialDraw;
 	private delegate bool DelegatePreDrawPlacementPreview(int i, int j, int type, SpriteBatch spriteBatch, ref Rectangle frame, ref Vector2 position, ref Color color, bool validPlacement, ref SpriteEffects spriteEffects);
@@ -105,6 +108,8 @@ public static class TileLoader
 	private static Action<int, int, TreeTypes>[] HookPreShakeTree;
 	private static Func<int, int, TreeTypes, bool>[] HookShakeTree;
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
+	private delegate WaterfallManager.WaterfallData? DelegateCreateWaterfall(int i, int j, int type);
+	private static DelegateCreateWaterfall[] HookCreateWaterfall;
 	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
 	private static Func<int, int, int, bool?>[] HookCanShowWireStuffHere;
 
@@ -267,6 +272,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPreShakeTree, globalTiles, g => g.PreShakeTree);
 		ModLoader.BuildGlobalHook(ref HookShakeTree, globalTiles, g => g.ShakeTree);
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
+		ModLoader.BuildGlobalHook(ref HookDrawTileInWater, globalTiles, g => g.DrawTileInWater);
+		ModLoader.BuildGlobalHook(ref HookCreateWaterfall, globalTiles, g => g.CreateWaterfall);
 		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalTiles, g => g.CanDoWireStuffHere);
 		ModLoader.BuildGlobalHook(ref HookCanShowWireStuffHere, globalTiles, g => g.CanShowWireStuffHere);
 
@@ -1042,6 +1049,17 @@ public static class TileLoader
 		GetTile(typeCache)?.EmitParticles(i, j, tileCache, tileFrameX, tileFrameY, tileLight, visible);
 	}
 
+	public static bool DrawTileInWater(int i, int j, int type, SpriteBatch spriteBatch, Vector2 drawOffset)
+	{
+		foreach (var hook in HookDrawTileInWater) {
+			if (!hook(i, j, type, spriteBatch, drawOffset)) {
+				return false;
+			}
+		}
+		GetTile(type)?.DrawTileInWater(i, j, spriteBatch, drawOffset);
+		return true;
+	}
+
 	public static void PostDraw(int i, int j, int type, SpriteBatch spriteBatch)
 	{
 		// TODO: Pass in TileDrawInfo so mods don't need to replicate existing SetDrawPositions logic. For example, ExampleTorch repeated logic (SetDrawPositions/PostDraw)
@@ -1539,6 +1557,16 @@ public static class TileLoader
 
 		GetTile(fromType)?.OnTileConverted(i, j, fromType, toType, conversionType);
 		GetTile(toType)?.OnTileConverted(i, j, fromType, toType, conversionType);
+	}
+
+	public static WaterfallManager.WaterfallData? CreateWaterfall(int i, int j, int type)
+	{
+		foreach (var hook in HookCreateWaterfall) {
+			if (hook(i, j, type) is { } data)
+				return data;
+		}
+
+		return GetTile(type)?.CreateWaterfall(i, j);
 	}
 
 	public static bool? CanDoWireStuffHere(int i, int j, int type)

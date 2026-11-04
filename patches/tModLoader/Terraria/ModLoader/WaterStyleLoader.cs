@@ -8,12 +8,18 @@ namespace Terraria.ModLoader;
 [Autoload(Side = ModSide.Client)]
 public class WaterFallStylesLoader : SceneEffectLoader<ModWaterfallStyle>
 {
+	internal delegate void DelegateAnimateWaterfall(ref int frame, ref int frameBack, ref int frameCounter);
+
 	public WaterFallStylesLoader() => Initialize(WaterfallManager.maxTypes);
 
 	internal override void ResizeArrays()
 	{
 		//Textures
 		Array.Resize(ref Main.instance.waterfallManager.waterfallTexture, TotalCount);
+
+		Array.Resize(ref Main.wFallFrame, TotalCount);
+		Array.Resize(ref Main.wFallFrameBack, TotalCount);
+		Array.Resize(ref Main.wFallFrameCounter, TotalCount);
 	}
 }
 

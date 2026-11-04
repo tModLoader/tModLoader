@@ -24,6 +24,7 @@ internal class PurgeUnloadedCommand : ModCommand
 
 		bool purgeTiles = false;
 		bool purgeWalls = false;
+		bool purgeLiquids = false;
 		bool actuallyPurge = false; // "dry run" otherwise
 
 		string modName = null;
@@ -38,6 +39,9 @@ internal class PurgeUnloadedCommand : ModCommand
 			else if (args[i] == "-w") {
 				purgeWalls = true;
 			}
+			else if (args[i] == "-l") {
+				purgeLiquids = true;
+			}
 			// TODO: We can purge other content in the future as well with other flags
 			else if (args[i] == "-p") {
 				actuallyPurge = true;
@@ -47,16 +51,19 @@ internal class PurgeUnloadedCommand : ModCommand
 			}
 		}
 
-		if (!purgeTiles && !purgeWalls) {
-			caller.Reply("At least one of '-w' or '-t' must be set");
+		if (!purgeTiles && !purgeWalls && !purgeLiquids) {
+			caller.Reply("At least one of '-w', '-t' or '-l' must be set");
 			caller.Reply(Usage);
 			return;
 		}
 
 		Dictionary<string, int> purgedTiles = [];
 		Dictionary<string, int> purgedWalls = [];
+		Dictionary<string, int> purgedLiquids = [];
+
 		var unloadedTileTypes = TileID.Sets.Factory.CreateBoolSet(TileIO.Tiles.unloadedTypes.Select(x => (int)x).ToArray());
 		var unloadedWallType = ModContent.WallType<UnloadedWall>();
+		var unloadedLiquidType = ModContent.LiquidType<UnloadedLiquid>();
 
 		for (int i = 0; i < Main.maxTilesX; i++) {
 			for (int j = 0; j < Main.maxTilesY; j++) {
@@ -84,10 +91,22 @@ internal class PurgeUnloadedCommand : ModCommand
 							t.WallType = info.vanillaReplacementType;
 					}
 				}
+
+				if (purgeLiquids && t.LiquidType == unloadedLiquidType) {
+					ushort type = TileIO.Liquids.unloadedEntryLookup.Lookup(i, j);
+					var info = TileIO.Liquids.entries[type];
+					if (modName == null || info.modName.Equals(modName, StringComparison.OrdinalIgnoreCase)) {
+						string key = $"{info.modName}/{info.name}";
+						purgedLiquids.TryGetValue(key, out var currentCount);
+						purgedLiquids[key] = currentCount + 1;
+						if (actuallyPurge)
+							t.LiquidType = info.vanillaReplacementType;
+					}
+				}
 			}
 		}
 
-		if (actuallyPurge && (purgedTiles.Count != 0 || purgedWalls.Count != 0))
+		if (actuallyPurge && (purgedTiles.Count != 0 || purgedWalls.Count != 0 || purgedLiquids.Count != 0))
 			Main.sectionManager.SetAllSectionsLoaded();
 
 		if (modName != null)
@@ -98,8 +117,10 @@ internal class PurgeUnloadedCommand : ModCommand
 			caller.Reply($"Unloaded tiles: {string.Join(", ", purgedTiles.Select(x => $"{x.Key} ({x.Value})"))}");
 		if (purgedWalls.Count != 0)
 			caller.Reply($"Unloaded walls: {string.Join(", ", purgedWalls.Select(x => $"{x.Key} ({x.Value})"))}");
+		if(purgedLiquids.Count != 0)
+			caller.Reply($"Unloaded liquids: {string.Join(", ", purgedLiquids.Select(x => $"{x.Key} ({x.Value})"))}");
 		if (!actuallyPurge)
-			caller.Reply("The '-p' flag was not set, this is a dry run, no tiles or walls were actually removed.");
+			caller.Reply("The '-p' flag was not set, this is a dry run, no tiles, walls or liquids were actually removed.");
 		if (purgedTiles.Count == 0 && purgedWalls.Count == 0)
 			caller.Reply($"No unloaded content found to remove.");
 		else if (actuallyPurge)

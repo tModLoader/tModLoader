@@ -1,6 +1,10 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/FishingAttempt.cs
 +++ src/tModLoader/Terraria/DataStructures/FishingAttempt.cs
-@@ -3,27 +_,127 @@
+@@ -1,29 +_,147 @@
++using Terraria.ID;
++
+ namespace Terraria.DataStructures;
+ 
  public struct FishingAttempt
  {
  	public PlayerFishingConditions playerFishingConditions;
@@ -54,16 +58,32 @@
 +	/// If <see langword="true"/>, this fishing attempt can catch junk.
 +	/// </summary>
  	public bool junk;
-+
++	/*
+ 	public bool inLava;
+ 	public bool inHoney;
++	*/
 +	/// <summary>
 +	/// If <see langword="true"/>, this fishing attempt is in lava.
++	/// <br/> <br/> Legacy code, use <see cref="inLiquid"/> instead.
 +	/// </summary>
- 	public bool inLava;
++	public bool inLava {
++		get => inLiquid[LiquidID.Lava];
++		set => inLiquid[LiquidID.Lava] = value;
++	}
 +
 +	/// <summary>
 +	/// If <see langword="true"/>, this fishing attempt is in honey.
++	/// <br/> <br/> Legacy code, use <see cref="inLiquid"/> instead.
 +	/// </summary>
- 	public bool inHoney;
++	public bool inHoney {
++		get => inLiquid[LiquidID.Honey];
++		set => inLiquid[LiquidID.Honey] = value;
++	}
++
++	/// <summary>
++	/// If the index is <see langword="true"/>, this fishing attempt is in the liquid specified.
++	/// </summary>
++	public bool[] inLiquid;
 +
 +	/// <summary>
 +	/// The number of liquid tiles counted for this fishing attempt.

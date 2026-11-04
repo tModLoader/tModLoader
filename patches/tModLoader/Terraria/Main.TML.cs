@@ -44,6 +44,12 @@ public partial class Main
 	public static bool showServerConsole;
 	public static bool Support8K = true; // provides an option to disable 8k (but leave 4k)
 
+	public static int[] liquidFrame = new int[LiquidID.Count];
+	public static float[] liquidFrameState = new float[LiquidID.Count];
+	public static int[] wFallFrame = new int[WaterfallID.Count];
+	public static int[] wFallFrameBack = new int[WaterfallID.Count];
+	public static int[] wFallFrameCounter = new int[WaterfallID.Count];
+
 	public static double desiredWorldEventsUpdateRate = 1; // dictates the speed at which world events (falling stars, fairy spawns, sandstorms, etc.) can change/happen
 	/// <summary>
 	/// Representation that dictates the actual amount of "world event updates" that happen in a given GAME tick. This number increases/decreases in direct tandem with

@@ -25,7 +25,7 @@
 -	private readonly int[] _tileCounts = new int[TileID.Count];
 +	internal int[] _tileCounts = new int[TileLoader.TileCount];
 -	private readonly int[] _liquidCounts = new int[LiquidID.Count];
-+	internal int[] _liquidCounts = new int[LiquidID.Count];
++	internal int[] _liquidCounts = new int[LiquidLoader.LiquidCount];
  
  	public uint LastScanTime { get; private set; }
  

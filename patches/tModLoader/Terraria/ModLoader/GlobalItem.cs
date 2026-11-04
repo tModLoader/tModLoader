@@ -1,13 +1,14 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Security.Policy;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
-using Terraria.ModLoader.IO;
-using Terraria.Utilities;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.IO;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader;
 
@@ -616,6 +617,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <br/><br/> Note the for right-click actions, this is currently only called on the local client.
 	/// </summary>
 	public virtual bool? UseItem(Item item, Player player) => null;
+
+	/// <summary>
+	/// Allow you to modify the vanilla empty bucket  behavior. If it return false or the newItemId is not set before returning, it will not consume the bucket and do nothing.
+	/// </summary>
+	/// <param name="sItem"></param>
+	/// <param name="liquidType"></param>
+	/// <param name="newItemId"></param>
+	/// <returns></returns>
+	public virtual bool? OnBucketUse(Item sItem, int liquidType, out int newItemId)
+	{
+		newItemId = -1;
+		return false;
+	}
 
 	/// <summary>
 	/// Allows you to make things happen when an item's use animation starts.
