@@ -56,6 +56,10 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 
 There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
 
+### Shared Equipment Loadouts
+
+Armor, accessories and dyes can now be shared to other loadouts via favoriting, but the `Item` instances are not copied into `Player.[armor|dye]`. Use `Player.GetEffective[Armor|Dye](slot)` to find the equipment which is actually 'active'
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.
