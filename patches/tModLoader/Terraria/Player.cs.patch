@@ -371,11 +371,11 @@
 +	/// <summary>
 +	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
 +	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
-+	/// This array stores the items in the current loadout itself. A slot can be empty even when an item shared from another loadout is equipped. Use <see cref="GetEffectiveArmor(int)"/> to read the equipped item, including shared items.<br/><br/>
++	/// Use <see cref="GetEffectiveArmor(int)"/> to include items shared from another loadout.<br/><br/>
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
-+	/// <summary> The dye items stored in the current loadout. Use <see cref="GetEffectiveDye(int)"/> to read the dye used by a slot, including dyes shared from another loadout. </summary>
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. Use <see cref="GetEffectiveDye(int)"/> to include dyes shared from another loadout. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
@@ -1818,7 +1818,7 @@
  			Loadouts[CurrentLoadoutIndex].Swap(this);
  			Loadouts[loadoutIndex].Swap(this);
  			CurrentLoadoutIndex = loadoutIndex;
-@@ -3893,15 +_,31 @@
+@@ -3893,15 +_,22 @@
  					UniqueInfoPiece = loadoutIndex
  				}, whoAmI);
  			}
@@ -1828,51 +1828,34 @@
  	}
  
 +	/// <summary>
-+	/// Gets the item equipped in a vanilla armor, accessory, or vanity slot, including items shared from another loadout.
-+	/// <para/> If the current loadout's slot is empty, an eligible favorited item in the same slot of another loadout can be used. Otherwise, the item in <see cref="armor"/> is returned, which can be air.
-+	/// <para/> The returned item is the stored instance, not a copy. Reading it does not populate <see cref="armor"/>; modifying it can change an item in another loadout.
-+	/// <para/> Modded accessory slots are stored separately. To implement accessory effects, use <see cref="ModItem.UpdateAccessory(Player, bool)"/> and <see cref="ModPlayer"/> fields instead of scanning equipment slots.
++	/// Gets the item equipped in or shared to a vanilla <see cref="armor"/> slot (provided it does not conflict with other effective equipment)
 +	/// </summary>
-+	/// <param name="slot">The vanilla slot index: 0-2 for armor, 3-9 for accessories, 10-12 for vanity armor, or 13-19 for vanity accessories.</param>
-+	/// <returns>The equipped item, or the current loadout's empty item if no item can be shared.</returns>
  	public Item GetEffectiveArmor(int slot)
  	{
  		int? sharedFromLoadout;
  		return GetEffectiveArmor(slot, out sharedFromLoadout);
  	}
  
-+	/// <summary>
-+	/// Gets the equipped item as described by <see cref="GetEffectiveArmor(int)"/>, also reporting which loadout supplies a shared item.
-+	/// </summary>
-+	/// <param name="slot">The vanilla slot index, using the same layout as <see cref="armor"/>.</param>
-+	/// <param name="sharedFromLoadout">The zero-based index into <see cref="Loadouts"/> when an item is shared, or <see langword="null"/> when the item comes from <see cref="armor"/>, including an empty item.</param>
-+	/// <returns>The stored item instance, which can be air.</returns>
++	/// <inheritdoc cref="GetEffectiveArmor(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the item is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
  	public Item GetEffectiveArmor(int slot, out int? sharedFromLoadout)
  	{
  		if (armor[slot].IsAir) {
-@@ -3946,12 +_,25 @@
+@@ -3946,12 +_,17 @@
  		return true;
  	}
  
 +	/// <summary>
-+	/// Gets the dye used by a vanilla armor or accessory slot, including dyes shared from another loadout.
-+	/// <para/> If the current loadout's dye slot is empty, a favorited dye in the same slot of another loadout can be used. Otherwise, the item in <see cref="dye"/> is returned, which can be air. Dye sharing is resolved independently of armor sharing.
-+	/// <para/> The returned item is the stored instance, not a copy. Reading it does not populate <see cref="dye"/>; modifying it can change a dye in another loadout. Modded accessory slot dyes are stored separately.
++	/// Gets the dye equipped in or shared to a vanilla <see cref="dye"/> slot
 +	/// </summary>
-+	/// <param name="slot">The vanilla dye slot index, from 0 to 9.</param>
-+	/// <returns>The dye item, or the current loadout's empty item if no dye can be shared.</returns>
  	public Item GetEffectiveDye(int slot)
  	{
  		int? sharedFromLoadout;
  		return GetEffectiveDye(slot, out sharedFromLoadout);
  	}
  
-+	/// <summary>
-+	/// Gets the dye as described by <see cref="GetEffectiveDye(int)"/>, also reporting which loadout supplies a shared dye.
-+	/// </summary>
-+	/// <param name="slot">The vanilla dye slot index, from 0 to 9.</param>
-+	/// <param name="sharedFromLoadout">The zero-based index into <see cref="Loadouts"/> when a dye is shared, or <see langword="null"/> when the item comes from <see cref="dye"/>, including an empty item.</param>
-+	/// <returns>The stored dye item instance, which can be air.</returns>
++	/// <inheritdoc cref="GetEffectiveDye(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the dye is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
  	public Item GetEffectiveDye(int slot, out int? sharedFromLoadout)
  	{
  		if (dye[slot].IsAir) {
