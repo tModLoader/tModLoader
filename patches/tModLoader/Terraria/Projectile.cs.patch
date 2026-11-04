@@ -862,7 +862,7 @@
  		if (flag4 || (!targetNPC.noTileCollide && ownerHitCheck && !CanHitWithMeleeWeapon(targetNPC)))
  			return;
  
-@@ -11264,14 +_,22 @@
+@@ -11264,14 +_,25 @@
  		if (type == 604)
  			Main.player[owner].Counterweight(targetNPC.Center, damage, knockBack);
  
@@ -870,7 +870,10 @@
 +		modifiers.ArmorPenetration += ArmorPenetration;
 +		CombinedHooks.ModifyHitNPCWithProj(this, targetNPC, ref modifiers);
 +
++		/*
  		float num5 = knockBack;
++		*/
++		float num5 = 1f;
  		bool crit = false;
  		float armorPenetrationPercent = 0f;
 +
@@ -977,7 +980,16 @@
  		if (type == 1002)
  			dmg /= 2;
  
-@@ -11512,7 +_,7 @@
+@@ -11506,13 +_,16 @@
+ 				num21 = 1f / targetNPC.knockBackResist;
+ 
+ 			knockBack = 4f * num21;
++			/*
+ 			num5 = knockBack;
++			*/
++			num5 = 1f;
+ 			if (targetNPC.Center.X < base.Center.X)
+ 				direction = 1;
  			else
  				direction = -1;
  		}
@@ -1078,7 +1090,7 @@
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
 +		modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+		modifiers.Knockback *= num5 / knockBack;
++		modifiers.Knockback *= num5; // Apply vanilla knockback adjustments as a multiplier.
 +		modifiers.TargetDamageMultiplier *= dmg / 1000;
 +		if (num40 != null)
 +			modifiers.HitDirectionOverride = num40;
@@ -1087,7 +1099,7 @@
 +		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 6)
 +			modifiers.TargetDamageMultiplier *= Player.GetNanoFlaskDamageBoost();
 +
-+		var strike = modifiers.ToHitInfo(damage, crit, num5, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
++		var strike = modifiers.ToHitInfo(damage, crit, knockBack, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
 +		num40 = strike.HitDirection;
 +
 +		goto VanillaOnHitEffectsStart;
