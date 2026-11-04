@@ -116,11 +116,14 @@ internal class TMLContentManager : ContentManager
 			"Images/Item_2648.xnb"
 		};
 
-		bool thisOsIsMoveProtected = IsThisOSMoveProtectedForCaseChange();
+		bool? thisOsIsMoveProtected = null;
 
 		foreach (string problematicAsset in problematicAssets) {
 			if (ValidateFileCasing(rootDirectory, problematicAsset, out string actualFullPath))
 				continue;
+
+			if (thisOsIsMoveProtected == null)
+				thisOsIsMoveProtected = IsThisOSMoveProtectedForCaseChange();
 
 			// The asset is wrongfully cased, fix that,
 			// changing a vanilla file name is something to log for sure
@@ -131,7 +134,7 @@ internal class TMLContentManager : ContentManager
 			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
 
 			// Programmatically & defensively move to force case change
-			if (thisOsIsMoveProtected) {
+			if (thisOsIsMoveProtected is true) {
 				File.Move(actualFullPath, actualFullPath + ".1");
 				File.Move(actualFullPath + ".1", expectedFullPath);
 			}
@@ -174,16 +177,16 @@ internal class TMLContentManager : ContentManager
 	/// Returns False if the File in Root Directory does not match the expected casing 
 	/// <param name="actualFullPath"></param>
 	/// <returns></returns>
-	private static bool ValidateFileCasing(string rootDirectoryPath, string fileToCheck, out string asFoundFullPath)
+	private static bool ValidateFileCasing(string rootDirectory, string fileToCheck, out string asFoundFullPath)
 	{
-		var fileInfo = new FileInfo(Path.Combine(rootDirectoryPath, fileToCheck));
+		var fileInfo = new FileInfo(Path.Combine(rootDirectory, fileToCheck));
 		string expectedName = Path.GetFileName(fileToCheck);
 
 		asFoundFullPath = fileInfo.FullName;
 
 		// There are 4 possible states
 		//		File is found using FileInfo.Exists && the FileSystemInfo for it has the same casing (happy-path)
-		//		File is found using FileInfo.Exists && the FileSystemInfo for it has different casing (case insensitve read)
+		//		File is found using FileInfo.Exists && the FileSystemInfo for it has different casing (case insenstive read)
 		//		File is NOT found using FileInfo.Exists && file is NOT on the user system (missing file)
 		//		File is NOT found using FileInfo.Exists && file has the wrong casing (case sensitive read)
 
@@ -191,7 +194,7 @@ internal class TMLContentManager : ContentManager
 
 		if (fileInfo.Exists) {
 			// likely case insensitive read OR happy-path 
-			fileSystemInfo= fileInfo.Directory.EnumerateFileSystemInfos(fileInfo.Name).First();
+			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos(fileInfo.Name).First();
 
 			// Happy-path short-circuit
 			if (fileSystemInfo.Name == expectedName)
@@ -203,7 +206,7 @@ internal class TMLContentManager : ContentManager
 
 			// file is missing short-circuit
 			if (fileSystemInfo == null) {
-				Logging.tML.Info($"An expected vanilla asset is missing: (from {Path.GetDirectoryName(expectedName)}) {fileToCheck}");
+				Logging.tML.Info($"An expected vanilla asset is missing: (from {rootDirectory}) {fileToCheck}");
 				return true;
 			}
 		}
