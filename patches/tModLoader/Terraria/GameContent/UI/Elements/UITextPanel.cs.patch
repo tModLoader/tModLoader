@@ -8,6 +8,18 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
+@@ -17,6 +_,11 @@
+ 	public bool HideContents;
+ 	private string _asterisks;
+ 
++	// Added by TML [[
++	protected Vector2 textOffset = Vector2.Zero;
++	protected bool drawTextAsChild = false;
++	// ]]
++
+ 	public bool IsLarge => _isLarge;
+ 
+ 	public bool DrawPanel {
 @@ -101,7 +_,13 @@
  		_text = text;
  		_textScale = textScale;
@@ -22,3 +34,30 @@
  		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
  	}
+@@ -124,14 +_,23 @@
+ 			text = _asterisks;
+ 		}
+ 
++		if (!drawTextAsChild)
+-		DrawText(spriteBatch, text, TextDrawPosition, _color);
++			DrawText(spriteBatch, text, TextDrawPosition, _color);
++	}
++
++	protected override void DrawChildren(SpriteBatch spriteBatch)
++	{
++		if (!drawTextAsChild)
++			DrawText(spriteBatch);
++
++		base.DrawChildren(spriteBatch);
+ 	}
+ 
+ 	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
+ 	{
+ 		if (_isLarge)
+-			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
++			Utils.DrawBorderStringBig(spriteBatch, text, position + textOffset, color, _textScale);
+ 		else
+-			Utils.DrawBorderString(spriteBatch, text, position, color, _textScale);
++			Utils.DrawBorderString(spriteBatch, text, position + textOffset, color, _textScale);
+ 	}
+ }

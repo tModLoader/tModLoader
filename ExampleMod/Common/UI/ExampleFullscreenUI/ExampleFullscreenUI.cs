@@ -23,6 +23,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 	///
 	/// Another thing this example showcases is working with ModConfigs, such as displaying current config values, opening the Mod Configuration menu, and saving ModConfig changes via code. If your mod has a UI, it can be very useful for changes to that UI such as position or toggles to save automatically so the players choices persist when they play the game next.
 	///
+	/// This example also showcases marquee text, which is text that shifts back and forth when it is too large to fit in it's overflow box.
+	///
 	///	This file showcases 2 approaches:
 	/// The configA example (ModConfigShowcaseDataTypes) modifies the active config directly. These changes take effect immediately. With this approach you'll usually want to save the config whenever changes occur so the changes are remembered. This is useful for changes to client configs without any reload requirements, such as saving UI toggles or positioning.
 	///
@@ -44,6 +46,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private UIText onlyChangeableDuringNightMessage;
 		private UIText someNumberMessage;
 		private UIText ConfigSaveStatusMessage;
+		// TODO: marquee text tests here
 
 		private ModConfigShowcaseDataTypes configA;
 		private ModConfigShowcaseAcceptClientChanges configB;
