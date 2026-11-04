@@ -128,9 +128,44 @@ internal class TMLContentManager : ContentManager
 			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
 
 			// Programmatically & defensively move to force case change
-			File.Move(actualFullPath, actualFullPath + ".1");
-			File.Move(actualFullPath + ".1", expectedFullPath);
+			if (IsThisOSMoveProtectedForCaseChange()) {
+				File.Move(actualFullPath, actualFullPath + ".1");
+				File.Move(actualFullPath + ".1", expectedFullPath);
+			}
+			else {
+				File.Move(actualFullPath, expectedFullPath);
+			}
+			
 		}
+	}
+
+	/// <summary>
+	/// In OS environments with both case insensitive and case sensitive you either allow or block having two files with different casing.
+	/// For example, Windows blocks NTFS and exFAT folders from having both client.log and Client.log normally.
+	/// However NTFS is case-sensitive itself so you can change how it handles in WSL using tools like https://learn.microsoft.com/en-us/windows/wsl/case-sensitivity
+	/// But exFAT is strictly case-insensitive.
+	/// Where this gets messy is if you try to 'Move' a file on a particular OS to force a capitalization rename.
+	/// If the OS is blocking, and it copies before deleting, then a singular 'move' is not enough to change capitalization. 
+	/// </summary>
+	/// <returns>True if the OS blocks using move directly to rename files to fix casing</returns>
+	private static bool IsThisOSMoveProtectedForCaseChange()
+	{
+		string canaryFile = "LaunchUtils/canaryfile.txt";
+		bool moveCaseProtected = false;
+
+		if (!File.Exists(canaryFile))
+			File.Create(canaryFile);
+		
+		try {
+			File.Move(canaryFile, "LaunchUtils/cAnAryfile.txt");
+		}
+		catch (Exception) {
+			moveCaseProtected = true;
+		}
+		finally {
+			File.Delete(canaryFile);
+		}
+		return moveCaseProtected;
 	}
 
 	/// <summary>
