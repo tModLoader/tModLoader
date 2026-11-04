@@ -93,14 +93,23 @@ public static class ConfigManager
 		// Apply custom config sorting
 		foreach (var mod in Configs.Keys)
 		{
-			Configs[mod] = SortBeforeAfter.Sort(Configs[mod], c => {
-				if (Attribute.GetCustomAttribute(c.GetType(), typeof(SortConfigAttribute)) is not SortConfigAttribute sortAttribute) {
-					return (null, false)!;
-				}
+			try {
+				Configs[mod] = SortBeforeAfter.Sort(
+					Configs[mod],
+					c => {
+						if (Attribute.GetCustomAttribute(c.GetType(), typeof(SortConfigAttribute)) is not SortConfigAttribute sortAttribute) {
+							return (null, false)!;
+						}
 
-				ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
-				return (otherConfig, sortAttribute.SortAfter);
-			});
+						ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
+						return (otherConfig, sortAttribute.SortAfter);
+					}
+				);
+			}
+			catch (Exception e) {
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
 		}
 
 		// Register localization for all fields and properties that should show
@@ -307,18 +316,18 @@ public static class ConfigManager
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
-		if (Configs.TryGetValue(mod, out List<ModConfig>? configs)) {
-			return configs.Single(x => x.Name == config);
-		}
-		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		if (Configs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is {} c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
-		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
-			return configs.Single(x => x.Name == config);
-		}
-		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		if (loadTimeConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is {} c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
