@@ -417,7 +417,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		this.scrollToOption = scrollToOption;
 		this.centerScrolledOption = centerScrolledOption;
 		if (ConfigManager.Configs.ContainsKey(mod)) {
-			sortedModConfigs = ConfigManager.SortConfigsForUI(ConfigManager.Configs[mod]).ToList();
+			sortedModConfigs = ConfigManager.Configs[mod].ToList(); // Copy to avoid accidental mutation
 			modConfig = sortedModConfigs[0];
 			if (config != null) {
 				modConfig = ConfigManager.Configs[mod].First(x => x == config);

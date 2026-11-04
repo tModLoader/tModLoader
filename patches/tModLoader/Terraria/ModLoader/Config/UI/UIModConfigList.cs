@@ -243,9 +243,7 @@ internal class UIModConfigList : UIState
 		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
-		var sortedConfigs = ConfigManager.SortConfigsForUI(configs);
-
-		foreach (var config in sortedConfigs) {
+		foreach (var config in configs) {
 			var configPanel = new UIButton<LocalizedText>(config.DisplayName) {
 				MaxWidth = { Percent = 0.95f },
 				HAlign = 0.5f,

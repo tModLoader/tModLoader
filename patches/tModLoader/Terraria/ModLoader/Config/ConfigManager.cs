@@ -90,6 +90,19 @@ public static class ConfigManager
 
 	internal static void FinishSetup()
 	{
+		// Apply custom config sorting
+		foreach (var mod in Configs.Keys)
+		{
+			Configs[mod] = SortBeforeAfter.Sort(Configs[mod], c => {
+				if (Attribute.GetCustomAttribute(c.GetType(), typeof(ConfigSortAttribute)) is not ConfigSortAttribute sortAttribute) {
+					return (null, false)!;
+				}
+
+				ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
+				return (otherConfig, sortAttribute.SortAfter);
+			});
+		}
+
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in Configs) {
 			foreach (var config in activeConfigs.Value) {
@@ -306,27 +319,6 @@ public static class ConfigManager
 			return configs.Single(x => x.Name == config);
 		}
 		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
-	}
-
-	internal static IEnumerable<ModConfig> SortConfigsForUI(List<ModConfig> configs)
-	{
-		// Ensure sorted by internal name to make custom sorting consistent across languages
-		var sortedConfigs = configs.OrderBy(x => x.Name);
-
-		return SortBeforeAfter.Sort(sortedConfigs, c => {
-			if (Attribute.GetCustomAttribute(c.GetType(), typeof(ConfigSortAttribute)) is ConfigSortAttribute sortAttribute) {
-				try {
-					ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
-					return (otherConfig, sortAttribute.SortAfter);
-				}
-				catch {
-					string beforeAfter = sortAttribute.SortAfter ? "after" : "before"; // Ternarys can't go in format strings :/
-					c.Mod.Logger.Warn($"Unable to find ModConfig '{sortAttribute.OtherConfigName} to sort ModConfig '{c.Name}' {beforeAfter}");
-				}
-			}
-
-			return (null, false)!;
-		});
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
