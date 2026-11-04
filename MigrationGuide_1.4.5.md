@@ -56,6 +56,30 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 
 There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
 
+### Shared Equipment Loadouts
+
+Armor, accessories, vanity items, and dyes can now be shared between equipment loadouts by favoriting them. An item shared from another loadout is not copied into the current loadout's `Player.armor` or `Player.dye` array, so reading those arrays directly can report an empty slot even when a shared item is in use.
+
+* Use `player.GetEffectiveArmor(slot)` to read the item equipped in a vanilla armor, accessory, or vanity slot. This resolves sharing when the current slot is empty and checks whether the shared item can be equipped.
+* Use `player.GetEffectiveDye(slot)` to read the dye used by a vanilla slot. Dye sharing is resolved independently of armor sharing.
+* Both methods have an overload with `out int? sharedFromLoadout`. A non-null value is the zero-based index into `player.Loadouts` supplying the item. A null value means the item comes from the current loadout's array, including when it is empty.
+
+The armor slot indexes are unchanged: 0-2 for armor, 3-9 for accessories, 10-12 for vanity armor, and 13-19 for vanity accessories. Dye indexes are 0-9. These methods only resolve vanilla slots; modded accessory slots are stored separately.
+
+For example, a check for a worn helmet should include a helmet shared from another loadout:
+
+```cs
+// Before: misses a helmet shared from another loadout.
+// bool wearingHelmet = player.armor[0].headSlot >= 0;
+
+// After: includes eligible shared helmets.
+bool wearingHelmet = player.GetEffectiveArmor(0).headSlot >= 0;
+```
+
+Do not replace every array access mechanically. Code that saves or manipulates the items physically stored in a loadout still needs the appropriate storage and item transfer logic. The effective getters return the original stored `Item`, not a copy, so modifying the returned item can modify an item in another loadout. Use `Clone()` if an independent copy is needed.
+
+To implement accessory effects, continue to use `ModItem.UpdateAccessory` to set fields in a `ModPlayer`, rather than scanning vanilla slots; this also supports modded accessory slots. See [SimpleModPlayer.cs](ExampleMod/Common/Players/SimpleModPlayer.cs) for that pattern and [ExampleAccessorySlot.cs](ExampleMod/Common/Players/ExampleAccessorySlot.cs) for a helmet check using `GetEffectiveArmor`.
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.

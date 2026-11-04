@@ -139,7 +139,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
 - Player.maxRunSpeed should mention originalRunSpeed maybe.
 - We'll need to recheck all the container drop loot tables again. At least OpenLockBox has changed
-- Seems like shared loadout slots don't actually populate Player.armor slots. Modders will have to use Player.GetEffectiveArmor to get the actual armor that is active.
 - Player.manaPotionDelay is new.
 - Player.ApplyManaRegenerationDelay() replaces setting Player.manaRegenDelay directly.
 - Item 3852 Tome of Infinite Wisdom ItemCheck_OwnerOnlyCode changed. Does Item.useLimitPerAnimation still make sense?
