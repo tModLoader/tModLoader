@@ -2728,7 +2728,7 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type) {
-+				if (BuffLoader.ReApply(type, this, time, i)) // TODO: Adjust this for proper syncing
++				if (BuffLoader.ReApply(type, this, time, i))
 +					return;
 +
  				if (buffTime[i] >= time)
