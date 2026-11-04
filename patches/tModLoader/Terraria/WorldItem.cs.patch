@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldItem.cs
 +++ src/tModLoader/Terraria/WorldItem.cs
-@@ -9,28 +_,61 @@
+@@ -9,28 +_,64 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
@@ -55,6 +55,9 @@
  	public bool beingGrabbed;
  	public bool onConveyor;
  
++	/// <summary>
++	/// The stored item data. Use <see cref="ReplaceWith(Item)"/> to replace this reference; world state belongs to the <see cref="WorldItem"/>.
++	/// </summary>
  	public Item inner { get; private set; }
  
 +	/// <summary>
@@ -72,6 +75,20 @@
  		get {
  			return inner.prefix;
  		}
+@@ -89,6 +_,13 @@
+ 
+ 	public override string ToString() => "[" + whoAmI + "]" + inner;
+ 
++	/// <summary>
++	/// Replaces <see cref="inner"/> with <paramref name="item"/> without cloning, preserving this entity and its world state.
++	/// <para/> Sets <see cref="Item.newAndShiny"/>. Use <see cref="Item.Clone"/> first for an independent instance.
++	/// <para/> Does not run spawn hooks or synchronize the change; the caller handles synchronization when required.
++	/// </summary>
++	/// <param name="item">The item instance to store. An empty item can be used to deactivate this entity.</param>
++	/// <exception cref="Exception">The current <see cref="inner"/> item is air and <paramref name="item"/> is not air.</exception>
+ 	public void ReplaceWith(Item item)
+ 	{
+ 		if (inner.IsAir && !item.IsAir)
 @@ -132,10 +_,19 @@
  		for (int i = whoAmI + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];
