@@ -100,7 +100,7 @@ namespace ExampleMod.Content
 				// Adds a vanilla tile requirement.
 				// To specify a crafting station, specify a tile. Look up TileIDs: https://github.com/tModLoader/tModLoader/wiki/Vanilla-Tile-IDs
 				.AddTile(TileID.WorkBenches)
-				// Adds a mod tile requirement. To specify more than one crafting station, use multiple recipe.AddTile() calls.
+				// Adds a mod tile requirement. Both stations must be nearby; the recipe appears in either station's filter.
 				.AddTile<Tiles.Furniture.ExampleWorkbench>()
 				// An alternate string-based approach to the above. Try to only use it for other mods' tiles, because it's slower.
 				//.AddTile(Mod, "ExampleWorkbench")

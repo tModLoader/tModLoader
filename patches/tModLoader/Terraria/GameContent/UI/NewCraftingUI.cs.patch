@@ -17,6 +17,21 @@
  			AcceptTileType(tileType);
  		}
  
+@@ -144,8 +_,14 @@
+ 		public override bool Accepts(Recipe recipe)
+ 		{
+ 			if (!recipe.DoesNotNeedTileOrLiquid) {
++				/*
+ 				if (recipe.requiredTile >= 0)
+ 					return acceptTileTypes[recipe.requiredTile];
++				*/
++				foreach (int tileType in recipe.RequiredTiles) {
++					if (acceptTileTypes[tileType])
++						return true;
++				}
+ 
+ 				return false;
+ 			}
 @@ -406,8 +_,11 @@
  				HandleCraftSlot(recipeEntry, 42);
  

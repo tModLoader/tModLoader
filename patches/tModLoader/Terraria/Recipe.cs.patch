@@ -22,7 +22,7 @@
  {
  	public struct RequiredItemEntry
  	{
-@@ -51,32 +_,44 @@
+@@ -51,35 +_,49 @@
  		}
  	}
  
@@ -38,9 +38,11 @@
 -	public Item[] requiredItem = new Item[maxRequirements];
 +	// required... changed from [maxRequirements] to List
 +	public List<Item> requiredItem = new();
++	/*
  	public int requiredTile = -1;
 -	public int[] acceptedGroups = new int[maxRequirements];
 -	public RequiredItemEntry[] requiredItemQuickLookup = new RequiredItemEntry[maxRequirements];
++	*/
 +	public List<int> acceptedGroups = new();
 +	internal RequiredItemEntry[] requiredItemQuickLookup; // TML private->internal
  	public List<Item> customShimmerResults;
@@ -82,7 +84,11 @@
 +
  	public bool DoesNotNeedTileOrLiquid {
  		get {
- 			if (requiredTile < 0 && !needHoney && !needWater)
+-			if (requiredTile < 0 && !needHoney && !needWater)
++			if (RequiredTiles.Count == 0 && !needHoney && !needWater)
+ 				return !needLava;
+ 
+ 			return false;
 @@ -90,7 +_,7 @@
  	{
  		StringBuilder stringBuilder = new StringBuilder();
@@ -210,6 +216,21 @@
  				AddToAvailableRecipes(i);
  		}
  
+@@ -259,8 +_,14 @@
+ 	public bool PlayerMeetsEnvironmentConditions(Player player, List<string> missingObjects = null)
+ 	{
+ 		bool flag = true;
++		/*
+ 		if (requiredTile >= 0 && !player.adjTile[requiredTile])
+ 			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects);
++		*/
++		foreach (int tileType in RequiredTiles) {
++			if (!player.adjTile[tileType])
++				flag &= AddMissing(GetRequiredTileName(tileType), missingObjects);
++		}
+ 
+ 		if (needWater && !player.adjWaterSource)
+ 			flag &= AddMissing(Lang.inter[53].Value, missingObjects);
 @@ -298,9 +_,35 @@
  		CollectItems(player.inventory, 58);
  		CollectItemsFromChests(player);
@@ -400,7 +421,7 @@
  	}
  
  	private static void AddSolarFurniture()
-@@ -16861,7 +_,7 @@
+@@ -16861,20 +_,23 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -409,7 +430,11 @@
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
-@@ -16871,10 +_,12 @@
+ 				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
+-				currentRecipe.requiredTile = Main.recipe[i].requiredTile;
++				/* currentRecipe.requiredTile = Main.recipe[i].requiredTile; */
++				currentRecipe.RequiredTiles.AddRange(Main.recipe[i].RequiredTiles);
+ 				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
@@ -422,7 +447,7 @@
  			}
  		}
  	}
-@@ -16883,7 +_,7 @@
+@@ -16883,25 +_,28 @@
  	{
  		int num = numRecipes;
  		for (int i = 0; i < num; i++) {
@@ -431,7 +456,11 @@
  				currentRecipe.createItem.SetDefaults(Main.recipe[i].requiredItem[0].type);
  				currentRecipe.createItem.stack = Main.recipe[i].requiredItem[0].stack;
  				currentRecipe.requiredItem[0].SetDefaults(Main.recipe[i].createItem.type);
-@@ -16893,15 +_,17 @@
+ 				currentRecipe.requiredItem[0].stack = Main.recipe[i].createItem.stack;
+-				currentRecipe.requiredTile = Main.recipe[i].requiredTile;
++				/* currentRecipe.requiredTile = Main.recipe[i].requiredTile; */
++				currentRecipe.RequiredTiles.AddRange(Main.recipe[i].RequiredTiles);
+ 				AddRecipe();
  				Recipe recipe = Main.recipe[numRecipes - 1];
  				for (int num2 = numRecipes - 2; num2 > i; num2--) {
  					Main.recipe[num2 + 1] = Main.recipe[num2];
@@ -450,7 +479,7 @@
  	{
  		if (ingredients.Length == 1) {
  			ingredients = new int[2] {
-@@ -16920,22 +_,84 @@
+@@ -16920,22 +_,88 @@
  		}
  	}
  
@@ -468,8 +497,12 @@
  
  		Main.recipe[numRecipes] = currentRecipe;
 +		*/
++		/*
  		if (currentRecipe.requiredTile >= 0)
  			TileUsedInRecipes[currentRecipe.requiredTile] = true;
++		*/
++		foreach (int tileType in currentRecipe.RequiredTiles)
++			TileUsedInRecipes[tileType] = true;
  
 +		/*
  		currentRecipe = new Recipe();
@@ -477,7 +510,7 @@
 +		*/
 +
 +		//TML: The whole method is rewritten.
-+		if (currentRecipe.requiredTile == TileID.Bottles)
++		if (currentRecipe.HasTile(TileID.Bottles))
 +			currentRecipe.AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 +
 +		static void ReplaceCondition(ref bool field, Condition cond)

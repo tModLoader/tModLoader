@@ -222,6 +222,9 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
 
 ### Recipe Changes
 
+* Multiple `recipe.AddTile(...)` calls require all added stations. The recipe appears in any matching station's filter.
+  * 💀: Replace direct access to `Recipe.requiredTile` with `Recipe.RequiredTiles`.
+
 * Crafting stations are now interactable as well as smart interactable. When right clicked, the crafting window shows recipes that use the crafting station. As they are now interactable, they should have a highlight texture as well.
   * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
   * 💀: Also add a `TileName_Highlight.png` texture as well.

@@ -42,6 +42,21 @@ public partial class Recipe
 		};
 	}
 
+	/// <summary>
+	/// Crafting stations required by this recipe. All must be available to craft it.
+	/// </summary>
+	public readonly List<int> RequiredTiles = new();
+
+	// Keeps vanilla's single-station recipe declarations without duplicating their setup code.
+	private int requiredTile {
+		get => RequiredTiles.Count > 0 ? RequiredTiles[0] : -1;
+		set {
+			RequiredTiles.Clear();
+			if (value >= 0)
+				RequiredTiles.Add(value);
+		}
+	}
+
 	public readonly Mod Mod;
 	public readonly List<Condition> Conditions = new();
 	public readonly List<Condition> DecraftConditions = new();
@@ -175,6 +190,7 @@ public partial class Recipe
 
 	/// <summary>
 	/// Adds a required crafting station with the given tile type to this recipe. Ex: <c>recipe.AddTile(TileID.WorkBenches)</c>
+	/// Multiple calls require all added stations to be available.
 	/// </summary>
 	/// <param name="tileID">The tile identifier.</param>
 	/// <exception cref="RecipeException">No tile has ID " + tileID</exception>
@@ -183,7 +199,7 @@ public partial class Recipe
 		if (tileID < 0 || tileID >= TileLoader.TileCount)
 			throw new RecipeException($"No tile has ID '{tileID}'.");
 
-		requiredTile = tileID;
+		RequiredTiles.Add(tileID);
 
 		return this;
 	}
@@ -414,7 +430,7 @@ public partial class Recipe
 		clone.createItem = createItem.Clone();
 
 		clone.requiredItem = new List<Item>(requiredItem.Select(x => x.Clone()).ToArray());
-		clone.requiredTile = requiredTile;
+		clone.RequiredTiles.AddRange(RequiredTiles);
 		clone.acceptedGroups = new List<int>(acceptedGroups.ToArray());
 		clone.notDecraftable = notDecraftable;
 		clone.crimson = crimson;
@@ -441,7 +457,7 @@ public partial class Recipe
 
 		// A subsequent call to Register() will re-add this hook if Bottles is a required tile, so we remove
 		// it here to not have multiple duplicate hooks.
-		if (clone.requiredTile == TileID.Bottles)
+		if (clone.HasTile(TileID.Bottles))
 			clone.ConsumeIngredientHooks -= IngredientQuantityRules.Alchemy;
 
 		return clone;
@@ -459,11 +475,11 @@ public partial class Recipe
 		if (RecipeIndex >= 0)
 			throw new RecipeException("There was an attempt to register an already registered recipe.");
 
-		if (requiredTile == TileID.Bottles)
+		if (HasTile(TileID.Bottles))
 			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
 
-		if (requiredTile >= 0)
-			TileUsedInRecipes[requiredTile] = true;
+		foreach (int tileType in RequiredTiles)
+			TileUsedInRecipes[tileType] = true;
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;
