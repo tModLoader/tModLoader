@@ -80,8 +80,7 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows to you make special things happen when adding this buff to an NPC when the NPC already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time.
-	/// <para/> Returning <see langword="true"/> skips the default re-apply logic and the server-side <see cref="MessageID.NPCBuffs"/> message in <see cref="NPC.AddBuff"/>. If this hook changes the NPC's buff state on the server, synchronize those changes unless the calling code already does so. Returning <see langword="true"/> without changing the state does not require synchronization.
-	/// <para/> The server handler for an incoming <see cref="MessageID.AddNPCBuff"/> request already broadcasts the resulting NPC buff state.
+	/// <para/> Returning <see langword="true"/> may also skip the automatic server-side <see cref="MessageID.NPCBuffs"/> message in <see cref="NPC.AddBuff"/> so consider whether changes need manual syncing in this case.
 	/// </summary>
 	public virtual bool ReApply(NPC npc, int time, int buffIndex)
 	{
