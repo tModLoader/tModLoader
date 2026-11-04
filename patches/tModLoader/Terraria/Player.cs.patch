@@ -364,17 +364,18 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
-@@ -996,9 +_,19 @@
+@@ -996,9 +_,20 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
  	public const int SupportedMiscSlotCount = 5;
 +	/// <summary>
 +	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
 +	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// Use <see cref="GetEffectiveArmor(int)"/> to include items shared from another loadout.<br/><br/>
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
-+	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. Use <see cref="GetEffectiveDye(int)"/> to include dyes shared from another loadout. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
@@ -1851,7 +1852,7 @@
  			Loadouts[CurrentLoadoutIndex].Swap(this);
  			Loadouts[loadoutIndex].Swap(this);
  			CurrentLoadoutIndex = loadoutIndex;
-@@ -3893,6 +_,8 @@
+@@ -3893,15 +_,22 @@
  					UniqueInfoPiece = loadoutIndex
  				}, whoAmI);
  			}
@@ -1860,6 +1861,38 @@
  		}
  	}
  
++	/// <summary>
++	/// Gets the item equipped in or shared to a vanilla <see cref="armor"/> slot (provided it does not conflict with other effective equipment)
++	/// </summary>
+ 	public Item GetEffectiveArmor(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveArmor(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveArmor(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the item is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveArmor(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (armor[slot].IsAir) {
+@@ -3946,12 +_,17 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Gets the dye equipped in or shared to a vanilla <see cref="dye"/> slot
++	/// </summary>
+ 	public Item GetEffectiveDye(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveDye(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveDye(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the dye is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveDye(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (dye[slot].IsAir) {
 @@ -3973,7 +_,7 @@
  		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
  			return;
@@ -3398,7 +3431,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -13017,6 +_,9 @@
+@@ -13017,17 +_,26 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3408,6 +3441,23 @@
  	}
  
  	public void UpdateArmorSets(int i)
+ 	{
++		/*
+ 		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
++		*/
++		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
++		ActiveArmorSetBonus = armorSetBonus;
++		armorSetBonus?.Effect?.Invoke(this);
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+ 		UpdateArmorSets_Always_Stardust();
+ 		UpdateArmorSets_Always_Chlorophyte();
+ 		UpdateArmorSets_Always_Vortex();
+ 		ApplyArmorSoundAndDustChanges();
++		ItemLoader.UpdateArmorSet(this, armorSetBonus, armor[0], armor[1], armor[2]);
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -13387,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
@@ -3457,11 +3507,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,7 @@
+@@ -13575,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		ActiveArmorSetBonus = null; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
@@ -8085,7 +8136,7 @@
  	}
  
  	private bool PickAmmo_TryFindingSpecificMatches(int launcher, int ammo, out int pickedProjectileId)
-@@ -44709,27 +_,99 @@
+@@ -44709,27 +_,104 @@
  		if (AmmoID.Sets.SpecificLauncherAmmoProjectileMatches.TryGetValue(launcher, out var value) && value.TryGetValue(ammo, out pickedProjectileId))
  			return true;
  
@@ -8121,10 +8172,11 @@
 +		projToShoot = weapon.shoot;
 +		speed = weapon.shootSpeed;
 +		damage = GetWeaponDamage(weapon);
-+		knockBack = GetWeaponKnockback(weapon);
++		knockBack = weapon.knockBack;
 +
 +		bool canShoot = false;
 +		PickAmmo(weapon, ref projToShoot, ref speed, ref canShoot, ref damage, ref knockBack, out usedAmmoItemId, dontConsume);
++		knockBack = GetWeaponKnockback(weapon, knockBack);
 +
 +		if (!canShoot) {
 +			projToShoot = 0;
@@ -8167,12 +8219,16 @@
 +		if (AmmoID.Sets.IsSpecialist[item.ammo])
 +			ammoDamage = ammoDamage.CombineWith(specialistDamage);
 +
-+		// TODO: Why do we reset Base to 0 here? Why not use += for Flat?
++		// totalDamage already includes Base and Flat bonuses from GetWeaponDamage. Replace them so they aren't applied twice.
++		// This means ammo doesn't benefit from Base/Flat class bonuses, which is generally fine.
 +		ammoDamage.Base = 0;
 +		ammoDamage.Flat = totalDamage;
-+		ref float Damage = ref ammoDamage.Flat; // Vanilla projectile damage applied from here on is interpreted as flat additions
 +
++		/*
  		int num = item.damage;
++		*/
++		ref float num = ref ammoDamage.Base; // Vanilla ammo damage bonuses from here on are interpreted as base additions
++
  		int pickedProjectileId = -1;
  		if (PickAmmo_TryFindingSpecificMatches(sItem.type, item.type, out pickedProjectileId))
  			projToShoot = pickedProjectileId;
@@ -8193,20 +8249,19 @@
  			if (item.type == 370) {
  				projToShoot = 65;
  				num += 5;
-@@ -44765,6 +_,12 @@
+@@ -44765,6 +_,11 @@
  				projToShoot = 354;
  				num += 5;
  			}
 +			*/
-+
 +			if (ItemID.Sets.SandgunAmmoProjectileData[item.type] is ItemID.Sets.SandgunAmmoInfo data) {
 +				projToShoot = data.ProjectileType;
-+				Damage += data.BonusDamage;
++				num += data.BonusDamage;
 +			}
  		}
  
  		if (inventory[selectedItem].type == 2888 && projToShoot == 1)
-@@ -44786,8 +_,12 @@
+@@ -44786,12 +_,21 @@
  			num += num2;
  		}
  
@@ -8219,6 +8274,15 @@
  
  		if (projToShoot == 285) {
  			float num3 = 1.25f;
++			/*
+ 			Damage = (int)((float)Damage * num3);
++			*/
++			// Apply nano bullet multiplier to flat (total) weapon damage too
++			ammoDamage *= num3;
++			ammoDamage.Flat *= num3;
+ 		}
+ 
+ 		if (AmmoID.Sets.IsArrow[item.ammo] && archery && speed < 20f) {
 @@ -44809,7 +_,61 @@
  				ammoCyclingOffset = Main.rand.Next();
  		}

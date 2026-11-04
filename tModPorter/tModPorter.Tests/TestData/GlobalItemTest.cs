@@ -50,4 +50,8 @@ public class GlobalItemTest : GlobalItem
 	public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) { }
 	public override void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvp(Item item, Player player, Player target, int damage, bool crit) { }
+
+	public override string IsArmorSet(Item head, Item body, Item legs) { return ""; }
+
+	public override void UpdateArmorSet(Player player, string set) { }
 }

@@ -1,0 +1,13 @@
+--- src/Terraria/Terraria/Social/Steam/PlatformSocialModule.cs
++++ src/TerrariaNetCore/Terraria/Social/Steam/PlatformSocialModule.cs
+@@ -10,7 +_,9 @@
+ 	public override void Initialize()
+ 	{
+ 		if (!Main.dedServ) {
+-			bool num = (PlayerInput.UseSteamDeckIfPossible = SteamUtils.IsSteamRunningOnSteamDeck());
++			var steamHardwareId = SteamUtils.IsRunningOnSteamHardware();
++
++			bool num = (PlayerInput.UseSteamDeckIfPossible = (steamHardwareId == ESteamHardwareType.k_ESteamHardwareTypeSteamDeck));
+ 			if (num) {
+ 				PlayerInput.SettingsForUI.SetCursorMode(CursorMode.Gamepad);
+ 				PlayerInput.CurrentInputMode = InputMode.XBoxGamepadUI;

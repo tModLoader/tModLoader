@@ -9,8 +9,8 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleSword : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 40; // The item texture's width.
-			Item.height = 40; // The item texture's height.
+			Item.width = 40;
+			Item.height = 40;
 
 			Item.useStyle = ItemUseStyleID.Swing; // The useStyle of the Item.
 			Item.useTime = 20; // The time span of using the weapon. Remember in terraria, 60 frames is a second.
