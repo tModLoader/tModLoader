@@ -1,5 +1,10 @@
 --- src/TerrariaNetCore/Terraria/WorldGen.cs
 +++ src/tModLoader/Terraria/WorldGen.cs
+@@ -1,3 +_,4 @@
++using Terraria.GameContent.ChestLootRules;
+ using System;
+ using System.Collections.Generic;
+ using System.Diagnostics;
 @@ -28,6 +_,9 @@
  using Terraria.IO;
  using Terraria.Localization;
@@ -46,6 +51,91 @@
  		{
  			SecretSeed secretSeed = new SecretSeed(localization, sound, code);
  			AllSecretSeeds.Add(secretSeed);
+@@ -720,6 +_,7 @@
+ 				if (chest == null)
+ 					break;
+ 
++				/*VanillaCode
+ 				if (genRand.Next(25) != 0 || chest.item[1].stack == 0)
+ 					continue;
+ 
+@@ -729,6 +_,8 @@
+ 						break;
+ 					}
+ 				}
++				*/
++				ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 4409, 25);
+ 			}
+ 		}
+ 
+@@ -1257,6 +_,7 @@
+ 			if (Variations.errorWorldBalancedChests)
+ 				return -1;
+ 
++			/*VanillaCode
+ 			switch (genRand.Next(32)) {
+ 				case 0:
+ 					return 4008;
+@@ -1323,6 +_,8 @@
+ 				case 31:
+ 					return 4711;
+ 			}
++			*/
++			return ChestLootDatabase.RollVanillaOptionItemType(genRand, 32, 4008);
+ 		}
+ 
+ 		public static void DoExtraLiquidAddLiquid()
+@@ -1779,6 +_,7 @@
+ 				if (chest == null)
+ 					break;
+ 
++				/*VanillaCode
+ 				if (genRand.Next(2) != 0 || chest.item[1].stack == 0)
+ 					continue;
+ 
+@@ -1788,6 +_,8 @@
+ 						break;
+ 					}
+ 				}
++				*/
++				ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 1869, 2);
+ 			}
+ 
+ 			if (skyblockWorldGen || !endlessChristmas.Enabled)
+@@ -2274,6 +_,7 @@
+ 				if (chest == null)
+ 					break;
+ 
++				/*VanillaCode
+ 				if (genRand.Next(3) != 0 || chest.item[1].stack == 0)
+ 					continue;
+ 
+@@ -2294,6 +_,8 @@
+ 						break;
+ 					}
+ 				}
++				*/
++				ChestLootDatabase.TryDropVanillaOptions(chest, genRand, 3, stackDyes: true, chanceNumerator: 1, firstOptionItemType: 3556);
+ 			}
+ 
+ 			OverGrownDungeonWithRainbowMoss();
+@@ -2433,6 +_,7 @@
+ 				if (chest == null)
+ 					break;
+ 
++				/*VanillaCode
+ 				if (genRand.Next(7) != 0 || chest.item[1].stack == 0)
+ 					continue;
+ 
+@@ -2442,6 +_,8 @@
+ 						break;
+ 					}
+ 				}
++				*/
++				ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 3384, 7);
+ 			}
+ 		}
+ 	}
 @@ -3318,6 +_,7 @@
  	public static readonly int oceanDistance = 250;
  	public static readonly int beachDistance = 380;
@@ -476,6 +566,26 @@
  	}
  
  	public static bool checkUnderground(int x, int y)
+@@ -8471,6 +_,7 @@
+ 
+ 	public static int GetNextJungleChestItem()
+ 	{
++		/*VanillaCode
+ 		int result = 211;
+ 		switch (GenVars.JungleItemCount % 4) {
+ 			case 0:
+@@ -8494,6 +_,11 @@
+ 
+ 		GenVars.JungleItemCount++;
+ 		return result;
++		*/
++
++		int result = ChestLootDatabase.RollVanillaJungleChestMainItem(genRand, GenVars.JungleItemCount);
++		GenVars.JungleItemCount++;
++		return result;
+ 	}
+ 
+ 	private static void ScanTileColumnAndRemoveClumps(int x)
 @@ -9228,6 +_,7 @@
  		WorldFileData.TryApplyingCopiedSeed(Main.ActiveWorldFileData.GetFullSeedText(), playSound: false, out var _, out var _, out var _);
  	}
@@ -591,6 +701,42 @@
  									flag51 = true;
  							}
  
+@@ -14325,6 +_,7 @@
+ 			if (!Skyblock.denyAllGeneration) {
+ 				progress.Message = Lang.gen[33].Value;
+ 				for (int num574 = 0; num574 < GenVars.numOceanCaveTreasure; num574++) {
++					/*VanillaCode
+ 					int mainItemInChest = genRand.NextFromList(new short[5] {
+ 						863,
+ 						186,
+@@ -14343,6 +_,10 @@
+ 							268
+ 						});
+ 					}
++					*/
++					int mainItemInChest = ChestLootDatabase.RollVanillaOptionItemType(genRand, 5, 863);
++					if (SecretSeed.extraLiquid.Enabled)
++						mainItemInChest = ChestLootDatabase.RollVanillaOptionItemType(genRand, 6, 863);
+ 
+ 					bool flag38 = false;
+ 					double num575 = 2.0;
+@@ -14364,6 +_,7 @@
+ 				for (int num580 = 0; (double)num580 < 9.0 * num579; num580++) {
+ 					double value5 = (double)num580 / (9.0 * num579);
+ 					progress.Set(value5);
++					/*VanillaCode
+ 					int num581 = 0;
+ 					num578++;
+ 					int maxValue9 = 10;
+@@ -14395,6 +_,8 @@
+ 								break;
+ 						}
+ 					}
++					*/
++					int num581 = ChestLootDatabase.RollVanillaUnderwaterCaveMainItem(genRand, ref num578, SecretSeed.extraLiquid.Enabled, tenthAnniversaryWorldGen);
+ 
+ 					bool flag39 = false;
+ 					int num582 = 0;
 @@ -17360,7 +_,7 @@
  					Main.tileSolid[56] = true;
  
@@ -757,6 +903,78 @@
  		if (!item.Prefix(-3))
  			return;
  
+@@ -20658,9 +_,9 @@
+ 			if (chest == null)
+ 				break;
+ 
++			/*VanillaCode
+ 			if (genRand.Next(7) != 0 || chest.item[1].stack == 0)
+ 				continue;
+-
+ 			for (int j = 1; j < chest.maxItems; j++) {
+ 				if (chest.item[j].stack == 0) {
+ 					switch (genRand.Next(9)) {
+@@ -20707,6 +_,8 @@
+ 					break;
+ 				}
+ 			}
++			*/
++			ChestLootDatabase.TryDropVanillaMonsterVanity(chest, genRand);
+ 		}
+ 	}
+ 
+@@ -21570,6 +_,7 @@
+ 			if (chest == null)
+ 				break;
+ 
++			/*VanillaCode
+ 			if (genRand.Next(10) != 0 || chest.item[1].stack == 0)
+ 				continue;
+ 
+@@ -21579,6 +_,8 @@
+ 					break;
+ 				}
+ 			}
++			*/
++			ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 678, 10);
+ 		}
+ 	}
+ 
+@@ -21769,6 +_,7 @@
+ 			if (chest == null)
+ 				break;
+ 
++			/*VanillaCode
+ 			if (genRand.Next(15) != 0 || chest.item[1].stack == 0)
+ 				continue;
+ 
+@@ -21778,6 +_,8 @@
+ 					break;
+ 				}
+ 			}
++			*/
++			ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 5346, 15);
+ 		}
+ 	}
+ 
+@@ -21854,6 +_,7 @@
+ 			if (chest == null)
+ 				break;
+ 
++			/*VanillaCode
+ 			if (genRand.Next(15) == 0 && chest.item[1].stack != 0) {
+ 				for (int num4 = 1; num4 < chest.maxItems; num4++) {
+ 					if (chest.item[num4].stack == 0) {
+@@ -21872,6 +_,9 @@
+ 					break;
+ 				}
+ 			}
++			*/
++			ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 5001, 15);
++			ChestLootDatabase.TryDropVanillaSupplement(chest, genRand, 678, 30);
+ 		}
+ 	}
+ 
 @@ -22425,6 +_,17 @@
  	public static Point RandomRectanglePoint(Rectangle rectangle) => new Point(genRand.Next(rectangle.X, rectangle.X + rectangle.Width), genRand.Next(rectangle.Y, rectangle.Y + rectangle.Height));
  	public static Point RandomRectanglePoint(int x, int y, int width, int height) => new Point(genRand.Next(x, x + width), genRand.Next(y, y + height));
@@ -825,6 +1043,36 @@
  					flag4 = true;
  
  				if (!flag3) {
+@@ -23063,6 +_,7 @@
+ 						num24 = num22;
+ 					}
+ 
++					/*VanillaCode
+ 					int num25 = genRand.Next(3);
+ 					if (num25 == 0)
+ 						num25 = genRand.Next(3);
+@@ -23081,6 +_,8 @@
+ 							num25 = 934;
+ 							break;
+ 					}
++					*/
++					int num25 = ChestLootDatabase.RollVanillaDungeonStyleMainItem(genRand, Main.tenthAnniversaryWorld);
+ 
+ 					AddBuriedChest((num23 + num24) / 2, num10, num25, notNearOtherChests: false, 1, trySlope: false, 0);
+ 					int num26 = genRand.Next(1, 10);
+@@ -24276,9 +_,12 @@
+ 		if (num < 0)
+ 			num8 = num3 + 8;
+ 
++		/*VanillaCode
+ 		int mainItemInChest = 832;
+ 		if (genRand.Next(3) == 0)
+ 			mainItemInChest = 4281;
++		*/
++		int mainItemInChest = ChestLootDatabase.RollVanillaOptionItemType(genRand, 3, 832);
+ 
+ 		if (remixWorldGen) {
+ 			int num10 = genRand.Next(1, 3);
 @@ -24311,7 +_,7 @@
  	{
  		int treeHeight = 1;
@@ -1072,6 +1320,1361 @@
  	public static bool AddBuriedChest(int i, int j, out Point chestLocation, int mainItemInChest = 0, bool notNearOtherChests = false, int chestStyle = -1, bool trySlope = false, ushort chestTileType = 0)
  	{
  		chestLocation = Point.Zero;
+@@ -30108,6 +_,7 @@
+ 					flag20 = num7 > (GenVars.desertHiveHigh * 3 + GenVars.desertHiveLow * 4) / 7;
+ 				}
+ 
++				/*VanillaCode
+ 				num10 = ((!flag20) ? Utils.SelectRandom(genRand, new short[4] {
+ 					4056,
+ 					4055,
+@@ -30118,6 +_,8 @@
+ 					4062,
+ 					4276
+ 				}));
++				*/
++				num10 = ChestLootDatabase.RollVanillaOptionItemType(genRand, flag20 ? 3 : 4, flag20 ? 4061 : 4056);
+ 
+ 				if (getGoodWorldGen && genRand.Next(num) == 0)
+ 					num10 = 52;
+@@ -30143,6 +_,7 @@
+ 				if (flag17 && chestTileType == 21 && chestStyle == 34)
+ 					num9 = 34;
+ 
++				/*VanillaCode
+ 				num10 = Utils.SelectRandom(genRand, new short[7] {
+ 					670,
+ 					724,
+@@ -30155,6 +_,8 @@
+ 
+ 				if (remixWorldGen && num10 == 1319)
+ 					num10 = 725;
++				*/
++				num10 = ChestLootDatabase.RollVanillaOptionItemType(genRand, 7, 670, replacementOptionIndex: remixWorldGen ? 3 : -1, replacementItemType: 725);
+ 
+ 				if (genRand.Next(20) == 0)
+ 					num10 = 997;
+@@ -30276,9 +_,13 @@
+ 
+ 					if ((flag23 && (flag || flag6)) || flag11) {
+ 						if (num10 > 0) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(num10);
+ 							chest.item[itemIndex].Prefix(-1);
++							*/
++							ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, num10, applyRandomPrefix: true);
+ 							itemIndex++;
++							/*VanillaCode
+ 							switch (num10) {
+ 								case 848:
+ 									chest.item[itemIndex].SetDefaults(866);
+@@ -30289,10 +_,26 @@
+ 									itemIndex++;
+ 									break;
+ 							}
++							*/
++							switch (num10) {
++								case 848:
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 866);
++									itemIndex++;
++									break;
++								case 832:
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 933);
++									itemIndex++;
++									break;
++							}
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(3) == 0)
+ 								chest.item[itemIndex++].SetDefaults(5629);
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5629, 3))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(6) == 0) {
+ 								int num14 = genRand.Next(2);
+ 								switch (num14) {
+@@ -30306,16 +_,30 @@
+ 
+ 								chest.item[itemIndex++].SetDefaults(num14);
+ 							}
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 6, optionCount: 2, chanceNumerator: 1))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(3) != 0)
+ 								chest.item[itemIndex++].SetDefaults(5528);
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2, successOnNonZero: true))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (Main.tenthAnniversaryWorld && flag11) {
+ 								chest.item[itemIndex++].SetDefaults(848);
+ 								chest.item[itemIndex++].SetDefaults(866);
+ 							}
++							*/
++							if (Main.tenthAnniversaryWorld && flag11) {
++								ChestLootDatabase.SetVanillaBundleAtSlot(chest, itemIndex, genRand, 848);
++								itemIndex += 2;
++							}
+ 						}
+ 						else {
++							/*VanillaCode
+ 							int num15 = genRand.Next(11);
+ 							if (num15 == 0) {
+ 								chest.item[itemIndex].SetDefaults(280);
+@@ -30377,28 +_,29 @@
+ 								chest.item[itemIndex].SetDefaults(6165);
+ 								chest.item[itemIndex].Prefix(-1);
+ 							}
+-
+-							itemIndex++;
+-						}
+-
+-						if (genRand.Next(6) == 0) {
+-							int stack = genRand.Next(40, 76);
+-							short type = 282;
+-							if (SecretSeed.GenerateRainbowGlowsticks)
+-								type = 5643;
+-
+-							chest.item[itemIndex].SetDefaults(type);
+-							chest.item[itemIndex].stack = stack;
+-							itemIndex++;
+-						}
+-
++							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 1, optionCount: 11, applyRandomPrefix: true,
++								replacementOptionIndex: 7, replacementItemType: remixWorldGen ? 517 : 3069);
++							itemIndex++;
++						}
++
++						int glowstickType = SecretSeed.GenerateRainbowGlowsticks ? 5643 : 282;
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, glowstickType, 6, stackBeforeSetDefaults: true, stackMin: 40, stackMax: 75))
++							itemIndex++;
++
++						/*VanillaCode
+ 						if (genRand.Next(6) == 0) {
+ 							int stack2 = genRand.Next(150, 301);
+ 							chest.item[itemIndex].SetDefaults(279);
+ 							chest.item[itemIndex].stack = stack2;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 279, 6, stackBeforeSetDefaults: true, stackMin: 150, stackMax: 300))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(6) == 0) {
+ 							chest.item[itemIndex].SetDefaults(3093);
+ 							chest.item[itemIndex].stack = 1;
+@@ -30410,7 +_,11 @@
+ 
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaStackBonusAtSlot(chest, itemIndex, genRand, 3093, 6))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(6) == 0) {
+ 							chest.item[itemIndex].SetDefaults(4345);
+ 							chest.item[itemIndex].stack = 1;
+@@ -30422,13 +_,21 @@
+ 
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaStackBonusAtSlot(chest, itemIndex, genRand, 4345, 6))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) == 0) {
+ 							chest.item[itemIndex].SetDefaults(168);
+ 							chest.item[itemIndex].stack = genRand.Next(3, 6);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 168, 3, stackMin: 3, stackMax: 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num16 = genRand.Next(2);
+ 							int stack3 = genRand.Next(8) + 3;
+@@ -30441,14 +_,22 @@
+ 							chest.item[itemIndex].stack = stack3;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: GenVars.copperBar, secondOptionItemType: GenVars.ironBar, stackMin: 3, stackMax: 10, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack4 = genRand.Next(50, 101);
+ 							chest.item[itemIndex].SetDefaults(965);
+ 							chest.item[itemIndex].stack = stack4;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 965, 2, stackBeforeSetDefaults: true, stackMin: 50, stackMax: 100))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) != 0) {
+ 							int num17 = genRand.Next(2);
+ 							int stack5 = genRand.Next(26) + 25;
+@@ -30461,20 +_,32 @@
+ 							chest.item[itemIndex].stack = stack5;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 2, firstOptionItemType: 40, chanceNumerator: 2, stackMin: 25, stackMax: 50, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack6 = genRand.Next(3) + 3;
+ 							chest.item[itemIndex].SetDefaults(28);
+ 							chest.item[itemIndex].stack = stack6;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 28, 2, stackBeforeSetDefaults: true, stackMin: 3, stackMax: 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) != 0) {
+ 							chest.item[itemIndex].SetDefaults(2350);
+ 							chest.item[itemIndex].stack = genRand.Next(3, 6);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackMin: 3, stackMax: 5, chanceNumerator: 2, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) > 0) {
+ 							int num18 = genRand.Next(6);
+ 							int stack7 = genRand.Next(1, 3);
+@@ -30499,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack7;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 6, firstOptionItemType: 292, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num19 = genRand.Next(2);
+ 							int stack8 = genRand.Next(11) + 10;
+@@ -30511,46 +_,85 @@
+ 							chest.item[itemIndex].stack = stack8;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 8, stackMin: 10, stackMax: 20, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							chest.item[itemIndex].SetDefaults(72);
+ 							chest.item[itemIndex].stack = genRand.Next(10, 30);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 72, 2, stackMin: 10, stackMax: 29))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							chest.item[itemIndex].SetDefaults(9);
+ 							chest.item[itemIndex].stack = genRand.Next(50, 100);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 9, 2, stackMin: 50, stackMax: 99))
++							itemIndex++;
+ 					}
+ 					else if ((!remixWorldGen && (double)num7 < Main.rockLayer) || (remixWorldGen && (double)num7 > Main.rockLayer && num7 < Main.maxTilesY - 250)) {
+ 						if (num10 > 0) {
+ 							if (num10 == 832) {
++								/*VanillaCode chest.item[itemIndex].SetDefaults(933); */
++								ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 933);
++								itemIndex++;
++							}
++
++							/*VanillaCode
++							if (num10 == 832) {
+ 								chest.item[itemIndex].SetDefaults(933);
+ 								itemIndex++;
+ 							}
++							*/
+ 
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(num10);
+ 							chest.item[itemIndex].Prefix(-1);
++							*/
++							ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, num10, applyRandomPrefix: true);
+ 							itemIndex++;
+ 							if (flag5) {
++								/*VanillaCode
+ 								if (genRand.Next(2) == 0)
+ 									chest.item[itemIndex++].SetDefaults(4425);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4425, 2))
++									itemIndex++;
+ 
++								/*VanillaCode
+ 								if (genRand.Next(2) == 0)
+ 									chest.item[itemIndex++].SetDefaults(4460);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4460, 2))
++									itemIndex++;
+ 							}
+ 
++							/*VanillaCode
+ 							if (flag12 && genRand.Next(40) == 0) {
+ 								chest.item[itemIndex].SetDefaults(4978);
+ 								chest.item[itemIndex].Prefix(-1);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag12 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4978, 40, applyRandomPrefix: true))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(3) == 0)
+ 								chest.item[itemIndex++].SetDefaults(5629);
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5629, 3))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(6) == 0) {
+ 								int num20 = genRand.Next(2);
+ 								switch (num20) {
+@@ -30565,32 +_,58 @@
+ 								chest.item[itemIndex].SetDefaults(num20);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 6, optionCount: 2, chanceNumerator: 1))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag6 && genRand.Next(3) != 0)
+ 								chest.item[itemIndex++].SetDefaults(5528);
++							*/
++							if (flag6 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5528, 3, chanceNumerator: 2, successOnNonZero: true))
++								itemIndex++;
+ 
+ 							if (flag9 && !flag10) {
++								/*VanillaCode
+ 								if (!GenVars.generatedShadowKey || genRand.Next(3) == 0) {
+ 									GenVars.generatedShadowKey = true;
+ 									chest.item[itemIndex].SetDefaults(329);
+ 									itemIndex++;
+ 								}
++								*/
++								if (!GenVars.generatedShadowKey || ChestLootDatabase.RollVanillaCommonChance(genRand, 329, 3)) {
++									GenVars.generatedShadowKey = true;
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 329);
++									itemIndex++;
++								}
+ 
++								/*VanillaCode
+ 								if (!GenVars.generatedRamRune || genRand.Next(8) == 0) {
+ 									GenVars.generatedRamRune = true;
+ 									chest.item[itemIndex].SetDefaults(5465);
+ 									chest.item[itemIndex].Prefix(-1);
+ 									itemIndex++;
+ 								}
++								*/
++								if (!GenVars.generatedRamRune || ChestLootDatabase.RollVanillaCommonChance(genRand, 5465, 8)) {
++									GenVars.generatedRamRune = true;
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5465, applyRandomPrefix: true);
++									itemIndex++;
++								}
+ 
++								/*VanillaCode
+ 								if (genRand.Next(4) == 0) {
+ 									chest.item[itemIndex].SetDefaults(6156);
+ 									chest.item[itemIndex].Prefix(-1);
+ 									itemIndex++;
+ 								}
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 6156, 4, applyRandomPrefix: true))
++									itemIndex++;
+ 							}
+ 						}
+ 						else {
++							/*VanillaCode
+ 							switch (genRand.Next(6)) {
+ 								case 0:
+ 									chest.item[itemIndex].SetDefaults(49);
+@@ -30617,7 +_,10 @@
+ 									chest.item[itemIndex].Prefix(-1);
+ 									break;
+ 							}
++							*/
++							ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 1, optionCount: 6, applyRandomPrefix: true, firstOptionItemType: 49);
+ 
++							/*VanillaCode
+ 							if (Main.vampireSeed && genRand.Next(10) == 1) {
+ 								if (genRand.Next(2) == 0) {
+ 									chest.item[itemIndex].SetDefaults(1800);
+@@ -30628,7 +_,11 @@
+ 									chest.item[itemIndex].Prefix(-1);
+ 								}
+ 							}
++							*/
++							if (Main.vampireSeed)
++								ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 10, optionCount: 2, applyRandomPrefix: true, firstOptionItemType: 1800, chanceNumerator: 1, successRollValue: 1);
+ 
++							/*VanillaCode
+ 							if (SecretSeed.errorWorld.Enabled && genRand.Next(SecretSeed.Variations.errorWorldAdjustment(3.0)) == 0) {
+ 								int num21 = SecretSeed.DoErrorWorldFindChestItem();
+ 								if (num21 > 0)
+@@ -30636,8 +_,12 @@
+ 
+ 								chest.item[itemIndex].Prefix(-1);
+ 							}
++							*/
++							if (SecretSeed.errorWorld.Enabled)
++								ChestLootDatabase.TryApplyVanillaErrorWorldReplacementAtSlot(chest, itemIndex, genRand, SecretSeed.Variations.errorWorldAdjustment(3.0), SecretSeed.Variations.errorWorldBalancedChests);
+ 
+ 							itemIndex++;
++							/*VanillaCode
+ 							if (genRand.Next(20) == 0) {
+ 								chest.item[itemIndex].SetDefaults(997);
+ 								chest.item[itemIndex].Prefix(-1);
+@@ -30658,47 +_,80 @@
+ 
+ 								itemIndex++;
+ 							}
+-
+-							if (flag7 && genRand.Next(2) == 0) {
+-								chest.item[itemIndex].SetDefaults(4450);
+-								itemIndex++;
+-							}
+-
+-							if (flag7 && genRand.Next(3) == 0) {
+-								chest.item[itemIndex].SetDefaults(4779);
+-								itemIndex++;
+-								chest.item[itemIndex].SetDefaults(4780);
+-								itemIndex++;
+-								chest.item[itemIndex].SetDefaults(4781);
+-								itemIndex++;
+-							}
++							*/
++							if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 997, 20, applyRandomPrefix: true))
++								itemIndex++;
++							else if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 930, 20, applyRandomPrefix: true)) {
++								itemIndex++;
++								if (SecretSeed.rainbowStuff.Enabled)
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5379, 50, 99);
++								else
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 931, 25, 50);
++
++								itemIndex++;
++							}
++
++							/*VanillaCode
++							if (flag7) {
++								if (genRand.Next(2) == 0) {
++									chest.item[itemIndex].SetDefaults(4450);
++									itemIndex++;
++								}
++								else {
++									chest.item[itemIndex].SetDefaults(4779);
++									itemIndex++;
++									chest.item[itemIndex].SetDefaults(4780);
++									itemIndex++;
++									chest.item[itemIndex].SetDefaults(4781);
++									itemIndex++;
++								}
++							}
++							*/
++							if (flag7)
++								itemIndex += ChestLootDatabase.DropVanillaBundleAtSlot(chest, itemIndex, genRand, 4450, 2);
+ 						}
+ 
+ 						if (flag3) {
++							/*VanillaCode
+ 							if (genRand.Next(3) == 0) {
+ 								chest.item[itemIndex].SetDefaults(4423);
+ 								chest.item[itemIndex].stack = genRand.Next(10, 20);
+ 								itemIndex++;
+ 							}
++							*/
++							if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4423, 3, stackMin: 10, stackMax: 19))
++								itemIndex++;
+ 						}
+-						else if (genRand.Next(3) == 0) {
++						else if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 166, 3, stackMin: 10, stackMax: 19)) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(166);
+ 							chest.item[itemIndex].stack = genRand.Next(10, 20);
+ 							itemIndex++;
++							*/
++							itemIndex++;
+ 						}
+ 
++						/*VanillaCode
+ 						if (genRand.Next(5) == 0) {
+ 							chest.item[itemIndex].SetDefaults(52);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 52, 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) == 0) {
+ 							int stack9 = genRand.Next(50, 101);
+ 							chest.item[itemIndex].SetDefaults(965);
+ 							chest.item[itemIndex].stack = stack9;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 965, 3, stackBeforeSetDefaults: true, stackMin: 50, stackMax: 100))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num22 = genRand.Next(2);
+ 							int stack10 = genRand.Next(10) + 5;
+@@ -30711,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack10;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: GenVars.ironBar, secondOptionItemType: GenVars.silverBar, stackMin: 5, stackMax: 14, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num23 = genRand.Next(2);
+ 							int stack11 = genRand.Next(25) + 25;
+@@ -30724,14 +_,22 @@
+ 							chest.item[itemIndex].stack = stack11;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 40, stackMin: 25, stackMax: 50, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack12 = genRand.Next(3) + 3;
+ 							chest.item[itemIndex].SetDefaults(28);
+ 							chest.item[itemIndex].stack = stack12;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 28, 2, stackBeforeSetDefaults: true, stackMin: 3, stackMax: 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) > 0) {
+ 							int num24 = genRand.Next(9);
+ 							int stack13 = genRand.Next(1, 3);
+@@ -30765,98 +_,171 @@
+ 							chest.item[itemIndex].stack = stack13;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 9, firstOptionItemType: 289, chanceNumerator: 2, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) != 0) {
+ 							int stack14 = genRand.Next(2, 5);
+ 							chest.item[itemIndex].SetDefaults(2350);
+ 							chest.item[itemIndex].stack = stack14;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 3, stackBeforeSetDefaults: true, stackMin: 2, stackMax: 4, chanceNumerator: 2, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack15 = genRand.Next(11) + 10;
+ 							if (flag2)
+ 								chest.item[itemIndex].SetDefaults(974);
+ 							else
+ 								chest.item[itemIndex].SetDefaults(8);
+-
+ 							chest.item[itemIndex].stack = stack15;
+ 							itemIndex++;
+ 						}
++						*/
++						int healingItemType = flag2 ? 974 : 8;
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, healingItemType, 2, stackBeforeSetDefaults: true, stackMin: 10, stackMax: 20))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							chest.item[itemIndex].SetDefaults(72);
+ 							chest.item[itemIndex].stack = genRand.Next(50, 90);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 72, 2, stackMin: 50, stackMax: 89))
++							itemIndex++;
+ 					}
+ 					else if (num7 < Main.maxTilesY - 250 || (remixWorldGen && (chestStyle == 7 || chestStyle == 14))) {
+ 						if (num10 > 0) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(num10);
+ 							chest.item[itemIndex].Prefix(-1);
++							*/
++							ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, num10, applyRandomPrefix: true);
+ 							itemIndex++;
++							/*VanillaCode
+ 							if (flag2 && genRand.Next(5) == 0) {
+ 								chest.item[itemIndex].SetDefaults(3199);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag2 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 3199, 5))
++								itemIndex++;
+ 
+ 							if (flag3) {
++								/*VanillaCode
+ 								if (genRand.Next(7) == 0) {
+ 									chest.item[itemIndex].SetDefaults(4346);
+ 									itemIndex++;
+ 								}
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4346, 7))
++									itemIndex++;
+ 
++								/*VanillaCode
+ 								if (genRand.Next(15) == 0) {
+ 									chest.item[itemIndex].SetDefaults(4066);
+ 									itemIndex++;
+ 								}
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4066, 15))
++									itemIndex++;
+ 							}
+ 
+ 							if (flag4) {
++								/*VanillaCode
+ 								if (!GenVars.gennedLivingMahoganyWands || genRand.Next(5) == 0) {
+ 									GenVars.gennedLivingMahoganyWands = true;
+ 									chest.item[itemIndex++].SetDefaults(3360);
+ 									chest.item[itemIndex++].SetDefaults(3361);
+ 								}
++								*/
++								if (!GenVars.gennedLivingMahoganyWands) {
++									GenVars.gennedLivingMahoganyWands = true;
++									ChestLootDatabase.SetVanillaLivingMahoganyBundle(chest, itemIndex, genRand);
++									itemIndex += 2;
++								}
++								else if (ChestLootDatabase.TryDropVanillaLivingMahoganyBundle(chest, itemIndex, genRand)) {
++									itemIndex += 2;
++								}
+ 
++								/*VanillaCode
+ 								if (genRand.Next(10) == 0)
+ 									chest.item[itemIndex++].SetDefaults(4426);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4426, 10))
++									itemIndex++;
+ 
++								/*VanillaCode
+ 								if (genRand.Next(10) == 0)
+ 									chest.item[itemIndex++].SetDefaults(5525);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5525, 10))
++									itemIndex++;
+ 							}
+-
+ 							if (flag5) {
++								/*VanillaCode
+ 								if (genRand.Next(2) == 0)
+ 									chest.item[itemIndex++].SetDefaults(4425);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4425, 2))
++									itemIndex++;
+ 
++								/*VanillaCode
+ 								if (genRand.Next(2) == 0)
+ 									chest.item[itemIndex++].SetDefaults(4460);
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4460, 2))
++									itemIndex++;
+ 							}
+ 
+ 							if (flag9 && !flag10) {
++								/*VanillaCode
+ 								if (!GenVars.generatedShadowKey || genRand.Next(3) == 0) {
+ 									GenVars.generatedShadowKey = true;
+ 									chest.item[itemIndex].SetDefaults(329);
+ 									itemIndex++;
+ 								}
++								*/
++								if (!GenVars.generatedShadowKey || ChestLootDatabase.RollVanillaCommonChance(genRand, 329, 3)) {
++									GenVars.generatedShadowKey = true;
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 329);
++									itemIndex++;
++								}
+ 
++								/*VanillaCode
+ 								if (!GenVars.generatedRamRune || genRand.Next(8) == 0) {
+ 									GenVars.generatedRamRune = true;
+ 									chest.item[itemIndex].SetDefaults(5465);
+ 									chest.item[itemIndex].Prefix(-1);
+ 									itemIndex++;
+ 								}
++								*/
++								if (!GenVars.generatedRamRune || ChestLootDatabase.RollVanillaCommonChance(genRand, 5465, 8)) {
++									GenVars.generatedRamRune = true;
++									ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5465, applyRandomPrefix: true);
++									itemIndex++;
++								}
+ 
++								/*VanillaCode
+ 								if (genRand.Next(4) == 0) {
+ 									chest.item[itemIndex].SetDefaults(6156);
+ 									chest.item[itemIndex].Prefix(-1);
+ 									itemIndex++;
+ 								}
++								*/
++								if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 6156, 4, applyRandomPrefix: true))
++									itemIndex++;
+ 							}
+ 						}
+ 						else {
+-							int num25 = genRand.Next(7);
++							int num25 = ChestLootDatabase.RollVanillaOptionIndex(genRand, 7, 49);
+ 							bool flag24 = num7 > GenVars.lavaLine;
+ 							if (remixWorldGen)
+ 								flag24 = (double)num7 > Main.worldSurface && (double)num7 < Main.rockLayer;
+@@ -30865,15 +_,19 @@
+ 							if (tenthAnniversaryWorldGen)
+ 								maxValue = 15;
+ 
+-							if (genRand.Next(maxValue) == 0 && flag24) {
++							/*VanillaCode if (genRand.Next(maxValue) == 0 && flag24) {
+ 								chest.item[itemIndex].SetDefaults(906);
+ 								chest.item[itemIndex].Prefix(-1);
+-							}
+-							else if (genRand.Next(15) == 0) {
++							} */
++							/*VanillaCode else if (genRand.Next(15) == 0) {
+ 								chest.item[itemIndex].SetDefaults(997);
+ 								chest.item[itemIndex].Prefix(-1);
+-							}
+-							else {
++							} */
++							bool specialItemRoll = ChestLootDatabase.RollVanillaCommonChance(genRand, 906, maxValue);
++							if (specialItemRoll && flag24)
++								ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 906, applyRandomPrefix: true);
++							else if (!ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 997, 15, applyRandomPrefix: true)) {
++								/*VanillaCode
+ 								if (num25 == 0) {
+ 									chest.item[itemIndex].SetDefaults(49);
+ 									chest.item[itemIndex].Prefix(-1);
+@@ -30918,16 +_,8 @@
+ 									}
+ 								}
+ 								else {
+-									if (Main.vampireSeed && genRand.Next(10) == 0) {
+-										if (genRand.Next(2) == 0) {
+-											chest.item[itemIndex].SetDefaults(1800);
+-											chest.item[itemIndex].Prefix(-1);
+-										}
+-										else {
+-											chest.item[itemIndex].SetDefaults(900);
+-											chest.item[itemIndex].Prefix(-1);
+-										}
+-									}
++									if (Main.vampireSeed)
++										ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 10, optionCount: 2, applyRandomPrefix: true, firstOptionItemType: 1800, chanceNumerator: 1);
+ 
+ 									if (SecretSeed.errorWorld.Enabled && genRand.Next(SecretSeed.Variations.errorWorldAdjustment(3.0)) == 0) {
+ 										num25 = SecretSeed.DoErrorWorldFindChestItem();
+@@ -30937,9 +_,27 @@
+ 										chest.item[itemIndex].Prefix(-1);
+ 									}
+ 								}
++								*/
++
++								ChestLootDatabase.SetVanillaOptionAtSlot(chest, itemIndex, num25, 7, 49, applyRandomPrefix: true);
++								if (num25 == 6) {
++									itemIndex++;
++									if (SecretSeed.rainbowStuff.Enabled)
++										ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 5379, 50, 99);
++									else
++										ChestLootDatabase.SetVanillaCommonAtSlot(chest, itemIndex, genRand, 931, 25, 50);
++								}
++								else {
++									if (Main.vampireSeed)
++										ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 10, optionCount: 2, applyRandomPrefix: true, firstOptionItemType: 1800, chanceNumerator: 1);
++
++									if (SecretSeed.errorWorld.Enabled)
++										ChestLootDatabase.TryApplyVanillaErrorWorldReplacementAtSlot(chest, itemIndex, genRand, SecretSeed.Variations.errorWorldAdjustment(3.0), SecretSeed.Variations.errorWorldBalancedChests);
++								}
+ 							}
+ 
+ 							itemIndex++;
++							/*VanillaCode
+ 							if (flag7) {
+ 								if (genRand.Next(2) == 0) {
+ 									chest.item[itemIndex].SetDefaults(4450);
+@@ -30954,28 +_,44 @@
+ 									itemIndex++;
+ 								}
+ 							}
++							*/
++							if (flag7)
++								itemIndex += ChestLootDatabase.DropVanillaBundleAtSlot(chest, itemIndex, genRand, 4450, 2);
+ 						}
+ 
++						/*VanillaCode
+ 						if (genRand.Next(5) == 0) {
+ 							if (flag2)
+ 								chest.item[itemIndex].SetDefaults(5120);
+ 							else
+ 								chest.item[itemIndex].SetDefaults(43);
+-
+ 							itemIndex++;
+ 						}
++						*/
++						int bonusItemType = flag2 ? 5120 : 43;
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, bonusItemType, 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) == 0) {
+ 							chest.item[itemIndex].SetDefaults(167);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 167, 3))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(4) == 0) {
+ 							chest.item[itemIndex].SetDefaults(51);
+ 							chest.item[itemIndex].stack = genRand.Next(26) + 25;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 51, 4, stackMin: 25, stackMax: 50))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num26 = genRand.Next(2);
+ 							int stack16 = genRand.Next(8) + 3;
+@@ -30988,27 +_,37 @@
+ 							chest.item[itemIndex].stack = stack16;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: GenVars.goldBar, secondOptionItemType: GenVars.silverBar, stackMin: 3, stackMax: 10, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num27 = genRand.Next(2);
+ 							int stack17 = genRand.Next(26) + 25;
+ 							if (num27 == 0)
+ 								chest.item[itemIndex].SetDefaults(41);
+-
+ 							if (num27 == 1)
+ 								chest.item[itemIndex].SetDefaults(279);
+-
+ 							chest.item[itemIndex].stack = stack17;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 41, stackMin: 25, stackMax: 50, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack18 = genRand.Next(3) + 3;
+ 							chest.item[itemIndex].SetDefaults(188);
+ 							chest.item[itemIndex].stack = stack18;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 188, 2, stackBeforeSetDefaults: true, stackMin: 3, stackMax: 5))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) > 0) {
+ 							int num28 = genRand.Next(6);
+ 							int stack19 = genRand.Next(1, 3);
+@@ -31033,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack19;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 6, firstOptionItemType: 296, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) > 1) {
+ 							int num29 = genRand.Next(6);
+ 							int stack20 = genRand.Next(1, 3);
+@@ -31058,14 +_,22 @@
+ 							chest.item[itemIndex].stack = stack20;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 6, firstOptionItemType: 301, chanceNumerator: 1, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnMaximum: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack21 = genRand.Next(2, 5);
+ 							chest.item[itemIndex].SetDefaults(2350);
+ 							chest.item[itemIndex].stack = stack21;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2350, 2, stackBeforeSetDefaults: true, stackMin: 2, stackMax: 4))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0 || (Main.vampireSeed && genRand.Next(2) == 0)) {
+ 							int num30 = genRand.Next(2);
+ 							int num31 = genRand.Next(15, 31);
+@@ -31089,40 +_,68 @@
+ 							chest.item[itemIndex].stack = num31;
+ 							itemIndex++;
+ 						}
++						*/
++						int glowstickType = SecretSeed.GenerateRainbowGlowsticks ? 5643 : 282;
++						if (ChestLootDatabase.TryDropVanillaHealingGlowsticksAtSlot(chest, itemIndex, genRand, flag2, Main.vampireSeed, glowstickType))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							chest.item[itemIndex].SetDefaults(73);
+ 							chest.item[itemIndex].stack = genRand.Next(1, 3);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 73, 2, stackMin: 1, stackMax: 2))
++							itemIndex++;
+ 					}
+ 					else {
+ 						if (num10 > 0) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(num10);
+ 							chest.item[itemIndex].Prefix(-1);
++							*/
++							ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, num10, applyRandomPrefix: true);
+ 							itemIndex++;
++							/*VanillaCode
+ 							if (flag8 && genRand.Next(5) == 0) {
+ 								chest.item[itemIndex].SetDefaults(5010);
+ 								chest.item[itemIndex].Prefix(-1);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag8 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5010, 5, applyRandomPrefix: true))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag8 && genRand.Next(10) == 0) {
+ 								chest.item[itemIndex].SetDefaults(4443);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag8 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4443, 10))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag8 && genRand.Next(10) == 0) {
+ 								chest.item[itemIndex].SetDefaults(4737);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag8 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4737, 10))
++								itemIndex++;
+ 
++							/*VanillaCode
+ 							if (flag8 && genRand.Next(10) == 0) {
+ 								chest.item[itemIndex].SetDefaults(4551);
+ 								itemIndex++;
+ 							}
++							*/
++							if (flag8 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 4551, 10))
++								itemIndex++;
+ 						}
+ 						else {
++							/*VanillaCode
+ 							int num32 = genRand.Next(4);
+ 							if (num32 == 0) {
+ 								chest.item[itemIndex].SetDefaults(49);
+@@ -31143,15 +_,22 @@
+ 								chest.item[itemIndex].SetDefaults(54);
+ 								chest.item[itemIndex].Prefix(-1);
+ 							}
+-
++							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 1, optionCount: 4, applyRandomPrefix: true);
+ 							itemIndex++;
+ 						}
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) == 0) {
+ 							chest.item[itemIndex].SetDefaults(167);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 167, 3))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num33 = genRand.Next(2);
+ 							int stack22 = genRand.Next(15) + 15;
+@@ -31164,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack22;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 117, secondOptionItemType: GenVars.goldBar, stackMin: 15, stackMax: 29, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num34 = genRand.Next(2);
+ 							int stack23 = genRand.Next(25) + 50;
+@@ -31181,14 +_,23 @@
+ 							chest.item[itemIndex].stack = stack23;
+ 							itemIndex++;
+ 						}
++						*/
++						int silverTierOreBar = SavedOreTiers.Silver == 168 ? 4915 : 278;
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 265, secondOptionItemType: silverTierOreBar, stackMin: 50, stackMax: 75, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int stack24 = genRand.Next(6) + 15;
+ 							chest.item[itemIndex].SetDefaults(227);
+ 							chest.item[itemIndex].stack = stack24;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 227, 2, stackBeforeSetDefaults: true, stackMin: 15, stackMax: 20))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(4) > 0) {
+ 							int num35 = genRand.Next(8);
+ 							int stack25 = genRand.Next(1, 3);
+@@ -31219,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack25;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 4, optionCount: 8, firstOptionItemType: 296, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) > 0) {
+ 							int num36 = genRand.Next(8);
+ 							int stack26 = genRand.Next(1, 3);
+@@ -31250,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack26;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 8, firstOptionItemType: 305, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, successOnNonZero: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(3) == 0) {
+ 							int stack27 = genRand.Next(1, 3);
+ 							if (genRand.Next(2) == 0)
+@@ -31261,7 +_,11 @@
+ 							chest.item[itemIndex].stack = stack27;
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 3, optionCount: 2, firstOptionItemType: 2350, stackMin: 1, stackMax: 2, stackBeforeSetDefaults: true, stackBeforeOption: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							int num37 = genRand.Next(2);
+ 							int stack28 = genRand.Next(15) + 15;
+@@ -31279,40 +_,81 @@
+ 							chest.item[itemIndex].stack = stack28;
+ 							itemIndex++;
+ 						}
++						*/
++						int glowstickOptionType = SecretSeed.GenerateRainbowGlowsticks ? 5643 : 282;
++						if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 2, optionCount: 2, firstOptionItemType: 8, secondOptionItemType: glowstickOptionType, stackMin: 15, stackMax: 30, stackBeforeSetDefaults: true))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (genRand.Next(2) == 0) {
+ 							chest.item[itemIndex].SetDefaults(73);
+ 							chest.item[itemIndex].stack = genRand.Next(2, 5);
+ 							itemIndex++;
+ 						}
++						*/
++						if (ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 73, 2, stackMin: 2, stackMax: 4))
++							itemIndex++;
+ 					}
+ 
+ 					if (itemIndex > 0 && chestTileType == 21) {
++						/*VanillaCode
+ 						if (flag4 && genRand.Next(4) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2204);
++						*/
++						if (flag4 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2204, 4))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag4 && genRand.Next(50) == 0)
+ 							chest.item[itemIndex++].SetDefaults(753);
++						*/
++						if (flag4 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 753, 50))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag2 && genRand.Next(7) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2198);
++						*/
++						if (flag2 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2198, 7))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag2 && genRand.Next(50) == 0)
+ 							chest.item[itemIndex++].SetDefaults(669);
++						*/
++						if (flag2 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 669, 50))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag12 && genRand.Next(3) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2197);
++						*/
++						if (flag12 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2197, 3))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag13)
+ 							chest.item[itemIndex++].SetDefaults(2195);
++						*/
++						if (flag13 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2195, 1))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag9 && genRand.Next(8) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2192);
++						*/
++						if (flag9 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2192, 8))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag9 && Main.getGoodWorld && genRand.Next(5) == 0)
+ 							chest.item[itemIndex++].SetDefaults(5515);
++						*/
++						if (flag9 && Main.getGoodWorld && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5515, 5))
++							itemIndex++;
+ 
+ 						if (flag12) {
++							/*VanillaCode
+ 							int num38 = genRand.Next(6);
+ 							if (num38 == 0)
+ 								chest.item[itemIndex].SetDefaults(5258);
+@@ -31333,18 +_,30 @@
+ 								chest.item[itemIndex].SetDefaults(5388);
+ 
+ 							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 1, optionCount: 6, firstOptionItemType: 5258);
++							itemIndex++;
+ 						}
+ 
+ 						if (flag12) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(751);
+ 							chest.item[itemIndex].stack = genRand.Next(50, 101);
+ 							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 751, 1, stackMin: 50, stackMax: 100);
++							itemIndex++;
+ 						}
+ 
++						/*VanillaCode
+ 						if ((num9 == 23 || num9 == 24 || num9 == 25 || num9 == 26 || num9 == 27) && genRand.Next(2) == 0)
+ 							chest.item[itemIndex++].SetDefaults(5234);
++						*/
++						if ((num9 == 23 || num9 == 24 || num9 == 25 || num9 == 26 || num9 == 27) && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5234, 2))
++							itemIndex++;
+ 
+ 						if (flag13) {
++							/*VanillaCode
+ 							if (genRand.Next(5) == 0) {
+ 								chest.item[itemIndex++].SetDefaults(2767);
+ 							}
+@@ -31353,26 +_,50 @@
+ 								chest.item[itemIndex].stack = genRand.Next(3, 8);
+ 								itemIndex++;
+ 							}
++							*/
++							ChestLootDatabase.DropVanillaFlag13Bonus(chest, itemIndex, genRand);
++							itemIndex++;
+ 						}
+ 					}
+ 
+ 					if (itemIndex > 0 && chestTileType == 467) {
++						/*VanillaCode
+ 						if (flag4 && genRand.Next(4) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2204);
++						*/
++						if (flag4 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2204, 4))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag4 && genRand.Next(50) == 0)
+ 							chest.item[itemIndex++].SetDefaults(753);
++						*/
++						if (flag4 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 753, 50))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag2 && genRand.Next(7) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2198);
++						*/
++						if (flag2 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2198, 7))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag2 && genRand.Next(50) == 0)
+ 							chest.item[itemIndex++].SetDefaults(669);
++						*/
++						if (flag2 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 669, 50))
++							itemIndex++;
+ 
++						/*VanillaCode
+ 						if (flag12 && genRand.Next(3) == 0)
+ 							chest.item[itemIndex++].SetDefaults(2197);
++						*/
++						if (flag12 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 2197, 3))
++							itemIndex++;
+ 
+ 						if (flag12) {
++							/*VanillaCode
+ 							int num39 = genRand.Next(6);
+ 							if (num39 == 0)
+ 								chest.item[itemIndex].SetDefaults(5258);
+@@ -31393,31 +_,62 @@
+ 								chest.item[itemIndex].SetDefaults(5388);
+ 
+ 							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 1, optionCount: 6, firstOptionItemType: 5258);
++							itemIndex++;
+ 						}
+ 
+ 						if (flag12) {
++							/*VanillaCode
+ 							chest.item[itemIndex].SetDefaults(751);
+ 							chest.item[itemIndex].stack = genRand.Next(50, 101);
+ 							itemIndex++;
++							*/
++							ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 751, 1, stackMin: 50, stackMax: 100);
++							itemIndex++;
+ 						}
+ 
++						/*VanillaCode
+ 						if (num9 == 13 && genRand.Next(2) == 0)
+ 							chest.item[itemIndex++].SetDefaults(5234);
++						*/
++						if (num9 == 13 && ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5234, 2))
++							itemIndex++;
+ 					}
+ 
++					/*VanillaCode
+ 					if (SecretSeed.rainbowStuff.Enabled && (num10 == 1156 || num10 == 1571 || num10 == 1569 || num10 == 1572 || num10 == 4607)) {
+ 						chest.item[itemIndex].SetDefaults(1260);
+ 						chest.item[itemIndex].Prefix(-1);
+ 						itemIndex++;
+ 					}
++					*/
++					if (SecretSeed.rainbowStuff.Enabled && (num10 == 1156 || num10 == 1571 || num10 == 1569 || num10 == 1572 || num10 == 4607) &&
++						ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 1260, 1, applyRandomPrefix: true))
++						itemIndex++;
+ 
++					/*VanillaCode
+ 					if (Main.vampireSeed && !flag9 && !flag13 && !flag12 && !flag8 && genRand.Next(4) == 0)
+ 						chest.item[itemIndex++].SetDefaults(5597);
++					*/
++					if (Main.vampireSeed && !flag9 && !flag13 && !flag12 && !flag8 &&
++						ChestLootDatabase.TryDropVanillaAtSlot(chest, itemIndex, genRand, 5597, 4))
++						itemIndex++;
+ 
++					/*VanillaCode
+ 					if (genRand.Next(12) == 0)
+ 						AddVoiceChangeItemToChest(chest, ref itemIndex);
+ 					else if (Main.vampireSeed && genRand.Next(12) == 0)
+ 						AddMonsterVoiceChangeItemToChest(chest, ref itemIndex);
++					*/
++					if (ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 12, optionCount: 14, applyRandomPrefix: true, chanceNumerator: 1))
++						itemIndex++;
++					else if (Main.vampireSeed && ChestLootDatabase.TryDropVanillaOptionsAtSlot(chest, itemIndex, genRand, 12, optionCount: 4, applyRandomPrefix: true, firstOptionItemType: 5509, chanceNumerator: 1))
++						itemIndex++;
++
++					// Keep mod loot rolls from advancing the shared world-generation RNG and changing later vanilla generation.
++					int chestLootSeed = unchecked(genRand.Peek() ^ (chest.x * 73856093) ^ (chest.y * 19349663) ^ chest.type);
++					ChestLootDatabase.TryDrop(chest, new UnifiedRandom(chestLootSeed));
+ 				}
+ 
+ 				return true;
+@@ -31439,14 +_,19 @@
+ 
+ 	public static void AddVoiceChangeItemToChest(Chest chest, ref int itemIndex)
+ 	{
++		/*VanillaCode
+ 		int randomVoiceItem = Item.GetRandomVoiceItem();
+ 		chest.item[itemIndex].SetDefaults(randomVoiceItem);
+ 		chest.item[itemIndex].Prefix(-1);
++		*/
++		int randomVoiceItem = ChestLootDatabase.RollVanillaOptionItemType(genRand, 14, 5499, chanceDenominator: 12);
++		ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, randomVoiceItem, applyRandomPrefix: true);
+ 		itemIndex++;
+ 	}
+ 
+ 	public static void AddMonsterVoiceChangeItemToChest(Chest chest, ref int itemIndex)
+ 	{
++		/*VanillaCode
+ 		int num = genRand.Next(4);
+ 		short type = 5509;
+ 		switch (num) {
+@@ -31463,6 +_,9 @@
+ 
+ 		chest.item[itemIndex].SetDefaults(type);
+ 		chest.item[itemIndex].Prefix(-1);
++		*/
++		int type = ChestLootDatabase.RollVanillaOptionItemType(genRand, 4, 5509, chanceDenominator: 12);
++		ChestLootDatabase.SetVanillaMainItemAtSlot(chest, itemIndex, type, applyRandomPrefix: true);
+ 		itemIndex++;
+ 	}
+ 
 @@ -31508,9 +_,12 @@
  			Main.tile[i, j] = new Tile();
  
@@ -3240,6 +4843,32 @@
  	public static void TileRunner(int i, int j, double strength, int steps, int type, bool addTile = false, double speedX = 0.0, double speedY = 0.0, bool noYChange = false, bool overRide = true, int ignoreTileType = -1)
  	{
  		if (!GenVars.mudWall) {
+@@ -66860,6 +_,7 @@
+ 		if (num16 > 3)
+ 			num16 = genRand.Next(4);
+ 
++		/*VanillaCode
+ 		switch (num16) {
+ 			case 0:
+ 				mainItemInChest = 159;
+@@ -66874,6 +_,17 @@
+ 				mainItemInChest = 2219;
+ 				break;
+ 		}
++		*/
++		if (GenVars.skyIslandHouseCount > 3)
++			mainItemInChest = ChestLootDatabase.RollVanillaOptionItemType(genRand, 4, 159);
++		else
++			mainItemInChest = num16 switch {
++				0 => 159,
++				1 => 65,
++				2 => 158,
++				3 => 2219,
++				_ => 0
++			};
+ 
+ 		if (getGoodWorldGen)
+ 			AddBuriedChest(i, num13 - 3, mainItemInChest, notNearOtherChests: false, 2, trySlope: false, 0);
 @@ -67980,7 +_,7 @@
  			Main.tile[x, y + 1] = new Tile();
  

@@ -1,55 +1,82 @@
-﻿using ExampleMod.Content.Items.Mounts;
+using System.Collections.Generic;
+using ExampleMod.Content.Items.Mounts;
 using ExampleMod.Content.Pets.ExampleLightPet;
 using Terraria;
+using Terraria.GameContent.ChestLootRules;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 
 namespace ExampleMod.Common.Systems
 {
-	// This class showcases adding additional items to vanilla chests.
-	// This example simply adds additional items. More complex logic would likely be required for other scenarios.
-	// If this code is confusing, please learn about "for loops" and the "continue" and "break" keywords: https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/statements/jump-statements
+	// This class showcases declarative loot and chest-content rules.
 	public class ChestItemWorldGen : ModSystem
 	{
-		// We use PostWorldGen for this because we want to ensure that all chests have been placed before adding items.
-		public override void PostWorldGen() {
-			// Place some additional items in Frozen Chests:
-			// These are the 3 new items we will place.
-			int[] itemsToPlaceInFrozenChests = [ModContent.ItemType<ExampleMountItem>(), ModContent.ItemType<ExampleLightPetItem>(), ItemID.PinkJellyfishJar];
-			// This variable will help cycle through the items so that different Frozen Chests get different items
-			int itemsToPlaceInFrozenChestsChoice = 0;
-			// Rather than place items in each chest, we'll place up to 6 items (2 of each).
-			int itemsPlaced = 0;
-			int maxItems = 6;
-			// Loop over all the chests
+		private bool _bossChestRewardAdded;
+
+		// Keep each entry's Condition visible: vanilla rates include conditional branches, not aggregate chest odds.
+		public static List<ChestDropRateInfo> GetFrozenChestDropRates()
+			=> ChestLootDatabase.GetDropRates(ChestID.Frozen);
+
+		public override void PostSetupContent() {
+			RegisterChestLoot();
+		}
+
+		private static void RegisterChestLoot() {
+			// Add rules to the chest table; they run after vanilla fills chests during world generation.
+			ChestLoot frozenChestLoot = ChestLootDatabase.For(ChestID.Frozen);
+			frozenChestLoot.ReplaceItem(ItemID.IceTorch, ItemID.PinkJellyfishJar);
+			frozenChestLoot.RemoveItem(ItemID.Snowball, 5);
+			frozenChestLoot.AddCommon(ModContent.ItemType<ExampleMountItem>(), chanceDenominator: 3);
+
+			ChestLoot goldChestLoot = ChestLootDatabase.For(ChestID.Gold);
+			// Conditions are checked during generation and retained in drop-rate queries, like NPC loot.
+			goldChestLoot.AddByCondition(Condition.InExpertMode,
+				ChestLoot.Common(ModContent.ItemType<ExampleLightPetItem>(), chanceDenominator: 3));
+
+			// Multiple conditions use AND semantics and are evaluated for each generated chest.
+			goldChestLoot.AddByCondition(
+				ChestLoot.Common(ItemID.GoldCoin),
+				new ChestLootCondition(Condition.InExpertMode),
+				new ChestLootCondition(Condition.NotRemixWorld));
+			goldChestLoot.AddOneFromOptions(2,
+				ModContent.ItemType<ExampleMountItem>(),
+				ModContent.ItemType<ExampleLightPetItem>());
+
+			ChestLoot shadowChestLoot = ChestLootDatabase.For(ChestID.LockedShadow);
+			// Content edits run in registration order: clear first, then add the replacement loot.
+			shadowChestLoot.ClearChestContents();
+			shadowChestLoot.AddCommon(ModContent.ItemType<ExampleMountItem>());
+			shadowChestLoot.AddCommon(ModContent.ItemType<ExampleLightPetItem>());
+			shadowChestLoot.AddCommon(ItemID.PinkJellyfishJar, stackMin: 2, stackMax: 2);
+		}
+
+		public override void ClearWorld() {
+			_bossChestRewardAdded = false;
+		}
+
+		public override void SaveWorldData(TagCompound tag) {
+			if (_bossChestRewardAdded)
+				tag["bossChestRewardAdded"] = true;
+		}
+
+		public override void LoadWorldData(TagCompound tag) {
+			_bossChestRewardAdded = tag.ContainsKey("bossChestRewardAdded");
+		}
+
+		// Boss progression happens after world generation, so check it in a world-update hook.
+		public override void PostUpdateWorld() {
+			if (Main.netMode == NetmodeID.MultiplayerClient || _bossChestRewardAdded || !NPC.downedBoss1)
+				return;
+
 			for (int chestIndex = 0; chestIndex < Main.maxChests; chestIndex++) {
 				Chest chest = Main.chest[chestIndex];
-				if (chest == null) {
+				if (chest == null || chest.type != ChestID.LockedShadow)
 					continue;
-				}
-				Tile chestTile = Main.tile[chest.x, chest.y];
-				// We need to check if the current chest is the Frozen Chest. We need to check that it exists and has the TileType and TileFrameX values corresponding to the Frozen Chest.
-				// If you look at the sprite for Chests by extracting Tiles_21.xnb, you'll see that the 12th chest is the Frozen Chest. Since we are counting from 0, this is where 11 comes from. 36 comes from the width of each tile including padding. An alternate approach is to check the wiki and looking for the "Internal Tile ID" section in the infobox: https://terraria.wiki.gg/wiki/Frozen_Chest
-				if (chestTile.TileType == TileID.Containers && chestTile.TileFrameX == 11 * 36) {
-					// We have found a Frozen Chest
-					// If we don't want to add one of the items to every Frozen Chest, we can randomly skip this chest with a 33% chance.
-					if (WorldGen.genRand.NextBool(3))
-						continue;
-					// Next we need to find the first empty slot for our item
-					for (int inventoryIndex = 0; inventoryIndex < chest.maxItems; inventoryIndex++) {
-						if (chest.item[inventoryIndex].type == ItemID.None) {
-							// Place the item
-							chest.item[inventoryIndex].SetDefaults(itemsToPlaceInFrozenChests[itemsToPlaceInFrozenChestsChoice]);
-							// Decide on the next item that will be placed.
-							itemsToPlaceInFrozenChestsChoice = (itemsToPlaceInFrozenChestsChoice + 1) % itemsToPlaceInFrozenChests.Length;
-							// Alternate approach: Random instead of cyclical: chest.item[inventoryIndex].SetDefaults(WorldGen.genRand.Next(itemsToPlaceInFrozenChests));
-							itemsPlaced++;
-							break;
-						}
-					}
-				}
-				// Once we've placed as many items as we wanted, break out of the loop
-				if (itemsPlaced >= maxItems) {
+
+				// This runtime progression reward is separate from the world-generation loot table.
+				if (chest.AddItem(ModContent.ItemType<ExampleLightPetItem>())) {
+					_bossChestRewardAdded = true;
 					break;
 				}
 			}
