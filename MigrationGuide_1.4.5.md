@@ -575,6 +575,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Zooming with items like Rifle Scope and Sniper Rifle, and Binoculars has changed. There is now a "Forward Zoom" toggle in the controls menu to change how zooming is triggered (Always On, Always Off, Click to Toggle, and Hold to Use). As such, `ModPlayer.ModifyZoom` has been adjusted with a new `needsMouseRight` parameter. Remove all checks for the right mouse being held down to correctly support these new control options.
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
+* `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
 
 ### Example Mod
 

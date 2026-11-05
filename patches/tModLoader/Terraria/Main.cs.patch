@@ -6951,6 +6951,14 @@
  				flag3 = false;
  			}
  			else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
+@@ -54676,6 +_,7 @@
+ 
+ 	public void RainbowBoulderMusicPlayCallback(int trackIndex, int sequentialTimesPlayed)
+ 	{
++		// TODO: Broken on tModLoader. Called immediately twice in a row as music starts so it skips the intro track.
+ 		musicFade[trackIndex] = 1f;
+ 		_finishedRainbowBoulderStart = sequentialTimesPlayed >= 1;
+ 		if (_finishedRainbowBoulderStart) {
 @@ -54691,6 +_,17 @@
  
  	protected override void Draw(GameTime gameTime)
