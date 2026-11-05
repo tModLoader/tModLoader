@@ -6,6 +6,7 @@ using Terraria.Social.Base;
 
 namespace Terraria.Social.Steam;
 
+/* SOLXAN: Broke this during the Workshop versions PR on Sept 2026. Don't see value in fixing
 internal class BatchMetadataSetRunner
 {
 	private string workingDirectory;
@@ -110,3 +111,4 @@ internal class BatchMetadataSetRunner
 		return devMetadataKvp;
 	}
 }
+*/
