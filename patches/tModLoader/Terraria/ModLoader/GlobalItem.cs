@@ -162,8 +162,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -174,8 +175,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 

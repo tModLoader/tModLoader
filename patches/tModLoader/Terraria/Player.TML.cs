@@ -470,19 +470,19 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
-	public int GetHealLife(Item item, bool quickHeal = false)
+	public int GetHealLife(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healLife;
-		ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealLife(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealLife(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public int GetHealMana(Item item, bool quickHeal = false)
+	public int GetHealMana(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healMana;
-		ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealMana(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealMana(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
