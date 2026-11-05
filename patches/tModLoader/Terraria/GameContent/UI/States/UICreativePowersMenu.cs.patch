@@ -1,0 +1,78 @@
+--- src/TerrariaNetCore/Terraria/GameContent/UI/States/UICreativePowersMenu.cs
++++ src/tModLoader/Terraria/GameContent/UI/States/UICreativePowersMenu.cs
+@@ -5,12 +_,13 @@
+ using Terraria.GameContent.Creative;
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ using Terraria.UI.Gamepad;
+ 
+ namespace Terraria.GameContent.UI.States;
+ 
+-public class UICreativePowersMenu : UIState
++public partial class UICreativePowersMenu : UIState
+ {
+ 	private class MenuTree<TEnum> where TEnum : struct, IConvertible
+ 	{
+@@ -185,10 +_,12 @@
+ 		groupOptionButton5.OnUpdate += personalCategoryButton_OnUpdate;
+ 		mainCategory.Buttons.Add(6, groupOptionButton5);
+ 		list.Add(groupOptionButton5);
++		AddModCategoryButtons(request, list); // TML: #ModdedCreativeCategories - Added modded category buttons and main strip powers
+ 		CreativePowerManager.Instance.GetPower<CreativePowers.StopBiomeSpreadPower>().ProvidePowerButtons(request, list);
+ 		GroupOptionButton<int> groupOptionButton6 = CreateSubcategoryButton<CreativePowers.DifficultySliderPower>(ref request, 1, "strip 1", 5, 0, mainCategory.Buttons, mainCategory.Sliders);
+ 		groupOptionButton6.OnLeftClick += MainCategoryButtonClick;
+ 		list.Add(groupOptionButton6);
++		RemoveHiddenCategoryButtons(list); // TML: #CreativePowerHooks - Added CanShowCreativeCategory
+ 		return list;
+ 	}
+ 
+@@ -307,6 +_,7 @@
+ 		GroupOptionButton<int> groupOptionButton = CreateSubcategoryButton<CreativePowers.ModifyTimeRate>(ref request, 2, "strip 2", 1, 0, timeCategory.Buttons, timeCategory.Sliders);
+ 		groupOptionButton.OnLeftClick += TimeCategoryButtonClick;
+ 		list.Add(groupOptionButton);
++		AddModPowerButtons(ID.CreativeCategoryID.Time, request, list, timeCategory, depth: 1); // TML: #ModdedCreativePowers - Added modded powers
+ 		return list;
+ 	}
+ 
+@@ -323,6 +_,7 @@
+ 		GroupOptionButton<int> groupOptionButton = CreateSubcategoryButton<CreativePowers.SpawnRateSliderPerPlayerPower>(ref request, 2, "strip 2", 1, 0, personalCategory.Buttons, personalCategory.Sliders);
+ 		groupOptionButton.OnLeftClick += PersonalCategoryButtonClick;
+ 		list.Add(groupOptionButton);
++		AddModPowerButtons(ID.CreativeCategoryID.Personal, request, list, personalCategory, depth: 1); // TML: #ModdedCreativePowers - Added modded powers
+ 		return list;
+ 	}
+ 
+@@ -342,6 +_,7 @@
+ 		groupOptionButton2.OnLeftClick += WeatherCategoryButtonClick;
+ 		list.Add(groupOptionButton2);
+ 		CreativePowerManager.Instance.GetPower<CreativePowers.FreezeRainPower>().ProvidePowerButtons(request, list);
++		AddModPowerButtons(ID.CreativeCategoryID.Weather, request, list, weatherCategory, depth: 1); // TML: #ModdedCreativePowers - Added modded powers
+ 		return list;
+ 	}
+ 
+@@ -354,6 +_,7 @@
+ 		uIElement.SetSnapPoint(subcategoryName, 0, new Vector2(0f, 0.5f), new Vector2(28f, 0f));
+ 		GroupOptionButton<int> groupOptionButton = (subcategoryButtons[subcategoryIndex] = power.GetOptionButton(request, subcategoryIndex, currentSelectedInSubcategory));
+ 		CreativePowersHelper.UpdateUnlockStateByPower(power, groupOptionButton, CreativePowersHelper.CommonSelectedColor);
++		SystemLoader.ModifyCreativePowerButton(power, groupOptionButton); // TML: #CreativePowerHooks - Added ModifyCreativePowerButton
+ 		return groupOptionButton;
+ 	}
+ 
+@@ -435,12 +_,14 @@
+ 			if (personalCategory.Sliders.TryGetValue(personalCategory.CurrentOption, out value))
+ 				_container.Append(value);
+ 		}
++
++		RefreshModCategoryContent(); // TML: #ModdedCreativeCategories - Added modded category content
+ 	}
+ 
+ 	public override void Draw(SpriteBatch spriteBatch)
+ 	{
+ 		base.Draw(spriteBatch);
+-		if (Main.LocalPlayerCreativeTracker.ItemSacrifices.AnyNewUnlocksFromTeammates) {
++		if (Main.LocalPlayerCreativeTracker.ItemSacrifices.AnyNewUnlocksFromTeammates && _infiniteItemsButton.Parent != null) { // TML: #CreativePowerHooks - Added Parent check, for when CanShowCreativeCategory hides Duplication
+ 			Rectangle hitbox = _infiniteItemsButton.GetDimensions().ToRectangle();
+ 			Utils.DrawNotificationIcon(spriteBatch, hitbox);
+ 		}

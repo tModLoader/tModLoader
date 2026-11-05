@@ -519,6 +519,7 @@ public static class ModContent
 	internal static void UnloadModContent()
 	{
 		MenuLoader.Unload(); //do this early, so modded menus won't be active when unloaded
+		CreativeMenuLoader.Unload();
 		CloudLoader.Unload();
 
 		int i = 0;

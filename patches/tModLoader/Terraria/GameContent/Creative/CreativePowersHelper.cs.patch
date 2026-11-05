@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Creative/CreativePowersHelper.cs
++++ src/tModLoader/Terraria/GameContent/Creative/CreativePowersHelper.cs
+@@ -96,6 +_,10 @@
+ 			string textValue = Language.GetTextValue("CreativePowers.CantUsePowerBecauseOfNoPermissionFromServer");
+ 			originalText = originalText + "\n" + textValue;
+ 		}
++
++		// TML: #CreativePowerHooks - Added ModifyCreativePowerHoverText. This runs after vanilla has finished building the hover text, so mods can modify it however they want.
++		// This does mean that mods can override each-other based on load-order.
++		ModLoader.SystemLoader.ModifyCreativePowerHoverText(power, ref originalText);
+ 	}
+ 
+ 	public static void AddDescriptionIfNeeded(ref string originalText, string descriptionKey)

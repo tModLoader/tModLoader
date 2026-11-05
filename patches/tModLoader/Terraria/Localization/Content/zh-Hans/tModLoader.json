@@ -774,6 +774,12 @@
 		"PreviousInfoAccPage": "上一页",
 		"FirstInfoAccPage": "转到第一页",
 		"LastInfoAccPage": "转到最后一页"
+
+		// Journey Mode power menu
+		// "CreativeMenuOpen": "Open {0}",
+		// "CreativeMenuClose": "Close {0}",
+		// "CreativePowerEnabled": "{0} Enabled",
+		// "CreativePowerDisabled": "{0} Disabled"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "防御力增加{0}点",
