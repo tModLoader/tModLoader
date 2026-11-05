@@ -9,19 +9,15 @@ namespace Terraria.ModLoader.UI.Elements;
 
 public class UIMarqueeTextPanel : UITextPanel<object>
 {
-	public float ScrollSpeed { get; set; } = 1f;
-	public bool IsScrolling { get; set; } = true;
-	public float ClippingXPadding { get; set; } = 2f;
-	public float ClippingYPadding { get; set; } = 1000f;
-	public bool AlignToStartWhenNotScrolling = false;
+	public MarqueeTextOptions MarqueeText;
 
-	private float scroll;
-	private int scrollTimer;
-	private int scrollDirection = 1;
-
-	public UIMarqueeTextPanel(object text, float textScale = 1, bool large = false) : base(text, textScale, large) { }
+	public UIMarqueeTextPanel(object text, float textScale = 1, bool large = false) : base(text, textScale, large)
+	{
+		MarqueeText.ClippingYPadding = 1000f;
+	}
 
 	// Copied from original function, but changed MinWidth and Minheight to Width and Height so a maximum size can be enforced
+	// TODO: figure out how to avoid this copying
 	public override void SetText(object text, float textScale, bool large)
 	{
 		DynamicSpriteFont dynamicSpriteFont = large ? FontAssets.DeathText.Value : FontAssets.MouseText.Value;
@@ -44,48 +40,14 @@ public class UIMarqueeTextPanel : UITextPanel<object>
 	{
 		base.Update(gameTime);
 
-		var dims = GetInnerDimensions();
-		UIMarqueeText.UpdateScrollValues(
-			_textSize,
-			dims,
-			TextHAlign,
-			_textSize.X >= dims.Width && IsScrolling,
-			ScrollSpeed,
-			ref scroll,
-			ref scrollTimer,
-			ref scrollDirection,
-			ResetScroll
-		);
-
-		textOffset = -scroll * Vector2.UnitX;
+		MarqueeText.Update(GetInnerDimensions(), _textSize, TextHAlign);
+		textOffset = -MarqueeText.Scroll * Vector2.UnitX;
 	}
 
 	public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
 	{
 		var dims = GetInnerDimensions();
-		dims.X -= ClippingXPadding;
-		dims.Y -= ClippingYPadding;
-		dims.Width += ClippingXPadding * 2;
-		dims.Height += ClippingYPadding * 2;
-
+		MarqueeText.AdjustClippingRectangle(ref dims);
 		return CalculateClippingRectangle(dims, spriteBatch);
-	}
-
-	public void ResetScroll()
-	{
-		scroll = 0;
-		scrollTimer = 0;
-		scrollDirection = 1;
-
-		if (AlignToStartWhenNotScrolling && _textSize.X >= GetInnerDimensions().Width) {
-			scroll = UIMarqueeText.GetStartAlignment(_textSize, GetInnerDimensions().Width, TextHAlign);
-		}
-
-		textOffset = -scroll * Vector2.UnitX;
-	}
-
-	public void SetScrollDelay(int scrollDelay)
-	{
-		scrollTimer = scrollDelay;
 	}
 }

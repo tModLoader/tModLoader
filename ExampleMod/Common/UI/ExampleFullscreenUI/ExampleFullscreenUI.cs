@@ -12,6 +12,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleFullscreenUI
@@ -46,7 +47,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private UIText onlyChangeableDuringNightMessage;
 		private UIText someNumberMessage;
 		private UIText ConfigSaveStatusMessage;
-		// TODO: marquee text tests here
+		private UIMarqueeText marqueeText;
+		private UIMarqueeTextPanel marqueeTextPanel;
 
 		private ModConfigShowcaseDataTypes configA;
 		private ModConfigShowcaseAcceptClientChanges configB;

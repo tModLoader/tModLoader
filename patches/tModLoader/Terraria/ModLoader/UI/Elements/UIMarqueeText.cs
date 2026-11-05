@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
@@ -8,8 +7,11 @@ using Terraria.UI.Chat;
 
 namespace Terraria.ModLoader.UI.Elements;
 
+// TODO: refactor to be based on UIText?
 public class UIMarqueeText : UIElement
 {
+    public MarqueeTextOptions MarqueeText;
+
     private object text;
     public string Text => text?.ToString() ?? string.Empty;
 
@@ -18,17 +20,9 @@ public class UIMarqueeText : UIElement
     public float MaxTextScale { get; set; }
     public Color TextColor { get; set; }
     public bool Large { get; set; }
-    public float ScrollSpeed { get; set; } = 1f;
-    public bool IsScrolling { get; set; } = true;
-    public float ClippingXPadding { get; set; } = 2f;
-    public float ClippingYPadding { get; set; } = 0f;
-    public bool AlignToStartWhenNotScrolling = false;
 
     private float textScale;
     private Vector2 textSize;
-    private float scroll;
-    private int scrollTimer;
-    private int scrollDirection = 1;
 
     public UIMarqueeText(object text, float scale = 1f, bool large = false) {
         this.text = text;
@@ -67,89 +61,13 @@ public class UIMarqueeText : UIElement
     {
         base.Update(gameTime);
 
-        var dims = GetInnerDimensions();
-        UpdateScrollValues(
-	        textSize,
-	        dims,
-	        TextAlignX,
-	        textSize.X >= dims.Width && IsScrolling,
-	        ScrollSpeed,
-	        ref scroll,
-	        ref scrollTimer,
-	        ref scrollDirection,
-	        ResetScroll
-        );
-    }
-
-    public static void UpdateScrollValues(Vector2 textSize, CalculatedStyle innerDimensions, float textAlignX, bool shouldScroll, float scrollSpeed, ref float scroll, ref int scrollTimer, ref int scrollDirection, Action resetScroll)
-    {
-	    const float scroll_increment = 1.5f;
-	    const int scroll_delay = 30;
-
-	    if (!shouldScroll) {
-		    resetScroll();
-		    return;
-	    }
-
-	    scrollTimer--;
-	    if (scrollTimer > 0) {
-		    return;
-	    }
-
-	    // Each half of the text seperated by the alignment.
-	    var left =
-		    (textSize.X * textAlignX) -
-		    (innerDimensions.Width * textAlignX);
-
-	    var right =
-		    (textSize.X * (1f - textAlignX)) -
-		    (innerDimensions.Width * (1f - textAlignX));
-
-	    scroll += scroll_increment * scrollSpeed * scrollDirection;
-
-	    if (scroll >= right) {
-		    scroll = right;
-		    scrollTimer = scroll_delay;
-		    scrollDirection = -1;
-	    }
-	    else if (scroll <= -left) {
-		    scroll = -left;
-		    scrollTimer = scroll_delay;
-		    scrollDirection = 1;
-	    }
-    }
-
-    // TODO: consider languages that read from right to left
-    public static float GetStartAlignment(Vector2 textSize, float innerWidth, float textAlignX)
-    {
-	    float align = 1f - textAlignX;
-	    return -((textSize.X * align) - (innerWidth * align));
-    }
-
-    public void ResetScroll()
-    {
-	    scroll = 0;
-	    scrollTimer = 0;
-	    scrollDirection = 1;
-
-	    if (AlignToStartWhenNotScrolling && textSize.X >= GetInnerDimensions().Width) {
-		    scroll = GetStartAlignment(textSize, GetInnerDimensions().Width, TextAlignX);
-	    }
-    }
-
-    public void SetScrollDelay(int scrollDelay)
-    {
-	    scrollTimer = scrollDelay;
+        MarqueeText.Update(GetInnerDimensions(), textSize, TextAlignX);
     }
 
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
     {
 	    var dims = GetInnerDimensions();
-	    dims.X -= ClippingXPadding;
-	    dims.Y -= ClippingYPadding;
-	    dims.Width += ClippingXPadding * 2;
-	    dims.Height += ClippingYPadding * 2;
-
+	    MarqueeText.AdjustClippingRectangle(ref dims);
 	    return CalculateClippingRectangle(dims, spriteBatch);
     }
 
@@ -161,7 +79,7 @@ public class UIMarqueeText : UIElement
 	    var textSize = ChatManager.GetStringSize(font, Text, Vector2.One);
 	    var origin = new Vector2(textSize.X * TextAlignX, textSize.Y * TextAlignY);
 
-	    position.X -= scroll;
+	    position.X -= MarqueeText.Scroll;
 
 	    // Chat tags don't correctly account for origin nor scale/rotation.
 	    position -= origin * textScale;
