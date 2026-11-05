@@ -1309,6 +1309,16 @@ Mods: {
 				// DisplayName: Example Special Glide Wings
 				// Tooltip: ""
 			}
+
+			ExampleFlyingTransformationItem: {
+				// DisplayName: Example Flying Transformation Charm
+				// Tooltip: Transforms the user into an Example Flying Transformation
+			}
+
+			ExampleBeastTransformationItem: {
+				// DisplayName: Example Beast Transformation Skull
+				// Tooltip: Transforms the user into an Example Beast Transformation
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1451,6 +1461,16 @@ Mods: {
 			ExampleCrowdControlledDebuff: {
 				// DisplayName: Example Crowd Controlled Debuff
 				// Description: You can't move your arms or legs
+			}
+
+			ExampleFlyingTransformationBuff: {
+				// DisplayName: Example Flying Transformation
+				// Description: You turned into an Example Flying Transformation!
+			}
+
+			ExampleBeastTransformationBuff: {
+				// DisplayName: Example Beast Transformation
+				// Description: You turned into an Example Beast Transformation!
 			}
 		}
 

@@ -155,4 +155,88 @@ public static class MountLoader
 		}
 		return true;
 	}
+
+	/// <summary>
+	/// See <see cref="ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet)"/>
+	/// </summary>
+	public static void ModifyPlayerDrawInfo(Mount mount, ref PlayerDrawSet drawInfo)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.ModifyPlayerDrawInfo(ref drawInfo);
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.ResetFlightTime(Player, ref int)"/>
+	/// </summary>
+	public static void ResetFlightTime(Mount mount, Player player, ref int flightTime)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.ResetFlightTime(player, ref flightTime);
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.CanFly(Player)"/>
+	/// </summary>
+	public static bool? CanFly(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.CanFly(player);
+		}
+		return null;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.UpdateAfterEquips(Player)"/>
+	/// </summary>
+	public static void UpdateAfterEquips(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.UpdateAfterEquips(player);
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.HeadItemOffset(Player)"/>
+	/// </summary>
+	public static Vector2 HeadItemOffset(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.HeadItemOffset(player);
+		}
+		return Vector2.Zero;
+	}
+	public static Vector2 HeldItemOffset(Mount mount, Player player, Vector2 originalPos)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.HeldItemOffset(player, originalPos);
+		}
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.BeardOffset(Player)"/>
+	/// </summary>
+	public static Vector2 BeardOffset(Mount mount, Player player)
+	{
+		if (IsModMount(mount._data)) {
+			return mount._data.ModMount.BeardOffset(player);
+		}
+		return Vector2.Zero;
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.FaceAccessoryOffset(Player, ref Vector2)"/>
+	/// </summary>
+	public static void FaceAccessoryOffset(Mount mount, Player player, ref Vector2 pos)
+	{
+		// IsModMount already checked in PlayerDrawLayers.DrawPlayer_GetMountOffsetForFaceAcc
+		if (IsModMount(player.mount._data)) {
+			if (!mount._data.ModMount.FaceAccessoryOffset(player, ref pos)) {
+				return;
+			}
+			player.ApplyHeadOffsetFromMount(ref pos); // Default, run the offset for the head.
+		}
+	}
 }
