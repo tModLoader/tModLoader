@@ -519,6 +519,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 
 ## Other Changes
 
+* Player calls to `Collision.SwitchTiles` now use `objType == 5`. Update checks against `1` in `(Mod|Global)Tile.SwitchTiles`, or check `entity is Player` as in `ExampleSlopeTile`; `1` is not equivalent for pressure-plate activation.
 * Fishing power bonus now applies to any chair, not just toilets.
 * `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
