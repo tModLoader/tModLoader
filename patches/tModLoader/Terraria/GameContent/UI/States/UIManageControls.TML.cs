@@ -100,8 +100,9 @@ public partial class UIManageControls : UIState
 
 				container.Append(left);
 
-				// TODO: Clear instead of Reset to Defaults if no default specified.
-				var right = new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
+				var right = string.IsNullOrEmpty(defaultKey)
+					? new UIKeybindingSimpleListItem(() => Language.GetTextValue("tModLoader.ModConfigClear"), color)
+					: new UIKeybindingSimpleListItem(() => Lang.menu[86].Value + $" ({defaultKey})", color);
 
 				right.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 					string copyableProfileName = GetCopyableProfileName();
