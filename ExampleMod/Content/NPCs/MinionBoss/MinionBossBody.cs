@@ -7,6 +7,8 @@ using ExampleMod.Content.Pets.MinionBossPet;
 using ExampleMod.Content.Projectiles;
 using ExampleMod.Content.Tiles;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using Terraria;
@@ -14,6 +16,7 @@ using Terraria.Audio;
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
+using Terraria.Graphics.Light;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -96,10 +99,22 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 		// This will result in "The Minion Boss and his minions have been defeated!" instead of just "Minion Boss has been defeated!" being shown in chat when this boss is defeated.
 		public override LocalizedText DeathMessage => Language.GetText("Announcement.HasBeenDefeated_Plural").WithFormatArgs(this.GetLocalization("BossFightName"));
 
+		// This is the effect used to apply a special lighting effect to the
+		// boss.
+		private static Asset<Effect> lightMapShader;
+
 		public override void Load() {
+			// Assets should only be loaded on clients.
+			if (Main.dedServ) {
+				return;
+			}
+
 			// We want to give it a second boss head icon, so we register one
 			string texture = BossHeadTexture + "_SecondStage"; // Our texture is called "ClassName_Head_Boss_SecondStage"
 			secondStageHeadSlot = Mod.AddBossHeadTexture(texture, -1); // -1 because we already have one registered via the [AutoloadBossHead] attribute, it would overwrite it otherwise
+
+			// Load the custom lighting shader.
+			lightMapShader = ModContent.Request<Effect>("ExampleMod/Assets/Effects/MinionBossLighting");
 		}
 
 		public override void BossHeadSlot(ref int index) {
@@ -579,6 +594,84 @@ namespace ExampleMod.Content.NPCs.MinionBoss
 					d.noGravity = true;
 				}
 			}
+		}
+
+		// Since we apply lighting through a custom shader, we'll just make the
+		// NPC always white.
+		public override Color? GetAlpha(Color drawColor) {
+			// In the bestiary, there's no lighting, so we use the default
+			// color. Otherwise, we want the NPC to appear fully illuminated
+			// since we apply special lighting effects when it renders.
+			if (NPC.IsABestiaryIconDummy) {
+				return NPC.GetBestiaryEntryColor();
+			}
+
+			return Color.White * NPC.Opacity;
+		}
+
+		public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			// No need to apply the lighting shader in the bestiary -- see
+			// comments in GetAlpha.
+			// If you intend to apply a shader in the bestiary anyone, note
+			// that the SpriteSortMode will be Immediate instead of Deferred.
+			if (NPC.IsABestiaryIconDummy) {
+				return true;
+			}
+
+			spriteBatch.End();
+
+			// The explanation for applying this shader and how it works will
+			// be somewhat light, since it's expected that you're already
+			// familiar with shaders if you're going to be using them. The goal
+			// of this example is to demonstrate specifically how
+			// LightMapBuffer is intended to be used.
+			// See MinionBossLighting.fx for the shader implementation.
+
+			GraphicsDevice gd = Main.instance.GraphicsDevice;
+			Rectangle viewportSize = gd.Viewport.Bounds;
+
+			// Acquire the lightmap for use in our shader. The lightmap is a
+			// texture that contains information about the light from the
+			// lighting engine. It makes it easy to get lighting info on the
+			// GPU.
+			LightMapBuffer buffer = Lighting.GetBufferTexture();
+			Effect shader = lightMapShader.Value;
+
+			// Pass in information about the lightmap.
+			shader.Parameters["uLightMapTexture"].SetValue(buffer.Texture);
+			shader.Parameters["uLightMapSize"].SetValue(buffer.Texture.Size());
+
+			// We need to  undo the effects of the transformation matrix used
+			// for rendering, so we pass it inverted.
+			shader.Parameters["uDrawMatrix"].SetValue(Matrix.Invert(Main.Transform));
+
+			// We need to pass in information about the viewport position as
+			// well as the position of the tilemap so we can sample the tilemap
+			// from the screen position correctly.
+			shader.Parameters["uViewportOrigin"].SetValue(new Vector2(gd.Viewport.X, gd.Viewport.Y));
+			shader.Parameters["uDrawOffset"].SetValue(Main.screenPosition - buffer.TileArea.TopLeft() * 16f);
+
+			// GlobalBrightness is supplied because it's not encoded in the
+			// lightmap (it's actually applied every time you call
+			// Lighting.GetColor and similar APIs).
+			shader.Parameters["uGlobalBrightness"].SetValue(Lighting.GlobalBrightness);
+
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, shader, Main.Transform);
+
+			return true;
+		}
+
+		public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+			// No need to apply the lighting shader in the bestiary -- see
+			// comments in GetAlpha.
+			// If you intend to apply a shader in the bestiary anyone, note
+			// that the SpriteSortMode will be Immediate instead of Deferred.
+			if (NPC.IsABestiaryIconDummy) {
+				return;
+			}
+
+			spriteBatch.End();
+			spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, Main.DefaultSamplerState, DepthStencilState.None, Main.Rasterizer, null, Main.Transform);
 		}
 	}
 }
