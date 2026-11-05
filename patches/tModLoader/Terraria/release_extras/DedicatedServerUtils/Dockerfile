@@ -1,23 +1,21 @@
 FROM ubuntu:22.04 as builder
 
-# Update and install the libc requirement that Alpine does not support
 ARG DEBIAN_FRONTEND=noninteractive
 RUN dpkg --add-architecture i386 \
  && apt-get update -y \
  && apt-get install -y --no-install-recommends libc6:i386 \
  && rm -rf /var/lib/apt/lists/*
 
-FROM alpine:3.20
+FROM ubuntu:22.04
+ARG DEBIAN_FRONTEND=noninteractive
+RUN dpkg --add-architecture i386 \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        bash curl nano file libgcc-s1 libstdc++6 \
+        libicu70 ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
-# TODO try to get gcompat working
-RUN apk update \
-    && apk add --no-cache bash curl nano file libgcc libstdc++ icu-libs \
-    # && echo "x86" > /etc/apk/arch \
-    # && apk add --no-cache gcompat \
-    # && echo "x86_64" > /etc/apk/arch \
-    && rm -rf /var/cache/apk/*
-
-# Copy the required libc files since gcompat does not work with steamcmd
+# Copy i386 libs from builder (for steamcmd)
 COPY --from=builder \
     /lib/i386-linux-gnu/ld-linux.so.2 \
     /lib/i386-linux-gnu/libc.so.6 \
@@ -25,7 +23,10 @@ COPY --from=builder \
     /lib/i386-linux-gnu/libm.so.6 \
     /lib/i386-linux-gnu/libpthread.so.0 \
     /lib/i386-linux-gnu/librt.so.1 \
-    /lib/
+    /lib/i386-linux-gnu/
+
+RUN mkdir -p /lib/i386-linux-gnu \
+    && ln -sf /lib/i386-linux-gnu/ld-linux.so.2 /lib/ld-linux.so.2
 
 # TODO: Currently it is too arduous to allow UID/GID to be set at runtime via ENV variables for a few reasons
 # 1) The entrypoint would need to run as root because of root requirements for usermod and groupmod
@@ -40,8 +41,8 @@ ARG TMLVERSION
 
 # Create tModLoader user and drop root permissions
 # BusyBox uses an old adduser without the --user-group option so create a group first
-RUN addgroup -g $GID tml \
-    && adduser -D --home /home/tml -u $UID -G tml tml
+RUN groupadd -g $GID tml \
+    && useradd -m -d /home/tml -u $UID -g tml tml
 
 USER tml
 ENV HOME /home/tml
