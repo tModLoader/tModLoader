@@ -18,7 +18,10 @@ public partial class BuffID
 			Frostburn2, new List<int>() { Frostburn }, // 28
 			Frostburn, new List<int>() { Frostburn2 },
 			// These are not fully reciprocal. If immune to Venom, then immune to Poisoned, but not necessarily the other way.
-			Poisoned, new List<int>() { Venom } // 5
+			Poisoned, new List<int>() { Venom }, // 5
+			Bleeding, new List<int>() { Poisoned },
+			Hemorrhage, new List<int>() { Poisoned },
+			BrokenArmor, new List<int>() { Ichor }
 		    // Ichor, new List<int>() { BetsysCurse } // 3
 		);
 
