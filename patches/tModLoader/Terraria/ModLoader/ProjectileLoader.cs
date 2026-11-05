@@ -841,4 +841,22 @@ public static class ProjectileLoader
 
 		return result;
 	}
+
+	private delegate bool DelegateSentryHeavySlingReposition(Projectile projectile, ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin);
+	private static HookList HookSentryHeavySlingReposition = AddHook<DelegateSentryHeavySlingReposition>(g => g.SentryHeavySlingReposition);
+
+	internal static bool SentryHeavySlingReposition(Projectile projectile, ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin)
+	{
+		bool result = true;
+
+		foreach (var g in HookSentryHeavySlingReposition.Enumerate(projectile)) {
+			result &= g.SentryHeavySlingReposition(projectile, ref offset, ref halfSize, ref pushFromOrigin);
+		}
+
+		if (result && projectile.ModProjectile != null) {
+			return projectile.ModProjectile.SentryHeavySlingReposition(ref offset, ref halfSize, ref pushFromOrigin);
+		}
+
+		return result;
+	}
 }

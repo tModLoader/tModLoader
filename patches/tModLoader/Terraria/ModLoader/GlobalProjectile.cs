@@ -447,4 +447,10 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{ 
 		return true;
 	}
+
+	/// <inheritdoc cref="ModProjectile.SentryHeavySlingReposition"/>
+	public virtual bool SentryHeavySlingReposition(Projectile projectile, ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin)
+	{
+		return true;
+	}
 }
