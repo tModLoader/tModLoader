@@ -2924,6 +2924,15 @@
  		int num = PlayerInput.ScrollWheelDelta / 120;
  		bool flag = true;
  		if (PipsUseGrid) {
+@@ -15173,7 +_,7 @@
+ 			PlayerInput.SetZoom_World();
+ 		}
+ 
+-		if (LocalPlayer.chest != -1 && ChestUI.LastHighestChestRow > 0) {
++		if (LocalPlayer.chest != -1 && ChestUI.LastHighestChestRow > 0 && ChestUI.CanScrollWithMouseWheel()) { // TML: #ModdedChestSizes - Added CanScrollWithMouseWheel
+ 			int num8 = 42;
+ 			int num9 = 340;
+ 			int num10 = 310;
 @@ -15228,7 +_,17 @@
  
  		CreativeMenu.Update(gameTime);

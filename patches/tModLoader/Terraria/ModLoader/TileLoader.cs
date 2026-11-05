@@ -1461,6 +1461,11 @@ public static class TileLoader
 		return GetTile(type)?.IsLockedChest(i, j) ?? false;
 	}
 
+	public static bool CanScrollChest(int i, int j, int type)
+	{
+		return GetTile(type)?.CanScrollChest(i, j) ?? true;
+	}
+
 	public static bool UnlockChest(int i, int j, int type, ref short frameXAdjustment, ref int dustType, ref bool manual)
 	{
 		return GetTile(type)?.UnlockChest(i, j, ref frameXAdjustment, ref dustType, ref manual) ?? false;
