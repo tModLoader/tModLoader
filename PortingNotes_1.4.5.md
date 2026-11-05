@@ -32,8 +32,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ProjectileLoader.CanUseGrapple can be reworked. The vanilla code now consolidates "max hooks" checks, so we should be able to make the logic for most modded grappling hooks easier by supplying those parameters to the hook or using a set.
 - https://github.com/tModLoader/tModLoader/issues/4494 should be easily fixable with the new QuickGrapple code organization
 - TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
-- Collision.SwitchTiles `objType` parameter in Player.Update changed from 1 to 5. Why, isn't it still Player? Adjust docs accordingly after investigating.
-  - Seems to control MessageID.PlayerControls being sent but I don't know why. 1 is unused.
 - Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
