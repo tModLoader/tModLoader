@@ -60,18 +60,12 @@
  			if (playerIndex == Main.myPlayer)
  				_localMinionRespawner.Clear();
  
-@@ -638,19 +_,27 @@
- 
+@@ -639,18 +_,21 @@
  		public void NewMessage(string message, int displayTime)
  		{
-+			NewMessage(message, displayTime, Color.White);
-+		}
-+
-+		internal void NewMessage(string message, int displayTime, Color baseColor)
-+		{
  			chatText = message;
 -			snippets = ChatManager.ParseMessage(chatText, Color.White).ToArray();
-+			snippets = ChatManager.ParseMessage(chatText, baseColor).ToArray();
++			snippets = ChatManager.ParseMessage(chatText, color).ToArray();
  			messageSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, snippets, Vector2.One);
  			timeLeft = displayTime;
  		}
