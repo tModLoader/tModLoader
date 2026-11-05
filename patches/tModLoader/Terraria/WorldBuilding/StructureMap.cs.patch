@@ -34,7 +34,7 @@
  	}
  
 +	/// <summary>
-+	/// Records an area without marking it as protected. Use <see cref="AddProtectedStructure(Rectangle, int)"/> to prevent overlap through <see cref="CanPlace(Rectangle, int)"/>.
++	/// Records an area without marking it as protected. Use <see cref="AddProtectedStructure(Rectangle, int)"/> instead to prevent overlap through <see cref="CanPlace(Rectangle, int)"/>.
 +	/// </summary>
  	public void AddStructure(Rectangle area, int padding = 0)
  	{
