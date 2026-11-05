@@ -132,7 +132,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Could NPC.lifeRegenExpectedLossPerSecond or interactedWithPlayerLocally be useful to modders?
 - Is NPC.OnSpawn useful for tmod?
 - Chest.AddItemToShop changes need more thought to fit in vanilla changes.
-- NPCLoader.UpdateLifeRegen will need to be changed. This has changed a lot.
 - Player.hasWings might be useful.
 - Player.strongestMoveSpeedDebuff? Seems like a split between move speed buffs and debuffs
 - Player.maxRunSpeed should mention originalRunSpeed maybe.
