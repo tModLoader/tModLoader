@@ -36,12 +36,3 @@
  		}
  	}
  
-@@ -218,7 +_,7 @@
- 	{
- 		List<PositionedSnippet> snippets2 = LayoutSnippets(font, snippets, baseScale, maxWidth).ToList();
- 		DrawColorCodedStringShadow(spriteBatch, font, snippets2, position, color.MultiplyRGBA(Color.Black), rotation, origin, baseScale, spread);
--		DrawColorCodedString(spriteBatch, font, snippets2, position, rotation, origin, baseScale, out hoveredSnippet, color);
-+		DrawColorCodedString(spriteBatch, font, snippets2, position, rotation, origin, baseScale, out hoveredSnippet);
- 	}
- 
- 	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, string text, Vector2 position, Color baseColor, float rotation, Vector2 origin, Vector2 baseScale, float maxWidth = -1f, float spread = 2f)
