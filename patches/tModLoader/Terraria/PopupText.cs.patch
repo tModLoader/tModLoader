@@ -1,12 +1,16 @@
 --- src/TerrariaNetCore/Terraria/PopupText.cs
 +++ src/tModLoader/Terraria/PopupText.cs
-@@ -3,39 +_,145 @@
+@@ -1,41 +_,149 @@
+ using System;
+ using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
++using Newtonsoft.Json.Linq;
  using ReLogic.Graphics;
  using Terraria.GameContent;
 +using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.UI.Chat;
  
  namespace Terraria;
  
@@ -315,3 +319,112 @@
  	public static void ClearAll()
  	{
  		for (int i = 0; i < 20; i++) {
+@@ -781,8 +_,42 @@
+ 				}
+ 			}
+ 
++			// Moved out of the loop:
++			num5 = (float)(int)popupText.color.A * num2 * popupText.alpha;
++			var value6 = new Color(0, 0, 0, (int)num5);
++			var value7 = color;
++			value7.A = (byte)MathHelper.Lerp(60f, 127f, Utils.GetLerpValue(0f, 255f, num5, clamped: true));
++
++			// Pre-compute variables used for rendering so we can apply rarity
++			// draw hooks.
+ 			float num22 = (float)num3 / 255f;
++			var pos = new Vector2(popupText.position.X - screenPosition.X + vector2.X, vector2.Y);
++			var num25 = popupText.position.Y - screenPosition.Y;
++			if (Main.player[Main.myPlayer].gravDir == -1f)
++				num25 = (float)screenHeight - num25;
++			pos.Y += num25;
++
++			var coloredOutline = color != Color.Black;
++			var textContext = new RarityTextContext {
++				Font = FontAssets.MouseText.Value,
++				Text = text,
++				Position = pos,
++				PrimaryColor = popupText.color * num2 * popupText.alpha * num6,
++				OutlineColor = coloredOutline ? value7 : value6,
++				SecondaryOutlineColor = coloredOutline ? Color.Lerp(value6, value7, 0.5f) : null,
++				Rotation = popupText.rotation,
++				Origin = vector2,
++				Scale = new Vector2(popupText.scale),
++				CharOffsets = array,
++				CharColors = array2,
++				MaxTextWidth = -1,
++				TextSpread = coloredOutline ? 2f * (1.3f + 1.3f * num22) : 2f,
++			};
++
++			bool shouldDrawText = RarityLoader.PreDrawText(popupText.rarity, spriteBatch, ref textContext);
+ 			for (int n = 0; n < 5; n++) {
++				// Moved to before the loop:
++				/*
+ 				Color value6 = color;
+ 				float num23 = 0f;
+ 				float num24 = 0f;
+@@ -800,10 +_,12 @@
+ 						num24 += num * 2f;
+ 						break;
+ 					default:
++						// Patch context
+ 						value6 = popupText.color * num2 * popupText.alpha * num6;
+ 						break;
+ 				}
+ 
++				// Patch context
+ 				if (n < 4) {
+ 					num5 = (float)(int)popupText.color.A * num2 * popupText.alpha;
+ 					value6 = new Color(0, 0, 0, (int)num5);
+@@ -813,12 +_,24 @@
+ 					num23 *= 1.3f + 1.3f * num22;
+ 					num24 *= 1.3f + 1.3f * num22;
+ 				}
++				*/
+ 
++				var spread = Vector2.Zero;
++				if (n < 4)
++					spread = textContext.TextSpread * ChatManager.ShadowDirections[n];
++				var num23 = spread.X;
++				var num24 = spread.Y;
++
++				// Moved to before the loop:
++				/*
+ 				float num25 = popupText.position.Y - screenPosition.Y + num24;
+ 				if (Main.player[Main.myPlayer].gravDir == -1f)
+ 					num25 = (float)screenHeight - num25;
++				*/
+ 
++				/*
+ 				if (color != Color.Black && n < 4) {
++					// Patch context
+ 					Color value7 = color;
+ 					value7.A = (byte)MathHelper.Lerp(60f, 127f, Utils.GetLerpValue(0f, 255f, num5, clamped: true));
+ 					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(popupText.position.X - screenPosition.X + num23 + vector2.X, num25 + vector2.Y), Color.Lerp(value6, value7, 0.5f), popupText.rotation, vector2, popupText.scale, SpriteEffects.None, 0f, array);
+@@ -827,6 +_,18 @@
+ 				else {
+ 					spriteBatch.DrawString(FontAssets.MouseText.Value, text, new Vector2(popupText.position.X - screenPosition.X + num23 + vector2.X, num25 + vector2.Y), value6, popupText.rotation, vector2, popupText.scale, SpriteEffects.None, 0f, array, (n == 4) ? array2 : null);
+ 				}
++				*/
++
++				if (shouldDrawText) {
++					if (n < 4) {
++						if (textContext.SecondaryOutlineColor.HasValue)
++							spriteBatch.DrawString(textContext.Font, textContext.Text, textContext.Position + spread, textContext.SecondaryOutlineColor.Value, textContext.Rotation, textContext.Origin, textContext.Scale.X, SpriteEffects.None, 0f, textContext.CharOffsets);
++						spriteBatch.DrawString(textContext.Font, textContext.Text, textContext.Position + spread, textContext.OutlineColor, textContext.Rotation, textContext.Origin, textContext.Scale.X, SpriteEffects.None, 0f, textContext.CharOffsets);
++					}
++					else {
++						spriteBatch.DrawString(textContext.Font, textContext.Text, textContext.Position, textContext.PrimaryColor, textContext.Rotation, textContext.Origin, textContext.Scale.X, SpriteEffects.None, 0f, textContext.CharOffsets, textContext.CharColors);
++					}
++				}
+ 
+ 				if (texture2D != null) {
+ 					float num26 = (1.3f - num22) * popupText.scale * 0.7f;
+@@ -841,6 +_,8 @@
+ 					spriteBatch.Draw(texture2D, vector11 + new Vector2(vector2.X * 0.5f + (float)num27 + texture2D.Size().X / 2f, 0f), null, color2 * popupText.scale, 0f, texture2D.Size() / 2f, num26, SpriteEffects.None, 0f);
+ 				}
+ 			}
++
++			RarityLoader.PostDrawText(popupText.rarity, spriteBatch, in textContext);
+ 		}
+ 	}
+ }
