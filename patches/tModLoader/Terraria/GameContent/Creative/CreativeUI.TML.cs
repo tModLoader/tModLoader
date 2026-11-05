@@ -5,14 +5,14 @@ namespace Terraria.GameContent.Creative;
 public partial class CreativeUI
 {
 	/// <summary>
-	/// The main category selected in the power menu, or 0 if none is. Vanilla builds a new menu, with nothing selected, after each world is entered.
+	/// The option currently open on the main power strip, such as Time or Research, or 0 if none is. No option is open when entering a world.
 	/// </summary>
 	internal int CurrentMainCategory => _initialized ? _uiState?.CurrentMainCategory ?? 0 : 0;
 
 	/// <summary>
-	/// Discards the power menu so it's built again on the next draw. Used when mods unload, so the menu doesn't keep references to their content.
+	/// Discards the power menu so it's built again on the next draw, for example after something <see cref="ModLoader.ModSystem.CanShowCreativeCategory"/> depends on changes. The open category is closed.
 	/// </summary>
-	internal void ResetMenu()
+	public void RebuildMenu()
 	{
 		// UserInterface keeps previous states in its history, so replace it rather than only clearing its state.
 		_powersUI.SetState(null);

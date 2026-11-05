@@ -5,8 +5,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.CreativePowers
 {
-	// A ModCreativeButton on ExampleCreativeCategory's strip, which opens when that category is clicked.
-	public class ExampleHealButton : ModCreativeButton
+	// A ModCreativeButtonPower on ExampleCreativeCategory's strip, which opens when that category is clicked.
+	public class ExampleHealButton : ModCreativeButtonPower
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.HealingPotion}";
 

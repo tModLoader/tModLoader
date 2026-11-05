@@ -11,8 +11,7 @@ using Terraria.UI;
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// A button on the Journey Mode power menu, like vanilla's God Mode, Change Time to Dawn or Rain Control. Extend <see cref="ModCreativeToggle"/>, <see cref="ModCreativeButton"/> or <see cref="ModCreativeSlider"/> rather than this class.<para/>
-/// <see cref="Category"/> decides where the button appears. Powers in the same place are shown in load order. On the main strip they come after the categories and before Infection Spread and Difficulty. On other strips they come after vanilla's powers.<para/>
+/// A power on the Journey Mode menu, like vanilla's God Mode, Change Time to Dawn or Rain Control. Extend <see cref="ModCreativeTogglePower"/>, <see cref="ModCreativeButtonPower"/> or <see cref="ModCreativeSliderPower"/> rather than this class.<para/>
 /// Modded powers run only on the client using them. Nothing is synced, saved or checked against the server's Journey Mode power permissions, so do that yourself where needed. Use <see cref="CanUse"/> to disable a power, for example with <see cref="Main.countsAsHostForGameplay"/> to allow only the host.
 /// </summary>
 public abstract class ModCreativePower : ModTexturedType, ILocalizedModType

@@ -270,14 +270,15 @@ public abstract partial class ModSystem : ModType
 	public virtual void ModifyGameTipVisibility(IReadOnlyList<GameTipData> gameTips) { }
 
 	/// <summary>
-	/// Allows you to modify the button the Journey Mode power menu creates for a vanilla power, such as God Mode or Freeze Time, for example to add a right click action, extra hover text or different colors. Modded powers are <see cref="ModCreativePower"/>s instead.<para/>
-	/// <paramref name="button"/> is a <see cref="GroupOptionButton{T}"/> of <see cref="bool"/> for powers used by clicking them, and of <see cref="int"/> for powers that open a slider, such as Time Speed.
-	/// Check the type of <paramref name="power"/> to see which power it belongs to, such as <c>power is CreativePowers.GodmodePower</c>.<br/>
-	/// Handlers you add to <see cref="UIElement.OnUpdate"/> run after vanilla's, so colors set there replace vanilla's. For slider buttons, vanilla adds its <see cref="UIElement.OnLeftClick"/> handler after this hook, so yours run before it opens or closes the slider. Use <see cref="ModifyCreativePowerHoverText"/> to change the hover text.<br/>
-	/// In multiplayer the server can restrict who may use each power. Check <see cref="CreativePowersHelper.IsAvailableForPlayer"/> before doing anything on the power's behalf.<para/>
-	/// Called on clients each time the power menu is built, which happens each time a world is entered.
+	/// Allows you to modify the button of a vanilla Journey Mode power: a toggle such as God Mode, a one-click button such as Change Time to Dawn, or the button that opens a slider such as Time Speed.<br/>
+	/// Use this to add interactions, such as a right click action, or to change the button's colors. To change its hover text, use <see cref="ModifyCreativePowerHoverText"/>. To add new powers, see <see cref="ModCreativePower"/>.<para/>
+	/// Check the type of <paramref name="power"/> to see which power the button belongs to, such as <c>power is CreativePowers.GodmodePower</c>.<br/>
+	/// <paramref name="button"/> is a <see cref="GroupOptionButton{T}"/> of <see cref="bool"/> for toggles and one-click buttons, and of <see cref="int"/> for buttons that open a slider.<para/>
+	/// Handlers added to <see cref="UIElement.OnUpdate"/> run after vanilla's, so colors set there replace vanilla's. On a button that opens a slider, handlers added to <see cref="UIElement.OnLeftClick"/> run before vanilla opens or closes it.<br/>
+	/// In multiplayer, the server can restrict who may use each power. Check <see cref="CreativePowersHelper.IsAvailableForPlayer"/> before your handlers act for the power.<para/>
+	/// Called on clients each time the power menu is built, which happens after entering a world.
 	/// </summary>
-	/// <param name="power">The power the button uses.</param>
+	/// <param name="power">The power this button belongs to.</param>
 	/// <param name="button">The button, before it's added to the menu.</param>
 	public virtual void ModifyCreativePowerButton(ICreativePower power, UIElement button) { }
 
@@ -294,7 +295,7 @@ public abstract partial class ModSystem : ModType
 	/// <paramref name="category"/> is one of the <see cref="CreativeCategoryID"/> values, or the <see cref="ModCreativeCategory.Type"/> of a modded category.<br/>
 	/// If any mod returns false the category is hidden, and other mods can't show it again. Hiding a category also hides any modded powers placed in its strip.<br/>
 	/// To decide based on whether another category is shown, use <see cref="CreativeMenuLoader.IsCategoryShown"/>. It gives every mod the same answer and can't loop forever.<para/>
-	/// Called on clients each time the power menu is built, which happens each time a world is entered. It can depend on <see cref="Main.LocalPlayer"/> and the world, but shouldn't change while in one.
+	/// Called on clients each time the power menu is built, which happens each time a world is entered. It can depend on <see cref="Main.LocalPlayer"/> and the world. If its answer changes while in a world, call <see cref="CreativeUI.RebuildMenu"/> to update the menu.
 	/// </summary>
 	public virtual bool CanShowCreativeCategory(int category) => true;
 

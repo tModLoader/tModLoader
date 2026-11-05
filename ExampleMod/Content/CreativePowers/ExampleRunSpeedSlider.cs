@@ -8,9 +8,9 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.CreativePowers
 {
-	// A ModCreativeSlider is a Journey Mode power with a slider, like vanilla's Rain Control. Clicking its button opens the slider beside the strip.
+	// A ModCreativeSliderPower is a Journey Mode power with a slider, like vanilla's Rain Control. Clicking its button opens the slider beside the strip.
 	// This one is on ExampleCreativeCategory's strip, and changes the player's run speed.
-	public class ExampleRunSpeedSlider : ModCreativeSlider
+	public class ExampleRunSpeedSlider : ModCreativeSliderPower
 	{
 		public override string Texture => $"Terraria/Images/Item_{ItemID.HermesBoots}";
 
@@ -23,8 +23,8 @@ namespace ExampleMod.Content.CreativePowers
 
 		// The slider goes from 0 at the bottom to 1 at the top.
 		public override float Value {
-			get => Main.LocalPlayer.GetModPlayer<ExampleCreativePowersPlayer>().runSpeedSlider;
-			set => Main.LocalPlayer.GetModPlayer<ExampleCreativePowersPlayer>().runSpeedSlider = MathHelper.Clamp(value, 0f, 1f);
+			get => Main.LocalPlayer.GetModPlayer<ExampleCreativePowersPlayer>().RunSpeedSlider;
+			set => Main.LocalPlayer.GetModPlayer<ExampleCreativePowersPlayer>().RunSpeedSlider = MathHelper.Clamp(value, 0f, 1f);
 		}
 
 		// Shown when hovering the slider. By default this is Value as a percentage.

@@ -48,6 +48,7 @@ public partial class UICreativePowersMenu
 			VAlign = 0.5f,
 			Left = new StyleDimension(INITIAL_LEFT_PIXELS + LEFT_PIXELS_PER_STRIP_DEPTH, 0f)
 		};
+
 		strip.OnMouseOver += strip_OnMouseOver;
 		strip.OnMouseOut += strip_OnMouseOut;
 		_modCategoryStrips[category.Type] = strip;
@@ -65,20 +66,20 @@ public partial class UICreativePowersMenu
 				continue;
 
 			switch (power) {
-				case ModCreativeToggle toggle:
+				case ModCreativeTogglePower toggle:
 					list.Add(toggle.CreateButton(request));
 					break;
-				case ModCreativeButton button:
+				case ModCreativeButtonPower button:
 					list.Add(button.CreateButton(request));
 					break;
-				case ModCreativeSlider slider:
+				case ModCreativeSliderPower slider:
 					list.Add(CreateModSliderButton(slider, request, tree, depth));
 					break;
 			}
 		}
 	}
 
-	private GroupOptionButton<int> CreateModSliderButton<TEnum>(ModCreativeSlider slider, CreativePowerUIElementRequestInfo request, MenuTree<TEnum> tree, int depth) where TEnum : struct, IConvertible
+	private GroupOptionButton<int> CreateModSliderButton<TEnum>(ModCreativeSliderPower slider, CreativePowerUIElementRequestInfo request, MenuTree<TEnum> tree, int depth) where TEnum : struct, IConvertible
 	{
 		int option = tree.Buttons.Count == 0 ? 1 : tree.Buttons.Keys.Max() + 1;
 		GroupOptionButton<int> button = slider.CreateButton(request, option, tree.CurrentOption);

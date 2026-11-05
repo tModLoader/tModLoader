@@ -14,7 +14,7 @@ namespace Terraria.ModLoader;
 /// A Journey Mode power with a vertical slider, like vanilla's Rain Control or Time Speed. Clicking its button opens the slider beside the strip, and opening another slider closes it.<para/>
 /// See <see cref="ModCreativePower"/> for where it appears and how it works in multiplayer.
 /// </summary>
-public abstract class ModCreativeSlider : ModCreativePower
+public abstract class ModCreativeSliderPower : ModCreativePower
 {
 	/// <summary>
 	/// The slider's position, from 0 at the bottom to 1 at the top. Set when the player moves the slider or clicks one of its labels, if <see cref="ModCreativePower.CanUse"/> is true.
@@ -65,6 +65,7 @@ public abstract class ModCreativeSlider : ModCreativePower
 			HAlign = 0f,
 			VAlign = 0.5f
 		};
+
 		panel.Append(slider);
 		panel.OnUpdate += CreativePowersHelper.UpdateUseMouseInterface;
 		AddLabel(panel, TopLabel, 1f, 0f);
@@ -88,22 +89,27 @@ public abstract class ModCreativeSlider : ModCreativePower
 			HAlign = 1f,
 			VAlign = vAlign
 		};
+
 		text.OnUpdate += element => {
 			if (element.IsMouseHovering)
 				Main.instance.MouseTextNoOverride(string.Empty);
 		};
+
 		text.OnMouseOver += (_, _) => {
 			text.ShadowColor = Main.OurFavoriteColor;
 			SoundEngine.PlaySound(SoundID.MenuTick);
 		};
+
 		text.OnMouseOut += (_, _) => {
 			text.ShadowColor = Color.Black;
 			SoundEngine.PlaySound(SoundID.MenuTick);
 		};
+
 		text.OnLeftClick += (_, _) => {
 			SetValue(value);
 			SoundEngine.PlaySound(SoundID.MenuTick);
 		};
+
 		panel.Append(text);
 	}
 
@@ -116,6 +122,7 @@ public abstract class ModCreativeSlider : ModCreativePower
 			if (element.IsMouseHovering)
 				ShowHoverText(button.IsSelected ? CloseTooltip : OpenTooltip);
 		};
+
 		return button;
 	}
 }

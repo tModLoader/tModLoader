@@ -9,7 +9,7 @@ namespace Terraria.ModLoader;
 /// A Journey Mode power that's turned on and off by clicking it, like vanilla's God Mode or Freeze Time. Its button is highlighted while <see cref="IsActive"/> is true.<para/>
 /// See <see cref="ModCreativePower"/> for where it appears and how it works in multiplayer.
 /// </summary>
-public abstract class ModCreativeToggle : ModCreativePower
+public abstract class ModCreativeTogglePower : ModCreativePower
 {
 	/// <summary>
 	/// Whether this power is currently on. Checked every frame while its button is shown.
@@ -39,12 +39,14 @@ public abstract class ModCreativeToggle : ModCreativePower
 			if (CanUse())
 				OnClick();
 		};
+
 		button.OnUpdate += element => {
 			button.SetCurrentOption(IsActive);
 			UpdateButton(button);
 			if (element.IsMouseHovering)
 				ShowHoverText(IsActive ? EnabledTooltip : DisabledTooltip);
 		};
+
 		return button;
 	}
 }

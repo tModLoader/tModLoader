@@ -106,7 +106,7 @@ public static class CreativeMenuLoader
 	{
 		// Drop the menu before mods unload, so it no longer references their categories, powers or any changes they made to it.
 		// Vanilla builds it again each time a world is entered.
-		Main.CreativeMenu.ResetMenu();
+		Main.CreativeMenu.RebuildMenu();
 		categories.Clear();
 		powers.Clear();
 		warnedLoopCategories.Clear();
