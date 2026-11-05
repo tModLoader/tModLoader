@@ -1199,7 +1199,7 @@
 +			// Apply all `GrantImmunityWith` in reverse (if vulnerable to OnFire, add vulnerability to OnFire3, keep in mind this is _all_ of the vulnerabilities in `[OnFire3]` list)
 +			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 +				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
-+				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[i]))
++				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[x]))
 +					buffImmune[i] = false;
 +			}
 +
