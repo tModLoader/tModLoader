@@ -82,10 +82,10 @@ PostAI()</code>
 	</MouseRightMouseRightReleaseNote>
 	<SwitchTilesObjType>
 		<br/><br/> <paramref name="objType"/> indicates what type of entity is colliding with tiles:
-		<br/>1->Unused by vanilla callers; not equivalent to 5 for player-only pressure plates.
+		<br/>1->Unused by vanilla callers. Similar to 5 but likely broken and shouldn't be used.
 		<br/>2->NPC
 		<br/>3->Specific projectiles, boulders and other falling traps. These also trigger Yellow Pressure Plate
 		<br/>4->Projectile (Must have <see cref="Projectile.tileCollide"/> or <see cref="ProjectileID.Sets.ForcePlateDetection"/> set to true. Owned by this client only)
-		<br/>5->Player. For accepted vanilla pressure-plate collisions, multiplayer clients send <see cref="MessageID.PlayerControls"/> before <see cref="MessageID.HitSwitch"/>.
+		<br/>5->Player
 	</SwitchTilesObjType>
 </Common>
