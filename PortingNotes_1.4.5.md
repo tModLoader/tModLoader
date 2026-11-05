@@ -6,7 +6,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
-- Doublecheck methods marked as "Unused": SwitchTilesNew, AddStructure/AddProtectedStructure
 - Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Consider updating FlexibleTileWand.Reload
