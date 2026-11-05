@@ -768,8 +768,10 @@ public static class TileLoader
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
-			if (conversionType != BiomeConversionID.Hallow)
-				RegisterConversion(toType, BiomeConversionID.ChlorophyteSpread, Purify); //TODO: Not sure about this ID.
+			if (conversionType != BiomeConversionID.Hallow) {
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteDefenseWhenChloroSpreads, Purify);
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads, Purify);
+			}
 		}
 	}
 
