@@ -12,7 +12,6 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.UI;
-using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 
 namespace ExampleMod.Common.UI.ExampleFullscreenUI
@@ -23,8 +22,6 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 	/// To view this in-game, type "/fullscreenui" into chat (see ShowFullscreenUICommand.cs)
 	///
 	/// Another thing this example showcases is working with ModConfigs, such as displaying current config values, opening the Mod Configuration menu, and saving ModConfig changes via code. If your mod has a UI, it can be very useful for changes to that UI such as position or toggles to save automatically so the players choices persist when they play the game next.
-	///
-	/// This example also showcases marquee text, which is text that shifts back and forth when it is too large to fit in it's overflow box.
 	///
 	///	This file showcases 2 approaches:
 	/// The configA example (ModConfigShowcaseDataTypes) modifies the active config directly. These changes take effect immediately. With this approach you'll usually want to save the config whenever changes occur so the changes are remembered. This is useful for changes to client configs without any reload requirements, such as saving UI toggles or positioning.
@@ -198,36 +195,6 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			backButton.OnLeftClick += BackButton_OnLeftClick;
 			panel.Append(backButton);
 			top += 40;
-
-			var comparisonMarqueeText = new UIText("Testing Marquee Text (Regular)") {
-				Top = new(top, 0f),
-				MaxWidth = new(100f, 0f),
-			};
-			panel.Append(comparisonMarqueeText);
-			top += 20;
-
-			var marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
-				Top = new(top, 0f),
-				MaxWidth = new(100f, 0f),
-			};
-			panel.Append(marqueeText);
-			top += 20;
-
-			var comparisonMarqueeTextPanel = new UITextPanel<object>("Testing Marquee Text Panel (Regular)") {
-				Top = new(top, 0f),
-				MaxWidth = new(150f, 0f),
-			};
-			panel.Append(comparisonMarqueeTextPanel);
-			top += 50;
-
-			var marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
-				Top = new(top, 0f),
-				MaxWidth = new(150f, 0f),
-			};
-			panel.Append(marqueeTextPanel);
-			top += 50;
-
-			// TODO: test the set scroll delay, scroll on hover, and align to start when not scrolling
 
 			panel.Height.Pixels = top + panel.PaddingTop + panel.PaddingBottom;
 		}
