@@ -661,10 +661,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			if (beetleDefense && beetleOrbs > 0)
 				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
 
-			/*
-			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
-				modifiers.FinalDamage *= 0.75f;
-			*/
+			if (defendedByPaladin && whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.Dodgeable) {
+				for (int i = 0; i < Main.maxPlayers; i++) {
+					if (i != whoAmI && Main.player[i].CanDefendWithPaladinsShield(team)) {
+						modifiers.FinalDamage *= 0.75f;
+						break;
+					}
+				}
+			}
 		}
 	}
 
