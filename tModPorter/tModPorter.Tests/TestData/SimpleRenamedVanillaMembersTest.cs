@@ -125,6 +125,7 @@ public class SimpleRenamedVanillaMembersTest
 		player.VanillaUpdateEquip(null);
 		player.CanBuyItem(100000);
 		player.oldAdjTile[0] = false;
+		int nonTorch = player.nonTorch;
 
 		Main.DrawPlayer(player, Vector2.Zero, 0f, Vector2.Zero, 1f);
 

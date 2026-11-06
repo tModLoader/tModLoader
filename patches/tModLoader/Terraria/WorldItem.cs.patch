@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/WorldItem.cs
 +++ src/tModLoader/Terraria/WorldItem.cs
-@@ -9,28 +_,61 @@
+@@ -9,30 +_,71 @@
  using Terraria.GameContent.Drawing;
  using Terraria.GameContent.Events;
  using Terraria.ID;
@@ -10,6 +10,10 @@
  
  namespace Terraria;
  
++/// <summary>
++/// This is the in-world representation of an <see cref="Item"/> (contained in <see cref="inner"/>).
++/// <para/> This class serves as a wrapper for the <see cref="Item"/> class and contains additional state information such as position and velocity.
++/// </summary>
 -public class WorldItem : Entity
 +public partial class WorldItem : Entity
  {
@@ -55,6 +59,9 @@
  	public bool beingGrabbed;
  	public bool onConveyor;
  
++	/// <summary>
++	/// The <see cref="Item"/> this <see cref="WorldItem"/> represents.
++	/// </summary>
  	public Item inner { get; private set; }
  
 +	/// <summary>
@@ -62,16 +69,72 @@
 +	/// </summary>
  	public bool active => type != 0;
  
++	/// <inheritdoc cref="Item.type"/>
  	public int type {
-@@ -51,7 +_,7 @@
+ 		get {
+ 			return inner.type;
+@@ -42,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <inheritdoc cref="Item.stack"/>
+ 	public int stack {
+ 		get {
+ 			return inner.stack;
+@@ -51,7 +_,8 @@
  		}
  	}
  
 -	public byte prefix {
++	/// <inheritdoc cref="Item.prefix"/>
 +	public int prefix { // TML: byte->int
  		get {
  			return inner.prefix;
  		}
+@@ -60,6 +_,7 @@
+ 		}
+ 	}
+ 
++	/// <inheritdoc cref="Item.color"/>
+ 	public Color color {
+ 		get {
+ 			return inner.color;
+@@ -69,16 +_,21 @@
+ 		}
+ 	}
+ 
++	/// <inheritdoc cref="Item.value"/>
+ 	public int value => inner.value;
+ 
++	/// <inheritdoc cref="Item.maxStack"/>
+ 	public int maxStack => inner.maxStack;
+ 
++	/// <inheritdoc cref="Item.scale"/>
+ 	public float scale => inner.scale;
+ 
++	/// <inheritdoc cref="Item.Name"/>
+ 	public string Name => inner.Name;
+ 
+ 	public bool IsACoin => inner.IsACoin;
+ 
++	/// <inheritdoc cref="Item.IsAir"/>
+ 	public bool IsAir => inner.IsAir;
+ 
+ 	static WorldItem()
+@@ -89,6 +_,13 @@
+ 
+ 	public override string ToString() => "[" + whoAmI + "]" + inner;
+ 
++	/// <summary>
++	/// Replaces <see cref="inner"/> with <paramref name="item"/> without cloning, preserving this entity and its world state.
++	/// <para/> Sets <see cref="Item.newAndShiny"/>. Use <see cref="Item.Clone"/> first for an independent instance.
++	/// <para/> Does not run spawn hooks or synchronize the change; the caller handles synchronization when required.
++	/// </summary>
++	/// <param name="item">The item instance to store. An empty item can be used to deactivate this entity.</param>
++	/// <exception cref="Exception">The current <see cref="inner"/> item is air and <paramref name="item"/> is not air.</exception>
+ 	public void ReplaceWith(Item item)
+ 	{
+ 		if (inner.IsAir && !item.IsAir)
 @@ -132,10 +_,19 @@
  		for (int i = whoAmI + 1; i < 400; i++) {
  			WorldItem worldItem = Main.item[i];

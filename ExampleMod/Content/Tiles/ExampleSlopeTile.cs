@@ -32,7 +32,7 @@ namespace ExampleMod.Content.Tiles
 			// This example demonstrates using SwitchTiles for tile collision interaction. This example sends a wire signal when a player travels through this tile in the direction of the arrow.
 
 			if (entity is not Player player) {
-				// Player only. We could also just check if (objType != 1), but we use the Player instance in this example.
+				// Player only. We could also just check if (objType != 5), but we use the Player instance in this example.
 				return false;
 			}
 

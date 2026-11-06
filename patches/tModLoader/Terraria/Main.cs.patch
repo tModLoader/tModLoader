@@ -6951,6 +6951,14 @@
  				flag3 = false;
  			}
  			else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
+@@ -54676,6 +_,7 @@
+ 
+ 	public void RainbowBoulderMusicPlayCallback(int trackIndex, int sequentialTimesPlayed)
+ 	{
++		// TODO: Broken on tModLoader. Called immediately twice in a row as music starts so it skips the intro track.
+ 		musicFade[trackIndex] = 1f;
+ 		_finishedRainbowBoulderStart = sequentialTimesPlayed >= 1;
+ 		if (_finishedRainbowBoulderStart) {
 @@ -54691,6 +_,17 @@
  
  	protected override void Draw(GameTime gameTime)
@@ -7146,6 +7154,17 @@
  	}
  
  	private static void UpdateAtmosphereTransparencyToSkyColor(float y)
+@@ -56070,7 +_,10 @@
+ 				chatDrawPosition -= messageSize / 2f;
+ 				chatDrawPosition = chatDrawPosition.Floor();
+ 				int hoveredSnippet = 0;
++				/*
+ 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player.chatOverhead.snippets, chatDrawPosition, player.chatOverhead.color, 0f, Vector2.Zero, Vector2.One, out hoveredSnippet);
++				*/
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player.chatOverhead.snippets, chatDrawPosition, 0f, Vector2.Zero, Vector2.One, out hoveredSnippet); // TML: Use no-color overload to fix chat tag support with team colors.
+ 			}
+ 		}
+ 	}
 @@ -56747,6 +_,10 @@
  				else
  					bgStyle = 9;

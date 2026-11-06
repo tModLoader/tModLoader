@@ -84,6 +84,9 @@ public static class TileLoader
 	private static Action<int, int, int, bool>[] HookRandomUpdate;
 	private delegate bool DelegateTileFrame(int i, int j, int type, ref bool resetFrame, ref bool noBreak);
 	private static DelegateTileFrame[] HookTileFrame;
+	private static Action<int, int, int, int, int, int, int, int, int, int, int>[] HookPostTileFrame;
+	private delegate void DelegateModifyFrameMerge(int i, int j, int type, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight);
+	private static DelegateModifyFrameMerge[] HookModifyFrameMerge;
 	private static Func<int, int, int, bool>[] HookCanPlace;
 	private static Func<int, int, int, int, bool>[] HookCanReplace;
 	private static Action<int, int, int, int, int>[] HookReplaceTile;
@@ -247,6 +250,8 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookPostDrawPlacementPreview, globalTiles, g => g.PostDrawPlacementPreview);
 		ModLoader.BuildGlobalHook(ref HookRandomUpdate, globalTiles, g => g.RandomUpdate);
 		ModLoader.BuildGlobalHook<GlobalTile, DelegateTileFrame>(ref HookTileFrame, globalTiles, g => g.TileFrame);
+		ModLoader.BuildGlobalHook(ref HookPostTileFrame, globalTiles, g => g.PostTileFrame);
+		ModLoader.BuildGlobalHook<GlobalTile, DelegateModifyFrameMerge>(ref HookModifyFrameMerge, globalTiles, g => g.ModifyFrameMerge);
 		ModLoader.BuildGlobalHook(ref HookCanPlace, globalTiles, g => g.CanPlace);
 		ModLoader.BuildGlobalHook(ref HookCanReplace, globalTiles, g => g.CanReplace);
 		ModLoader.BuildGlobalHook(ref HookReplaceTile, globalTiles, g => g.ReplaceTile);
@@ -1129,6 +1134,10 @@ public static class TileLoader
 		if (modTile != null) {
 			modTile.PostTileFrame(i, j, up, down, left, right, upLeft, upRight, downLeft, downRight);
 		}
+
+		foreach (var hook in HookPostTileFrame) {
+			hook(i, j, type, up, down, left, right, upLeft, upRight, downLeft, downRight);
+		}
 	}
 
 	public static void ModifyFrameMerge(int type, int i, int j, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
@@ -1136,6 +1145,10 @@ public static class TileLoader
 		ModTile modTile = GetTile(type);
 		if (modTile != null) {
 			modTile.ModifyFrameMerge(i, j, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
+		}
+
+		foreach (var hook in HookModifyFrameMerge) {
+			hook(i, j, type, ref up, ref down, ref left, ref right, ref upLeft, ref upRight, ref downLeft, ref downRight);
 		}
 	}
 
