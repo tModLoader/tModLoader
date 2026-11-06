@@ -11,11 +11,7 @@ public class UIMarqueeText : UIText
     protected override bool setTextUsesMinSize => false;
 
     public UIMarqueeText(object text, float textScale = 1f, bool large = false) : base(text, textScale, large)
-    {
-	    // TODO: was this because of clipping?
-        // PaddingLeft = 4f;
-        // PaddingRight = 4f;
-    }
+    { }
 
     protected override void InternalSetText(object text, float textScale, bool large)
     {
@@ -40,5 +36,10 @@ public class UIMarqueeText : UIText
 	    var dims = GetInnerDimensions();
 	    MarqueeText.AdjustClippingRectangle(ref dims);
 	    return CalculateClippingRectangle(dims, spriteBatch);
+    }
+
+    public void ResetScroll()
+    {
+	    MarqueeText.ResetScroll(GetInnerDimensions(), _textSize, TextOriginX);
     }
 }

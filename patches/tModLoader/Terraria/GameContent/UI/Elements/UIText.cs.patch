@@ -49,7 +49,7 @@
  	public override void Recalculate()
  	{
  		InternalSetText(_text, _textScale, _isLarge);
-@@ -108,6 +_,22 @@
+@@ -108,6 +_,21 @@
  	protected override void DrawSelf(SpriteBatch spriteBatch)
  	{
  		base.DrawSelf(spriteBatch);
@@ -66,7 +66,6 @@
 +		base.DrawChildren(spriteBatch);
 +	}
 +
-+	// tML: Split method to implement drawTextAsChild
 +	private void DrawText(SpriteBatch spriteBatch)
 +	{
  		VerifyTextState();
@@ -80,11 +79,10 @@
  		Color shadowColor = _shadowColor * ((float)(int)_color.A / 255f);
  		DynamicSpriteFont font = (_isLarge ? FontAssets.DeathText.Value : FontAssets.MouseText.Value);
  		ChatManager.DrawColorCodedStringShadow(spriteBatch, font, _textLayout, position, shadowColor, 0f, Vector2.Zero, scale, 1.5f);
-@@ -144,8 +_,10 @@
+@@ -144,8 +_,9 @@
  			InternalSetText(_text, _textScale, _isLarge);
  	}
  
-+	// tML: Made virtual + protected
 -	private void InternalSetText(object text, float textScale, bool large)
 +	protected virtual void InternalSetText(object text, float textScale, bool large)
  	{
@@ -92,18 +90,15 @@
  		_text = text;
  		_isLarge = large;
  		_textScale = textScale;
-@@ -160,8 +_,19 @@
+@@ -160,8 +_,16 @@
  		else
  			_textSize.Y = (large ? 32f : 16f) * _textScale;
  
-+
-+		// Added by tML: [[
 +		if (!setTextUsesMinSize) {
 +			Width.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
 +			Height.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
 +			goto skipMinSize;
 +		}
-+		// ]]
 +
  		MinWidth.Set((IsWrapped || DynamicallyScaleDownToWidth) ? 0f : (_textSize.X + PaddingLeft + PaddingRight), 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);

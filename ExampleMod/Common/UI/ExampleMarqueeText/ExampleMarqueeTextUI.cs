@@ -16,6 +16,9 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 	{
 		public static ExampleMarqueeTextUI instance;
 
+		private UIMarqueeText marqueeText;
+		private UIMarqueeTextPanel marqueeTextPanel;
+
 		public void Load(Mod mod) {
 			instance = this;
 		}
@@ -23,6 +26,10 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 		public void Unload() {
 		}
 
+		// TODO: better side by side comparison
+		// - also include a UIMarqueeText with the padding Y really big so ou can see the bottom of the text avoid getting clipped
+		// TODO: demo of marquee on hover
+		// TODO: demo of align to start
 		public override void OnInitialize() {
 			// This boilerplate is copied from ExampleFullscreenUI
 			var panel = new UIPanel() {
@@ -61,7 +68,7 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			panel.Append(comparisonMarqueeText);
 			top += 20;
 
-			var marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
+			marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
 				Top = new(top, 0f),
 				MaxWidth = new(100f, 0f),
 			};
@@ -75,14 +82,12 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			panel.Append(comparisonMarqueeTextPanel);
 			top += 50;
 
-			var marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
+			marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
 				Top = new(top, 0f),
 				MaxWidth = new(150f, 0f),
 			};
 			panel.Append(marqueeTextPanel);
 			top += 50;
-
-			// TODO: test the set scroll delay, scroll on hover, and align to start when not scrolling
 
 			var backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f) {
 				Top = new(top, 0f),
@@ -109,8 +114,11 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 		}
 
 		public override void OnActivate() {
-			// TODO: reset all marquee text
-			// TODO: perhaps make it automatic?
+			// Reset the marquee text and delay the scrolling when the UI is opened
+			marqueeText.ResetScroll();
+			marqueeTextPanel.ResetScroll();
+			marqueeText.MarqueeText.SetScrollDelay(60);
+			marqueeTextPanel.MarqueeText.SetScrollDelay(60);
 		}
 
 		private void BackButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {

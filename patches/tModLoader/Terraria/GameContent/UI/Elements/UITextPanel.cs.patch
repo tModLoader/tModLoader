@@ -27,7 +27,7 @@
  	public bool IsLarge => _isLarge;
  
  	public bool DrawPanel {
-@@ -98,10 +_,25 @@
+@@ -98,10 +_,23 @@
  
  	public virtual void SetText(T text, float textScale, bool large)
  	{
@@ -42,13 +42,11 @@
 +		_textSize = ChatManager.GetStringSize(Font, text.ToString(), new Vector2(textScale));
 +		_textSize.Y = (large ? 32f : 16f) * textScale;
 +
-+		// Added by tML: [[
 +		if (!setTextUsesMinSize) {
 +			Width.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
 +			Height.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
 +			return;
 +		}
-+		// ]]
 +
  		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);

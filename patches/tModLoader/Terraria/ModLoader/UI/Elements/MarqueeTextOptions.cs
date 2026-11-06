@@ -5,14 +5,36 @@ namespace Terraria.ModLoader.UI.Elements;
 
 public struct MarqueeTextOptions()
 {
-	// TODO: document
+	/// <summary>
+	/// Whether overflowing text should marquee.
+	/// <br/><br/> Note that text that does not overflow will not marquee.
+	/// </summary>
 	public bool IsScrolling { get; set; } = true;
+	/// <summary>
+	/// The number of pixels scrolled every frame while the text is scrolling.
+	/// </summary>
 	public float ScrollSpeed { get; set; } = 1.5f;
+	/// <summary>
+	/// The number of frames waited before changing the scroll direction when the start or end of the text is scrolled to.
+	/// </summary>
 	public int ScrollDelay { get; set; } = 30;
+	/// <summary>
+	/// Whether <see cref="Scroll"/> should be set to align the text to the start of the text when the text isn't scrolling.
+	/// <br/><br/> Useful for text that only marquees on hover.
+	/// </summary>
 	public bool AlignToStartWhenNotScrolling = false; // TODO: what should this default to?
-	public float ClippingXPadding { get; set; } = 2f; // Many pieces of text have borders that get clipped
+	/// <summary>
+	/// The horizontal padding added to the clipping rectangle for the text.
+	/// </summary>
+	public float ClippingXPadding { get; set; } = 2f; // Many pieces of text have borders that get clipped, hence the default value
+	/// <summary>
+	/// The vertical padding added to the clipping rectangle for the text.
+	/// </summary>
 	public float ClippingYPadding { get; set; } = 0f;
 
+	/// <summary>
+	/// The current scroll value, TODO: explain better
+	/// </summary>
 	public float Scroll { get; private set; } = 0;
 
 	private int scrollTimer = 0;
@@ -20,9 +42,8 @@ public struct MarqueeTextOptions()
 
 	public void Update(CalculatedStyle dims, Vector2 textSize, float textAlignX)
 	{
-		bool textIsClipping = textSize.X >= dims.Width;
-		if (!IsScrolling || !textIsClipping) {
-			ResetScroll(dims, textSize, textAlignX, textIsClipping);
+		if (!IsScrolling || textSize.X < dims.Width) {
+			ResetScroll(dims, textSize, textAlignX);
 			return;
 		}
 
@@ -54,19 +75,17 @@ public struct MarqueeTextOptions()
 		}
 	}
 
-
-	public void ResetScroll(CalculatedStyle dims, Vector2 textSize, float textAlignX, bool textIsClipping)
+	public void ResetScroll(CalculatedStyle dims, Vector2 textSize, float textAlignX)
 	{
 		Scroll = 0;
 		scrollTimer = 0;
 		scrollDirection = 1;
 
-		if (AlignToStartWhenNotScrolling && textIsClipping) {
+		if (AlignToStartWhenNotScrolling && textSize.X >= dims.Width) {
 			Scroll = GetStartAlignment(textSize, dims.Width, textAlignX);
 		}
 	}
 
-	// TODO: consider languages that read from right to left?
 	public float GetStartAlignment(Vector2 textSize, float innerWidth, float textAlignX)
 	{
 		float align = 1f - textAlignX;

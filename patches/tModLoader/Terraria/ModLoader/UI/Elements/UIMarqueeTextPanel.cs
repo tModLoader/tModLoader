@@ -39,4 +39,9 @@ public class UIMarqueeTextPanel : UITextPanel
 		MarqueeText.AdjustClippingRectangle(ref dims);
 		return CalculateClippingRectangle(dims, spriteBatch);
 	}
+
+	public void ResetScroll()
+	{
+		MarqueeText.ResetScroll(GetInnerDimensions(), _textSize, TextHAlign);
+	}
 }
