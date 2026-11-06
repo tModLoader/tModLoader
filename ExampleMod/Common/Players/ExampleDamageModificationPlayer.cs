@@ -137,7 +137,9 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && TeammateCanAbsorbDamage()) {
+			// Just like the Paladin's Shield, check the TeamDamageShare set, to exclude environmental damage such as lava
+			// Undodgeable hits (typically instant kills) are also excluded
+			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.Dodgeable && TeammateCanAbsorbDamage()) {
 				modifiers.FinalDamage *= 1f - AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 			}
 		}
@@ -146,7 +148,7 @@ namespace ExampleMod.Common.Players
 			// On Hurt is used in this example to act upon another player being hurt.
 			// If the player who was hurt was defended, check if the local player should take the remaining damage for them
 			Player localPlayer = Main.LocalPlayer;
-			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
+			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && ImmunityCooldownID.Sets.TeamDamageShare[info.CooldownCounter] && info.Dodgeable && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
 				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
 				// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 				// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
@@ -154,9 +156,10 @@ namespace ExampleMod.Common.Players
 				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 				int damage = (int)(info.Damage * (percent / (1 - percent)));
 
-				// Don't bother pinging the defending player and upsetting their immunity frames if the portion of damage we're taking rounds down to 0
+				// Don't bother hurting the defending player if the portion of damage we're taking rounds down to 0
 				if (damage > 0) {
-					localPlayer.Hurt(PlayerDeathReason.ByOther(16), damage, 0);
+					// Use the Paladin's shield immunity cooldown id (no cooldown), and ensure the shared damage can't be dodged
+					localPlayer.Hurt(PlayerDeathReason.ByOther(16), damage, 0, cooldownCounter: ImmunityCooldownID.PaladinsShield, dodgeable: false);
 				}
 			}
 		}
