@@ -1606,7 +1606,7 @@
  		int num = 0;
  		if (sItem.autoReuse && sItem.reuseDelay == 0 && sItem.useTime <= sItem.useAnimation && sItem.shoot > 0 && sItem.useStyle == 5)
  			num = 1;
-@@ -2874,6 +_,30 @@
+@@ -2874,6 +_,27 @@
  		}
  
  		reuseDelay = sItem.reuseDelay;
@@ -1626,13 +1626,10 @@
 +	{
 +		ItemLoader.UseAnimation(sItem, this);
 +
-+		int animationTime = CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem);
-+		if (DebugOptions.ManaV2 && sItem.mana > 0)
-+			animationTime = GetSlowMagicUseTime(animationTime);
-+
-+		SetItemAnimation(animationTime);
++		SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +		reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
++		reuseDelayIsSlowed = DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse;
 +		ItemUsesThisAnimation = 0;
  	}
  
@@ -7583,7 +7580,23 @@
  		if (sItem.type == 2223)
  			projToShoot = 357;
  
-@@ -39060,7 +_,10 @@
+@@ -39047,6 +_,7 @@
+ 			projToShoot = overrideFishingBobber;
+ 
+ 		if (withAudioVisualFeedback) {
++			/*
+ 			if (DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse) {
+ 				float slowMagicMultiplier = GetSlowMagicMultiplier();
+ 				ApplyItemTime(sItem, slowMagicMultiplier);
+@@ -39054,13 +_,18 @@
+ 			else {
+ 				ApplyItemTime(sItem);
+ 			}
++			*/
++			ApplyItemTime(sItem);
+ 		}
+ 
+ 		Vector2 mountedCenter = MountedCenter;
  		Vector2 pointPosition = RotatedRelativePoint(mountedCenter);
  		bool flag = true;
  		int type = sItem.type;
@@ -7865,6 +7878,30 @@
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
+@@ -43455,6 +_,12 @@
+ 
+ 	private void UndoSlowMagicUse()
+ 	{
++		// Only restore a delay that was slowed when the animation started.
++		if (reuseDelayIsSlowed) {
++			reuseDelay = (int)(reuseDelay / GetSlowMagicMultiplier());
++			reuseDelayIsSlowed = false;
++		}
++
+ 		if (itemAnimation != 0 && itemTime != 0) {
+ 			float slowMagicUseRate = GetSlowMagicUseRate();
+ 			int num = 2;
+@@ -43462,8 +_,9 @@
+ 			itemAnimation = (int)Math.Max(num, (float)itemAnimation * slowMagicUseRate);
+ 			itemTimeMax = (int)Math.Max(num, (float)itemTimeMax * slowMagicUseRate);
+ 			itemTime = (int)Math.Max(num, (float)itemTime * slowMagicUseRate);
+-			slowMagicUse = false;
+ 		}
++
++		slowMagicUse = false;
+ 	}
+ 
+ 	private void ApplyManaPotionManaHeat(Item item)
 @@ -43529,6 +_,9 @@
  
  	private bool ItemCheck_CheckCanUse_Inner(Item sItem, bool ignoreCursed = false)
@@ -7895,6 +7932,14 @@
  			return true;
  
  		if (sItem.shoot > 0 && ProjectileID.Sets.TurretFeature[sItem.shoot] && altFire)
+@@ -44187,6 +_,7 @@
+ 		itemAnimation = reuseDelay;
+ 		itemTime = reuseDelay;
+ 		reuseDelay = 0;
++		reuseDelayIsSlowed = false;
+ 	}
+ 
+ 	private void ItemCheck_HackHoldStyles(Item sItem)
 @@ -44221,6 +_,13 @@
  		if (sItem.IsAir || (selectedItemState.HasBufferedChange && (sItem.shoot <= 0 || ItemTimeIsZero)))
  			return;
