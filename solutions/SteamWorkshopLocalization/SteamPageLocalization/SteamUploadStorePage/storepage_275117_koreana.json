@@ -1,0 +1,18 @@
+{
+    "itemid": "275117",
+    "language": "koreana",
+    "app[content][about]": "tModLoader로 플레이어가 만든 Terraria 모드로 구성된 세계에서 본인의 방식으로 파고, 싸우고, 건축하세요 - 이 DLC는 Terraria 모딩을 현실로 만들어 줍니다!\ntModLoader(TML)은 Terraria를 위한 오픈 소스, 커뮤니티가 만들어가는 확장판으로, 여기에서는 모드를 제작하고 플레이할 수 있습니다. TML로 Terraria 커뮤니티가 만든 새 콘텐츠를 추가해 Terraria 모험을 확장할 수 있습니다! TML을 통해 Terraria 모드를 제작할 수 있고, 즐길 수 있습니다. 혼자서 플레이할 수도, 함께 플레이할 수도 있습니다 - 모드 한 개를 즐기거나 여러 개를 원하는 대로 섞어 자유롭게 플레이하세요!\n\n참고: 친구들과 즐기려면 친구들도 TML을 설치해야 합니다. 바닐라 사용자는 TML 사용자와 같이 플레이할 수 없습니다.\n\n---\n\n[b][u][h2]지원[/h2][/u][/b]\n도움이 필요하신가요? Terraria 커뮤니티 포럼이나 Discord 서버에서 지원을 받을 수 있습니다! 지원을 받기 가장 적절한 곳이며, Steam 상점 페이지 맨 밑 링크를 통해 저희 웹사이트로 가서 확인할 수 있습니다.\n\ntModLoader는 오픈 소스 프로젝트입니다. 즉, 코드가 공개되어 있으며 누구나 이 프로젝트에 기여할 수 있습니다. 저희 프로젝트는 저희 웹사이트에 링크되어있는 Github에서 찾아볼 수 있습니다.\n\ntModLoader의 내부 작동 방식에 대해 더 알고 싶나요? 지금 당장 tModLoader를 사용하고 싶나요? Steam 페이지 밑에 있는 \"메뉴얼 보기\" 링크로 플레이어 전용 가이드를 통해 시작할 수 있습니다. 저기에는 개발자와 기여자를 위한 페이지도 있습니다. 저희 위키는 tModLoader를 통해 모딩하는 방법이 가득 적혀있습니다.\n\n---\n\n[b][u][h2]자주 묻는 질문[/h2][/u][/b]\ntModLoader를 설치하고 본격적으로 시작하기에 앞서 알아두어야 할 몇 가지 중요한 사항:\n\n[b][list][*]백업을 만들 필요가 없습니다\n[*]Steam으로 Terraria를 1.4로 업데이트하고 tModLoader를 설치하세요\n[*]바닐라 Terraria와 TML를 각각 즐길 수 있습니다. Steam의 tModLoader는 Terraria와 다른 게임으로 취급됩니다\n[*]tModLoader는 Terraria 1.3과 1.4를 지원합니다\n[*]Steam 창작마당을 지원합니다 (필수는 아닙니다. 저희는 게임 내에 모드 브라우저가 있습니다)\n[*]새 버전으로, tModLoader를 어디든 설치할 수 있으며, 설치 위치와 Steam 여부와는 무관합니다\n[*]tModLoader는 Windows와 Mac, Linux에서 작동합니다[/list][/b]\n\n[b]제게는 무슨 영향이 있나요? Terraria 1.4가 출시되고 나서도 모드가 작동할까요?[/b]\ntModLoader에 많은 변경 사항이 생겨, 모드의 대부분, 어쩌면 전부가 망가질 예정입니다. 모더에게 모드를 업데이트할 시간을 주긴 했지만, 이 뜻은 곳 일부 모드는 절대 이 버전에 맞게 업데이트되지 않을 거란 뜻도 됩니다. 그러니 1.3에서 사용 가능했던 모든 모드가 호환되지는 않을 것이라는 것을 참고하기 바랍니다.\n\n[b]tModLoader는 1.4로 업데이트되었나요?[/b]\nSteam의 tModLoader는 Terraria 1.3.5와 Terraria 1.4를 지원합니다.\n\n[b]Steam 창작마당은 지원되나요?[/b]\nSteam 창작마당은 지원됩니다.",
+    "app[content][short_description]": "tModLoader로 플레이어가 만든 Terraria 모드로 구성된 세계에서 본인의 방식으로 파고, 싸우고, 건축하세요 - 이 DLC는 Terraria 모딩을 현실로 만들어 줍니다!",
+    "app[content][sysreqs][mac][min][osversion]": "(1.4.4) OSX 12 Monterey; (1.4.3) OSX 10.15 Catalina",
+    "app[content][sysreqs][mac][min][processor]": "2.0 Ghz",
+    "app[content][sysreqs][mac][min][graphics]": "FNA Requirements: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][mac][min][notes]": "tModLoader relies on NET 8 runtime. NET 8 requirements: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. Additional Requirements may vary with installed Workshop Items",
+    "app[content][sysreqs][windows][min][osversion]": "Windows 7 x64, 8/8.1 x64, 10, 11",
+    "app[content][sysreqs][windows][min][processor]": "2.0 Ghz",
+    "app[content][sysreqs][windows][min][graphics]": "FNA Requirements: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][windows][min][notes]": "tModLoader relies on NET 8 runtime. NET 8 requirements: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. Additional Requirements may vary with installed Workshop Items",
+    "app[content][sysreqs][linux][min][osversion]": "Ubuntu 16.04 LTS or higher",
+    "app[content][sysreqs][linux][min][processor]": "2.0 Ghz",
+    "app[content][sysreqs][linux][min][graphics]": "FNA Requirements: https://fna-xna.github.io/docs/3%3A-Distributing-FNA-Games/",
+    "app[content][sysreqs][linux][min][notes]": "tModLoader relies on NET 8 runtime. NET 8 requirements: https://github.com/dotnet/core/blob/main/release-notes/8.0/supported-os.md. Additional Requirements may vary with installed Workshop Items"
+}

@@ -152,13 +152,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		set => _damageClass = value ?? throw new ArgumentException("An item's DamageType cannot be null.");
 	}
 
-	private int _armorPenetration = 0;
 	/// <summary>
 	/// The number of defense points that this item can ignore on its own. Cannot be set to negative values. Defaults to 0.
 	/// </summary>
 	public int ArmorPenetration {
-		get => _armorPenetration;
-		set => _armorPenetration = Math.Max(0, value);
+		get => armorPenetration;
+		set => armorPenetration = Math.Max(0, value);
 	}
 
 	public TagCompound SerializeData() => ItemIO.Save(this);

@@ -29,11 +29,13 @@
  	public bool CanPlace(Rectangle area, bool[] validTiles, int padding = 0)
  	{
  		lock (_lock) {
-@@ -54,6 +_,7 @@
+@@ -54,6 +_,9 @@
  		}
  	}
  
-+	/// <summary> Unused, use <see cref="AddProtectedStructure(Rectangle, int)"/> instead. </summary>
++	/// <summary>
++	/// Records an area without marking it as protected. Use <see cref="AddProtectedStructure(Rectangle, int)"/> instead to prevent overlap through <see cref="CanPlace(Rectangle, int)"/>.
++	/// </summary>
  	public void AddStructure(Rectangle area, int padding = 0)
  	{
  		lock (_lock) {

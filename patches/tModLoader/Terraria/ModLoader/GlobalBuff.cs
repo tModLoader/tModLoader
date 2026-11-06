@@ -44,6 +44,7 @@ public abstract class GlobalBuff : ModType
 
 	/// <summary>
 	/// Allows to you make special things happen when adding the given buff type to an NPC when the NPC already has that buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time.
+	/// <para/> Returning <see langword="true"/> may also skip the automatic server-side <see cref="ID.MessageID.NPCBuffs"/> message in <see cref="NPC.AddBuff"/> so consider whether changes need manual syncing in this case.
 	/// </summary>
 	public virtual bool ReApply(int type, NPC npc, int time, int buffIndex)
 	{

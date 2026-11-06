@@ -686,7 +686,17 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
-@@ -9930,6 +_,13 @@
+@@ -9774,7 +_,9 @@
+ 
+ 		projectile.honeyWet = Collision.honey;
+ 		projectile.shimmerWet = Collision.shimmer;
++		/*
+ 		projectile.ApplyStatsFromSource(spawnSource);
++		*/
+ 		projectile.FindBannerToAssociateTo(spawnSource);
+ 		projectile.TrackMinionSpawnSource(spawnSource);
+ 		if (projectile.aiStyle == 1) {
+@@ -9930,13 +_,22 @@
  
  			if (Type == 777 || Type == 781 || Type == 794 || Type == 797 || Type == 800 || Type == 785 || Type == 788 || Type == 791 || Type == 903 || Type == 904 || Type == 905 || Type == 906 || Type == 910 || Type == 911)
  				projectile.timeLeft = 180;
@@ -700,25 +710,16 @@
  		}
  
  		if (Type == 249)
-@@ -9937,10 +_,17 @@
+ 			projectile.frame = Main.rand.Next(5);
  
  		projectile.FinalizeProjectile();
++		projectile.ApplyStatsFromSource(spawnSource); // Moved from before FindBannerToAssociateTo, so the snapshot includes stats set by FinalizeProjectile
  		modifer?.Invoke(projectile);
-+		/* Moved below
++		ProjectileLoader.OnSpawn(projectile, spawnSource);
  		NetMessage.SendData(27, -1, -1, null, projectile.whoAmI);
-+		*/
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
- 
-+		projectile.ApplyStatsFromSource(spawnSource);
-+		ProjectileLoader.OnSpawn(projectile, spawnSource);
-+
-+		NetMessage.SendData(27, -1, -1, null, projectile.whoAmI);
-+
- 		return projectile.whoAmI;
- 	}
- 
-@@ -9954,26 +_,81 @@
+@@ -9954,26 +_,84 @@
  		}
  	}
  
@@ -746,7 +747,10 @@
  				tagEffectType = item.type;
  
  			bonusTagDamage += item.bonusTagDamage;
++			// Included in GetWeaponArmorPenetration below.
++			/*
  			armorPenetration += item.armorPenetration;
++			*/
 -			if (item.type == 2269 && entitySource_ItemUse.Entity is Player) {
 +			if (item.type == 2269/* && entitySource_ItemUse.Entity is Player*/) {
 +				/*
@@ -779,8 +783,8 @@
  		if (spawnSource is EntitySource_Parent entitySource_Parent && entitySource_Parent.Entity is Projectile projectile) {
  			tagEffectType = projectile.tagEffectType;
  			bonusTagDamage += projectile.bonusTagDamage;
- 			armorPenetration += projectile.armorPenetration;
 +			/*
+ 			armorPenetration += projectile.armorPenetration;
  			bonusCritChance += projectile.bonusCritChance;
 +			*/
 +
@@ -862,7 +866,7 @@
  		if (flag4 || (!targetNPC.noTileCollide && ownerHitCheck && !CanHitWithMeleeWeapon(targetNPC)))
  			return;
  
-@@ -11264,14 +_,22 @@
+@@ -11264,14 +_,25 @@
  		if (type == 604)
  			Main.player[owner].Counterweight(targetNPC.Center, damage, knockBack);
  
@@ -870,7 +874,10 @@
 +		modifiers.ArmorPenetration += ArmorPenetration;
 +		CombinedHooks.ModifyHitNPCWithProj(this, targetNPC, ref modifiers);
 +
++		/*
  		float num5 = knockBack;
++		*/
++		float num5 = 1f;
  		bool crit = false;
  		float armorPenetrationPercent = 0f;
 +
@@ -977,7 +984,16 @@
  		if (type == 1002)
  			dmg /= 2;
  
-@@ -11512,7 +_,7 @@
+@@ -11506,13 +_,16 @@
+ 				num21 = 1f / targetNPC.knockBackResist;
+ 
+ 			knockBack = 4f * num21;
++			/*
+ 			num5 = knockBack;
++			*/
++			num5 = 1f;
+ 			if (targetNPC.Center.X < base.Center.X)
+ 				direction = 1;
  			else
  				direction = -1;
  		}
@@ -1073,17 +1089,21 @@
  		switch (type) {
  			case 697:
  			case 699:
-@@ -11961,8 +_,23 @@
+@@ -11961,12 +_,33 @@
  		if (type == 22)
  			num40 = ((Main.player[owner].Center.X < targetNPC.Center.X) ? 1 : (-1));
  
 +		modifiers.ScalingArmorPenetration += armorPenetrationPercent;
-+		modifiers.Knockback *= num5 / knockBack;
++		modifiers.Knockback *= num5; // Apply vanilla knockback adjustments as a multiplier.
 +		modifiers.TargetDamageMultiplier *= dmg / 1000;
 +		if (num40 != null)
 +			modifiers.HitDirectionOverride = num40;
 +
-+		var strike = modifiers.ToHitInfo(damage, crit, num5, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
++		// TML: Moved up from below
++		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type]) && Main.player[owner].meleeEnchant == 6)
++			modifiers.TargetDamageMultiplier *= Player.GetNanoFlaskDamageBoost();
++
++		var strike = modifiers.ToHitInfo(damage, crit, knockBack, damageVariation: true, luck: ownedBySomeone ? Main.player[owner].luck : 0);
 +		num40 = strike.HitDirection;
 +
 +		goto VanillaOnHitEffectsStart;
@@ -1096,7 +1116,13 @@
 +		*/
  
  		if (ownedBySomeone && (melee || ProjectileID.Sets.IsAWhip[type])) {
++			/*
  			if (Main.player[owner].meleeEnchant == 6)
+ 				dmg = (int)((float)dmg * Player.GetNanoFlaskDamageBoost());
++			*/
+ 
+ 			if (Main.player[owner].meleeEnchant == 7)
+ 				NewProjectile(GetProjectileSource_FromThis(), targetNPC.Center.X, targetNPC.Center.Y, targetNPC.velocity.X, targetNPC.velocity.Y, 289, 0, 0f, owner);
 @@ -11976,14 +_,20 @@
  		NPCDamageTracker.SetSourceForNextHit(targetNPC, PlayerNPCHitSource.FromProjectile(type));
  		Invariant.Assert(Main.netMode == 0 || owner == Main.myPlayer, "Cannot simulate someone else's projectile dealing damage. ({0})", this);
