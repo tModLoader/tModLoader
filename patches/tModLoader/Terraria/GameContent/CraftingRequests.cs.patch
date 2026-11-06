@@ -9,40 +9,34 @@
  
  namespace Terraria.GameContent;
  
-@@ -37,10 +_,20 @@
+@@ -37,10 +_,16 @@
  			return result;
  		}
  
 -		public static NetPacket WriteResponse(bool approved)
-+		public static NetPacket WriteResponse(bool approved) => WriteResponse(approved, null);
++		public static NetPacket WriteResponse(bool approved) => WriteResponse(approved, new List<Item>());
 +
 +		public static NetPacket WriteResponse(bool approved, List<Item> consumedItems)
  		{
  			NetPacket result = NetModule.CreatePacket<NetCraftingRequestsModule>();
  			result.Writer.Write(approved);
-+			if (approved) {
-+				result.Writer.Write7BitEncodedInt(consumedItems?.Count ?? 0);
-+				if (consumedItems != null) {
-+					foreach (Item item in consumedItems) {
-+						ItemIO.Send(item, result.Writer, writeStack: true);
-+					}
-+				}
++			result.Writer.Write7BitEncodedInt(consumedItems.Count);
++			foreach (Item item in consumedItems) {
++				ItemIO.Send(item, result.Writer, writeStack: true);
 +			}
  			return result;
  		}
  
-@@ -64,7 +_,16 @@
+@@ -64,7 +_,14 @@
  
  		public void DeserializeResponse(BinaryReader reader)
  		{
 -			HandleResponse(reader.ReadBoolean());
 +			bool approved = reader.ReadBoolean();
-+			List<Item> consumedItems = new List<Item>();
-+			if (approved) {
-+				int count = reader.Read7BitEncodedInt();
-+				for (int i = 0; i < count; i++) {
-+					consumedItems.Add(ItemIO.Receive(reader, readStack: true));
-+				}
++			int count = reader.Read7BitEncodedInt();
++			List<Item> consumedItems = new List<Item>(count);
++			for (int i = 0; i < count; i++) {
++				consumedItems.Add(ItemIO.Receive(reader, readStack: true));
 +			}
 +
 +			HandleResponse(approved, consumedItems);
