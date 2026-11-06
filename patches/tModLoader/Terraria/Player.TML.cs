@@ -9,6 +9,7 @@ using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
 using Terraria.ID;
 using Terraria.ModLoader;
+using Terraria.Testing;
 
 namespace Terraria;
 
@@ -508,7 +509,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	}
 
 	/// <summary>
-	/// Determines if this player has enough mana to use an item.
+	/// Determines if this player can use an item with their current mana, applying slow magic use when out of mana.
 	/// <br/> If the player doesn't have enough mana and <paramref name="blockQuickMana"/> is <see langword="false"/>, the player will activate any missing mana effects they have and try again.
 	/// <br/> The <paramref name="pay"/> parameter can be used to consume the mana amount.
 	/// </summary>
@@ -516,9 +517,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// <param name="amount">The amount of mana needed. If <c>-1</c>, calculate using <see cref="GetManaCost(Item)"/>.</param>
 	/// <param name="pay">If <see langword="true"/>, actually use the mana requested.</param>
 	/// <param name="blockQuickMana">If <see langword="true"/>, prevent on missing mana effects like the Mana Flower from activating if the player doesn't have enough mana.</param>
-	/// <returns><see langword="true"/> if the player has enough mana to use the item, <see langword="false"/> otherwise.</returns>
+	/// <returns><see langword="true"/> if the player has enough mana to use the item or slow magic use is enabled, <see langword="false"/> otherwise.</returns>
 	public bool CheckMana(Item item, int amount = -1, bool pay = false, bool blockQuickMana = false)
 	{
+		slowMagicUse = false;
+
 		if (amount <= -1)
 			amount = GetManaCost(item);
 
@@ -531,12 +534,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			return true;
 		}
 
-		if (blockQuickMana)
-			return false;
-
-		CombinedHooks.OnMissingMana(this, item, amount);
-		if (statMana < amount && manaFlower)
-			QuickMana();
+		if (!blockQuickMana) {
+			CombinedHooks.OnMissingMana(this, item, amount);
+			if (statMana < amount && manaFlower)
+				QuickMana();
+		}
 
 		if (statMana >= amount) {
 			if (pay) {
@@ -547,9 +549,16 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			return true;
 		}
 
-		return false;
+		if (DebugOptions.ManaV2) {
+			statMana = 0;
+			DoRunOutOfManaEffect();
+			return true;
+		}
 
+		return false;
 	}
+
+	private bool reuseDelayIsSlowed;
 
 	/// <summary>
 	/// Returns true if an item animation is currently running.

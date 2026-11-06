@@ -3,6 +3,7 @@ using System;
 using Terraria.DataStructures;
 using Terraria.GameContent.Creative;
 using Terraria.ID;
+using Terraria.Testing;
 
 namespace Terraria.ModLoader;
 
@@ -213,7 +214,11 @@ public static class CombinedHooks
 
 	public static float TotalUseSpeedMultiplier(Player player, Item item)
 	{
-		return PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
+		float useSpeedMultiplier = PlayerLoader.UseSpeedMultiplier(player, item) * ItemLoader.UseSpeedMultiplier(item, player) * player.GetWeaponAttackSpeed(item);
+		if (DebugOptions.ManaV2 && item.mana > 0)
+			useSpeedMultiplier *= player.GetSlowMagicUseRate();
+
+		return useSpeedMultiplier;
 	}
 
 	public static float TotalUseTimeMultiplier(Player player, Item item)
