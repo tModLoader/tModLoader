@@ -646,7 +646,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		return false;
 	}
 
-	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers, int damage)
+	private void ApplyVanillaHurtEffectModifiers(ref HurtModifiers modifiers)
 	{
 		{
 			modifiers.FinalDamage *= Math.Max(1 - endurance, 0);
@@ -656,7 +656,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			if (beetleDefense && beetleOrbs > 0)
 				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
 
-			if (defendedByPaladin && whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.SourceDamage.ApplyTo(damage) < 9999) {
+			if (defendedByPaladin && whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.Dodgeable) {
 				for (int i = 0; i < Main.maxPlayers; i++) {
 					if (i != whoAmI && Main.player[i].CanDefendWithPaladinsShield(team)) {
 						modifiers.FinalDamage *= 0.75f;

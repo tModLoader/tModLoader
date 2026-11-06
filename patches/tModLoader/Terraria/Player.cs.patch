@@ -5677,7 +5677,7 @@
 +			modifiers.KnockbackImmunityEffectiveness *= 0.8f; // still launch the player a little
 +		}
 +
-+		ApplyVanillaHurtEffectModifiers(ref modifiers, Damage);
++		ApplyVanillaHurtEffectModifiers(ref modifiers);
 +		info = modifiers.ToHurtInfo(Damage, statDefense, pvp ? 0.5f : DefenseEffectiveness.Value, knockback, noKnockback);
 +		if (info.Cancelled)
 +			return 0.0;
@@ -5791,14 +5791,16 @@
  			beetleOrbs--;
  			for (int l = 0; l < maxBuffs; l++) {
  				if (buffType[l] >= 95 && buffType[l] <= 97)
-@@ -31674,7 +_,10 @@
+@@ -31674,7 +_,12 @@
  			beetleCounter = 0f;
  		}
  
++		// Damage has already been reduced by 1/4, so vanilla's threshold of 4 becomes 3
++		// Damage < 9999 changed to Dodgeable (more correct for vanilla content, will be fixed in vanilla too)
 +		/*
  		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && num2 >= 4.0 && Damage < 9999) {
 +		*/
-+		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 3 && info.SourceDamage < 9999) { // TODO: Should this be checking InstantKill?
++		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 3 && info.Dodgeable) {
  			Player player = null;
  			float num8 = float.MaxValue;
  			for (int m = 0; m < 255; m++) {
