@@ -4,7 +4,7 @@ using Terraria.GameContent.UI.Elements;
 
 namespace Terraria.ModLoader.UI.Elements;
 
-public class UIMarqueeTextPanel : UITextPanel<object>
+public class UIMarqueeTextPanel : UITextPanel
 {
 	public MarqueeTextOptions MarqueeText = new();
 

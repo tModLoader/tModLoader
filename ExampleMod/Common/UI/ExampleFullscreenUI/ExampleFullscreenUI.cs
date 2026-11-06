@@ -208,8 +208,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 
 			var marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
 				Top = new(top, 0f),
-				Width = new(100f, 0f),
-				Height = new(20f, 0f), // TODO: shouldn't have to do this after the rework
+				MaxWidth = new(100f, 0f),
 			};
 			panel.Append(marqueeText);
 			top += 20;

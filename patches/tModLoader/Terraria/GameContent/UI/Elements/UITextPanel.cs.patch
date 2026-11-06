@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UITextPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextPanel.cs
-@@ -2,6 +_,7 @@
+@@ -2,9 +_,13 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.UI;
@@ -8,6 +8,12 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
++// tML: non-generic version
++public class UITextPanel(object text, float textScale = 1, bool large = false) : UITextPanel<object>(text, textScale, large);
++
+ public class UITextPanel<T> : UIPanel
+ {
+ 	protected T _text;
 @@ -17,6 +_,12 @@
  	public bool HideContents;
  	private string _asterisks;
@@ -21,7 +27,11 @@
  	public bool IsLarge => _isLarge;
  
  	public bool DrawPanel {
-@@ -101,7 +_,21 @@
+@@ -98,10 +_,25 @@
+ 
+ 	public virtual void SetText(T text, float textScale, bool large)
+ 	{
++		textOffset = Vector2.Zero;
  		_text = text;
  		_textScale = textScale;
  		_isLarge = large;
@@ -43,35 +53,30 @@
  		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
  	}
-@@ -111,7 +_,8 @@
+@@ -111,7 +_,16 @@
  		if (_drawPanel)
  			base.DrawSelf(spriteBatch);
  
 +		if (!drawTextAsChild)
 -		DrawText(spriteBatch);
 +			DrawText(spriteBatch);
- 	}
- 
- 	protected void DrawText(SpriteBatch spriteBatch)
-@@ -127,11 +_,19 @@
- 		DrawText(spriteBatch, text, TextDrawPosition, _color);
- 	}
- 
++	}
++
 +	protected override void DrawChildren(SpriteBatch spriteBatch)
 +	{
 +		if (drawTextAsChild)
 +			DrawText(spriteBatch);
 +
 +		base.DrawChildren(spriteBatch);
-+	}
-+
+ 	}
+ 
+ 	protected void DrawText(SpriteBatch spriteBatch)
+@@ -129,6 +_,8 @@
+ 
  	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
  	{
++		position += textOffset;
++
  		if (_isLarge)
--			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
-+			Utils.DrawBorderStringBig(spriteBatch, text, position + textOffset, color, _textScale);
+ 			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
  		else
--			Utils.DrawBorderString(spriteBatch, text, position, color, _textScale);
-+			Utils.DrawBorderString(spriteBatch, text, position + textOffset, color, _textScale);
- 	}
- }
