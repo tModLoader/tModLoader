@@ -60,7 +60,16 @@
  			if (playerIndex == Main.myPlayer)
  				_localMinionRespawner.Clear();
  
-@@ -645,12 +_,15 @@
+@@ -639,18 +_,24 @@
+ 		public void NewMessage(string message, int displayTime)
+ 		{
+ 			chatText = message;
++			snippets = ChatManager.ParseMessage(chatText, color).ToArray(); // Use color here so chat tag colors are applied to snippet rather than draw call
++			/*
+ 			snippets = ChatManager.ParseMessage(chatText, Color.White).ToArray();
++			*/
+ 			messageSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, snippets, Vector2.One);
+ 			timeLeft = displayTime;
  		}
  	}
  
@@ -364,17 +373,18 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
-@@ -996,9 +_,19 @@
+@@ -996,9 +_,20 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
  	public const int SupportedMiscSlotCount = 5;
 +	/// <summary>
 +	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
 +	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// Use <see cref="GetEffectiveArmor(int)"/> to include items shared from another loadout.<br/><br/>
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
-+	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. Use <see cref="GetEffectiveDye(int)"/> to include dyes shared from another loadout. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
@@ -1817,7 +1827,7 @@
  			Loadouts[CurrentLoadoutIndex].Swap(this);
  			Loadouts[loadoutIndex].Swap(this);
  			CurrentLoadoutIndex = loadoutIndex;
-@@ -3893,6 +_,8 @@
+@@ -3893,15 +_,22 @@
  					UniqueInfoPiece = loadoutIndex
  				}, whoAmI);
  			}
@@ -1826,6 +1836,38 @@
  		}
  	}
  
++	/// <summary>
++	/// Gets the item equipped in or shared to a vanilla <see cref="armor"/> slot (provided it does not conflict with other effective equipment)
++	/// </summary>
+ 	public Item GetEffectiveArmor(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveArmor(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveArmor(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the item is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveArmor(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (armor[slot].IsAir) {
+@@ -3946,12 +_,17 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Gets the dye equipped in or shared to a vanilla <see cref="dye"/> slot
++	/// </summary>
+ 	public Item GetEffectiveDye(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveDye(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveDye(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the dye is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveDye(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (dye[slot].IsAir) {
 @@ -3973,7 +_,7 @@
  		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
  			return;
@@ -3364,7 +3406,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -13017,6 +_,9 @@
+@@ -13017,17 +_,26 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3374,6 +3416,23 @@
  	}
  
  	public void UpdateArmorSets(int i)
+ 	{
++		/*
+ 		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
++		*/
++		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
++		ActiveArmorSetBonus = armorSetBonus;
++		armorSetBonus?.Effect?.Invoke(this);
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+ 		UpdateArmorSets_Always_Stardust();
+ 		UpdateArmorSets_Always_Chlorophyte();
+ 		UpdateArmorSets_Always_Vortex();
+ 		ApplyArmorSoundAndDustChanges();
++		ItemLoader.UpdateArmorSet(this, armorSetBonus, armor[0], armor[1], armor[2]);
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -13387,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
@@ -3423,11 +3482,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,7 @@
+@@ -13575,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		ActiveArmorSetBonus = null; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
@@ -5791,14 +5851,16 @@
  			beetleOrbs--;
  			for (int l = 0; l < maxBuffs; l++) {
  				if (buffType[l] >= 95 && buffType[l] <= 97)
-@@ -31674,7 +_,10 @@
+@@ -31674,7 +_,12 @@
  			beetleCounter = 0f;
  		}
  
++		// Damage has already been reduced by 1/4, so vanilla's threshold of 4 becomes 3
++		// Damage < 9999 changed to Dodgeable (more correct for vanilla content, will be fixed in vanilla too)
 +		/*
  		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && num2 >= 4.0 && Damage < 9999) {
 +		*/
-+		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 4.0 && info.SourceDamage < 9999) { // TODO: Should this be checking InstantKill?
++		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 3 && info.Dodgeable) {
  			Player player = null;
  			float num8 = float.MaxValue;
  			for (int m = 0; m < 255; m++) {
@@ -5811,7 +5873,7 @@
  			if (player != null) {
  				num2 = (int)(num2 * 0.75);
 +			*/
-+			{
++			if (player != null) {
 +				int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
  				if (player == Main.LocalPlayer && num8 < PaladinsShieldRange)
  					Main.LocalPlayer.Hurt(PlayerDeathReason.ByOther(20), damage, 0, pvp: false, quiet: false, Crit: false, ImmunityCooldownID.PaladinsShield, dodgeable: false);
