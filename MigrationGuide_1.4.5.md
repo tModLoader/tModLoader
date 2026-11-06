@@ -578,6 +578,23 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Pylons no longer require happiness to be sold
 * `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
 
+### GetItemSettings
+
+Several `GetItemSettings` presets used with `Player.GetItem` have been renamed:
+
+| 1.4.4 | 1.4.5 |
+|---|---|
+| `InventoryEntityToPlayerInventorySettings` | `QuickTransferFromSlot` |
+| `NPCEntityToPlayerInventorySettings` | `GiftRecieved` |
+| `LootAllSettings` | `LootAllFromBank` |
+| `LootAllSettingsRegularChest` | `LootAllFromChest` |
+| `GetItemInDropItemCheck` | `ReturnItemFromSlot` |
+| `InventoryUIToInventorySettingsShowAsNew` | `ReturnItemShowAsNew` |
+
+`InventoryUIToInventorySettings` was removed. Use `default(GetItemSettings)` to preserve its settings, or `ReturnItemFromSlot` for vanilla's new UI-return behavior, which suppresses pickup text. `PickupItemFromWorld` and `ItemCreatedFromItemUsage` are unchanged.
+
+Vanilla crafting returns now use `ReturnItemShowAsNewNoCoinMerge`; crafting refunds use `RefundConsumedItem`. Custom constructor calls should name `StepAfterHandlingSlotNormally`, since the new `NoSound` parameter precedes it.
+
 ### Example Mod
 
 Several Example Mod examples have been updated to adapt to 1.4.5 changes and to fix other issues. If you used any of these as a template/guide, we recommend applying the same changes.
