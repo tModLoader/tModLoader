@@ -1,19 +1,59 @@
 --- src/TerrariaNetCore/Terraria/GameContent/CraftingRequests.cs
 +++ src/tModLoader/Terraria/GameContent/CraftingRequests.cs
-@@ -108,10 +_,10 @@
- 		CraftingEffects.OnCraft(recipe, quickCraft);
- 	}
+@@ -4,6 +_,8 @@
+ using Terraria.DataStructures;
+ using Terraria.Net;
+ using Terraria.Testing;
++using Terraria.ModLoader;
++using Terraria.ModLoader.IO;
  
--	private static Item CreateResult(Recipe recipe)
-+	private static Item CreateResult(Recipe recipe, List<Item> consumedItems)
+ namespace Terraria.GameContent;
+ 
+@@ -37,10 +_,16 @@
+ 			return result;
+ 		}
+ 
+-		public static NetPacket WriteResponse(bool approved)
++		public static NetPacket WriteResponse(bool approved) => WriteResponse(approved, new List<Item>());
++
++		public static NetPacket WriteResponse(bool approved, List<Item> consumedItems)
+ 		{
+ 			NetPacket result = NetModule.CreatePacket<NetCraftingRequestsModule>();
+ 			result.Writer.Write(approved);
++			result.Writer.Write7BitEncodedInt(consumedItems.Count);
++			foreach (Item item in consumedItems) {
++				ItemIO.Send(item, result.Writer, writeStack: true);
++			}
+ 			return result;
+ 		}
+ 
+@@ -64,7 +_,14 @@
+ 
+ 		public void DeserializeResponse(BinaryReader reader)
+ 		{
+-			HandleResponse(reader.ReadBoolean());
++			bool approved = reader.ReadBoolean();
++			int count = reader.Read7BitEncodedInt();
++			List<Item> consumedItems = new List<Item>(count);
++			for (int i = 0; i < count; i++) {
++				consumedItems.Add(ItemIO.Receive(reader, readStack: true));
++			}
++
++			HandleResponse(approved, consumedItems);
+ 		}
+ 
+ 		public override bool Deserialize(BinaryReader reader, int userId)
+@@ -111,7 +_,9 @@
+ 	private static Item CreateResult(Recipe recipe)
  	{
  		Item item = recipe.createItem.Clone();
--		item.OnCreated(new RecipeItemCreationContext(recipe));
-+		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems));
++		/* Moved to RecipeLoader.OnCraft after the craft succeeds.
+ 		item.OnCreated(new RecipeItemCreationContext(recipe));
++		*/
  		if (item.stack <= 1)
  			item.Prefix(-1);
  
-@@ -120,11 +_,15 @@
+@@ -120,11 +_,17 @@
  
  	private static void CraftLocally(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
  	{
@@ -25,17 +65,37 @@
 +			Invariant.Assert(Consume(ingredient, chests, consumedItems, fromChests: true) == 0, "Not enough items for local craft");
  		}
  
++		Item result = CreateResult(recipe);
++		RecipeLoader.OnCraft(result, recipe, consumedItems, Main.mouseItem);
 -		Main.CraftItem_GrantItem(recipe, CreateResult(recipe), quickCraft);
-+		Main.CraftItem_GrantItem(recipe, CreateResult(recipe, consumedItems), quickCraft);
++		Main.CraftItem_GrantItem(recipe, result, quickCraft);
  	}
  
  	private static void CraftViaRequest(Recipe recipe, bool quickCraft, List<Chest> chests, List<Recipe.RequiredItemEntry> ingredients)
-@@ -142,7 +_,7 @@
+@@ -279,18 +_,24 @@
+ 			return;
  		}
  
- 		Invariant.Assert(list2.Any(), "CraftViaRequest with no items?");
--		Item item = CreateResult(recipe);
-+		Item item = CreateResult(recipe, list);
- 		if (!quickCraft)
- 			FakeCursorItem.Add(item);
++		List<Item> consumedItems = new List<Item>();
+ 		foreach (Recipe.RequiredItemEntry item in items) {
++			/*
+ 			Invariant.Assert(Consume(item, chests, null, fromChests: true) == 0, "Not enough items for approved craft");
++			*/
++			Invariant.Assert(Consume(item, chests, consumedItems, fromChests: true) == 0, "Not enough items for approved craft");
+ 		}
  
+-		NetManager.Instance.SendToClient(NetCraftingRequestsModule.WriteResponse(approved: true), whoAmI);
++		NetManager.Instance.SendToClient(NetCraftingRequestsModule.WriteResponse(approved: true, consumedItems: consumedItems), whoAmI);
+ 	}
+ 
+-	private static void HandleResponse(bool approved)
++	private static void HandleResponse(bool approved, List<Item> consumedItems)
+ 	{
+ 		RemoteCraftRequest remoteCraftRequest = _pendingCrafts.Dequeue();
+ 		FakeCursorItem.Remove(remoteCraftRequest.result.type, remoteCraftRequest.result.stack);
+ 		if (approved) {
++			remoteCraftRequest.consumed.AddRange(consumedItems);
++			RecipeLoader.OnCraft(remoteCraftRequest.result, remoteCraftRequest.recipe, remoteCraftRequest.consumed, Main.mouseItem);
+ 			Main.CraftItem_GrantItem(remoteCraftRequest.recipe, remoteCraftRequest.result, remoteCraftRequest.quickCraft);
+ 			return;
+ 		}
