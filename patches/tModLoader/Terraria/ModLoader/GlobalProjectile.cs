@@ -356,10 +356,12 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	{
 	}
 
-	/// <summary>
-	/// Whether or not a grappling hook that shoots this type of projectile can be used by the given player. Return null to use the default code (whether or not the player is in the middle of firing the grappling hook). Returns null by default.
-	/// <para/> Called on the local client only.
-	/// </summary>
+	/// <inheritdoc cref="ModProjectile.ModifyGrappleLimits"/>
+	public virtual void ModifyGrappleLimits(int type, Player player, ref int launchBudget, ref int replacementThreshold)
+	{
+	}
+
+	/// <inheritdoc cref="ModProjectile.CanUseGrapple"/>
 	public virtual bool? CanUseGrapple(int type, Player player)
 	{
 		return null;
@@ -374,7 +376,7 @@ public abstract class GlobalProjectile : GlobalType<Projectile, GlobalProjectile
 	}
 
 	/// <summary>
-	/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
+	/// Sets how many attached grappling hooks the player can retain before the oldest is removed on attachment. Counts all grappling hook types; the default for modded hooks is 3.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void NumGrappleHooks(Projectile projectile, Player player, ref int numHooks)

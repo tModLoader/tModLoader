@@ -383,7 +383,19 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// This code is called whenever the player uses a grappling hook that shoots this type of projectile. Use it to change what kind of hook is fired (for example, the Dual Hook does this), to kill old hook projectiles, etc.
+	/// Modifies the shared limits used when firing a grappling hook, before <see cref="CanUseGrapple"/>. Counts all active grappling hooks owned by the player, including returning hooks.
+	/// <para/> Called on the local client only.
+	/// </summary>
+	/// <param name="player">The player firing the hook.</param>
+	/// <param name="launchBudget">The launch allowance before subtracting attached hooks. At least one unattached hook is allowed. Ignored when <see cref="CanUseGrapple"/> returns true.</param>
+	/// <param name="replacementThreshold">After firing is allowed, reaching this total hook count removes one oldest hook before spawning the new one. This also applies when <see cref="CanUseGrapple"/> returns true. Use <see cref="int.MaxValue"/> to disable replacement on firing.</param>
+	/// <remarks>Both limits are clamped to at least 1 after all hooks run. Use <see cref="CanUseGrapple"/> to prevent firing, and <see cref="NumGrappleHooks"/> to limit attached hooks.</remarks>
+	public virtual void ModifyGrappleLimits(Player player, ref int launchBudget, ref int replacementThreshold)
+	{
+	}
+
+	/// <summary>
+	/// Return false to prevent firing, true to skip the launch-budget check, or null to use it. Returns null by default. The replacement threshold from <see cref="ModifyGrappleLimits"/> still applies.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual bool? CanUseGrapple(Player player)
@@ -409,7 +421,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// How many of this type of grappling hook the given player can latch onto blocks before the hooks start disappearing. Change the numHooks parameter to determine this; by default it will be 3.
+	/// Sets how many attached grappling hooks the player can retain before the oldest is removed on attachment. Counts all grappling hook types; the default for modded hooks is 3.
 	/// <para/> Called on the local client only.
 	/// </summary>
 	public virtual void NumGrappleHooks(Player player, ref int numHooks)
