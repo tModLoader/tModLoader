@@ -2042,6 +2042,16 @@
  		else if (type == 4986) {
  			if (NPC.unlockedSlimeRainbowSpawn)
  				return;
+@@ -47841,8 +_,7 @@
+ 				num10--;
+ 				num11--;
+ 				stack--;
+-				int num12 = -1;
+-				num12 = ((NPCID.Sets.ShimmerTransformToNPC[makeNPC] < 0) ? NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, makeNPC, placeStyle, Main.myPlayer) : NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, NPCID.Sets.ShimmerTransformToNPC[makeNPC], 0, Main.myPlayer));
++				int num12 = (NPCID.Sets.ShimmerTransformToNPC[makeNPC] < 0) ? NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, makeNPC, placeStyle, Main.myPlayer) : NPC.ReleaseNPC((int)base.Center.X, (int)base.Bottom.Y, NPCID.Sets.ShimmerTransformToNPC[makeNPC], 0, Main.myPlayer);
+ 				if (num12 >= 0) {
+ 					Main.npc[num12].shimmerTransparency = 1f;
+ 					NetMessage.SendData(146, -1, -1, null, 2, num12);
 @@ -47857,7 +_,7 @@
  			int num13 = FindDecraftAmount();
  			Recipe recipe = Main.recipe[decraftingRecipeIndex];

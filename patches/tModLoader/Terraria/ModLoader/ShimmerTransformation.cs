@@ -17,7 +17,16 @@ public static class ShimmerLoader<TShimmerable> where TShimmerable : IModShimmer
 	public static Dictionary<int, int> Redirects { get; } = new();
 
 	public static void AddRedirect(int typeFrom, int typeTo)
-		=> Redirects.Add(typeFrom, typeTo);
+	{
+		int checkLoop = typeTo;
+		while (Redirects.ContainsKey(checkLoop))
+		{
+			if (checkLoop == typeFrom)
+				throw new Exception($"Redirection loop from {typeFrom} to {typeTo} in {typeof(TShimmerable)}");
+			checkLoop = Redirects[checkLoop];
+		}
+		Redirects.Add(typeFrom, typeTo);
+	}
 
 	/// <summary>
 	/// First <see cref="Redirects"/> is checked for an entry, if one exists it is applied over <paramref name="type"/>, then if this is
@@ -29,6 +38,7 @@ public static class ShimmerLoader<TShimmerable> where TShimmerable : IModShimmer
 			type = value;
 		if (typeof(TShimmerable) == typeof(Item) && ItemID.Sets.ShimmerCountsAsItem[type] > 0)
 			type = ItemID.Sets.ShimmerCountsAsItem[type];
+
 		return type;
 	}
 
@@ -154,7 +164,7 @@ public static class ShimmerLoader
 		}
 
 		foreach ((int, int) pair in PostMoonLordItemShimmerPairs)
-			ShimmerLoader<Item>.AddTransformation(pair.Item1, new VanillaItemTransformToItem(pair.Item2, tempThing => Condition.DownedMoonLord.IsMet(), null)); //TODO: Smarter casts
+			ShimmerLoader<Item>.AddTransformation(pair.Item1, new VanillaItemTransformToItem(pair.Item2, _ => Condition.DownedMoonLord.IsMet())); //TODO: Smarter casts
 
 		// Lunar Bricks
 		ShimmerLoader<Item>.AddTransformation(3461, new VanillaItemTransformToItem(-1, null, type => Main.GetMoonPhase() switch {
@@ -229,18 +239,18 @@ public static class ShimmerLoader
 	#region Ordering
 
 	/// <summary> Sets the Ordering of this <see cref="ShimmerTransformation{TShimmerable}"/>. This <see cref="ShimmerTransformation{TShimmerable}"/> can't already have one. </summary>
-	private static TTrans SetOrdering<TTrans>(this TTrans thisTrans, IShimmerTransformation<TShimmerable> transformation, bool after, int forType) where TTrans : IShimmerTransformation<TShimmerable>
+	public static T SetOrdering<T>(this T thisTrans, IOrderable transformation, bool after, int forType) where T : IOrderable
 	{
 		if (thisTrans.Target != null)
 			throw new Exception("This transformation already has an ordering.");
-		if (!ShimmerLoader<TShimmerable>.Transformations[forType].Contains(transformation))
-			throw new ArgumentException("This passed transformation must be registered.", nameof(transformation));
+		//if (!ShimmerLoader<TModShimmerable>.Transformations[forType].Contains(transformation))
+		//	throw new ArgumentException("This passed transformation must be registered.", nameof(transformation));
 
 		thisTrans.Target = transformation;
 		thisTrans.After = after;
-		IShimmerTransformation<TShimmerable> target = transformation;
+		IOrderable target = transformation;
 		do {
-			if (target == thisTrans)
+			if (target.Equals(thisTrans))
 				throw new Exception("Shimmer ordering loop!");
 			target = target.Target;
 		} while (target != null);
@@ -248,9 +258,11 @@ public static class ShimmerLoader
 		return thisTrans;
 	}
 
-	public ShimmerTransformation<TShimmerable> SortBefore(IShimmerTransformation<TShimmerable> transformation, int forType) => SetOrdering(transformation, false, forType);
+	public static T SortBefore<T>(this T thisTrans, IOrderable transformation, int type) where T : IOrderable
+		=> thisTrans.SetOrdering(transformation, false, type);
 
-	public ShimmerTransformation<TShimmerable> SortAfter(IShimmerTransformation<TShimmerable> transformation, int forType) => SetOrdering(transformation, true, forType);
+	public static T SortAfter<T>(this T thisTrans, IOrderable transformation, int type) where T : IOrderable
+		=> thisTrans.SetOrdering(transformation, true, type);
 
 	#endregion Ordering
 
@@ -263,7 +275,6 @@ public interface IShimmerTransformation<in TShimmerable> : IOrderable where TShi
 
 	public void Disable()
 		=> Disabled = true;
-
 	public IShimmerTransformation<TShimmerable> DeepClone();
 
 	public IEnumerable<IShimmerResult<TShimmerable>> Results { get; }
@@ -301,15 +312,11 @@ public interface IVanillaTypedTransformation<in TShimmerable, TSelf> : IShimmerR
 	public int Type { get; set; }
 }
 
-public record struct VanillaItemTransformToItem(int Type, Func<Item, bool> Condition, Func<Item, int> TypeCalc) : IVanillaTypedTransformation<Item, VanillaItemTransformToItem>
+public record struct VanillaItemTransformToItem(int Type, Func<Item, bool> Condition = null, Func<Item, int> TypeCalc = null) : IVanillaTypedTransformation<Item, VanillaItemTransformToItem>
 {
-	public VanillaItemTransformToItem(int Type) : this(Type, null, null) { }
-
 	public bool Disabled { get; set; } = false;
-
-	public IShimmerTransformation<Item> Target { get; set; } = null;
-
 	public bool After { get; set; } = false;
+	IOrderable IOrderable.Target { get; set; } = null;
 
 	public readonly bool CanShimmer(Item shimmerable)
 		=> Condition?.Invoke(shimmerable) ?? true;
@@ -336,10 +343,9 @@ public record struct VanillaItemTransformToItem(int Type, Func<Item, bool> Condi
 public record struct VanillaNPCTransformToNPC(int Type) : IVanillaTypedTransformation<NPC, VanillaNPCTransformToNPC>
 {
 	public bool Disabled { get; set; } = false;
-
-	public IShimmerTransformation<NPC> Target { get; set; } = null;
-
 	public bool After { get; set; } = false;
+	IOrderable IOrderable.Target { get; set; } = null;
+
 	public readonly IShimmerTransformation<NPC> DeepClone() => this with { };
 	public readonly IEnumerable<IModShimmerable> SpawnFrom(NPC shimmerable, ShimmerInfo shimmerInfo)
 	{
@@ -358,10 +364,9 @@ public record struct VanillaNPCTransformToItem(int Type) : IVanillaTypedTransfor
 
 	readonly bool IShimmerResult<NPC>.IsNPCResult(int type) => false;
 	public bool Disabled { get; set; } = false;
-
-	public IShimmerTransformation<NPC> Target { get; set; } = null;
-
 	public bool After { get; set; } = false;
+	IOrderable IOrderable.Target { get; set; } = null;
+
 	public readonly IShimmerTransformation<NPC> DeepClone() => this with { };
 	public readonly IEnumerable<IModShimmerable> SpawnFrom(NPC shimmerable, ShimmerInfo shimmerInfo)
 	{
@@ -390,55 +395,6 @@ public record struct VanillaNPCTransformToItem(int Type) : IVanillaTypedTransfor
 	}
 }
 
-public record struct VanillaItemTransformToLuck(int CoinLuckValue) : IShimmerTransformation<Item>, IShimmerResult<Item>
-{
-	public bool Disabled { get; set; } = false;
-
-	public IShimmerTransformation<Item> Target { get; set; } = null;
-
-	public bool After { get; set; } = false;
-
-	IEnumerable<IShimmerResult<Item>> IShimmerTransformation<Item>.Results {
-		get {
-			yield return this;
-		}
-	}
-	public readonly IShimmerTransformation<Item> DeepClone() => this with { };
-
-	public readonly bool CanShimmer(Item shimmerable) => true;
-	readonly void IShimmerTransformation<Item>.Shimmer(Item shimmerable) => SpawnFrom(shimmerable, new(1));
-
-	public readonly bool HandlesCleanUp => true;
-
-	public readonly int Count => 1;
-
-	public readonly bool AllowChainedShimmers => false;
-	public readonly IEnumerable<IModShimmerable> SpawnFrom(Item shimmerable, ShimmerInfo shimmerInfo)
-	{
-		shimmerable.stack *= CoinLuckValue;
-		Main.player[Main.myPlayer].AddCoinLuck(shimmerable.Center, shimmerable.stack);
-		NetMessage.SendData(146, -1, -1, null, 1, (int)shimmerable.Center.X, (int)shimmerable.Center.Y, shimmerable.stack);
-		shimmerable.type = 0;
-		shimmerable.stack = 0;
-		shimmerable.shimmerTime = shimmerable.stack > 0 ? 1f : 0f;
-		shimmerable.shimmerWet = true;
-		shimmerable.wet = true;
-		shimmerable.velocity *= 0.1f;
-		if (Main.netMode == 0) {
-			Item.ShimmerEffect(shimmerable.Center);
-		}
-		else {
-			NetMessage.SendData(146, -1, -1, null, 0, (int)shimmerable.Center.X, (int)shimmerable.Center.Y);
-			NetMessage.SendData(145, -1, -1, null, shimmerable.whoAmI, 1f);
-		}
-		if (shimmerable.stack == 0) {
-			shimmerable.makeNPC = -1;
-			shimmerable.active = false;
-		}
-		yield return null;
-	}
-}
-
 /// <summary>
 /// Represents the behaviour and output of a shimmer transformation, the <see cref="IModShimmerable"/>(s) that can use it are stored via
 /// <see cref="ShimmerLoader{TShimmerable}.Transformations"/> which is updated via <see cref="Register()"/> and its overloads. Uses a similar syntax to
@@ -460,9 +416,9 @@ public class ShimmerTransformation<TShimmerable> : IShimmerTransformation<TShimm
 	/// <summary> Prevents the transformation from being used. </summary>
 	public bool Disabled { get; set; }
 
-	public IShimmerTransformation<TShimmerable> Target { get; internal set; }
+	public IOrderable Target { get; set; }
 
-	public bool After { get; internal set; }
+	public bool After { get; set; }
 
 	IEnumerable<IShimmerResult<TShimmerable>> IShimmerTransformation<TShimmerable>.Results => Results;
 
@@ -671,35 +627,7 @@ public class ShimmerTransformation<TShimmerable> : IShimmerTransformation<TShimm
 		return this;
 	}
 
-	//#endregion ControllerMethods
-
-	//#region Ordering
-
-	///// <summary> Sets the Ordering of this <see cref="ShimmerTransformation{TShimmerable}"/>. This <see cref="ShimmerTransformation{TShimmerable}"/> can't already have one. </summary>
-	//private ShimmerTransformation<TShimmerable> SetOrdering(IShimmerTransformation<TShimmerable> transformation, bool after, int forType)
-	//{
-	//	if (Target != null)
-	//		throw new Exception("This transformation already has an ordering.");
-	//	if (!ShimmerLoader<TShimmerable>.Transformations[forType].Contains(transformation))
-	//		throw new ArgumentException("This passed transformation must be registered.", nameof(transformation));
-
-	//	Target = transformation;
-	//	After = after;
-	//	IShimmerTransformation<TShimmerable> target = transformation;
-	//	do {
-	//		if (target == this)
-	//			throw new Exception("Shimmer ordering loop!");
-	//		target = target.Target;
-	//	} while (target != null);
-
-	//	return this;
-	//}
-
-	//public ShimmerTransformation<TShimmerable> SortBefore(IShimmerTransformation<TShimmerable> transformation, int forType) => SetOrdering(transformation, false, forType);
-
-	//public ShimmerTransformation<TShimmerable> SortAfter(IShimmerTransformation<TShimmerable> transformation, int forType) => SetOrdering(transformation, true, forType);
-
-	//#endregion Ordering
+	#endregion ControllerMethods
 
 	#region Registering
 
@@ -825,3 +753,53 @@ public interface IModShimmerable
 
 	public abstract IEntitySource GetSource_Misc(string context);
 }
+
+//public record struct VanillaItemTransformToLuck(int CoinLuckValue) : IShimmerTransformation<Item>, IShimmerResult<Item>
+//{
+//	public bool Disabled { get; set; } = false;
+
+//	IOrderable IOrderable.Target { get; set; } = null;
+
+//	public bool After { get; set; } = false;
+
+//	readonly IEnumerable<IShimmerResult<Item>> IShimmerTransformation<Item>.Results {
+//		get {
+//			yield return this;
+//		}
+//	}
+//	public readonly IShimmerTransformation<Item> DeepClone() => this with { };
+
+//	public readonly bool CanShimmer(Item shimmerable) => true;
+//	readonly void IShimmerTransformation<Item>.Shimmer(Item shimmerable) => SpawnFrom(shimmerable, new(1));
+
+//	public readonly bool HandlesCleanUp => true;
+
+//	public readonly int Count => 1;
+
+//	public readonly bool AllowChainedShimmers => false;
+
+//	public readonly IEnumerable<IModShimmerable> SpawnFrom(Item shimmerable, ShimmerInfo shimmerInfo)
+//	{
+//		shimmerable.stack *= CoinLuckValue;
+//		Main.player[Main.myPlayer].AddCoinLuck(shimmerable.Center, shimmerable.stack);
+//		NetMessage.SendData(146, -1, -1, null, 1, (int)shimmerable.Center.X, (int)shimmerable.Center.Y, shimmerable.stack);
+//		shimmerable.type = 0;
+//		shimmerable.stack = 0;
+//		shimmerable.shimmerTime = shimmerable.stack > 0 ? 1f : 0f;
+//		shimmerable.shimmerWet = true;
+//		shimmerable.wet = true;
+//		shimmerable.velocity *= 0.1f;
+//		if (Main.netMode == 0) {
+//			Item.ShimmerEffect(shimmerable.Center);
+//		}
+//		else {
+//			NetMessage.SendData(146, -1, -1, null, 0, (int)shimmerable.Center.X, (int)shimmerable.Center.Y);
+//			NetMessage.SendData(145, -1, -1, null, shimmerable.whoAmI, 1f);
+//		}
+//		if (shimmerable.stack == 0) {
+//			shimmerable.makeNPC = -1;
+//			shimmerable.active = false;
+//		}
+//		yield return null;
+//	}
+//}

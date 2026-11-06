@@ -4,9 +4,11 @@ using System.Linq;
 
 namespace Terraria.ModLoader.Utilities;
 
-public interface IOrderable //TODO: Figure out if the sorting algorithm works with value types, ref only for now
+public interface IOrderable 
 {
-	public (object target, bool after) Ordering { get; }
+	public (IOrderable target, bool after) Ordering => (Target, After);
+	public IOrderable Target { get; set; }
+	public bool After { get; set; }
 }
 
 public static class OrderableExtensions
@@ -14,6 +16,7 @@ public static class OrderableExtensions
 	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable"/>. </summary>
 	public static IList<TOrderable> GetOrdered<TOrderable>(this IList<TOrderable> orderableIList) where TOrderable : IOrderable
 		=> orderableIList.GetOrdered<IList<TOrderable>, TOrderable>();
+
 	/// <summary> Orders everything in the <see cref="IList{T}"/> according to <see cref="IOrderable"/>. </summary>
 	public static TList GetOrdered<TList, TOrderable>(this TList orderableIList) where TOrderable : IOrderable where TList : IList<TOrderable>
 	{

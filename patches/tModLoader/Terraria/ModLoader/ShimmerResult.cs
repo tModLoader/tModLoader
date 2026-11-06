@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 using Terraria.ID;
 
 namespace Terraria.ModLoader;
-public record class ShimmerInfo(int AllowedSpawnStack);
+public readonly record struct ShimmerInfo(int AllowedSpawnStack);
 
 public interface IShimmerResult<in TShimmerable> where TShimmerable : IModShimmerable
 {
