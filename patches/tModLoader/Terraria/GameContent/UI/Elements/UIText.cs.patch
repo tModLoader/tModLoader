@@ -32,17 +32,13 @@
  			InternalSetText(_text, _textScale, _isLarge);
  		}
  	}
-@@ -79,6 +_,16 @@
+@@ -79,6 +_,12 @@
  		InternalSetText(text, textScale, large);
  	}
  
 +	// tML: Object ctor
-+	public UIText(object text, float textScale = 1f, bool large = false)
++	public UIText(object text, float textScale = 1f, bool large = false) : this("", textScale, large)
 +	{
-+		TextOriginX = 0.5f;
-+		TextOriginY = 0f;
-+		IsWrapped = false;
-+		WrappedTextBottomPadding = 20f;
 +		InternalSetText(text, textScale, large);
 +	}
 +

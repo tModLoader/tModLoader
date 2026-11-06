@@ -25,15 +25,17 @@ public struct MarqueeTextOptions()
 	public bool AlignToStartWhenNotScrolling = false; // TODO: what should this default to?
 	/// <summary>
 	/// The horizontal padding added to the clipping rectangle for the text.
+	/// <br/><br/> Defaults to 2f because text often has borders that get clipped otherwise.
 	/// </summary>
-	public float ClippingXPadding { get; set; } = 2f; // Many pieces of text have borders that get clipped, hence the default value
+	public float ClippingXPadding { get; set; } = 2f;
 	/// <summary>
 	/// The vertical padding added to the clipping rectangle for the text.
 	/// </summary>
 	public float ClippingYPadding { get; set; } = 0f;
 
 	/// <summary>
-	/// The current scroll value, TODO: explain better
+	/// The current scroll value.
+	/// <br/><br/> Should be subtracted from the X position of the text.
 	/// </summary>
 	public float Scroll { get; private set; } = 0;
 
