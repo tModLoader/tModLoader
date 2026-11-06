@@ -22,7 +22,7 @@ public struct MarqueeTextOptions()
 	/// Whether <see cref="Scroll"/> should be set to align the text to the start of the text when the text isn't scrolling.
 	/// <br/><br/> Useful for text that only marquees on hover.
 	/// </summary>
-	public bool AlignToStartWhenNotScrolling = false; // TODO: what should this default to?
+	public bool AlignToStartWhenNotScrolling = false;
 	/// <summary>
 	/// The horizontal padding added to the clipping rectangle for the text.
 	/// <br/><br/> Defaults to 2f because text often has borders that get clipped otherwise.

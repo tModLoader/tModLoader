@@ -9,7 +9,9 @@ using Terraria.UI;
 namespace ExampleMod.Common.UI.ExampleMarqueeText
 {
 	/// <summary>
-	///  TOOD
+	/// This is an example of an in-game fullscreen UI that showcases marquee text, which is text that scrolls back and forth when it overflows.
+	/// For more details, see ExampleFullscreenUI.
+	/// To view this in-game, type "/marqueetextdemo" into chat (see ShowMarqueeTextUICommand.cs)
 	/// </summary>
 	// TODO: localize
 	internal class ExampleMarqueeTextUI : UIState, ILoadable
@@ -18,6 +20,7 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 		private UIMarqueeText marqueeText;
 		private UIMarqueeTextPanel marqueeTextPanel;
+		private UIMarqueeTextPanel marqueeOnHover;
 
 		public void Load(Mod mod) {
 			instance = this;
@@ -26,10 +29,9 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 		public void Unload() {
 		}
 
-		// TODO: better side by side comparison
+		// TODO: better side by side comparison:
 		// - also include a UIMarqueeText with the padding Y really big so ou can see the bottom of the text avoid getting clipped
-		// TODO: demo of marquee on hover
-		// TODO: demo of align to start
+		// TODO: also comment explainin how the maxwidth of marquee text works and how width is auto set
 		public override void OnInitialize() {
 			// This boilerplate is copied from ExampleFullscreenUI
 			var panel = new UIPanel() {
@@ -77,16 +79,31 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			var comparisonMarqueeTextPanel = new UITextPanel<object>("Testing Marquee Text Panel (Regular)") {
 				Top = new(top, 0f),
-				MaxWidth = new(150f, 0f),
+				MaxWidth = new(100 + 24f, 0f),
 			};
 			panel.Append(comparisonMarqueeTextPanel);
 			top += 50;
 
 			marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
 				Top = new(top, 0f),
-				MaxWidth = new(150f, 0f),
+				MaxWidth = new(100 + 24f, 0f),
 			};
 			panel.Append(marqueeTextPanel);
+			top += 50;
+
+			marqueeOnHover = new UIMarqueeTextPanel("Marquee On Hover") {
+				Top = new(top, 0f),
+				MaxWidth = new(100 + 24f, 0f),
+				MarqueeText = {
+					IsScrolling = false,
+					// We enable AlignToStartWhenNotScrolling because the text is usually centered (TextHAlign = 0.5f)
+					// We don't want to change the TextHAlign, because if the text isn't overflowing, we stil want it centered
+					AlignToStartWhenNotScrolling = true,
+				},
+			};
+			marqueeOnHover.OnMouseOver += (evt, element) => marqueeOnHover.MarqueeText.IsScrolling = true;
+			marqueeOnHover.OnMouseOut += (evt, element) => marqueeOnHover.MarqueeText.IsScrolling = false;
+			panel.Append(marqueeOnHover);
 			top += 50;
 
 			var backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f) {
@@ -117,6 +134,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			// Reset the marquee text and delay the scrolling when the UI is opened
 			marqueeText.ResetScroll();
 			marqueeTextPanel.ResetScroll();
+			marqueeOnHover.ResetScroll();
+
 			marqueeText.MarqueeText.SetScrollDelay(60);
 			marqueeTextPanel.MarqueeText.SetScrollDelay(60);
 		}
