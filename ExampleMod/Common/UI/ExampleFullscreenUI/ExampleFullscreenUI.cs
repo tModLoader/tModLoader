@@ -47,8 +47,6 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private UIText onlyChangeableDuringNightMessage;
 		private UIText someNumberMessage;
 		private UIText ConfigSaveStatusMessage;
-		private UIMarqueeText marqueeText;
-		private UIMarqueeTextPanel marqueeTextPanel;
 
 		private ModConfigShowcaseDataTypes configA;
 		private ModConfigShowcaseAcceptClientChanges configB;
@@ -200,6 +198,37 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			backButton.OnLeftClick += BackButton_OnLeftClick;
 			panel.Append(backButton);
 			top += 40;
+
+			var comparisonMarqueeText = new UIText("Testing Marquee Text (Regular)") {
+				Top = new(top, 0f),
+				MaxWidth = new(100f, 0f),
+			};
+			panel.Append(comparisonMarqueeText);
+			top += 20;
+
+			var marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
+				Top = new(top, 0f),
+				Width = new(100f, 0f),
+				Height = new(20f, 0f), // TODO: shouldn't have to do this after the rework
+			};
+			panel.Append(marqueeText);
+			top += 20;
+
+			var comparisonMarqueeTextPanel = new UITextPanel<object>("Testing Marquee Text Panel (Regular)") {
+				Top = new(top, 0f),
+				MaxWidth = new(150f, 0f),
+			};
+			panel.Append(comparisonMarqueeTextPanel);
+			top += 50;
+
+			var marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
+				Top = new(top, 0f),
+				MaxWidth = new(150f, 0f),
+			};
+			panel.Append(marqueeTextPanel);
+			top += 50;
+
+			// TODO: test the set scroll delay, scroll on hover, and align to start when not scrolling
 
 			panel.Height.Pixels = top + panel.PaddingTop + panel.PaddingBottom;
 		}

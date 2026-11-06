@@ -10,7 +10,7 @@ namespace Terraria.ModLoader.UI.Elements;
 // TODO: refactor to be based on UIText?
 public class UIMarqueeText : UIElement
 {
-    public MarqueeTextOptions MarqueeText;
+    public MarqueeTextOptions MarqueeText = new();
 
     private object text;
     public string Text => text?.ToString() ?? string.Empty;
