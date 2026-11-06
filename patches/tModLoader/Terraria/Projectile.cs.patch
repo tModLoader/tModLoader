@@ -686,11 +686,13 @@
  	public static int NewProjectile(IEntitySource spawnSource, float X, float Y, float SpeedX, float SpeedY, int Type, int Damage, float KnockBack, int Owner = -1, float ai0 = 0f, float ai1 = 0f, float ai2 = 0f, NewProjectileModifier modifer = null)
  	{
  		if (Owner == -1)
-@@ -9774,7 +_,6 @@
+@@ -9774,7 +_,9 @@
  
  		projectile.honeyWet = Collision.honey;
  		projectile.shimmerWet = Collision.shimmer;
--		projectile.ApplyStatsFromSource(spawnSource);
++		/*
+ 		projectile.ApplyStatsFromSource(spawnSource);
++		*/
  		projectile.FindBannerToAssociateTo(spawnSource);
  		projectile.TrackMinionSpawnSource(spawnSource);
  		if (projectile.aiStyle == 1) {
@@ -711,13 +713,13 @@
  			projectile.frame = Main.rand.Next(5);
  
  		projectile.FinalizeProjectile();
-+		projectile.ApplyStatsFromSource(spawnSource);
++		projectile.ApplyStatsFromSource(spawnSource); // Moved from before FindBannerToAssociateTo, so the snapshot includes stats set by FinalizeProjectile
  		modifer?.Invoke(projectile);
 +		ProjectileLoader.OnSpawn(projectile, spawnSource);
  		NetMessage.SendData(27, -1, -1, null, projectile.whoAmI);
  		if (Owner == Main.myPlayer)
  			Main.player[Owner].TryUpdateChannel(projectile);
-@@ -9954,26 +_,83 @@
+@@ -9954,26 +_,84 @@
  		}
  	}
  
@@ -781,8 +783,8 @@
  		if (spawnSource is EntitySource_Parent entitySource_Parent && entitySource_Parent.Entity is Projectile projectile) {
  			tagEffectType = projectile.tagEffectType;
  			bonusTagDamage += projectile.bonusTagDamage;
--			armorPenetration += projectile.armorPenetration;
 +			/*
+ 			armorPenetration += projectile.armorPenetration;
  			bonusCritChance += projectile.bonusCritChance;
 +			*/
 +
