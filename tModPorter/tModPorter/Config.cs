@@ -12,6 +12,7 @@ public static partial class Config
 		new EventHandlerRewriter(),
 		new MemberUseRewriter(),
 		new InvokeRewriter(),
+		new GetItemSettingsRewriter(),
 		new RecipeRewriter(),
 		new HookGenRewriter(),
 	};

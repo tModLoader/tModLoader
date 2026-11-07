@@ -322,6 +322,13 @@ public static partial class Config
 		RenameStaticField("Terraria.WorldGen", from: "gen", to: "isGeneratingOrLoadingWorld");
 		RenameStaticField("Terraria.ID.ContentSamples.CreativeHelper.ItemGroup", from: "PlacableObjects", to: "PlaceableObjects");
 
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryEntityToPlayerInventorySettings", to: "QuickTransferFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "NPCEntityToPlayerInventorySettings", to: "GiftRecieved");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettings", to: "LootAllFromBank");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettingsRegularChest", to: "LootAllFromChest");
+		RenameStaticField("Terraria.GetItemSettings", from: "GetItemInDropItemCheck", to: "ReturnItemFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryUIToInventorySettingsShowAsNew", to: "ReturnItemShowAsNew");
+
 		RenameInstanceField("Terraria.DataStructures.PlayerDeathReason", from: "SourceProjectileLocalIndex", to: "SourceProjectileKey").FollowBy(AddCommentToFieldAccess("See Projectile.key"));
 		RenameInstanceField("Terraria.Dust", from: "noLightEmittence", to: "noLightEmittance");
 		RenameInstanceField("Terraria.Item", from: "netID", to: "type");
