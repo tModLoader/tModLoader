@@ -519,6 +519,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 
 ## Other Changes
 
+* To match vanilla crafting, use `GetItemSettings.ReturnItemShowAsNewNoCoinMerge` when returning items to the inventory and `GetItemSettings.RefundConsumedItem` when refunding consumed ingredients.
 * 💀: Calls to `Collision.SwitchTiles` and (Mod|Global)Tile.SwitchTiles` involving a `Player` now use `objType == 5` instead of `1`. Update checks for `1` in `(Mod|Global)Tile.SwitchTiles` to check for `5` instead.
 * Fishing power bonus now applies to any chair, not just toilets.
 * `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
@@ -632,6 +633,13 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
 * 🤖: `Condition.ZenithWorld` might need to be replaced with the new `Condition.MechdusaSeedFeature` in code that specifically is checking for Mechadusa. They can technically differ.
+* 🤖: `GetItemSettings.InventoryEntityToPlayerInventorySettings` -> `GetItemSettings.QuickTransferFromSlot`
+* 🤖: `GetItemSettings.NPCEntityToPlayerInventorySettings` -> `GetItemSettings.GiftRecieved`
+* 🤖: `GetItemSettings.LootAllSettings` -> `GetItemSettings.LootAllFromBank`
+* 🤖: `GetItemSettings.LootAllSettingsRegularChest` -> `GetItemSettings.LootAllFromChest`
+* 🤖: `GetItemSettings.GetItemInDropItemCheck` -> `GetItemSettings.ReturnItemFromSlot`
+* 🤖: `GetItemSettings.InventoryUIToInventorySettingsShowAsNew` -> `GetItemSettings.ReturnItemShowAsNew`
+* ⚙️: `GetItemSettings.InventoryUIToInventorySettings` removed. Value references become `default(GetItemSettings)` to preserve its settings; writes and `nameof` references need manual changes. Use `GetItemSettings.ReturnItemFromSlot` to suppress pickup text instead.
 * 🤖: `GoreID.Sets.LiquidDroplet` -> `GoreID.Sets.IsDrip`
 * 🤖: `ImmunityCooldownID.Bosses` -> `ImmunityCooldownID.BossNoCheese`
 * ⚙️: `ItemID.Sets.ItemSpawnDecaySpeed` removed. No longer used.
@@ -684,6 +692,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 ### Non-Static Methods
 
+* 🤖: The `GetItemSettings` constructor has a new `NoSound` parameter before `StepAfterHandlingSlotNormally`. Existing callback and `NoCoinMerge` arguments are named to preserve their meaning.
 * 🤖: `Item.BannerToItem` -> `Terraria.GameContent.BannerSystem.BannerToItem`
 * 🤖: `Item.BannerToNPC` -> `Terraria.GameContent.BannerSystem.BannerToNPC`
 * 🤖: `Item.NPCtoBanner` -> `Terraria.GameContent.BannerSystem.NPCtoBanner`

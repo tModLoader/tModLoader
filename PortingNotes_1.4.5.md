@@ -33,7 +33,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
-- A lot of the GetItemSettings presets have been renamed or removed. Might be something to document.
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
