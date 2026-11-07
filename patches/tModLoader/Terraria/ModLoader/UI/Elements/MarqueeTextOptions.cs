@@ -20,9 +20,8 @@ public struct MarqueeTextOptions()
 	public int ScrollDelay { get; set; } = 30;
 	/// <summary>
 	/// Whether <see cref="Scroll"/> should be set to align the text to the start of the text when the text isn't scrolling.
-	/// <br/><br/> Useful for text that only marquees on hover.
 	/// </summary>
-	public bool AlignToStartWhenNotScrolling = false;
+	public bool AlignToStartWhenNotScrolling = true;
 	/// <summary>
 	/// The horizontal padding added to the clipping rectangle for the text.
 	/// <br/><br/> Defaults to 2f because text often has borders that get clipped otherwise.
@@ -30,8 +29,9 @@ public struct MarqueeTextOptions()
 	public float ClippingXPadding { get; set; } = 2f;
 	/// <summary>
 	/// The vertical padding added to the clipping rectangle for the text.
+	/// <br/><br/> Defaults to 1000f because otherwise descenders can get unintentionally clipped.
 	/// </summary>
-	public float ClippingYPadding { get; set; } = 0f;
+	public float ClippingYPadding { get; set; } = 1000f;
 
 	/// <summary>
 	/// The current scroll value.

@@ -13,25 +13,34 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 	/// For more details, see ExampleFullscreenUI.
 	/// To view this in-game, type "/marqueetextdemo" into chat (see ShowMarqueeTextUICommand.cs)
 	/// </summary>
-	// TODO: localize
 	internal class ExampleMarqueeTextUI : UIState, ILoadable
 	{
 		public static ExampleMarqueeTextUI instance;
 
+		private static LocalizedText HeaderText { get; set; }
+		private static LocalizedText DescriptionText { get; set; }
+		private static LocalizedText NormalTextLabel { get; set; }
+		private static LocalizedText MarqueeTextLabel { get; set; }
+		private static LocalizedText MarqueeTextHoverLabel { get; set; }
+
 		private UIMarqueeText marqueeText;
 		private UIMarqueeTextPanel marqueeTextPanel;
-		private UIMarqueeTextPanel marqueeOnHover;
+		private UIMarqueeText marqueeTextOnHover;
+		private UIMarqueeTextPanel marqueeTextPanelOnHover;
 
 		public void Load(Mod mod) {
 			instance = this;
+
+			HeaderText = mod.GetLocalization("UI.ExampleMarqueeTextUI.Header");
+			DescriptionText = mod.GetLocalization("UI.ExampleMarqueeTextUI.Description");
+			NormalTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.NormalText");
+			MarqueeTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.MarqueeText");
+			MarqueeTextHoverLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.MarqueeTextHover");
 		}
 
 		public void Unload() {
 		}
 
-		// TODO: better side by side comparison:
-		// - also include a UIMarqueeText with the padding Y really big so ou can see the bottom of the text avoid getting clipped
-		// TODO: also comment explainin how the maxwidth of marquee text works and how width is auto set
 		public override void OnInitialize() {
 			// This boilerplate is copied from ExampleFullscreenUI
 			var panel = new UIPanel() {
@@ -44,7 +53,7 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			Append(panel);
 
 			int top = 0;
-			var header = new UIText("Example Marquee Text") { // "Example Fullscreen UI"
+			var header = new UIText(HeaderText) { // "Marquee Text Examples"
 				IsWrapped = true,
 				Width = StyleDimension.Fill,
 				HAlign = 0.5f
@@ -52,7 +61,7 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			panel.Append(header);
 			top += 40;
 
-			var description = new UIText("This is a demo of the marquee text elements added by tML") { // "This is an example fullscreen UI, notice how other UI is hidden."
+			var description = new UIText(DescriptionText) { // "This is a demo of the marquee text elements added by tML."
 				Top = new(top, 0f),
 				TextOriginX = 0f,
 				IsWrapped = true,
@@ -63,48 +72,65 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			AddSpacer(panel, ref top);
 
-			var comparisonMarqueeText = new UIText("Testing Marquee Text (Regular)") {
-				Top = new(top, 0f),
+			var comparisonMarqueeText = new UIText(NormalTextLabel) { // "Normal Text"
+				Top = new(top + 12f, 0f), // +12f for the padding on top of the text panel (to align the text with the panel)
 				MaxWidth = new(100f, 0f),
+				HAlign = 0f,
 			};
 			panel.Append(comparisonMarqueeText);
-			top += 20;
 
-			marqueeText = new UIMarqueeText("Testing Marquee Text (Marquee)") {
+			var comparisonMarqueeTextPanel = new UITextPanel<object>(NormalTextLabel) { // "Normal Text"
 				Top = new(top, 0f),
-				MaxWidth = new(100f, 0f),
-			};
-			panel.Append(marqueeText);
-			top += 20;
-
-			var comparisonMarqueeTextPanel = new UITextPanel<object>("Testing Marquee Text Panel (Regular)") {
-				Top = new(top, 0f),
-				MaxWidth = new(100 + 24f, 0f),
+				MaxWidth = new(100 + 24f, 0f), // +24f for padding (since this makes the UIMarqueeText the same size as this)
+				HAlign = 1f,
 			};
 			panel.Append(comparisonMarqueeTextPanel);
 			top += 50;
 
-			marqueeTextPanel = new UIMarqueeTextPanel("Testing Marquee Text Panel (Marquee)") {
+			marqueeText = new UIMarqueeText(MarqueeTextLabel) { // "Marquee Text (watch me scroll)"
+				Top = new(top + 12f, 0f),
+				MaxWidth = new(100f, 0f),
+				HAlign = 0f,
+			};
+			panel.Append(marqueeText);
+
+			marqueeTextPanel = new UIMarqueeTextPanel(MarqueeTextLabel) { // "Marquee Text (watch me scroll)"
 				Top = new(top, 0f),
 				MaxWidth = new(100 + 24f, 0f),
+				HAlign = 1f,
 			};
 			panel.Append(marqueeTextPanel);
 			top += 50;
 
-			marqueeOnHover = new UIMarqueeTextPanel("Marquee On Hover") {
-				Top = new(top, 0f),
-				MaxWidth = new(100 + 24f, 0f),
+			marqueeTextOnHover = new UIMarqueeText(MarqueeTextHoverLabel) { // "Hover Marquee Text"
+				Top = new(top + 12f, 0f),
+				MaxWidth = new(100, 0f),
+				HAlign = 0f,
 				MarqueeText = {
 					IsScrolling = false,
-					// We enable AlignToStartWhenNotScrolling because the text is usually centered (TextHAlign = 0.5f)
-					// We don't want to change the TextHAlign, because if the text isn't overflowing, we stil want it centered
-					AlignToStartWhenNotScrolling = true,
 				},
 			};
-			marqueeOnHover.OnMouseOver += (evt, element) => marqueeOnHover.MarqueeText.IsScrolling = true;
-			marqueeOnHover.OnMouseOut += (evt, element) => marqueeOnHover.MarqueeText.IsScrolling = false;
-			panel.Append(marqueeOnHover);
+			marqueeTextOnHover.OnMouseOver += (evt, element) => marqueeTextOnHover.MarqueeText.IsScrolling = true;
+			marqueeTextOnHover.OnMouseOut += (evt, element) => marqueeTextOnHover.MarqueeText.IsScrolling = false;
+			panel.Append(marqueeTextOnHover);
+
+			marqueeTextPanelOnHover = new UIMarqueeTextPanel(MarqueeTextHoverLabel) { // "Hover Marquee Text"
+				Top = new(top, 0f),
+				MaxWidth = new(100 + 24f, 0f),
+				HAlign = 1f,
+				MarqueeText = {
+					IsScrolling = false,
+				},
+			};
+			marqueeTextPanelOnHover.OnMouseOver += (evt, element) => marqueeTextPanelOnHover.MarqueeText.IsScrolling = true;
+			marqueeTextPanelOnHover.OnMouseOut += (evt, element) => marqueeTextPanelOnHover.MarqueeText.IsScrolling = false;
+			panel.Append(marqueeTextPanelOnHover);
 			top += 50;
+
+			// TODO: also comment explainin how the maxwidth of marquee text works and how width is auto set
+			// TODO: also test the different AlignToStart with different text alignments
+
+			AddSpacer(panel, ref top);
 
 			var backButton = new UITextPanel<LocalizedText>(Language.GetText("UI.Back"), 0.7f) {
 				Top = new(top, 0f),
@@ -134,7 +160,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			// Reset the marquee text and delay the scrolling when the UI is opened
 			marqueeText.ResetScroll();
 			marqueeTextPanel.ResetScroll();
-			marqueeOnHover.ResetScroll();
+			marqueeTextOnHover.ResetScroll();
+			marqueeTextPanelOnHover.ResetScroll();
 
 			marqueeText.MarqueeText.SetScrollDelay(60);
 			marqueeTextPanel.MarqueeText.SetScrollDelay(60);

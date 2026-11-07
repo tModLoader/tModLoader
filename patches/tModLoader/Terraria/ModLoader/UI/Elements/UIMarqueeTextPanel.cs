@@ -11,9 +11,7 @@ public class UIMarqueeTextPanel : UITextPanel
 	protected override bool setTextUsesMinSize => false;
 
 	public UIMarqueeTextPanel(object text, float textScale = 1, bool large = false) : base(text, textScale, large)
-	{
-		MarqueeText.ClippingYPadding = 1000f;
-	}
+	{ }
 
 	public override void SetText(object text, float textScale, bool large)
 	{
