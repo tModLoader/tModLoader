@@ -215,11 +215,7 @@ internal class UIModConfigList : UIState
 
 		void AddSmallIcon(Mod mod, UIButton<string> modPanel)
 		{
-			var iconTexture = mod.SmallModIcon;
-			if (iconTexture == null) {
-				return;
-			}
-
+			var iconTexture = mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
 			float iconOffset = iconTexture.Width();
 			float iconPadding = 2;
 			modPanel.PaddingLeft += iconOffset + iconPadding;
