@@ -17,7 +17,7 @@
 +	// Added by TML [[
 +	protected Vector2 textOffset = Vector2.Zero;
 +	protected bool drawTextAsChild = false;
-+	protected virtual bool setTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
++	protected virtual bool SetTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
 +	// ]]
 +
  	public string Text => _text.ToString();
@@ -90,7 +90,7 @@
  		else
  			_textSize.Y = (large ? 32f : 16f) * _textScale;
  
-+		if (!setTextUsesMinSize) {
++		if (!SetTextUsesMinSize) {
 +			Width.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
 +			Height.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
 +			goto skipMinSize;

@@ -8,7 +8,7 @@ public class UIMarqueeTextPanel : UITextPanel
 {
 	public MarqueeTextOptions MarqueeText = new();
 
-	protected override bool setTextUsesMinSize => false;
+	protected override bool SetTextUsesMinSize => false;
 
 	public UIMarqueeTextPanel(object text, float textScale = 1, bool large = false) : base(text, textScale, large)
 	{ }
