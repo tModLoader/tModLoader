@@ -1585,7 +1585,7 @@ Mods: {
 				Description: This is a demo of the marquee text elements added by tML.
 				NormalText: Normal Text
 				MarqueeText: Marquee Text (watch me scroll)
-				MarqueeTextHover: Hover Marquee Text
+				MarqueeTextHover: Hover Marquee Text: Align = {0}
 				DynamicWidthMarqueeText: Dynamic Width: {0}
 				ConstantWidthMarqueeText: Constant Width: {0}
 			}

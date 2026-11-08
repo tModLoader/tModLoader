@@ -29,8 +29,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 		private UIMarqueeText marqueeText;
 		private UIMarqueeTextPanel marqueeTextPanel;
-		private UIMarqueeText marqueeTextOnHover;
-		private UIMarqueeTextPanel marqueeTextPanelOnHover;
+		private UIMarqueeText[] marqueeTextOnHover;
+		private UIMarqueeTextPanel[] marqueeTextPanelOnHover;
 		private UIMarqueeTextPanel dynamicWidthMarqueeTextPanel;
 		private UIMarqueeTextPanel constantWidthMarqueeTextPanel;
 
@@ -80,13 +80,17 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			AddSpacer(panel, ref top);
 
+			const float UIPanelPadding = 12f;
+			const float TextWidth = 150f;
+			const float PanelWidth = TextWidth + 2 * UIPanelPadding;
+
 			// All of the marquee text elements automatically set Width and Height based on the size of their text
 			// This is different to UIText and UITextPanel, which set MinWidth and MinHeight based on the size of their text
 			// This means that if you want to restrict a marquee text elements size, you can set MaxWidth and MaxHeight
 			// This allows you to have UI elements automatically scale up and down in size, but will cause text to marquee when they reach their max size
 
 			var comparisonMarqueeText = new UIText(NormalTextLabel) { // "Normal Text"
-				Top = new(top + 12f, 0f), // +12f for the padding on top of the text panel (to align the text with the panel)
+				Top = new(top + UIPanelPadding, 0f), // +12f for the padding on top of the text panel (to align the text with the panel)
 				MaxWidth = new(100f, 0f),
 				HAlign = 0f,
 			};
@@ -94,64 +98,79 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			var comparisonMarqueeTextPanel = new UITextPanel<object>(NormalTextLabel) { // "Normal Text"
 				Top = new(top, 0f),
-				MaxWidth = new(100 + 24f, 0f), // +24f for padding (since this makes the UIMarqueeText the same size as this)
+				MaxWidth = new(PanelWidth, 0f), // +24f for padding (since this makes the UIMarqueeText the same size as this)
 				HAlign = 1f,
 			};
 			panel.Append(comparisonMarqueeTextPanel);
 			top += 50;
 
 			marqueeText = new UIMarqueeText(MarqueeTextLabel) { // "Marquee Text (watch me scroll)"
-				Top = new(top + 12f, 0f),
-				MaxWidth = new(100f, 0f),
+				Top = new(top + UIPanelPadding, 0f),
+				MaxWidth = new(TextWidth, 0f),
 				HAlign = 0f,
 			};
 			panel.Append(marqueeText);
 
 			marqueeTextPanel = new UIMarqueeTextPanel(MarqueeTextLabel) { // "Marquee Text (watch me scroll)"
 				Top = new(top, 0f),
-				MaxWidth = new(100 + 24f, 0f),
+				MaxWidth = new(PanelWidth, 0f),
 				HAlign = 1f,
 			};
 			panel.Append(marqueeTextPanel);
 			top += 50;
 
-			marqueeTextOnHover = new UIMarqueeText(MarqueeTextHoverLabel) { // "Hover Marquee Text"
-				Top = new(top + 12f, 0f),
-				MaxWidth = new(100, 0f),
-				HAlign = 0f,
-				MarqueeText = {
-					IsScrolling = false,
-				},
-			};
-			marqueeTextOnHover.OnMouseOver += (evt, element) => marqueeTextOnHover.MarqueeText.IsScrolling = true;
-			marqueeTextOnHover.OnMouseOut += (evt, element) => marqueeTextOnHover.MarqueeText.IsScrolling = false;
-			panel.Append(marqueeTextOnHover);
+			AddSpacer(panel, ref top);
 
-			marqueeTextPanelOnHover = new UIMarqueeTextPanel(MarqueeTextHoverLabel) { // "Hover Marquee Text"
-				Top = new(top, 0f),
-				MaxWidth = new(100 + 24f, 0f),
-				HAlign = 1f,
-				MarqueeText = {
-					IsScrolling = false,
-				},
-			};
-			marqueeTextPanelOnHover.OnMouseOver += (evt, element) => marqueeTextPanelOnHover.MarqueeText.IsScrolling = true;
-			marqueeTextPanelOnHover.OnMouseOut += (evt, element) => marqueeTextPanelOnHover.MarqueeText.IsScrolling = false;
-			panel.Append(marqueeTextPanelOnHover);
-			top += 50;
+			// Showcase of marquee on hover
+			// Also compares different TextHAlign/TextOriginX values combined with AlignToStartWhenNotScrolling = true
+
+			(UIMarqueeText, UIMarqueeTextPanel) CreateMarqueeTextOnHover(float textHAlign) {
+				var text = new UIMarqueeText(MarqueeTextHoverLabel.Format(textHAlign)) { // "Hover Marquee Text: Align = {0}"
+					Top = new(top + UIPanelPadding, 0f),
+					MaxWidth = new(TextWidth, 0f),
+					HAlign = 0f,
+					TextOriginX = textHAlign,
+					MarqueeText = {
+						IsScrolling = false,
+					},
+				};
+				text.OnMouseOver += (evt, element) => text.MarqueeText.IsScrolling = true;
+				text.OnMouseOut += (evt, element) => text.MarqueeText.IsScrolling = false;
+				panel.Append(text);
+
+				var textPanel = new UIMarqueeTextPanel(MarqueeTextHoverLabel.Format(textHAlign)) { // "Hover Marquee Text: Align = {0}"
+					Top = new(top, 0f),
+					MaxWidth = new(PanelWidth, 0f),
+					HAlign = 1f,
+					TextHAlign = textHAlign,
+					MarqueeText = {
+						IsScrolling = false,
+					},
+				};
+				textPanel.OnMouseOver += (evt, element) => textPanel.MarqueeText.IsScrolling = true;
+				textPanel.OnMouseOut += (evt, element) => textPanel.MarqueeText.IsScrolling = false;
+				panel.Append(textPanel);
+				top += 50;
+
+				return (text, textPanel);
+			}
+
+			marqueeTextOnHover = [null, null, null];
+			marqueeTextPanelOnHover	= [null, null, null];
+
+			(marqueeTextOnHover[0], marqueeTextPanelOnHover[0]) = CreateMarqueeTextOnHover(0f);
+			(marqueeTextOnHover[1], marqueeTextPanelOnHover[1]) = CreateMarqueeTextOnHover(0.5f);
+			(marqueeTextOnHover[2], marqueeTextPanelOnHover[2]) = CreateMarqueeTextOnHover(1f);
 
 			AddSpacer(panel, ref top);
 
-			// TODO: also test the different AlignToStart with different text alignments
-			// - perhaps do in the hover section
-
 			// This examples compare using dynamic width and constant width with UIMarqueeTextPanel (both with a maximum width)
 
-			float targetWidth = 175f + 24f;
+			const float TargetWidth = 175f + 24f;
 
 			dynamicWidthMarqueeTextPanel = new UIMarqueeTextPanel(DynamicWidthMarqueeTextLabel) { // "Dynamic Width: {0}"
 				Top = new(top, 0f),
-				MaxWidth = new(targetWidth, 0f),
+				MaxWidth = new(TargetWidth, 0f),
 				HAlign = 0f,
 			};
 			dynamicWidthMarqueeTextPanel.WithFadedMouseOver();
@@ -162,8 +181,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 				Top = new(top, 0f),
 				// Set MinWidth and MaxWidth to the same to make it constant width
 				// Width is overwritten by calling SetText, so this is how to make it actually work
-				MinWidth = new(targetWidth, 0f),
-				MaxWidth = new(targetWidth, 0f),
+				MinWidth = new(TargetWidth, 0f),
+				MaxWidth = new(TargetWidth, 0f),
 				HAlign = 1f,
 			};
 			constantWidthMarqueeTextPanel.WithFadedMouseOver();
@@ -204,8 +223,14 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			// Reset the marquee text and delay the scrolling when the UI is opened
 			marqueeText.ResetScroll();
 			marqueeTextPanel.ResetScroll();
-			marqueeTextOnHover.ResetScroll();
-			marqueeTextPanelOnHover.ResetScroll();
+
+			foreach (var text in marqueeTextOnHover) {
+				text.ResetScroll();
+			}
+
+			foreach (var textPanel in marqueeTextPanelOnHover) {
+				textPanel.ResetScroll();
+			}
 
 			marqueeText.MarqueeText.SetScrollDelay(60);
 			marqueeTextPanel.MarqueeText.SetScrollDelay(60);
