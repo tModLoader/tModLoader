@@ -123,6 +123,7 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			// Showcase of marquee on hover
 			// Also compares different TextHAlign/TextOriginX values combined with AlignToStartWhenNotScrolling = true
+			// All of these should look/behave the same
 
 			(UIMarqueeText, UIMarqueeTextPanel) CreateMarqueeTextOnHover(float textHAlign) {
 				var text = new UIMarqueeText(MarqueeTextHoverLabel.Format(textHAlign)) { // "Hover Marquee Text: Align = {0}"
