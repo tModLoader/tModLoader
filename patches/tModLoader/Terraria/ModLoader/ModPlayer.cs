@@ -477,6 +477,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/> For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.
 	/// <para/> Called on the local client receiving damage.
 	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network. If visual indication of the dodge is required on remote clients, you will need to send your own packet.
+	/// <para/> A typical implementation will call <see cref="Player.SetImmuneTimeForAllTypes(int)"/>, spawn some visuals or sounds, and send a network packet to communicate the dodge to other clients. The ConsumableDodge method (and related code) in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleDamageModificationPlayer.cs">ExampleDamageModificationPlayer.cs</see> serves as a good example of how to correctly implement a dodge.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool FreeDodge(Player.HurtInfo info)
@@ -490,6 +491,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/> Called on the local client receiving damage.
 	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network.
 	/// <para/> You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
+	/// <para/> A typical implementation will call <see cref="Player.SetImmuneTimeForAllTypes(int)"/>, spawn some visuals or sounds, and send a network packet to communicate the dodge to other clients. The ConsumableDodge method (and related code) in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleDamageModificationPlayer.cs">ExampleDamageModificationPlayer.cs</see> serves as a good example of how to correctly implement a dodge.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool ConsumableDodge(Player.HurtInfo info)

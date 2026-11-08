@@ -26,6 +26,11 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	public Item equippedWings = null;
 
 	/// <summary>
+	/// The currently active <see cref="ArmorSetBonus"/>.
+	/// </summary>
+	public ArmorSetBonus ActiveArmorSetBonus = null;
+
+	/// <summary>
 	/// Set by any gem robe when worn by the player in the functional armor slot. Increases the spawn rate of <see cref="NPCID.Tim"/>.
 	/// </summary>
 	public bool hasGemRobe = false;
@@ -656,10 +661,14 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			if (beetleDefense && beetleOrbs > 0)
 				modifiers.FinalDamage *= 1 - 0.15f * beetleOrbs;
 
-			/*
-			if (defendedByPaladin && whoAmI == Main.myPlayer && TeammateHasPalidinShieldAndCanTakeDamage())
-				modifiers.FinalDamage *= 0.75f;
-			*/
+			if (defendedByPaladin && whoAmI == Main.myPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.Dodgeable) {
+				for (int i = 0; i < Main.maxPlayers; i++) {
+					if (i != whoAmI && Main.player[i].CanDefendWithPaladinsShield(team)) {
+						modifiers.FinalDamage *= 0.75f;
+						break;
+					}
+				}
+			}
 		}
 	}
 
