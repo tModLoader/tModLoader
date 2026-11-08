@@ -21,6 +21,7 @@ public class UIMarqueeText : UIText
 	    bool textIsClipping = _textSize.X >= dims.Width;
 	    OverflowHidden = textIsClipping;
 	    drawTextAsChild = textIsClipping;
+	    UpdateTextOffset();
     }
 
     public override void Update(GameTime gameTime)
@@ -28,7 +29,7 @@ public class UIMarqueeText : UIText
         base.Update(gameTime);
 
         MarqueeText.Update(GetInnerDimensions(), _textSize, TextOriginX);
-        textOffset = -MarqueeText.Scroll * Vector2.UnitX;
+        UpdateTextOffset();
     }
 
     public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
@@ -41,6 +42,11 @@ public class UIMarqueeText : UIText
     public void ResetScroll()
     {
 	    MarqueeText.ResetScroll(GetInnerDimensions(), _textSize, TextOriginX);
-	    textOffset = -MarqueeText.Scroll * Vector2.UnitX; // ResetScroll may set Scroll to be non-zero if AlignToStartWhenNotScrolling == true
+	    UpdateTextOffset();
+    }
+
+    private void UpdateTextOffset()
+    {
+	    textOffset = -MarqueeText.Scroll * Vector2.UnitX;
     }
 }

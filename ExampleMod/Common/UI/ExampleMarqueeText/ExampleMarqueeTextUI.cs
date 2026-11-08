@@ -144,7 +144,6 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			// TODO: also test the different AlignToStart with different text alignments
 			// - perhaps do in the hover section
-			// TODO: fix that weird stutter on opening
 
 			// This examples compare using dynamic width and constant width with UIMarqueeTextPanel (both with a maximum width)
 
