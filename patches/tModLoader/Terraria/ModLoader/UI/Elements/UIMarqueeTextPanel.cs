@@ -41,5 +41,6 @@ public class UIMarqueeTextPanel : UITextPanel
 	public void ResetScroll()
 	{
 		MarqueeText.ResetScroll(GetInnerDimensions(), _textSize, TextHAlign);
+		textOffset = -MarqueeText.Scroll * Vector2.UnitX; // ResetScroll may set Scroll to be non-zero if AlignToStartWhenNotScrolling == true
 	}
 }

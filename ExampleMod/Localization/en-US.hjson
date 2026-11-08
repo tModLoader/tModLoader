@@ -1586,6 +1586,8 @@ Mods: {
 				NormalText: Normal Text
 				MarqueeText: Marquee Text (watch me scroll)
 				MarqueeTextHover: Hover Marquee Text
+				DynamicWidthMarqueeText: Dynamic Width: {0}
+				ConstantWidthMarqueeText: Constant Width: {0}
 			}
 		}
 

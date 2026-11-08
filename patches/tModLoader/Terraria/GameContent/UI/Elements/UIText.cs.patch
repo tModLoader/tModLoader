@@ -75,10 +75,11 @@
  		Color shadowColor = _shadowColor * ((float)(int)_color.A / 255f);
  		DynamicSpriteFont font = (_isLarge ? FontAssets.DeathText.Value : FontAssets.MouseText.Value);
  		ChatManager.DrawColorCodedStringShadow(spriteBatch, font, _textLayout, position, shadowColor, 0f, Vector2.Zero, scale, 1.5f);
-@@ -144,8 +_,9 @@
+@@ -144,8 +_,10 @@
  			InternalSetText(_text, _textScale, _isLarge);
  	}
  
++	// tML: Made protected virtual
 -	private void InternalSetText(object text, float textScale, bool large)
 +	protected virtual void InternalSetText(object text, float textScale, bool large)
  	{

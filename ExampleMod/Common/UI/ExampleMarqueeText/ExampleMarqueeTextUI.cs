@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -22,11 +24,15 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 		private static LocalizedText NormalTextLabel { get; set; }
 		private static LocalizedText MarqueeTextLabel { get; set; }
 		private static LocalizedText MarqueeTextHoverLabel { get; set; }
+		private static LocalizedText DynamicWidthMarqueeTextLabel { get; set; }
+		private static LocalizedText ConstantWidthMarqueeTextLabel { get; set; }
 
 		private UIMarqueeText marqueeText;
 		private UIMarqueeTextPanel marqueeTextPanel;
 		private UIMarqueeText marqueeTextOnHover;
 		private UIMarqueeTextPanel marqueeTextPanelOnHover;
+		private UIMarqueeTextPanel dynamicWidthMarqueeTextPanel;
+		private UIMarqueeTextPanel constantWidthMarqueeTextPanel;
 
 		public void Load(Mod mod) {
 			instance = this;
@@ -36,6 +42,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			NormalTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.NormalText");
 			MarqueeTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.MarqueeText");
 			MarqueeTextHoverLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.MarqueeTextHover");
+			DynamicWidthMarqueeTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.DynamicWidthMarqueeText");
+			ConstantWidthMarqueeTextLabel = mod.GetLocalization("UI.ExampleMarqueeTextUI.ConstantWidthMarqueeText");
 		}
 
 		public void Unload() {
@@ -71,6 +79,11 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			top += 60;
 
 			AddSpacer(panel, ref top);
+
+			// All of the marquee text elements automatically set Width and Height based on the size of their text
+			// This is different to UIText and UITextPanel, which set MinWidth and MinHeight based on the size of their text
+			// This means that if you want to restrict a marquee text elements size, you can set MaxWidth and MaxHeight
+			// This allows you to have UI elements automatically scale up and down in size, but will cause text to marquee when they reach their max size
 
 			var comparisonMarqueeText = new UIText(NormalTextLabel) { // "Normal Text"
 				Top = new(top + 12f, 0f), // +12f for the padding on top of the text panel (to align the text with the panel)
@@ -127,8 +140,38 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 			panel.Append(marqueeTextPanelOnHover);
 			top += 50;
 
-			// TODO: also comment explainin how the maxwidth of marquee text works and how width is auto set
+			AddSpacer(panel, ref top);
+
 			// TODO: also test the different AlignToStart with different text alignments
+			// - perhaps do in the hover section
+			// TODO: fix that weird stutter on opening
+
+			// This examples compare using dynamic width and constant width with UIMarqueeTextPanel (both with a maximum width)
+
+			float targetWidth = 175f + 24f;
+
+			dynamicWidthMarqueeTextPanel = new UIMarqueeTextPanel(DynamicWidthMarqueeTextLabel) { // "Dynamic Width: {0}"
+				Top = new(top, 0f),
+				MaxWidth = new(targetWidth, 0f),
+				HAlign = 0f,
+			};
+			dynamicWidthMarqueeTextPanel.WithFadedMouseOver();
+			dynamicWidthMarqueeTextPanel.OnLeftClick += (evt, element) => UpdateConstantAndDynamicMarqueeText();
+			panel.Append(dynamicWidthMarqueeTextPanel);
+
+			constantWidthMarqueeTextPanel = new UIMarqueeTextPanel(ConstantWidthMarqueeTextLabel) { // "Constant Width: {0}"
+				Top = new(top, 0f),
+				// Set MinWidth and MaxWidth to the same to make it constant width
+				// Width is overwritten by calling SetText, so this is how to make it actually work
+				MinWidth = new(targetWidth, 0f),
+				MaxWidth = new(targetWidth, 0f),
+				HAlign = 1f,
+			};
+			constantWidthMarqueeTextPanel.WithFadedMouseOver();
+			constantWidthMarqueeTextPanel.OnLeftClick += (evt, element) => UpdateConstantAndDynamicMarqueeText();
+			panel.Append(constantWidthMarqueeTextPanel);
+
+			top += 50;
 
 			AddSpacer(panel, ref top);
 
@@ -157,6 +200,8 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 		}
 
 		public override void OnActivate() {
+			UpdateConstantAndDynamicMarqueeText();
+
 			// Reset the marquee text and delay the scrolling when the UI is opened
 			marqueeText.ResetScroll();
 			marqueeTextPanel.ResetScroll();
@@ -165,6 +210,21 @@ namespace ExampleMod.Common.UI.ExampleMarqueeText
 
 			marqueeText.MarqueeText.SetScrollDelay(60);
 			marqueeTextPanel.MarqueeText.SetScrollDelay(60);
+		}
+
+		private void UpdateConstantAndDynamicMarqueeText() {
+			int numberOfDigits = Main.rand.Next(0, 7) + 1; // 1 to 7 (inclusive)
+			int number = Main.rand.Next((int)Math.Pow(10, (numberOfDigits - 1)), (int)Math.Pow(10, numberOfDigits));
+
+			dynamicWidthMarqueeTextPanel.SetText(DynamicWidthMarqueeTextLabel.Format(number));
+			constantWidthMarqueeTextPanel.SetText(ConstantWidthMarqueeTextLabel.Format(number));
+			dynamicWidthMarqueeTextPanel.Recalculate();
+			constantWidthMarqueeTextPanel.Recalculate();
+
+			dynamicWidthMarqueeTextPanel.ResetScroll();
+			constantWidthMarqueeTextPanel.ResetScroll();
+			dynamicWidthMarqueeTextPanel.MarqueeText.SetScrollDelay(60);
+			constantWidthMarqueeTextPanel.MarqueeText.SetScrollDelay(60);
 		}
 
 		private void BackButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
