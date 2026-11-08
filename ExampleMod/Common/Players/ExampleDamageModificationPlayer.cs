@@ -90,6 +90,7 @@ namespace ExampleMod.Common.Players
 
 		// ExampleDodgeEffects() will be called from ConsumableDodge and HandleExampleDodgeMessage to sync the effect.
 		public void ExampleDodgeEffects() {
+			// Sets the player as immune to damage for a short time. Without this, the attack that was dodged would hit the player again immediately after the dodge. Cross Necklace (longInvince) is supported here as well.
 			Player.SetImmuneTimeForAllTypes(Player.longInvince ? 120 : 80);
 
 			// Some sound and visual effects
