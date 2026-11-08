@@ -326,7 +326,7 @@
  	public int wingsLogic;
  	public bool hasWings;
  	public int wingTimeMax;
-@@ -953,11 +_,24 @@
+@@ -953,17 +_,43 @@
  	public bool acceleratePoisons;
  	public bool blueLightning;
  	public bool redLightning;
@@ -351,6 +351,25 @@
  	public int townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
+ 	public double legFrameCounter;
++	/// <summary>
++	/// When true, the player is immune to general damage (<see cref="ImmunityCooldownID.General"/>). Set in tandem with <see cref="immuneTime"/>. When a player is hurt by attacks without a special immunity cooldown slot, this is set to true and the player will not take damage again until <see cref="immuneTime"/> ticks pass, which resets this to false.
++	/// <para/> <see cref="hurtCooldowns"/> contains the immunity cooldowns for non-general damage.
++	/// <para/> <see cref="SetImmuneTimeForAllTypes(int)"/>, <see cref="GiveImmuneTimeForCollisionAttack"/>, and <see cref="AddImmuneTime(int, int)"/> are some ways to work with this value.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame">Invincibility frame wiki page</see> has more details about player immunity.
++	/// </summary>
+ 	public bool immune;
++	/// <summary>
++	/// If true, the player will not blink (fade in and out) while <see cref="immune"/>. This is used when the player became immune not from taking damage, but from some other effect, like a dash or mount attack.
++	/// <para/> Usually set by calling <see cref="GiveImmuneTimeForCollisionAttack"/> 
++	/// </summary>
+ 	public bool immuneNoBlink;
++	/// <summary>
++	/// The remaining ticks the player will be <see cref="immune"/> for. Only counts general damage.
++	/// </summary>
+ 	public int immuneTime;
+ 	public int immuneAlphaDirection;
+ 	public int immuneAlpha;
 @@ -974,10 +_,21 @@
  	public static int nameLen = 20;
  	public int sign = -1;
@@ -852,6 +871,16 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
+@@ -1453,6 +_,9 @@
+ 	public Item starCloakItem_starVeilOverrideItem;
+ 	public Item starCloakItem_beeCloakOverrideItem;
+ 	public Item starCloakItem_snakeCloakOverrideItem;
++	/// <summary>
++	/// When true, immunity timers are set to values longer than usual. Set by <see cref="ItemID.CrossNecklace"/>. The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Invincibility_frame_length">Invincibility frame length</see> wiki page has exact details.
++	/// </summary>
+ 	public bool longInvince;
+ 	public bool pStone;
+ 	public static readonly float PhilosopherStoneDurationMultiplier = 0.75f;
 @@ -1467,30 +_,103 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -1303,6 +1332,16 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
+@@ -1832,6 +_,9 @@
+ 	private int _lockTileInteractionsTimer;
+ 	private bool extractinateHover;
+ 	public int hoveredChestIndex = -1;
++	/// <summary>
++	/// Similar to <see cref="immune"/>, but contains a separate cooldown for each type of immunity (Indexed by <see cref="ImmunityCooldownID"/> values). If greater than 0, the player is immune to damage using that immunity type for that many ticks. Multiple immunity types are used by the game to prevent players from using intentional damage to avoid attacks from high damage sources. 
++	/// </summary>
+ 	public int[] hurtCooldowns = new int[ImmunityCooldownID.Count];
+ 	public static PlayerGetItemLogger GetItemLogger = new PlayerGetItemLogger();
+ 	public static int FlexibleWandRandomSeed;
 @@ -1866,7 +_,7 @@
  	private const int SaveSlotIndex_GuideItem = 2;
  	private const int SaveSlotIndex_TinkererItem = 3;
@@ -4040,6 +4079,18 @@
  			addDPS(dmg);
  
  		int num = BannerSystem.NPCtoBanner(npc.BannerID());
+@@ -16578,6 +_,11 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Used to set the player as immune to damage for <paramref name="time"/> ticks. <see cref="immuneNoBlink"/> is also set, indicating that the player immunity did not come from being hurt.
++	/// <para/> This is used by mounts (<see cref="MountID.Slime"/>, <see cref="MountID.Unicorn"/>), dashes (<see cref="ItemID.EoCShield"/>, and shield parries (<see cref="ItemID.BouncingShield"/>). A small immunity window is given to the player when they hit an NPC with these types of collision attacks so that they don't take damage from the same NPC immediately after hitting it.
++	/// </summary>
++	/// <param name="time"></param>
+ 	public void GiveImmuneTimeForCollisionAttack(int time)
+ 	{
+ 		if (_timeSinceLastImmuneGet <= 20)
 @@ -16622,7 +_,7 @@
  
  				Rectangle rect2 = nPC.getRect();
@@ -5667,6 +5718,18 @@
  			dead = false;
  			deadTime = 0;
  			immuneTime = 0;
+@@ -31386,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Sets the player as immune to damage for <paramref name="time"/> ticks. This affects all <see cref="ImmunityCooldownID"/> cooldown timers (<see cref="immune"/>, <see cref="hurtCooldowns"/>).
++	/// <para/> This is used by dodges (such as <see cref="BuffID.ShadowDodge"/>) and <see cref="ItemID.StrangeBrew"/>. 
++	/// </summary>
++	/// <param name="time"></param>
+ 	public void SetImmuneTimeForAllTypes(int time)
+ 	{
+ 		immune = true;
 @@ -31556,21 +_,83 @@
  		return false;
  	}
