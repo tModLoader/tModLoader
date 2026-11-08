@@ -90,8 +90,7 @@ public struct MarqueeTextOptions()
 
 	public float GetStartAlignment(Vector2 textSize, float innerWidth, float textAlignX)
 	{
-		float align = 1f - textAlignX;
-		return -((textSize.X * align) - (innerWidth * align));
+		return -((textSize.X * textAlignX) - (innerWidth * textAlignX));
 	}
 
 	public void SetScrollDelay(int scrollDelay)
