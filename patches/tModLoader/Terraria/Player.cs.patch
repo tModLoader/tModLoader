@@ -4307,14 +4307,15 @@
  	}
  
  	public void StickyMovement()
-@@ -18862,6 +_,10 @@
+@@ -18862,6 +_,11 @@
  		if (mount.Active && mount.Type == 4)
  			flag = false;
  
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++)
++		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 +			if (wets[i])
-+				LiquidLoader.CanPlayerDrown(i, this, ref flag);
-+
++				flag = LiquidLoader.CanPlayerDrown(i, this);
++		}
++		
  		if (Main.myPlayer == whoAmI) {
  			if (accMerman) {
  				if (flag)
@@ -4462,16 +4463,39 @@
  		if (i == Main.myPlayer && Main.netMode != 2)
  			LockOnHelper.Update();
  
-@@ -19858,6 +_,9 @@
+@@ -19833,11 +_,23 @@
+ 			}
+ 		}
+ 		else if (wet) {
++			/*
+ 			if (honeyWet) {
+ 				gravity = 0.1f;
+ 				maxFallSpeed = 3f;
+ 			}
+ 			else if (merman) {
++			*/
++			for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
++				if (wets[j]) {
++					gravity = LiquidID.Sets.WetPlayerGravityModifier[j];
++					maxFallSpeed = LiquidID.Sets.WetPlayerMaxFallSpeedModifier[j];
++					jumpHeight = LiquidID.Sets.WetPlayerJumpHeightModifier[j];
++					jumpSpeed = LiquidID.Sets.WetPlayerJumpSpeedModifier[j];
++				}
++			}
++
++			if (merman) {
+ 				gravity = 0.3f;
+ 				maxFallSpeed = 7f;
+ 			}
+@@ -19858,7 +_,7 @@
  				jumpSpeed = 6.01f;
  			}
  		}
-+		for (int j = 0; j < LiquidLoader.LiquidCount; j++)
-+			if (wets[j])
-+				LiquidLoader.PlayerGravityModifier(j, this, ref gravity, ref maxFallSpeed, ref jumpHeight, ref jumpSpeed);
- 
+-
++		
  		if (vortexDebuff)
  			gravity = 0f;
+ 
 @@ -19914,6 +_,7 @@
  		if (whoAmI != Main.myPlayer) {
  			int num2 = (int)(position.X + (float)(width / 2)) / 16;
@@ -4902,7 +4926,7 @@
  			if (whoAmI == Main.myPlayer && !shimmerImmune && !shimmerUnstuckHelper.ShouldUnstuck) {
  				int num87 = (int)(base.Center.X / 16f);
  				int num88 = (int)((position.Y + 1f) / 16f);
-@@ -22537,10 +_,29 @@
+@@ -22537,10 +_,31 @@
  		if (flag27 && !shimmering) {
  			AddBuff(48, 1800);
  			honeyWet = true;
@@ -4925,9 +4949,11 @@
  
  		if (num86) {
 +			bool extinguishFireDebuff = false;
-+			for (int j = LiquidLoader.LiquidCount - 1; j >= 0; j--)
++			for (int j = 0; j < LiquidLoader.LiquidCount; j++) {
 +				if (wets[j])
-+					extinguishFireDebuff = LiquidID.Sets.ExtinguishesOnFireDebuffs[j];
++					extinguishFireDebuff |= LiquidID.Sets.ExtinguishesOnFireDebuffs[j];
++			}
++			
 -			if ((onFire || onFire3) && !lavaWet) {
 +			if ((onFire || onFire3) && !lavaWet && extinguishFireDebuff) {
  				for (int num89 = 0; num89 < maxBuffs; num89++) {
@@ -6705,13 +6731,15 @@
  			if (Main.tileSolid[createTile])
  				result = true;
  			else if (!TileObjectData.CheckLiquidPlacement(createTile, placeStyle, targetTile))
-@@ -34274,8 +_,9 @@
+@@ -34274,8 +_,11 @@
  			int num3 = tileTargetY;
  			int num4 = tileTargetX;
  			bool flag = inventory[selectedItem].createTile == 214;
-+		/*while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !Main.tile[num4, num3 + 1].lava())) {*/
++		/*
++		while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !Main.tile[num4, num3 + 1].lava())) {
++		*/
 -			while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !Main.tile[num4, num3 + 1].lava())) {
-+		while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !LiquidLoader.BlocksTilePlacement(this, num2, num + 1, Main.tile[num4, num3 + 1].liquidType()))) {
++		while (Main.tile[num4, num3].active() && (Main.tileRope[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) && num3 < Main.maxTilesY - 5 && (flag || !LiquidLoader.BlocksTilePlacement(this, num3, num4, Main.tile[num4, num3 + 1].liquidType()))) {
 -				if (Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) {
 +			if (Main.tile[num4, num3].type == 314 || TileID.Sets.Platforms[Main.tile[num4, num3].type] || Main.tile[num4, num3].type == 380) {
  					num2++;
@@ -7750,8 +7778,16 @@
  			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
  			int num2 = 0;
  			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
-@@ -38356,6 +_,7 @@
+@@ -38352,10 +_,15 @@
+ 				}
+ 			}
+ 
++			/*
+ 			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304))
  				return;
++			*/
++			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && !ItemID.Sets.SpongeItems[sItem.type]))
++				return;
  
  			int liquidType = Main.tile[tileTargetX, tileTargetY].liquidType();
 +			goto newBucketLogic;
@@ -7764,8 +7800,8 @@
  			}
 +			newBucketLogic:
  
-+			if (!ItemID.Sets.SpongeItems[sItem.type] && sItem.type == ItemID.EmptyBucket) {
-+				// If the bucket in question is a vanilla bucket
++			// If the bucket in question is a vanilla bucket AND not a sponge, as they share the same exact code.
++			if (sItem.type == ItemID.EmptyBucket) {
 +				sItem.stack--;
 +				PutItemInInventoryFromItemUsage(LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()]);
 +			}

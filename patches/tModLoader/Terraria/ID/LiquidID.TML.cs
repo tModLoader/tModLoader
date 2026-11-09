@@ -79,6 +79,35 @@ public partial class LiquidID
 		public static float[] LiquidRippleMultiplier = Factory.CreateFloatSet(1f, Lava, 0.3f, Honey, 0.3f);
 
 		/// <summary>
+		/// Gravity multiplier for when an NPC is in a liquid
+		/// </summary>
+		public static float[] WetNPCGravityModifier = Factory.CreateFloatSet(0.2f, Honey, 0.1f, Lava, 0.15f);
+
+		/// <summary>
+		/// Maximum falling speed for when an NPC is in a liquid
+		/// </summary>
+		public static float[] WetNPCMaxFallSpeedModifier = Factory.CreateFloatSet(7f, Honey, 4f, Lava, 5.5f);
+
+		/// <summary>
+		/// Gravity multiplier for when a player is in a liquid
+		/// </summary>
+		public static float[] WetPlayerGravityModifier = Factory.CreateFloatSet(0.2f, Honey, 0.1f);
+
+		/// <summary>
+		/// Maximum falling speed for when a player is in a liquid
+		/// </summary>
+		public static float[] WetPlayerMaxFallSpeedModifier = Factory.CreateFloatSet(5f, Honey, 3f);
+		/// <summary>
+		/// Gravity multiplier for when a player is in a liquid
+		/// </summary>
+		public static int[] WetPlayerJumpHeightModifier = Factory.CreateIntSet(30);
+
+		/// <summary>
+		/// Maximum falling speed for when a player is in a liquid
+		/// </summary>
+		public static float[] WetPlayerJumpSpeedModifier = Factory.CreateFloatSet(6.01f);
+
+		/// <summary>
 		/// Use the more sensitive lava collision to determine if it's wet or not. It means that touching the smallest amount of liquid count,
 		/// </summary>
 		public static bool[] UsesLavaCollisionForWet = Factory.CreateBoolSet(false, Lava);

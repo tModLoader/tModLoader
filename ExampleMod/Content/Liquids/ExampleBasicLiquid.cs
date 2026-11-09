@@ -25,7 +25,7 @@ namespace ExampleMod.Content.Liquids
 			LiquidID.Sets.CheckForDrowning[Type] = false;
 			LiquidID.Sets.AllowEmitBreathBubbles[Type] = false;
 
-			//Here we allow the extinguishing of the OnFire debuffs for both players and NPCs using this property
+			//Here we make so that the player OnFire debuff does not get removed when going in this liquid
 			LiquidID.Sets.ExtinguishesOnFireDebuffs[Type] = false;
 			AddMapEntry(new Color(80, 53, 80));
 			//Please see ExampleFishingPlayer to see modded liquid fishing pool examples

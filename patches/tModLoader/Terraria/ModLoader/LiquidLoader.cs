@@ -13,6 +13,7 @@ using Terraria.ModLoader.Core;
 using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.ModLoader;
+
 public static class LiquidLoader
 {
 	private static int nextLiquid = LiquidID.Count;
@@ -74,21 +75,20 @@ public static class LiquidLoader
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalLiquids, (GlobalLiquid g) => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookEmitEffects, globalLiquids, (GlobalLiquid g) => g.EmitEffects);
 		ModLoader.BuildGlobalHook(ref HookDrawWaterfall, globalLiquids, (GlobalLiquid g) => g.ChooseWaterfallStyle);
-		ModLoader.BuildGlobalHook(ref HookPreUpdate, globalLiquids, (GlobalLiquid g) => g.PreUpdateLiquid);
+		ModLoader.BuildGlobalHook(ref HookPreUpdate, globalLiquids, (GlobalLiquid g) => g.PreUpdate);
 		ModLoader.BuildGlobalHook(ref HookEvaporation, globalLiquids, (GlobalLiquid g) => g.CanWaterEvaporateInUnderworld);
 		ModLoader.BuildGlobalHook(ref HookSettleLiquidMovement, globalLiquids, (GlobalLiquid g) => g.SettleLiquidMovement);
-		ModLoader.BuildGlobalHook(ref HookMergeTiles, globalLiquids, (GlobalLiquid g) => g.LiquidMerge);
-		ModLoader.BuildGlobalHook(ref HookMergeTilesSounds, globalLiquids, (GlobalLiquid g) => g.LiquidMergeSound);
-		ModLoader.BuildGlobalHook(ref HookPreMerge, globalLiquids, (GlobalLiquid g) => g.PreLiquidMerge);
+		ModLoader.BuildGlobalHook(ref HookMergeTiles, globalLiquids, (GlobalLiquid g) => g.Merge);
+		ModLoader.BuildGlobalHook(ref HookMergeTilesSounds, globalLiquids, (GlobalLiquid g) => g.MergeSound);
+		ModLoader.BuildGlobalHook(ref HookPreMerge, globalLiquids, (GlobalLiquid g) => g.PreMerge);
 		ModLoader.BuildGlobalHook(ref HookBlocksTilePlacement, globalLiquids, (GlobalLiquid g) => g.BlocksTilePlacement);
-		ModLoader.BuildGlobalHook(ref HookPlayerCollision, globalLiquids, (GlobalLiquid g) => g.PlayerLiquidMovement);
+		ModLoader.BuildGlobalHook(ref HookPlayerCollision, globalLiquids, (GlobalLiquid g) => g.PlayerMovement);
 		ModLoader.BuildGlobalHook(ref HookPlayerGravityModifier, globalLiquids, (GlobalLiquid g) => g.PlayerGravityModifier);
-		ModLoader.BuildGlobalHook(ref HookItemMovement, globalLiquids, (GlobalLiquid g) => g.ItemLiquidCollision);
-		ModLoader.BuildGlobalHook(ref HookNPCCollision, globalLiquids, (GlobalLiquid g) => g.NPCLiquidMovement);
-		ModLoader.BuildGlobalHook(ref HookNPCGravityModifier, globalLiquids, (GlobalLiquid g) => g.NPCGravityModifier);
-		ModLoader.BuildGlobalHook(ref HookProjectileMovement, globalLiquids, (GlobalLiquid g) => g.ProjectileLiquidMovement);
+		ModLoader.BuildGlobalHook(ref HookItemMovement, globalLiquids, (GlobalLiquid g) => g.ItemCollision);
+		ModLoader.BuildGlobalHook(ref HookNPCCollision, globalLiquids, (GlobalLiquid g) => g.NPCMovement);
+		ModLoader.BuildGlobalHook(ref HookProjectileMovement, globalLiquids, (GlobalLiquid g) => g.ProjectileMovement);
 		ModLoader.BuildGlobalHook(ref HookCanPlayerDrown, globalLiquids, (GlobalLiquid g) => g.CanPlayerDrown);
-		ModLoader.BuildGlobalHook(ref HookAllowFishing, globalLiquids, (GlobalLiquid g) => g.AllowFishingInLiquid);
+		ModLoader.BuildGlobalHook(ref HookAllowFishing, globalLiquids, (GlobalLiquid g) => g.AllowFishing);
 		ModLoader.BuildGlobalHook(ref HookModifyTilesNearby, globalLiquids, (GlobalLiquid g) => g.ModifyNearbyTiles);
 		ModLoader.BuildGlobalHook(ref HookOnPump, globalLiquids, (GlobalLiquid g) => g.OnPump);
 		ModLoader.BuildGlobalHook(ref HookOnPlayerCollision, globalLiquids, (GlobalLiquid g) => g.OnPlayerCollision);
@@ -116,8 +116,7 @@ public static class LiquidLoader
 	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
 	{
 		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
-		foreach (var hook in HookModifyLight)
-		{
+		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
 		}
 	}
@@ -125,8 +124,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, LiquidRenderer.LiquidDrawCache, Vector2, bool, int, float, bool>[] HookPreDraw;
 	public static bool PreDraw(int i, int j, int type, LiquidRenderer.LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw, int waterStyle, float globalAlpha)
 	{
-		foreach (var hook in HookPreDraw)
-		{
+		foreach (var hook in HookPreDraw) {
 			if (!hook(i, j, type, liquidDrawCache, drawOffset, isBackgroundDraw, waterStyle, globalAlpha)) {
 				return false;
 			}
@@ -138,8 +136,7 @@ public static class LiquidLoader
 	public static void PostDraw(int i, int j, int type, LiquidRenderer.LiquidDrawCache liquidDrawCache, Vector2 drawOffset, bool isBackgroundDraw, int waterStyle, float globalAlpha)
 	{
 		GetLiquid(type)?.PostDraw(i, j, liquidDrawCache, drawOffset, isBackgroundDraw);
-		foreach (var hook in HookPostDraw)
-		{
+		foreach (var hook in HookPostDraw) {
 			hook(i, j, type, liquidDrawCache, drawOffset, isBackgroundDraw, waterStyle, globalAlpha);
 		}
 	}
@@ -147,8 +144,7 @@ public static class LiquidLoader
 	public static bool EmitEffects(int i, int j, byte type, LiquidRenderer.LiquidCache liquidCache)
 	{
 		GetLiquid(type)?.EmitEffects(i, j, liquidCache);
-		foreach (var hook in HookEmitEffects)
-		{
+		foreach (var hook in HookEmitEffects) {
 			if (hook(i, j, type, liquidCache)) {
 				return true;
 			}
@@ -159,8 +155,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, int?>[] HookDrawWaterfall;
 	public static int? DrawWaterfall(int i, int j, int type)
 	{
-		foreach (var hook in HookDrawWaterfall)
-		{
+		foreach (var hook in HookDrawWaterfall) {
 			int? result = hook(i, j, type);
 			if (result != null)
 				return result;
@@ -171,8 +166,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, Liquid, bool>[] HookPreUpdate;
 	public static bool PreUpdate(int i, int j, int type, Liquid liquid)
 	{
-		foreach (var hook in HookPreUpdate)
-		{
+		foreach (var hook in HookPreUpdate) {
 			if (!hook(i, j, type, liquid)) {
 				return false;
 			}
@@ -183,8 +177,7 @@ public static class LiquidLoader
 	private static Func<bool?>[] HookEvaporation;
 	public static bool CanWaterEvaporateInUnderworld()
 	{
-		foreach (var hook in HookEvaporation)
-		{
+		foreach (var hook in HookEvaporation) {
 			bool? result = hook();
 			if (result != null)
 				return result.Value;
@@ -195,8 +188,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, bool>[] HookSettleLiquidMovement;
 	public static bool SettleLiquidMovement(int i, int j, int type)
 	{
-		foreach (var hook in HookSettleLiquidMovement)
-		{
+		foreach (var hook in HookSettleLiquidMovement) {
 			bool result = hook(i, j, type);
 			if (!result) {
 				return false;
@@ -208,8 +200,7 @@ public static class LiquidLoader
 	private static Func<int, int, int?>[] HookMergeTiles;
 	public static int? MergeTilesType(int type, int otherLiquid)
 	{
-		foreach (var t in HookMergeTiles)
-		{
+		foreach (var t in HookMergeTiles) {
 			int? result = t(type, otherLiquid);
 			if (result != null)
 				return result;
@@ -233,8 +224,7 @@ public static class LiquidLoader
 		else
 			modLiquid?.MergeSound(i, j, otherLiquid, ref collisionSound);
 
-		foreach (var hook in HookMergeTilesSounds)
-		{
+		foreach (var hook in HookMergeTilesSounds) {
 			hook(i, j, type, otherLiquid, ref collisionSound);
 		}
 	}
@@ -242,8 +232,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, int, int, int, bool>[] HookPreMerge;
 	public static bool PreMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid)
 	{
-		foreach (var hook in HookPreMerge)
-		{
+		foreach (var hook in HookPreMerge) {
 			if (!hook(liquidX, liquidY, tileX, tileY, type, otherLiquid)) {
 				return false;
 			}
@@ -262,8 +251,7 @@ public static class LiquidLoader
 	private static Func<Player, int, int, int, bool?>[] HookBlocksTilePlacement;
 	public static bool BlocksTilePlacement(Player player, int i, int j, int type)
 	{
-		foreach (var hook in HookBlocksTilePlacement)
-		{
+		foreach (var hook in HookBlocksTilePlacement) {
 			bool? result = hook(player, i, j, type);
 			if (result != null) {
 				return result.Value;
@@ -275,8 +263,7 @@ public static class LiquidLoader
 	private static Func<Player, int, bool, bool, bool>[] HookPlayerCollision;
 	public static bool PlayerMovement(int type, Player player, bool fallThrough, bool ignorePlats)
 	{
-		foreach (var hook in HookPlayerCollision)
-		{
+		foreach (var hook in HookPlayerCollision) {
 			if (!hook(player, type, fallThrough, ignorePlats)) {
 				return false;
 			}
@@ -289,8 +276,7 @@ public static class LiquidLoader
 	public static void PlayerGravityModifier(int type, Player player, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed)
 	{
 		GetLiquid(type)?.PlayerGravityModifier(player, ref gravity, ref maxFallSpeed, ref jumpHeight, ref jumpSpeed);
-		foreach (var hook in HookPlayerGravityModifier)
-		{
+		foreach (var hook in HookPlayerGravityModifier) {
 			hook(player, type, ref gravity, ref maxFallSpeed, ref jumpHeight, ref jumpSpeed);
 		}
 	}
@@ -300,8 +286,7 @@ public static class LiquidLoader
 	public static void ItemMovement(int type, WorldItem item, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
 	{
 		GetLiquid(type)?.ItemCollision(item, ref wetVelocity, ref gravity, ref maxFallSpeed);
-		foreach (var hook in HookItemMovement)
-		{
+		foreach (var hook in HookItemMovement) {
 			hook(item, type, ref wetVelocity, ref gravity, ref maxFallSpeed);
 		}
 	}
@@ -309,8 +294,7 @@ public static class LiquidLoader
 	private static Func<NPC, int, Vector2, bool>[] HookNPCCollision;
 	public static bool NPCMovement(int type, NPC npc, Vector2 dryVelocity)
 	{
-		foreach (var hook in HookNPCCollision)
-		{
+		foreach (var hook in HookNPCCollision) {
 			if (!hook(npc, type, dryVelocity)) {
 				return false;
 			}
@@ -318,23 +302,11 @@ public static class LiquidLoader
 		return GetLiquid(type)?.NPCMovement(npc, dryVelocity) ?? true;
 	}
 
-	private delegate void DelegateNPCGravityModifier(NPC npc, int type, ref float grav, ref float gravMax);
-	private static DelegateNPCGravityModifier[] HookNPCGravityModifier;
-	public static void NPCGravityModifier(int type, NPC npc, ref float gravity, ref float maxFallSpeed)
-	{
-		GetLiquid(type)?.NPCGravityModifier(npc, ref gravity, ref maxFallSpeed);
-		foreach (var hook in HookNPCGravityModifier)
-		{
-			hook(npc, type, ref gravity, ref maxFallSpeed);
-		}
-	}
-
 	private delegate bool DelegateProjectileMovement(Projectile proj, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int height, bool fallThrough);
 	private static DelegateProjectileMovement[] HookProjectileMovement;
 	public static bool ProjectileLiquidMovement(int type, Projectile proj, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough)
 	{
-		foreach (var hook in HookProjectileMovement)
-		{
+		foreach (var hook in HookProjectileMovement) {
 			if (!hook(proj, type, ref wetVelocity, collisionPosition, Width, Height, fallThrough)) {
 				return false;
 			}
@@ -342,15 +314,16 @@ public static class LiquidLoader
 		return GetLiquid(type)?.ProjectileMovement(proj, ref wetVelocity, collisionPosition, Width, Height, fallThrough) ?? true;
 	}
 
-	private delegate void DelegateCanPlayerDrown(Player player, int type, ref bool isDrowning);
-	private static DelegateCanPlayerDrown[] HookCanPlayerDrown;
-	public static void CanPlayerDrown(int type, Player player, ref bool isDrowning)
+	private static Func<Player, int, bool>[] HookCanPlayerDrown;
+	public static bool CanPlayerDrown(int type, Player player)
 	{
-		GetLiquid(type)?.CanPlayerDrown(player, ref isDrowning);
-		foreach (var hook in HookCanPlayerDrown)
-		{
-			hook(player, type, ref isDrowning);
+		foreach (var hook in HookCanPlayerDrown) {
+			bool result = hook(player, type);
+			if (result) {
+				return true;
+			}
 		}
+		return GetLiquid(type)?.CanPlayerDrown(player) ?? true;
 	}
 
 	private static Func<int, Player, Projectile, bool?>[] HookAllowFishing;
@@ -361,8 +334,7 @@ public static class LiquidLoader
 		if (modLiquid != null) {
 			result = modLiquid.AllowFishing(player, projectile);
 		}
-		foreach (var hook in HookAllowFishing)
-		{
+		foreach (var hook in HookAllowFishing) {
 			result = hook(liquidType, player, projectile);
 			if (result != null) {
 				return result;
@@ -375,8 +347,7 @@ public static class LiquidLoader
 	public static void ModifyNearbyTiles(int x, int y, int type, int liquidX, int liquidY)
 	{
 		GetLiquid(type)?.ModifyNearbyTiles(x, y, liquidX, liquidY);
-		foreach (var hook in HookModifyTilesNearby)
-		{
+		foreach (var hook in HookModifyTilesNearby) {
 			hook(x, y, type, liquidX, liquidY);
 		}
 	}
@@ -384,8 +355,7 @@ public static class LiquidLoader
 	private static Func<int, int, int, int, int, bool>[] HookOnPump;
 	public static bool OnPump(int type, int x, int y, int x2, int y2)
 	{
-		foreach (var hook in HookOnPump)
-		{
+		foreach (var hook in HookOnPump) {
 			if (!hook(type, x, y, x2, y2)) {
 				return false;
 			}
@@ -397,8 +367,7 @@ public static class LiquidLoader
 	public static void OnPlayerCollision(int type, Player player)
 	{
 		GetLiquid(type)?.OnPlayerCollision(player);
-		foreach (var hook in HookOnPlayerCollision)
-		{
+		foreach (var hook in HookOnPlayerCollision) {
 			hook(player, type);
 		}
 	}
@@ -407,8 +376,7 @@ public static class LiquidLoader
 	public static void OnNPCCollision(int type, NPC npc)
 	{
 		GetLiquid(type)?.OnNPCCollision(npc);
-		foreach (var hook in HookOnNPCCollision)
-		{
+		foreach (var hook in HookOnNPCCollision) {
 			hook(npc, type);
 		}
 	}
@@ -417,8 +385,7 @@ public static class LiquidLoader
 	public static void OnProjectileCollision(int type, Projectile proj)
 	{
 		GetLiquid(type)?.OnProjectileCollision(proj);
-		foreach (var hook in HookOnProjectileCollision)
-		{
+		foreach (var hook in HookOnProjectileCollision) {
 			hook(proj, type);
 		}
 	}
@@ -452,8 +419,7 @@ public static class LiquidLoader
 	public static void NPCRippleModifier(int type, NPC npc, ref float rippleStrength, ref float rippleOffset)
 	{
 		GetLiquid(type)?.NPCRippleModifier(npc, ref rippleStrength, ref rippleOffset);
-		foreach (var hook in HookNPCRippleModifier)
-		{
+		foreach (var hook in HookNPCRippleModifier) {
 			hook(npc, type, ref rippleStrength, ref rippleOffset);
 		}
 	}
@@ -463,8 +429,7 @@ public static class LiquidLoader
 	public static void PlayerRippleModifier(int type, Player player, ref float rippleStrength, ref float rippleOffset)
 	{
 		GetLiquid(type)?.PlayerRippleModifier(player, ref rippleStrength, ref rippleOffset);
-		foreach (var hook in HookPlayerRippleModifier)
-		{
+		foreach (var hook in HookPlayerRippleModifier) {
 			hook(player, type, ref rippleStrength, ref rippleOffset);
 		}
 	}

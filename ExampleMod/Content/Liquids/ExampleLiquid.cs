@@ -69,6 +69,17 @@ namespace ExampleMod.Content.Liquids
 			LiquidID.Sets.CanBeAbsorbedBy[Type].Add(ItemID.LavaAbsorbantSponge);
 			LiquidID.Sets.CanBeAbsorbedBy[Type].Add(ItemID.StaffofRegrowth); //Here is an example of turning a regular item into a sponge thats capable of sucking up our liquid
 
+			// Here we set the gravity modifier for NPC in a way that will make any NPC affected by gravity float instead of sinking
+			LiquidID.Sets.WetNPCGravityModifier[Type] = -0.5f;
+			// And here we make it so the max fall (or rather, max upward speed?) is set to be slower than usual (like honey)
+			LiquidID.Sets.WetNPCMaxFallSpeedModifier[Type] = 4f;
+
+			// We set in here the various player modifier when in a liquid
+			LiquidID.Sets.WetPlayerGravityModifier[Type] = 0.9f;
+			LiquidID.Sets.WetPlayerMaxFallSpeedModifier[Type] = 20f;
+			LiquidID.Sets.WetPlayerJumpHeightModifier[Type] = 60;
+			LiquidID.Sets.WetPlayerJumpSpeedModifier[Type] = 10.1f;
+
 			//We can add a map entry to our liquid, by doing so we can show where our liquid is on the map.
 			//Unlike vanilla, we can also add a map entry name, which will display a name if the liquid is being selected on the map.
 			AddMapEntry(new Color(200, 200, 200), DisplayName);
@@ -78,8 +89,8 @@ namespace ExampleMod.Content.Liquids
 			//Please see ExampleFishingPlayer to see modded liquid fishing pool examples
 		}
 
-		//Here with LiquidMerge, we are able to decide when the liquid generates with a different tile.
-		//Using the otherLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
+		//Here with Merge, we are able to decide when the liquid generates with a different tile.
+		//Using the adjacentLiquid param, we are able to select which liquid that collides with ours creates a specific tile.
 		public override int Merge(int adjacentLiquid) {
 			if (adjacentLiquid == LiquidID.Water) {
 				return TileID.TeamBlockBlue; //When the liquid collides with water. Blue team block is created
@@ -101,7 +112,7 @@ namespace ExampleMod.Content.Liquids
 			//or if you want to do other effects when this liquid merges with another liquid.
 		}
 
-		//LiquidMergeSound is played only on clients, and serves as editing the sound of when a liquid merges with another liquid.
+		//MergeSound is played only on clients, and serves as editing the sound of when a liquid merges with another liquid.
 		//Here we set a few custom sounds to play when this liquid merges with other liquids.
 		public override void MergeSound(int i, int j, int otherLiquid, ref SoundStyle? collisionSound) {
 			collisionSound = SoundID.Shatter; //by default, we set the sound to be the glass shattering sound when merging with a liquid.
@@ -125,16 +136,6 @@ namespace ExampleMod.Content.Liquids
 			r = 1f;
 			g = 1f;
 			b = 1f;
-		}
-
-		//Using EvaporatesInHell, we are able to choose whether this liquid evaporates in hell, based on a condition.
-		//For custom evaporation, use the UpdateLiquid hook.
-		public override bool CanEvaporate(int i, int j) {
-			//Here, our liquid in the bottom half of the underworld evaporates, while in the upper half does not
-			if (j > Main.maxTilesY - 100) {
-				return true;
-			}
-			return false;
 		}
 
 		//Here using ModifyNearbyTiles we do something similar to lava
@@ -258,7 +259,7 @@ namespace ExampleMod.Content.Liquids
 
 
 		//The following contains all logic related to modifying the movement of entities in this liquid, making Players, Items, NPCs and Projectiles move slower while in this liquid
-		//Here we replicate normal liquid movement behaviour using PlayerLiquidMovement
+		//Here we replicate normal liquid movement behaviour using PlayerMovement
 		public override bool PlayerMovement(Player player, bool fallThrough, bool ignorePlats) {
 			int height = (!player.onTrack) ? player.height : (player.height - 20);
 			Vector2 velocity = player.velocity;
@@ -273,16 +274,6 @@ namespace ExampleMod.Content.Liquids
 			player.position += vector2;
 			player.TryFloatingInFluid();
 			return false; //We return false as we do not want the normal liquid movement to execute after this hook/method
-		}
-
-		//Liquid movement is effected in 2 parts for players
-		//Liquid velocity and gravity modifiers are seperate from the rest of the movement, we modify them here in PlayerGravityModifier
-		public override void PlayerGravityModifier(Player player, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed) {
-			//These values are half of what honey applies to the player
-			gravity = 0.05f;
-			maxFallSpeed = 1.5f;
-			//In other liquids, the jump speed and height is increased to simulate "swimming"
-			//We don't want that for our liquid so we don't modify the other hook/method parameters
 		}
 
 		//related above, we use this method/hook to make items move at half the speed that they would when in honey
@@ -311,16 +302,8 @@ namespace ExampleMod.Content.Liquids
 			}
 		}
 
-		//Like above, we set the parameters 'gravity' and 'maxFallSpeed' to be half of what honey would set them to.
-		public override void NPCGravityModifier(NPC npc, ref float gravity, ref float maxFallSpeed) {
-			gravity = 0.05f;
-			maxFallSpeed = 1f;
-			//You may notice that NPCLiquidMovement doesn't have a wetVelocity param, set the NPCMovementMultiplierDefault property in SetStaticDefaults to change the wet velocity multiplier for NPCs
-			//The property is seperate because of NPCs indivdually setting the multiplier value based on type (DD2 npcs set it to 1f to ignore liquid movement)
-		}
-
-		//lastly, we reimplement the projectile movement in liquids using the ProjectileLiquidMovement
-		//This hook is very similar and different to PlayerLiquidMovement, returning a bool and only having wetVelocity as a referenced parameter
+		//lastly, we reimplement the projectile movement in liquids using the ProjectileMovement
+		//This hook is very similar and different to PlayerMovement, returning a bool and only having wetVelocity as a referenced parameter
 		public override bool ProjectileMovement(Projectile projectile, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
 			Vector2 vector = projectile.velocity;
 			projectile.velocity = Collision.TileCollision(collisionPosition, projectile.velocity, Width, Height, fallThrough, fallThrough);
@@ -356,76 +339,5 @@ namespace ExampleMod.Content.Liquids
 			// otherwise you cannot pump it at all
 			return false;
 		}
-
-
-		//The following contains all the logic for what this liquid does when being entered and exited by different entities.
-		//Each hook/method is used to execute what would happen when something enters/exits a liquid.
-		//There is a hook for the following
-		// * Players
-		// * NPCs
-		// * Projectiles
-		// * Items
-		//Each hook has a "isEnter" parameter, which is true whenever entity is entering the liquid and false when exiting.
-		//This is usually used to do different effects when entering a liquid rather than exiting one
-
-		//The commeneted code is adapted from vanilla's splash code for honey. Uncomment the code to make this liquid have it's splash act like honey's splash instead.
-		//public override bool OnPlayerSplash(Player player, bool isEnter) {
-		//	for (int i = 0; i < 20; i++) {
-		//		int dust = Dust.NewDust(new Vector2(player.position.X - 6f, player.position.Y + (player.height / 2) - 8f), player.width + 12, 24, SplashDustType);
-		//		Main.dust[dust].velocity.Y -= 1f;
-		//		Main.dust[dust].velocity.X *= 2.5f;
-		//		Main.dust[dust].scale = 1.3f;
-		//		Main.dust[dust].alpha = 100;
-		//		Main.dust[dust].noGravity = true;
-		//	}
-		//	SoundEngine.PlaySound(SplashSound, player.position);
-		//	return false;
-		//}
-
-		//public override bool OnNPCSplash(NPC npc, bool isEnter) {
-		//	for (int i = 0; i < 10; i++) {
-		//		int dust = Dust.NewDust(new Vector2(npc.position.X - 6f, npc.position.Y + (npc.height / 2) - 8f), npc.width + 12, 24, SplashDustType);
-		//		Main.dust[dust].velocity.Y -= 1f;
-		//		Main.dust[dust].velocity.X *= 2.5f;
-		//		Main.dust[dust].scale = 1.3f;
-		//		Main.dust[dust].alpha = 100;
-		//		Main.dust[dust].noGravity = true;
-		//	}
-		//	//only play the sound if the npc isnt a slime, mouse, tortoise, or if it has no gravity
-		//	if (npc.aiStyle != NPCAIStyleID.Slime &&
-		//			npc.type != NPCID.BlueSlime && npc.type != NPCID.MotherSlime && npc.type != NPCID.IceSlime && npc.type != NPCID.LavaSlime &&
-		//			npc.type != NPCID.Mouse &&
-		//			npc.aiStyle != NPCAIStyleID.GiantTortoise &&
-		//			!npc.noGravity) {
-		//		SoundEngine.PlaySound(SplashSound, npc.position);
-		//	}
-		//	return false;
-		//}
-
-		//public override bool OnProjectileSplash(Projectile proj, bool isEnter) {
-		//	for (int i = 0; i < 10; i++) {
-		//		int dust = Dust.NewDust(new Vector2(proj.position.X - 6f, proj.position.Y + (proj.height / 2) - 8f), proj.width + 12, 24, SplashDustType);
-		//		Main.dust[dust].velocity.Y -= 1f;
-		//		Main.dust[dust].velocity.X *= 2.5f;
-		//		Main.dust[dust].scale = 1.3f;
-		//		Main.dust[dust].alpha = 100;
-		//		Main.dust[dust].noGravity = true;
-		//	}
-		//	SoundEngine.PlaySound(SplashSound, proj.position);
-		//	return false;
-		//}
-
-		//public override bool OnItemSplash(Item item, bool isEnter) {
-		//	for (int i = 0; i < 5; i++) {
-		//		int dust = Dust.NewDust(new Vector2(item.position.X - 6f, item.position.Y + (item.height / 2) - 8f), item.width + 12, 24, SplashDustType);
-		//		Main.dust[dust].velocity.Y -= 1f;
-		//		Main.dust[dust].velocity.X *= 2.5f;
-		//		Main.dust[dust].scale = 1.3f;
-		//		Main.dust[dust].alpha = 100;
-		//		Main.dust[dust].noGravity = true;
-		//	}
-		//	SoundEngine.PlaySound(SplashSound, item.position);
-		//	return false;
-		//}
 	}
 }

@@ -425,11 +425,9 @@ public partial class NPC : IEntityWithGlobals<GlobalNPC>
 	public bool TryPutoutFire()
 	{
 		bool extinguishFireDebuff = false;
-		for (int i = LiquidLoader.LiquidCount - 1; i >= 0; i--) {
+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
 			if (this.wets[i]) {
-				if (LiquidID.Sets.ExtinguishesOnFireDebuffs[i]) {
-					extinguishFireDebuff = true;
-				}
+				extinguishFireDebuff |= LiquidID.Sets.ExtinguishesOnFireDebuffs[i];
 			}
 		}
 		return extinguishFireDebuff;

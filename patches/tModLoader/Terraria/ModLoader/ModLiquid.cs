@@ -106,17 +106,6 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows you to make your liquid evaporate like water when in the underworld. Returns false by default.
-	/// </summary>
-	/// <param name="i">The x position in tile coordinates.</param>
-	/// <param name="j">The y position in tile coordinates.</param>
-	/// <returns></returns>
-	public virtual bool CanEvaporate(int i, int j)
-	{
-		return false;
-	}
-
-	/// <summary>
 	/// Allows you to change how your liquid moves when loading or creating a world. Returns true by default.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
@@ -210,19 +199,6 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows the user to specify how the liquid interacts with the player (especially player gravity). <br/>
-	/// Please see <see cref="Player.Update" />, to see how vanilla handles it's liquid gravity.
-	/// </summary>
-	/// <param name="player">The player instance thats being effected by the liquid.</param>
-	/// <param name="gravity">The current player.gravity being changed.</param>
-	/// <param name="maxFallSpeed">The current player.maxFallSpeed being changed.</param>
-	/// <param name="jumpHeight">The current Player.jumpHeight being changed.</param>
-	/// <param name="jumpSpeed">The current Player.jumpSpeed being changed.</param>
-	public virtual void PlayerGravityModifier(Player player, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed)
-	{
-	}
-
-	/// <summary>
 	/// Allows the user to specify how the liquid interacts with an item (especially item gravity and movement). <br/>
 	/// Please see <see cref="Item.UpdateItem" />, to see how vanilla handles it's liquid collision. <br/> <br/>
 	/// This method is also used to modify items detected to be in liquids. Use this to do things such as deleting items touching this liquid.
@@ -250,17 +226,6 @@ public abstract class ModLiquid : ModBlockType
 	}
 
 	/// <summary>
-	/// Allows the user to specify how the liquid interacts with an npc (especially npc gravity). <br/>
-	/// Please see <see cref="NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid gravity.
-	/// </summary>
-	/// <param name="npc">The npc instance thats being effected by the liquid.</param>
-	/// <param name="gravity">The gravity of the npc.</param>
-	/// <param name="maxFallSpeed">The maximum fall speed of the npc.</param>
-	public virtual void NPCGravityModifier(NPC npc, ref float gravity, ref float maxFallSpeed)
-	{
-	}
-
-	/// <summary>
 	/// Allows the user to specify how the liquid interacts with a projectile (especially projectile movement). <br/>
 	/// Please see <see cref="Projectile.HandleMovement" />, to see how vanilla handles it's liquid collision. <br/>
 	/// Return true for the liquid to use the normal liquid collision code. <br/>
@@ -280,15 +245,14 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary>
 	/// Allows you to give conditions for when the game attempts to check to see if the player is drowning. <br/>
-	/// Set isDrowning to either true or false depending on whether the player should or should not be drowning. <br/>
-	/// This is used by items such as the Breething Reed to make the player be submerged deeper underwater. <br/>
-	/// Please see <see cref="Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
-	/// ChecksForDrowning must be set to true for this to run. Not to be confused with ChecksForDrowning.
+	/// Return true if the player should be drowning in the current liquid. <br/>
+	/// Return false if the player should not be drowning in the current liquid <br/>
+	/// This is used by items such as the Breathing Reed to make the player be submerged deeper underwater. <br/>
 	/// </summary>
-	/// <param name="player">The player instance thats being effected by the liquid.</param>
-	/// <param name="isDrowning">The boolean flag for whether or not the player is drowning.</param>
-	public virtual void CanPlayerDrown(Player player, ref bool isDrowning)
+	/// <param name="player">The player instance that being effected by the liquid.</param>
+	public virtual bool CanPlayerDrown(Player player)
 	{
+		return true;
 	}
 
 	/// <summary>

@@ -100,7 +100,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="liquid"></param>
 	/// <returns></returns>
-	public virtual bool PreUpdateLiquid(int i, int j, int type, Liquid liquid)
+	public virtual bool PreUpdate(int i, int j, int type, Liquid liquid)
 	{
 		return true;
 	}
@@ -142,7 +142,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <returns></returns>
-	public virtual int? LiquidMerge(int type, int otherLiquid)
+	public virtual int? Merge(int type, int otherLiquid)
 	{
 		return null;
 	}
@@ -157,7 +157,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="otherLiquid">The liquid ID of the liquid colliding with this one.</param>
 	/// <param name="collisionSound">The sound to be played, set this to a sound if you don't want the default merge sound to play.</param>
-	public virtual void LiquidMergeSound(int i, int j, int type, int otherLiquid, ref SoundStyle? collisionSound)
+	public virtual void MergeSound(int i, int j, int type, int otherLiquid, ref SoundStyle? collisionSound)
 	{
 	}
 
@@ -180,7 +180,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="otherLiquid">The Liquid ID of the liquid colliding with this liquid</param>
 	/// <returns></returns>
-	public virtual bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid)
+	public virtual bool PreMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid)
 	{
 		return true;
 	}
@@ -211,23 +211,9 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="fallThrough">Whether or not the player is falling through the liquid.</param>
 	/// <param name="ignorePlats">Whether or not the player ignores platforms when falling.</param>
 	/// <returns></returns>
-	public virtual bool PlayerLiquidMovement(Player player, int type, bool fallThrough, bool ignorePlats)
+	public virtual bool PlayerMovement(Player player, int type, bool fallThrough, bool ignorePlats)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows the user to specify how a liquid interacts with the player (especially player gravity). <br/>
-	/// Please see <see cref="Terraria.Player.Update" />, to see how vanilla handles it's liquid gravity.
-	/// </summary>
-	/// <param name="player">The player instance thats being effected by the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="gravity">The current player.gravity being changed.</param>
-	/// <param name="maxFallSpeed">The current player.maxFallSpeed being changed.</param>
-	/// <param name="jumpHeight">The current Player.jumpHeight being changed.</param>
-	/// <param name="jumpSpeed">The current Player.jumpSpeed being changed.</param>
-	public virtual void PlayerGravityModifier(Player player, int type, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed)
-	{
 	}
 
 	/// <summary>
@@ -240,7 +226,7 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="wetVelocity">The velocity of the item when in the liquid.</param>
 	/// <param name="gravity">The gravity of the item.</param>
 	/// <param name="maxFallSpeed">The maximum fall speed of the item.</param>
-	public virtual void ItemLiquidCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
+	public virtual void ItemCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed)
 	{
 	}
 
@@ -254,21 +240,9 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="type"></param>
 	/// <param name="dryVelocity">The velocity of the NPC before being modified by the liquid.</param>
 	/// <returns></returns>
-	public virtual bool NPCLiquidMovement(NPC npc, int type, Vector2 dryVelocity)
+	public virtual bool NPCMovement(NPC npc, int type, Vector2 dryVelocity)
 	{
 		return true;
-	}
-
-	/// <summary>
-	/// Allows the user to specify how a liquid interacts with an npc (especially npc gravity). <br/>
-	/// Please see <see cref="Terraria.NPC.UpdateNPC_UpdateGravity" />, to see how vanilla handles it's liquid collision.
-	/// </summary>
-	/// <param name="npc">The npc instance thats being effected by the liquid.</param>
-	/// <param name="type"></param>
-	/// <param name="gravity">The gravity of the npc.</param>
-	/// <param name="maxFallSpeed">The maximum fall speed of the npc.</param>
-	public virtual void NPCGravityModifier(NPC npc, int type, ref float gravity, ref float maxFallSpeed)
-	{
 	}
 
 	/// <summary>
@@ -285,34 +259,34 @@ public abstract class GlobalLiquid : ModType
 	/// <param name="Height">The modified height of this projectile.</param>
 	/// <param name="fallThrough">Whether or not the projectile can fall through.</param>
 	/// <returns></returns>
-	public virtual bool ProjectileLiquidMovement(Projectile projectile, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough)
+	public virtual bool ProjectileMovement(Projectile projectile, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough)
 	{
 		return true;
 	}
 
 	/// <summary>
 	/// Allows you to give conditions for when the game attempts to check to see if the player is drowning. <br/>
-	/// Set isDrowning to either true or false depending on whether the player should or should not be drowning. <br/>
+	/// Return true if the player should be drowning in the current liquid. <br/>
+	/// Return false if the player should not be drowning in the current liquid <br/>
 	/// This is used by items such as the Breething Reed to make the player be submerged deeper underwater. <br/>
-	/// Please see <see cref="Terraria.Player.CheckDrowning" /> for how vanilla uses the isDrowning boolean flag. <br/>
-	/// ChecksForDrowning must be set to true for this to run. Not to be confused with ChecksForDrowning hook.
 	/// </summary>
 	/// <param name="player">The player instance thats being effected by the liquid.</param>
 	/// <param name="type"></param>
-	/// <param name="isDrowning">The boolean flag for whether or not the player is drowning.</param>
-	public virtual void CanPlayerDrown(Player player, int type, ref bool isDrowning)
+	public virtual bool CanPlayerDrown(Player player, int type)
 	{
+		return false;
 	}
 
 	/// <summary>
-	/// Allow or not fishing in this liquid. Return true by default; 
+	/// Allow or not fishing in this liquid. Return true to allow fishing in a specific liquid, return false to prevent fishing in a liquid <br/>
+	/// or return null (default) to allow default liquid behavior (For example, shimmer preventing fishing by default)
 	/// </summary>
 	/// <param name="player">The player attempting to fish in it</param>
 	/// <param name="bobber">The bobber that is trying to fish in the liquid</param>
 	/// <returns></returns>
-	public virtual bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber)
+	public virtual bool? AllowFishing(int liquidType, Player player, Projectile bobber)
 	{
-		return true;
+		return null;
 	}
 
 	/// <summary>

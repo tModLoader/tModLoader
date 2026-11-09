@@ -2999,34 +2999,21 @@
  			if (shimmerWet) {
  				gravity = 0.15f;
  				maxFallSpeed = 5.5f;
-@@ -76357,7 +_,27 @@
+@@ -76357,6 +_,14 @@
  			else {
  				gravity = 0.2f;
  				maxFallSpeed = 7f;
 + 			}
 +			*/
-+			float liqGravity = gravity;
-+			float liqMaxFallSpeed = maxFallSpeed;
-+			if (shimmerWet) {
-+				liqGravity = 0.15f;
-+				liqMaxFallSpeed = 5.5f;
++
++			for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
++				if (wets[i]) {
++					gravity = LiquidID.Sets.WetNPCGravityModifier[i];
++					maxFallSpeed = LiquidID.Sets.WetNPCMaxFallSpeedModifier[i];
++				}
  			}
-+			else if (honeyWet) {
-+				liqGravity = 0.1f;
-+				liqMaxFallSpeed = 4f;
-+			}
-+			else {
-+				liqGravity = 0.2f;
-+				liqMaxFallSpeed = 7f;
-+			}
-+			for (int i = 0; i < LiquidLoader.LiquidCount; i++)
-+				if (wets[i])
-+					LiquidLoader.NPCGravityModifier(i, this, ref liqGravity, ref liqMaxFallSpeed);
-+			gravity = liqGravity;
-+			maxFallSpeed = liqMaxFallSpeed;
  		}
  	}
- 
 @@ -77017,6 +_,8 @@
  					none.AddSuperNaturalRegeneration(24);
  			}

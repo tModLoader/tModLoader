@@ -15,7 +15,7 @@ namespace ExampleMod.Common.GlobalLiquids
 	public class ExampleGlobalLiquid : GlobalLiquid
 	{
 		//AllowFishingInLiquid allow to control the fact you can fish in a liquid at a global level instead of a ModLiquid level
-		public override bool? AllowFishingInLiquid(int liquidType, Player player, Projectile bobber) {
+		public override bool? AllowFishing(int liquidType, Player player, Projectile bobber) {
 			// We check if we allow fishing in shimmer only if the EoC has been defeated
 			if (liquidType == LiquidID.Shimmer && NPC.downedBoss1) {
 				// Returning true allow fishing in the liquid
@@ -42,7 +42,7 @@ namespace ExampleMod.Common.GlobalLiquids
 
 		// In this example, we change how lava and water should interact before making a LiquidMerge.
 		// If the EoC is defeated and the water and lava come in contact, there is 50% chance it will spawn an obsidian pillar instead of doing a regular tile merge
-		public override bool PreLiquidMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid) {
+		public override bool PreMerge(int liquidX, int liquidY, int tileX, int tileY, int type, int otherLiquid) {
 			// We start by checking if lava and water are the 2 liquid colliding together
 			if (type == LiquidID.Water && otherLiquid == LiquidID.Lava ||
 				type == LiquidID.Lava && otherLiquid == LiquidID.Water) {
@@ -74,13 +74,13 @@ namespace ExampleMod.Common.GlobalLiquids
 			//	// By returning false, it effectively prevent the liquid from doing any sort of merging and make it so that LiquidMerge does not run in this case
 			//	return false;
 			//}
-			return base.PreLiquidMerge(liquidX, liquidY, tileX, tileY, type, otherLiquid);
+			return base.PreMerge(liquidX, liquidY, tileX, tileY, type, otherLiquid);
 		}
 
 		//Like modded liquids, we can also change the merge type of a vanilla liquid.
 		//Here we set the merge between lava and shimmer to be orichalcum ore.
 		// We also make so that lava and water have a 50/50 chance to produce either obsidian or obsidian brick
-		public override int? LiquidMerge(int type, int otherLiquid) {
+		public override int? Merge(int type, int otherLiquid) {
 			// Due to the nature of how liquids work, we need to check both way for the interaction, as it depend on which liquid flow first in the other liquid.
 			// In this case, we are checking if lava and shimmer collide, then make orichalcum
 			if ((type == LiquidID.Lava && otherLiquid == LiquidID.Shimmer) || (type == LiquidID.Shimmer && otherLiquid == LiquidID.Lava)) {
@@ -118,21 +118,16 @@ namespace ExampleMod.Common.GlobalLiquids
 
 		//ChecksForDrowning allows which liquid the player can drown in.
 		//Normally water and honey will only let you drown, but here we make shimmer allow the player to drown in, and make water breathable.
-		public override void CanPlayerDrown(Player player, int type, ref bool isDrowning) {
+		public override bool CanPlayerDrown(Player player, int type) {
 			if (type == LiquidID.Water && player.armor[0].type == ItemID.IronHelmet) {
-				isDrowning = false;
-			}
-		}
-
-		// In this first example, we make it so that water located in the underworld cannot be pumped out of the underworld
-		// In the second example, we make it so that shimmer cannot be pumped if the moonlord was not defeated in the world
-		public override bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY) {
-			// We check if the current liquid type is water and if the input is located in the underworld and the outside of the underworld
-			if (inLiquidType == LiquidID.Water && inY > Main.UnderworldLayer && outY < Main.UnderworldLayer) {
-				// If this is the case, then we cannot pump the water outside of the underworld
 				return false;
 			}
 
+			return base.CanPlayerDrown(player, type);
+		}
+
+		// In this example, we make it so that shimmer cannot be pumped if the moonlord was not defeated in the world
+		public override bool OnPump(int inLiquidType, int inX, int inY, int outX, int outY) {
 			// We check if the current liquid type is shimmer, if it is then we can check if the moon was not defeated.
 			if (inLiquidType == LiquidID.Shimmer && !NPC.downedMoonlord) {
 				// If this is the case, then we cannot pump shimmer until the moon lord has been defeated
@@ -144,7 +139,7 @@ namespace ExampleMod.Common.GlobalLiquids
 		//Here, we make lava have no liquid movement at all
 		//Normally, returning false has no velocity applied to the player at all as liquid movement is responsible for adding velocity to position.
 		//To fix this, we copy the default movement when outside of liquids and have it run when in lava.
-		public override bool PlayerLiquidMovement(Player player, int type, bool fallThrough, bool ignorePlats) {
+		public override bool PlayerMovement(Player player, int type, bool fallThrough, bool ignorePlats) {
 			if (type == LiquidID.Lava) {
 				player.DryCollision(fallThrough, ignorePlats);
 				if (player.mount.Active && player.mount.IsConsideredASlimeMount && player.velocity.Y != 0f && !player.SlimeDontHyperJump) {
@@ -164,22 +159,8 @@ namespace ExampleMod.Common.GlobalLiquids
 			return true;
 		}
 
-		//PlayerLiquidMovement isn't enough to make the player fully ignore lava movement, so we have to also reset the gravity of the player as well
-		//Here we copy over the settings when gravity, maxfallspeed, jump height and speed into this method, resetting their values to before the player being in a liquid.
-		public override void PlayerGravityModifier(Player player, int type, ref float gravity, ref float maxFallSpeed, ref int jumpHeight, ref float jumpSpeed) {
-			if (type == LiquidID.Lava) {
-				maxFallSpeed = 10f;
-				gravity = Player.defaultGravity;
-				jumpHeight = 15;
-				jumpSpeed = 5.01f;
-				if (player.PortalPhysicsEnabled) {
-					maxFallSpeed = 35f;
-				}
-			}
-		}
-
 		//related to PlayerLiquidMovement hook, we make lava also ignore item physics when the item is falling in the liquid
-		public override void ItemLiquidCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
+		public override void ItemCollision(WorldItem item, int type, ref Vector2 wetVelocity, ref float gravity, ref float maxFallSpeed) {
 			if (type == LiquidID.Lava) {
 				//we replicate the gravity with the values before liquid effects the references
 				gravity = 0.1f;
@@ -200,66 +181,8 @@ namespace ExampleMod.Common.GlobalLiquids
 			}
 		}
 
-		//Again related to PlayerLiquidMovement hook
-		//Here we replace gravity and maxFallSpeed with a replication of the gravity calculations before liquid calculations are called
-		//This allows npcs in honey to have normal gravity and not be effected by liquids
-		//To see how lava is prevented from multiplying velocity, please see Common.GlobalNPCs.ExampleGlobalLiquidNPC.SetDefaults
-		public override void NPCGravityModifier(NPC npc, int type, ref float gravity, ref float maxFallSpeed) {
-			if (type == LiquidID.Honey) {
-				maxFallSpeed = 10f;
-				gravity = 0.3f;
-				if (!npc.GravityIgnoresType) {
-					if (npc.type == 258) {
-						gravity = 0.1f;
-						if (npc.velocity.Y > 3f) {
-							npc.velocity.Y = 3f;
-						}
-					}
-					else if (npc.type == 425 && npc.ai[2] == 1f) {
-						gravity = 0.1f;
-					}
-					else if ((npc.type == 576 || npc.type == 577) && npc.ai[0] > 0f && npc.ai[1] == 2f) {
-						gravity = 0.45f;
-						if (npc.velocity.Y > 32f) {
-							npc.velocity.Y = 32f;
-						}
-					}
-					else if (npc.type == 427 && npc.ai[2] == 1f) {
-						gravity = 0.1f;
-						if (npc.velocity.Y > 4f) {
-							npc.velocity.Y = 4f;
-						}
-					}
-					else if (npc.type == 426) {
-						gravity = 0.1f;
-						if (npc.velocity.Y > 3f) {
-							npc.velocity.Y = 3f;
-						}
-					}
-					else if (npc.type == 541) {
-						gravity = 0f;
-					}
-					else if (npc.aiStyle == 7 && npc.ai[0] == 25f) {
-						gravity = 0f;
-					}
-				}
-				if (!npc.GravityIgnoresSpace) {
-					float worldSize = (float)Main.maxTilesX / 4200f;
-					worldSize *= worldSize;
-					float height = (float)((double)(npc.position.Y / 16f - (60f + 10f * worldSize)) / (Main.worldSurface / 6.0));
-					if ((double)height < 0.25) {
-						height = 0.25f;
-					}
-					if (height > 1f) {
-						height = 1f;
-					}
-					gravity *= height;
-				}
-			}
-		}
-
 		//Lastly, and very easily, projectiles don't have default dry behaviour, so all we have to do for lava to not react to projectiles is to return false;
-		public override bool ProjectileLiquidMovement(Projectile projectile, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
+		public override bool ProjectileMovement(Projectile projectile, int type, ref Vector2 wetVelocity, Vector2 collisionPosition, int Width, int Height, bool fallThrough) {
 			if (type == LiquidID.Lava) {
 				return false;
 			}
