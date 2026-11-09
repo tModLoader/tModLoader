@@ -6,8 +6,4 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden;
 [AutoloadEquip(EquipType.Legs)]
 internal class Jofairden_Legs : JofairdenArmorItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }

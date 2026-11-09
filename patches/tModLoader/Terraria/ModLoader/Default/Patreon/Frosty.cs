@@ -13,26 +13,16 @@ namespace Terraria.ModLoader.Default.Patreon
 
 			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 		}
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-		}
     }
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class Frosty_Hoodie : PatreonItem
 	{
-		public override void SetDefaults() {
-			base.SetDefaults();
-		}
 	}
 
 	[AutoloadEquip(EquipType.Legs)]
 	internal class Frosty_Pants : PatreonItem
 	{
-		public override void SetDefaults() {
-			base.SetDefaults();
-		}
 	}
 
 	internal class FrostyPlayer : ModPlayer

@@ -10,30 +10,18 @@ namespace Terraria.ModLoader.Default.Patreon
     internal class Linus_Head : PatreonItem
     {
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
-
-		public override void SetDefaults() {
-            base.SetDefaults();
-        }
     }
 
     [AutoloadEquip(EquipType.Body)]
 	internal class Linus_Body : PatreonItem
     {
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
-
-		public override void SetDefaults() {
-            base.SetDefaults();
-        }
     }
 
     [AutoloadEquip(EquipType.Legs)]
 	internal class Linus_Legs : PatreonItem
     {
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
-
-		public override void SetDefaults() {
-            base.SetDefaults();
-        }
     }
 
     [AutoloadEquip(EquipType.Wings)]

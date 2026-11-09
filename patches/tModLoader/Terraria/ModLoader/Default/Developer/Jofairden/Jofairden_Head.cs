@@ -6,11 +6,6 @@ namespace Terraria.ModLoader.Default.Developer.Jofairden;
 [AutoloadEquip(EquipType.Head)]
 internal class Jofairden_Head : JofairdenArmorItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
-
 	public override bool IsVanitySet(int head, int body, int legs)
 		=> head == EquipLoader.GetEquipSlot(Mod, nameof(Jofairden_Head), EquipType.Head)
 		&& body == EquipLoader.GetEquipSlot(Mod, nameof(Jofairden_Body), EquipType.Body)

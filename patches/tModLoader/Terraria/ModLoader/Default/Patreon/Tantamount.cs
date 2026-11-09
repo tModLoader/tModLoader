@@ -44,20 +44,11 @@ internal class Tantamount_Body : PatreonItem
 		ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = false;
 		ArmorIDs.Body.Sets.shouldersAreAlwaysInTheBack[Item.bodySlot] = true;
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Tantamount_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Wings)]

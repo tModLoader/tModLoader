@@ -105,27 +105,14 @@ internal class Guildpack_Head : PatreonItem
 			modPlayer.IsActive = true;
 		}
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Body)]
 internal class Guildpack_Body : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Guildpack_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }

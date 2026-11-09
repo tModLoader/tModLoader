@@ -6,28 +6,16 @@ namespace Terraria.ModLoader.Default.Patreon;
 [AutoloadEquip(EquipType.Head)]
 internal class Coolmike5000_Head : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Body)]
 internal class Coolmike5000_Body : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Coolmike5000_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Wings)]

@@ -6,10 +6,6 @@ namespace Terraria.ModLoader.Default.Patreon;
 [AutoloadEquip(EquipType.Head)]
 internal class dinidini_Head : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Body)]
@@ -21,11 +17,6 @@ internal class dinidini_Body : PatreonItem
 
 		ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true;
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
@@ -36,11 +27,6 @@ internal class dinidini_Legs : PatreonItem
 		base.SetStaticDefaults();
 
 		ArmorIDs.Legs.Sets.OverridesLegs[Item.legSlot] = true;
-	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
 	}
 }
 

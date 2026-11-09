@@ -76,29 +76,16 @@ internal class Saethar_Head : PatreonItem
 			modPlayer.IsActive = true;
 		}
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Body)]
 internal class Saethar_Body : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Saethar_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-	}
 }
 
 [AutoloadEquip(EquipType.Wings)]
