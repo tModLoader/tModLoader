@@ -27,7 +27,6 @@ namespace ExampleMod.Content.Items.Tools
 		public override void SetDefaults()
 		{
 			// DefaultToGolfClub sets various properties common to golf clubs:
-			// - width/height: item dimensions
 			// - channel: shows hand animation on hover
 			// - useStyle: 8 (GolfPlay)
 			// - holdStyle: 4 (HoldGolfClub)

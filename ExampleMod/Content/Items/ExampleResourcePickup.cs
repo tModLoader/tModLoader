@@ -25,6 +25,7 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
+			// This item's defaults do not deviate from the defaults
 		}
 
 		public override bool OnPickup(WorldItem item, Player player) {

@@ -21,6 +21,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetDefaults() {
+			// This item's defaults do not deviate from the defaults
 		}
 
 		public override void AddRecipes() {
@@ -58,6 +59,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetDefaults() {
+			// This item's defaults do not deviate from the defaults
 		}
 
 		public override void AddRecipes() {

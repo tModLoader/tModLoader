@@ -230,8 +230,6 @@ namespace ExampleMod.Content.NPCs
 			// useAnimation = 15;
 			// useTime = 10;
 			// consumable = true;
-			// width = 12;
-			// height = 12;
 			// makeNPC = 361;
 			// noUseGraphic = true;
 			// createTile = TileID.CritterAnchor;
