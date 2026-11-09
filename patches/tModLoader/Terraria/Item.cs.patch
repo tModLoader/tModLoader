@@ -23,10 +23,16 @@
  {
  	private class DefaultAssignNewItemsToPlayer_OverrideHandle : IDisposable
  	{
-@@ -38,9 +_,28 @@
+@@ -36,11 +_,34 @@
  
+ 	public delegate void NewItemModifier(WorldItem item);
+ 
++	/* Make internal, they are not used anymore and will be removed in the future.
  	public int width;
  	public int height;
++	*/
++	internal int width;
++	internal int height;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
