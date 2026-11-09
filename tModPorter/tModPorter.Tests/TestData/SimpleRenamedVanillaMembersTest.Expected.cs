@@ -178,6 +178,11 @@ public class SimpleRenamedVanillaMembersTest
 #endif
 		var vanity = item.hasVanityEffects;
 		item.DefaultToPlaceableWall(0);
+#if COMPILE_ERROR
+		item.width/* tModPorter Note: Removed. No longer used. */ = 20;
+		item.height/* tModPorter Note: Removed. No longer used. */ = 30;
+		item.Size/* tModPorter Note: Removed. No longer used. */ = new Vector2(20, 30);
+#endif
 
 		var item2 = new Item();
 		// not-yet-implemented
