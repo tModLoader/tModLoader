@@ -25,8 +25,6 @@ namespace ExampleMod.Content.Items
 
 		public override void SetDefaults() {
 			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
-			Item.width = 8;
-			Item.height = 8;
 		}
 
 		public override void SaveData(TagCompound tag) {

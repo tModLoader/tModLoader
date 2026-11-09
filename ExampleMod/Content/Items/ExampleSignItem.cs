@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items
 	{
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<ExampleSign>(), 0);
-			Item.width = 26;
-			Item.height = 22;
 			Item.value = 50;
 		}
 

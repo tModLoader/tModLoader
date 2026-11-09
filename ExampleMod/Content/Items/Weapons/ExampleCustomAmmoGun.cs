@@ -11,9 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleCustomAmmoGun : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 42;
-			Item.height = 30;
-
 			Item.autoReuse = true;  // Whether or not you can hold click to automatically use it again.
 			Item.damage = 12; // Sets the item's damage. Note that projectiles shot by this weapon will use its and the used ammunition's damage added together.
 			Item.DamageType = DamageClass.Ranged; // What type of damage does this item affect?

@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Pets.MinionBossPet
 		public override void SetDefaults() {
 			Item.DefaultToVanitypet(ModContent.ProjectileType<MinionBossPetProjectile>(), ModContent.BuffType<MinionBossPetBuff>()); // Vanilla has many useful methods like these, use them! It sets rarity and value as well, so we have to overwrite those after
 
-			Item.width = 28;
-			Item.height = 20;
 			Item.rare = ItemRarityID.Master;
 			Item.master = true; // This makes sure that "Master" displays in the tooltip, as the rarity only changes the item name color
 			Item.value = Item.sellPrice(0, 5);

@@ -18,8 +18,6 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void SetDefaults() {
 			// These are copied through the CloneDefaults method:
-			// Item.width = 24;
-			// Item.height = 28;
 			// Item.useStyle = ItemUseStyleID.Swing;
 			// Item.useAnimation = 8;
 			// Item.useTime = 8;

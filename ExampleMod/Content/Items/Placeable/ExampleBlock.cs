@@ -28,8 +28,6 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleBlock>());
-			Item.width = 12;
-			Item.height = 12;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

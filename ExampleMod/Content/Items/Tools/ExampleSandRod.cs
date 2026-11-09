@@ -16,9 +16,6 @@ namespace ExampleMod.Content.Items.Tools
 		}
 
 		public override void SetDefaults() {
-			Item.width = 28;
-			Item.height = 28;
-
 			// Copied from Dirt Rod
 			Item.channel = true;
 			Item.knockBack = 5f;

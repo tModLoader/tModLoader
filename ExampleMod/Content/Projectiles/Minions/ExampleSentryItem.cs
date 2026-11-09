@@ -20,8 +20,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Item.DamageType = DamageClass.Summon;
 			Item.sentry = true;
 			Item.mana = 10;
-			Item.width = 26;
-			Item.height = 28;
 			Item.useTime = 30;
 			Item.useAnimation = 30;
 			Item.useStyle = ItemUseStyleID.Swing;

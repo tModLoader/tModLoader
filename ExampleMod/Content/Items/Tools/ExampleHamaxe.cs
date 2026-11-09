@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Tools
 		public override void SetDefaults() {
 			Item.damage = 25;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 40;
-			Item.height = 40;
 			Item.useTime = 15;
 			Item.useAnimation = 15;
 			Item.useStyle = ItemUseStyleID.Swing;

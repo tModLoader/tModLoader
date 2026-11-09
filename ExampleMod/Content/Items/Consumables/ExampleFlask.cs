@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useTime = 17;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
-			Item.width = 14;
-			Item.height = 24;
 			Item.buffType = ModContent.BuffType<ExampleWeaponImbue>();
 			Item.buffTime = Item.flaskTime;
 			Item.value = Item.sellPrice(0, 0, 5);

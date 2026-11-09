@@ -25,8 +25,6 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.height = 12;
-			Item.width = 12;
 		}
 
 		public override bool OnPickup(WorldItem item, Player player) {

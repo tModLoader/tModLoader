@@ -67,8 +67,6 @@ namespace ExampleMod.Content.Tiles.Banners
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<EnemyBanner>(), placeStyle);
-			Item.width = 10;
-			Item.height = 24;
 			Item.SetShopValues(ItemRarityColor.Blue1, Item.buyPrice(silver: 10));
 		}
 	}

@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Mounts
 	public class ExampleMountItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 30;
 			Item.useTime = 20;
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item

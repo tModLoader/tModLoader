@@ -67,8 +67,6 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void SetDefaults() {
-			Item.width = 24;
-			Item.height = 28;
 			Item.accessory = true;
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;

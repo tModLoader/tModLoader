@@ -19,8 +19,6 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.width = 16;
-			Item.height = 16;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(silver: 1, copper: 50);
 			Item.maxStack = 9999;

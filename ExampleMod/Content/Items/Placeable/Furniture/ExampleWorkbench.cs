@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 			// DefaultToPlaceableTile handles setting various Item values that placeable items use
 			// Hover over DefaultToPlaceableTile in Visual Studio to read the documentation!
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleWorkbench>());
-			Item.width = 28;
-			Item.height = 14;
 			Item.value = 150;
 		}
 

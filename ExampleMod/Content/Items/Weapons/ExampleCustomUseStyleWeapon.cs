@@ -28,8 +28,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useTime = 20;
 			Item.DamageType = DamageClass.Melee;
 			Item.damage = 20;
-			Item.width = 58;
-			Item.height = 58;
 			Item.knockBack = 2f;
 			Item.value = Item.sellPrice(gold: 1);
 			Item.rare = ItemRarityID.Green;

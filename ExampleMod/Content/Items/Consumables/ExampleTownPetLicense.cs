@@ -22,8 +22,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useAnimation = 45;
 			Item.useTime = 45;
 			Item.UseSound = SoundID.Item92;
-			Item.width = 28;
-			Item.height = 28;
 			Item.maxStack = Item.CommonMaxStack;
 			Item.SetShopValues(ItemRarityColor.Green2, Item.buyPrice(0, 5));
 		}

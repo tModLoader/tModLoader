@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExamplePlatform>());
-			Item.width = 8;
-			Item.height = 10;
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

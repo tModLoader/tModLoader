@@ -55,8 +55,6 @@ namespace ExampleMod.Content.Items.Accessories
 	public class SimpleAccessory : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 34;
-			Item.height = 34;
 			Item.accessory = true;
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
