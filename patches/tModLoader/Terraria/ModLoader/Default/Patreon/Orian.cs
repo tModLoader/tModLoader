@@ -69,9 +69,6 @@ internal class Orian_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 24;
-		Item.height = 24;
 	}
 }
 
@@ -81,9 +78,6 @@ internal class Orian_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 30;
-		Item.height = 20;
 	}
 }
 
@@ -93,8 +87,5 @@ internal class Orian_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }

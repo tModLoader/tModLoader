@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using ReLogic.Content;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -16,9 +16,6 @@ namespace Terraria.ModLoader.Default.Patreon
 
 		public override void SetDefaults() {
 			base.SetDefaults();
-
-			Item.width = 28;
-			Item.height = 16;
 		}
     }
 
@@ -27,9 +24,6 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-
-			Item.width = 30;
-			Item.height = 20;
 		}
 	}
 
@@ -38,9 +32,6 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override void SetDefaults() {
 			base.SetDefaults();
-
-			Item.width = 22;
-			Item.height = 18;
 		}
 	}
 

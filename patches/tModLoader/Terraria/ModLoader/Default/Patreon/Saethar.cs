@@ -80,8 +80,6 @@ internal class Saethar_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(34);
 	}
 }
 
@@ -91,8 +89,6 @@ internal class Saethar_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(30, 18);
 	}
 }
 
@@ -102,8 +98,6 @@ internal class Saethar_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(22, 18);
 	}
 }
 
@@ -122,8 +116,6 @@ internal class Saethar_Wings : PatreonItem
 		base.SetDefaults();
 
 		Item.vanity = false;
-		Item.width = 24;
-		Item.height = 8;
 		Item.accessory = true;
 	}
 }

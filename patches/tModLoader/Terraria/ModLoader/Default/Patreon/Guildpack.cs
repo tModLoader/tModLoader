@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -109,9 +109,6 @@ internal class Guildpack_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 34;
-		Item.height = 22;
 	}
 }
 
@@ -121,9 +118,6 @@ internal class Guildpack_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 42;
-		Item.height = 24;
 	}
 }
 
@@ -133,8 +127,5 @@ internal class Guildpack_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }

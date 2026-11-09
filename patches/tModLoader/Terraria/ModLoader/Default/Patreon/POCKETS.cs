@@ -10,7 +10,6 @@ internal class POCKETS_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-		Item.Size = new Vector2(34);
 	}
 }
 
@@ -20,7 +19,6 @@ internal class POCKETS_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-		Item.Size = new Vector2(30, 18);
 	}
 }
 
@@ -30,7 +28,6 @@ internal class POCKETS_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-		Item.Size = new Vector2(22, 18);
 	}
 }
 
@@ -48,8 +45,6 @@ internal class POCKETS_Wings : PatreonItem
 	{
 		base.SetDefaults();
 		Item.vanity = false;
-		Item.width = 24;
-		Item.height = 8;
 		Item.accessory = true;
 	}
 }

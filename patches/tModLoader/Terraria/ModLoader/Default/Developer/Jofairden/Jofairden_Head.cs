@@ -9,8 +9,6 @@ internal class Jofairden_Head : JofairdenArmorItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(18, 20);
 	}
 
 	public override bool IsVanitySet(int head, int body, int legs)

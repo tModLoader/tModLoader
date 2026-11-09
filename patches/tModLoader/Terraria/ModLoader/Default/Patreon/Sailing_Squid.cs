@@ -9,9 +9,6 @@ internal class Sailing_Squid_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 34;
-		Item.height = 22;
 	}
 }
 
@@ -21,9 +18,6 @@ internal class Sailing_Squid_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 42;
-		Item.height = 24;
 	}
 }
 
@@ -33,9 +27,6 @@ internal class Sailing_Squid_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }
 
@@ -54,8 +45,6 @@ internal class Sailing_Squid_Wings : PatreonItem
 		base.SetDefaults();
 
 		Item.vanity = false;
-		Item.width = 24;
-		Item.height = 8;
 		Item.accessory = true;
 	}
 }

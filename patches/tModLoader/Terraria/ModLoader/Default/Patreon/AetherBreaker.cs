@@ -9,9 +9,6 @@ internal class AetherBreaker_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 34;
-		Item.height = 22;
 	}
 }
 
@@ -22,9 +19,6 @@ internal class WitchDaggah_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 34;
-		Item.height = 22;
 	}
 }
 
@@ -34,9 +28,6 @@ internal class AetherBreaker_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 42;
-		Item.height = 24;
 	}
 }
 
@@ -46,9 +37,6 @@ internal class AetherBreaker_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }
 
@@ -67,8 +55,6 @@ internal class AetherBreaker_Wings : PatreonItem
 		base.SetDefaults();
 
 		Item.vanity = false;
-		Item.width = 24;
-		Item.height = 8;
 		Item.accessory = true;
 	}
 }

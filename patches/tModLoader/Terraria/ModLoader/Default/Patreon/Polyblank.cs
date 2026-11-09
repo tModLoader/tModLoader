@@ -8,9 +8,6 @@ internal class Polyblank_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 24;
-		Item.height = 22;
 	}
 }
 
@@ -27,9 +24,6 @@ internal class Polyblank_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 30;
-		Item.height = 20;
 	}
 }
 
@@ -39,8 +33,5 @@ internal class Polyblank_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
@@ -11,9 +11,6 @@ namespace Terraria.ModLoader.Default.Patreon
     {
 		public override void SetDefaults() {
             base.SetDefaults();
-
-			Item.width = 30;
-			Item.height = 20;
         }
     }
 
@@ -22,9 +19,6 @@ namespace Terraria.ModLoader.Default.Patreon
     {
 		public override void SetDefaults() {
             base.SetDefaults();
-
-			Item.width = 32;
-			Item.height = 20;
         }
 
 		public override bool IsVanitySet(int head, int body, int legs) {
@@ -43,9 +37,6 @@ namespace Terraria.ModLoader.Default.Patreon
     {
 		public override void SetDefaults() {
             base.SetDefaults();
-
-			Item.width = 24;
-			Item.height = 16;
         }
 	}
 

@@ -9,8 +9,6 @@ internal class Remeus_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(34);
 	}
 }
 
@@ -27,8 +25,6 @@ internal class Remeus_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(30, 18);
 	}
 }
 
@@ -45,7 +41,5 @@ internal class Remeus_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(22, 18);
 	}
 }

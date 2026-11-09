@@ -6,9 +6,6 @@ internal class AlejandroAkbal_Head : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 34;
-		Item.height = 22;
 	}
 }
 
@@ -18,9 +15,6 @@ internal class AlejandroAkbal_Body : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 42;
-		Item.height = 24;
 	}
 }
 
@@ -30,9 +24,6 @@ internal class AlejandroAkbal_Legs : PatreonItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
 	}
 }
 
@@ -43,8 +34,6 @@ internal class AlejandroAkbal_Back : PatreonItem
 	{
 		base.SetDefaults();
 
-		Item.width = 22;
-		Item.height = 18;
 		Item.accessory = true;
 	}
 }

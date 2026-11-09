@@ -9,7 +9,5 @@ internal class Jofairden_Legs : JofairdenArmorItem
 	public override void SetDefaults()
 	{
 		base.SetDefaults();
-
-		Item.Size = new Vector2(22, 18);
 	}
 }
