@@ -1,6 +1,7 @@
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
@@ -188,92 +189,49 @@ internal class UIModConfigList : UIState
 		mods.Sort((x, y) => x.DisplayNameClean.CompareTo(y.DisplayNameClean));
 
 		foreach (var mod in mods) {
-			if (ConfigManager.Configs.TryGetValue(mod, out _)) {
-				var modPanel = new UIButton<string>("") {
-					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-					Height = { Pixels = 40 },
-					HAlign = 0.5f,
-					ScalePanel = false,
-					UseInnerDimensions = true,
-					AltPanelColor = UICommon.MainPanelBackground,
-					AltHoverPanelColor = UICommon.MainPanelBackground * (1 / 0.8f),
-					UseAltColors = () => selectedMod != mod,
-					ClickSound = SoundID.MenuTick,
-				};
-				modPanel.SetPadding(6);
-				AddSmallIconAndName(mod, modPanel);
+			if (mod.Name == "ModLoader")
+				continue;
 
-				modPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			var (modPanel, _) = CreatePanel(mod.DisplayName, mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon, null);
+
+			if (ConfigManager.Configs.ContainsKey(mod)) {
+				modPanel.OnLeftClick += (_, _) => {
+					if (selectedMod == mod)
+						return;
+
+					SoundEngine.PlaySound(SoundID.MenuOpen);
 					selectedMod = mod;
 					PopulateConfigs();
 				};
 
-				modList.Add(modPanel);
+
+
+				modPanel.OnMouseOver += (_, _) => {
+					SoundEngine.PlaySound(SoundID.MenuTick);
+					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);
+					modPanel.BorderColor = UICommon.DefaultUIBorderMouseOver;
+				};
+
+				modPanel.OnMouseOut += (_, _) => {
+					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlueMouseOver : UICommon.MainPanelBackground;
+					modPanel.BorderColor = UICommon.DefaultUIBorder;
+				};
 			}
 			else {
-				if (mod.Name == "ModLoader")
-					continue;
+				modPanel.BackgroundColor = Color.Gray;
 
-				var modPanel = new UIButton<string>("") {
-					Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-					Height = { Pixels = 40 },
-					HAlign = 0.5f,
-					ScalePanel = false,
-					UseInnerDimensions = true,
-					BackgroundColor = Color.Gray,
-					HoverPanelColor = Color.Gray,
-					HoverBorderColor = Color.Black,
-					TooltipText = true,
-					HoverText = Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs")
+				modPanel.OnDraw += (_, _) => {
+					if (!modPanel.IsMouseHovering)
+						return;
+
+					UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs"));
 				};
-				modPanel.SetPadding(6);
-				AddSmallIconAndName(mod, modPanel);
-
-				modList.Add(modPanel);
 			}
+
+			modList.Add(modPanel);
 		}
 
-		modListScrollbar.Remove();
-		modList.Recalculate();
-		modList.Width.Pixels = 0;
-		if (modListScrollbar.CanScroll) {
-			modList.Width.Pixels = -25;
-			modListPanel.Append(modListScrollbar);
-		}
-		modList.Recalculate();
-
-		return;
-
-		void AddSmallIconAndName(Mod mod, UIButton<string> modPanel)
-		{
-			var iconTexture = mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
-			float iconOffset = iconTexture.Width();
-			float iconPadding = 2;
-			modPanel.PaddingLeft += iconOffset + iconPadding;
-
-			var modIcon = new UIImage(iconTexture) {
-				VAlign = 0.5f,
-				HAlign = 0f,
-				Color = Color.White,
-				MarginLeft = -iconOffset - iconPadding,
-				MarginTop = -2, // 40 - 30 is 10, padding is 6, so -2 would make 5 pixels top and bottom since VAlign is 0.5
-			};
-
-			modPanel.Append(modIcon);
-
-			var modName = new UIMarqueeText(mod.DisplayName) {
-				Width = { Percent = 1f },
-				Height = { Percent = 1f },
-				MarqueeText = {
-					IsScrolling = false,
-				},
-			};
-
-			modPanel.Append(modName);
-
-			modPanel.OnMouseOver += (_, _) => modName.MarqueeText.IsScrolling = true;
-			modPanel.OnMouseOut += (_, _) => modName.MarqueeText.IsScrolling = false;
-		}
+		HandleDynamicScrollbar(modListScrollbar, modList, modListPanel);
 	}
 
 	private void PopulateConfigs()
@@ -289,21 +247,13 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			var configPanel = new UIMarqueeTextPanel(config.DisplayName) {
-				MinWidth = { Percent = 1f, Pixels = -1 }, // -1 to prevent clipping the right edge of the panel
-				MinHeight = { Pixels = 40 },
-				MaxWidth = MinWidth,
-				MaxHeight = Height,
-				TextHAlign = 0f,
-				MarqueeText = {
-					IsScrolling = false,
-				},
-			}.WithFadedMouseOver();
+			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
+			// -2 to account for padding in texture to avoid texture atlas issues
+			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+			var (configPanel, sideIndicator) = CreatePanel(config.DisplayName, indicatorTexture, indicatorFrame);
 
-			configPanel.OnMouseOver += (_, _) => configPanel.MarqueeText.IsScrolling = true;
-			configPanel.OnMouseOut += (_, _) => configPanel.MarqueeText.IsScrolling = false;
-
-			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+			configPanel.WithFadedMouseOver();
+			configPanel.OnLeftClick += (_, _) => {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
 
 				Interface.modConfig.SetMod(selectedMod, config);
@@ -313,45 +263,69 @@ internal class UIModConfigList : UIState
 					Main.InGameUI.SetState(Interface.modConfig);
 			};
 
-			// ConfigScope indicator
-			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
-			// -2 to account for padding in texture to avoid texture atlas issues
-			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+			sideIndicator.OnDraw += (_, _) => {
+				if (!sideIndicator.IsMouseHovering)
+					return;
 
-			float indicatorOffset = indicatorFrame.Width;
-			float indicatorPadding = 6; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
-			configPanel.PaddingLeft += indicatorOffset + indicatorPadding;
-
-			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
-				VAlign = 0.5f,
-				HAlign = 0f,
-				Color = Color.White,
-				MarginLeft = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
+				string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
+				UICommon.TooltipMouseText(hoverText);
 			};
 
-			// The original calculations were for when the panel padding was 6px, but it was later changed to 12 px
-			sideIndicator.MarginLeft -= 6;
-			sideIndicator.MarginTop -= 6;
-
-			sideIndicator.OnDraw += delegate (UIElement affectedElement, SpriteBatch spriteBatch) {
-				if (sideIndicator.IsMouseHovering) {
-					string hoverText = Language.GetTextValue(config.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
-					UICommon.TooltipMouseText(hoverText);
-				}
-			};
-
-			configPanel.Append(sideIndicator);
 			configList.Add(configPanel);
 		}
 
-		configListScrollbar.Remove();
-		configList.Recalculate();
-		configList.Width.Pixels = 0;
-		if (configListScrollbar.CanScroll) {
-			configList.Width.Pixels = -25;
-			configListPanel.Append(configListScrollbar);
+		HandleDynamicScrollbar(configListScrollbar, configList, configListPanel);
+	}
+
+	private static void HandleDynamicScrollbar(UIScrollbar scrollbar, UIList list, UIElement parent)
+	{
+		scrollbar.Remove();
+		list.Recalculate();
+		list.Width.Pixels = 0;
+		if (scrollbar.CanScroll) {
+			list.Width.Pixels = -25;
+			parent.Append(scrollbar);
 		}
-		configList.Recalculate();
+		list.Recalculate();
+	}
+
+	// TODO: switch this to UIButton in the future when it is updated to use UIMarqueeTextPanel
+	private static (UIMarqueeTextPanel, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
+	{
+		var panel = new UIMarqueeTextPanel(text) {
+			MinWidth = { Percent = 1f },
+			MinHeight = { Pixels = 40 },
+			TextHAlign = 0f,
+			MarqueeText = {
+				IsScrolling = false,
+			},
+		};
+
+		panel.MaxWidth = panel.MinWidth;
+		panel.MaxHeight = panel.MinHeight;
+
+		panel.OnMouseOver += (_, _) => panel.MarqueeText.IsScrolling = true;
+		panel.OnMouseOut += (_, _) => panel.MarqueeText.IsScrolling = false;
+
+		// TODO: redo all of these calculations
+		float iconOffset = iconFrame?.Width ?? iconTexture.Width();
+		// float indicatorPadding = 6; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
+		panel.PaddingLeft += iconOffset;
+
+		var icon = new UIImageFramed(iconTexture, iconFrame ?? Utils.CornerRectangle(Vector2.Zero, iconTexture.Size())) {
+			VAlign = 0.5f,
+			HAlign = 0f,
+			Color = Color.White,
+			MarginLeft = -iconOffset,// + 4, // 4 for alignment
+		};
+
+		// The original calculations were for when the panel padding was 6px, but it was later changed to 12 px
+		icon.MarginLeft -= 6;
+		icon.MarginTop -= 6;
+
+		panel.Append(icon);
+
+		return (panel, icon);
 	}
 
 	public override void Draw(SpriteBatch spriteBatch)
