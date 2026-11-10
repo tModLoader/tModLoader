@@ -507,8 +507,8 @@ Global substitutions are also usable as conditions. Using substitutions as condi
 
 When updating existing code:
 
-* `Lang.CreateDialogFilter(prefix)` now checks `LocalizedText.ConditionsMet`. Pass `checkConditions: false` to retain the old prefix-only filtering.
-* `LocalizedText.CanFormatWith` is now `ConditionsMetWith`; tModPorter handles this rename.
+* `Lang.CreateDialogFilter(prefix)` now checks `LocalizedText.ConditionsMet`. Pass `checkConditions: false` to retain the old prefix-only filtering or make use of conditions to greatly simplify your logic.
+* `🤖: LocalizedText.CanFormatWith` is now `ConditionsMetWith`.
 * `LocalizedText.Value` and `Language.GetTextValue` resolve global substitutions automatically. Keep `FormatWith` and `GetTextValueWith` when supplying a custom substitution object.
 
 We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
