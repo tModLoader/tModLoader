@@ -13,40 +13,28 @@ public class UIMarqueeText : UIText
     public UIMarqueeText(object text, float textScale = 1f, bool large = false) : base(text, textScale, large)
     { }
 
-    protected override void InternalSetText(object text, float textScale, bool large)
-    {
-	    base.InternalSetText(text, textScale, large);
-
-	    var dims = GetInnerDimensions();
-	    bool textIsClipping = _textSize.X >= dims.Width;
-	    OverflowHidden = textIsClipping;
-	    drawTextAsChild = textIsClipping;
-	    UpdateTextOffset();
-    }
-
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
 
         MarqueeText.Update(GetInnerDimensions(), _textSize, TextOriginX);
-        UpdateTextOffset();
     }
 
-    public override Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
+    protected override void DrawText(SpriteBatch spriteBatch, Vector2 textOffset)
     {
 	    var dims = GetInnerDimensions();
-	    MarqueeText.AdjustClippingRectangle(ref dims);
-	    return CalculateClippingRectangle(dims, spriteBatch);
+	    if (_textSize.X < dims.Width) {
+		    base.DrawText(spriteBatch, textOffset);
+		    return;
+	    }
+
+	    MarqueeText.BeginDraw(spriteBatch, this, out var rasterizerState, out var scissorRectangle);
+	    base.DrawText(spriteBatch, textOffset + MarqueeText.TextOffset);
+	    MarqueeText.EndDraw(spriteBatch, this, rasterizerState, scissorRectangle);
     }
 
     public void ResetScroll()
     {
 	    MarqueeText.ResetScroll(GetInnerDimensions(), _textSize, TextOriginX);
-	    UpdateTextOffset();
-    }
-
-    private void UpdateTextOffset()
-    {
-	    textOffset = -MarqueeText.Scroll * Vector2.UnitX;
     }
 }

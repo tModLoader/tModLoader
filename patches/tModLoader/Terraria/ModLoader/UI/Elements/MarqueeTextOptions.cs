@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.UI.Elements;
@@ -33,11 +34,8 @@ public struct MarqueeTextOptions()
 	/// </summary>
 	public float ClippingYPadding { get; set; } = 1000f;
 
-	/// <summary>
-	/// The current scroll value.
-	/// <br/><br/> Should be subtracted from the X position of the text.
-	/// </summary>
 	public float Scroll { get; private set; } = 0;
+	public readonly Vector2 TextOffset => -Scroll * Vector2.UnitX;
 
 	private int scrollTimer = 0;
 	private int scrollDirection = 1;
@@ -98,11 +96,31 @@ public struct MarqueeTextOptions()
 		scrollTimer = scrollDelay;
 	}
 
-	public void AdjustClippingRectangle(ref CalculatedStyle dims)
+	// Below 2 methods are modified from UIElement.Draw()
+
+	public void BeginDraw(SpriteBatch spriteBatch, UIElement element, out RasterizerState rasterizerState, out Rectangle scissorRectangle)
 	{
+		rasterizerState = spriteBatch.GraphicsDevice.RasterizerState;
+		scissorRectangle = spriteBatch.GraphicsDevice.ScissorRectangle;
+
+		spriteBatch.End();
+
+		var dims = element.GetInnerDimensions();
 		dims.X -= ClippingXPadding;
 		dims.Y -= ClippingYPadding;
 		dims.Width += ClippingXPadding * 2;
 		dims.Height += ClippingYPadding * 2;
+
+		spriteBatch.GraphicsDevice.RasterizerState = UIElement.OverflowHiddenRasterizerState;
+		spriteBatch.GraphicsDevice.ScissorRectangle = UIElement.CalculateClippingRectangle(dims, spriteBatch);
+		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, UIElement.OverflowHiddenRasterizerState, null, Main.UIScaleMatrix);
+	}
+
+	public void EndDraw(SpriteBatch spriteBatch, UIElement element, RasterizerState rasterizerState, Rectangle scissorRectangle)
+	{
+		spriteBatch.End();
+		spriteBatch.GraphicsDevice.RasterizerState = rasterizerState;
+		spriteBatch.GraphicsDevice.ScissorRectangle = scissorRectangle;
+		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicClamp, DepthStencilState.None, rasterizerState, null, Main.UIScaleMatrix);
 	}
 }
