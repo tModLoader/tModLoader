@@ -292,6 +292,7 @@ internal class UIModConfigList : UIState
 	// TODO: switch this to UIButton in the future when it is updated to use UIMarqueeTextPanel
 	private static (UIMarqueeTextPanel, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
 	{
+		// TODO: fix clipping into the edge of the UI list
 		var panel = new UIMarqueeTextPanel(text) {
 			MinWidth = { Percent = 1f },
 			MinHeight = { Pixels = 40 },
