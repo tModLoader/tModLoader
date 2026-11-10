@@ -51,7 +51,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonB;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonOMF;
 	private UIAutoScaleTextTextPanel<LocalizedText> buttonCL;
-	public UIConfirmDialog confirmDialog;
+	private UIConfirmDialog confirmDialog;
 
 	private CancellationTokenSource _cts;
 	private bool forceReloadHidden => ModLoader.autoReloadRequiredModsLeavingModsScreen && !ModCompile.DeveloperMode;
@@ -341,6 +341,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		bool shiftPressed = Main.keyState.PressingShift();
 		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			SoundEngine.PlaySound(SoundID.MenuOpen);
 			EnableAll(evt, listeningElement);
 		}
 		else {
@@ -361,6 +362,7 @@ internal class UIMods : UIState, IHaveBackButtonCommand
 	{
 		bool shiftPressed = Main.keyState.PressingShift();
 		if (shiftPressed || !ModLoader.showConfirmationWindowWhenEnableDisableAllMods) {
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			DisableAll(evt, listeningElement);
 		}
 		else {

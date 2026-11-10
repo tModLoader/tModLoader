@@ -710,6 +710,7 @@ internal class UIModItem : UIPanel
             ));
 		}
 		else {
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			DeleteMod(evt, listeningElement);
 		}
 	}
