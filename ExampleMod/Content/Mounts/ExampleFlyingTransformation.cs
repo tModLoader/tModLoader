@@ -39,7 +39,7 @@ namespace ExampleMod.Content.Mounts
 			MountID.Sets.CanDash[Type] = true; // This mount can dash with normal dashes.
 			MountID.Sets.HoverIgnoresFatigue[Type] = true; // This mount has infinite flight.
 			MountID.Sets.DontHoldItems[Type] = true; // This mount does not hold items.
-			MountID.Sets.DontDismountWhenCCed[Type] = true; // Being "crowed controlled" (frozen, stoned, webbed, etc.) does not dismount the player.
+			MountID.Sets.DontDismountWhenCCed[Type] = true; // Being "crowd controlled" (frozen, stoned, webbed, etc.) does not dismount the player.
 			MountData.dismountsOnItemUse = true; // The player will be dismounted if they use items.
 
 			// Misc

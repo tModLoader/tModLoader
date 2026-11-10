@@ -642,7 +642,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -1202,50 +_,142 @@
+@@ -1202,53 +_,146 @@
  	public RabbitOrderFrameHelper rabbitOrderFrame;
  	public bool creativeGodMode;
  	private const int MaxAdvancedShadows = 60;
@@ -786,6 +786,10 @@
  	public bool strongBees;
  	public bool sporeSac;
  	public bool shinyStone;
++	/// <summary> Effect of the <see href="https://terraria.wiki.gg/wiki/Soaring_Insignia"/> </summary>
+ 	public bool empressBrooch;
+ 	public bool volatileGelatin;
+ 	public int volatileGelatinCounter;
 @@ -1278,7 +_,15 @@
  	public bool unlockedBiomeTorches;
  	public bool ateArtisanBread;
@@ -1646,14 +1650,12 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
-@@ -3103,6 +_,11 @@
+@@ -3103,6 +_,9 @@
  			return zero;
  
  		if (mount.Type == 54) {
-+
 +			if (head >= 0)
 +				return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[head] * Directions;
-+
 +			/*
  			switch (head) {
  				case 13:

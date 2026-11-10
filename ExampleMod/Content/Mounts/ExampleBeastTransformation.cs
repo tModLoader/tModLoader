@@ -25,18 +25,20 @@ namespace ExampleMod.Content.Mounts
 	// * Can wear beards.
 	// * Has dynamic eyes (blinking and closing when taking damage, etc.).
 	// This mount does NOT change the player's hitbox.
+	// Most of the complexity of this mount's code comes from the ability to use items and wear some equipment.
 	public class ExampleBeastTransformation : ModMount
 	{
 		public override void SetStaticDefaults() {
-
 			// Sets and properties that are for transformation mounts
 			MountID.Sets.IsTransformationMount[Type] = true; // Designates this as a transformation mount.
 			MountID.Sets.PlayerIsHidden[Type] = true; // Used by other drawing things to know that this mount hides the player. Settings this does NOT actually hide the player. (See below for that)
 
 			// This mount uses special delegates for additional functionality.
 			MountData.delegations = new Mount.MountDelegatesData {
-				MouthPosition = ExampleBeastTransformationMouthPosition, // Sets the position of the items.
-				HandPosition = DelegateMethods.Mount.NoPosition // You might expect this mount to change the hand position, but it actually uses the mouth position for items.
+				// Sets the position of the mouth, used for underwater bubbles and eating/drinking visuals.
+				MouthPosition = ExampleBeastTransformationMouthPosition,
+				// Sets the position of the "hand" which holds items, which is actually the mouth. Only used by a few effects, HeldItemOffset below is used for the actual offset of the item being held.
+				HandPosition = DelegateMethods.Mount.NoPosition
 			};
 
 			// Sets that are unique to this mount
@@ -95,7 +97,7 @@ namespace ExampleMod.Content.Mounts
 		}
 
 		/// <summary>
-		/// Sets the position of the items.
+		/// Sets the position of the mouth, used for underwater bubbles and eating/drinking visuals.
 		/// </summary>
 		public static bool ExampleBeastTransformationMouthPosition(Player player, out Vector2? position) {
 			Vector2 spinningPoint = new Vector2(player.direction * 24, player.gravDir * -12f);
@@ -333,6 +335,15 @@ namespace ExampleMod.Content.Mounts
 			return offset;
 		}
 
+		// Offsets face accessory items. By default, the offsets from ModMount.HeadItemOffset will be applied.
+		// An additional offset can be applied by changing the faceOffset parameter.
+		// Returns true by default to apply the head offset. Return false to prevent that.
+		/*
+		public override bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset) {
+			return true;
+		}
+		*/
+
 		// Change where the beard sits on the mount if the mount can wear beards.
 		public override Vector2 BeardOffset(Player player) {
 			Vector2 beardOffset = new Vector2(2f, 4f) * player.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
@@ -456,24 +467,17 @@ namespace ExampleMod.Content.Mounts
 
 			return itemOffset;
 		}
-
-		// Offsets face accessory items. By default, the offsets from ModMount.HeadItemOffset will be applied.
-		// An additional offset can be applied by changing the faceOffset parameter.
-		// Returns true by default to apply the head offset. Return false to prevent that.
-		// public override bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset) {
-		// 	return true;
-		// }
 	}
 
 	public class ExampleBeastTransformationPlayer : ModPlayer
 	{
-		public override void ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame) {
+		public override void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame) {
 			// Here we can modify the player's eyelids to match the color of the Example Beast Transformation.
-			if (drawinfo.drawPlayer.mount.Active && drawinfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+			if (drawInfo.drawPlayer.mount.Active && drawInfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
 				Color eyeLidColor = new(129, 148, 154); // Define the color of the eye lid here.
-				color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawinfo.shadow); // Set the color of the eye lid based on the lighting.
-				shader = drawinfo.drawPlayer.cMount; // Set the shader (dye).
-				position += new Vector2(-2 * drawinfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
+				color = drawInfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawInfo.drawPlayer.MountedCenter.X / 16, (int)drawInfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawInfo.shadow); // Set the color of the eye lid based on the lighting.
+				shader = drawInfo.drawPlayer.cMount; // Set the shader (dye).
+				position += new Vector2(-2 * drawInfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
 			}
 		}
 	}

@@ -1537,10 +1537,10 @@ public static class PlayerLoader
 
 	private static HookList HookModifyEyelid = AddHook<DelegateModifyEyelid>(p => p.ModifyEyelid);
 
-	public static void ModifyEyelid(Player player, PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
+	public static void ModifyEyelid(Player player, PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
 	{
 		foreach (var modPlayer in HookModifyEyelid.Enumerate(player)) {
-			modPlayer.ModifyEyelid(drawinfo, ref position, ref color, ref shader, ref eyeFrame);
+			modPlayer.ModifyEyelid(drawInfo, ref position, ref color, ref shader, ref eyeFrame);
 		}
 	}
 }

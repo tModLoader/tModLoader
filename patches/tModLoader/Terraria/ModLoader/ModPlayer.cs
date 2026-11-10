@@ -1447,7 +1447,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <summary>
 	/// Allows for modification of the player's eyelid.
 	/// </summary>
-	/// <param name="drawinfo"> The player's current draw information. </param>
+	/// <param name="drawInfo"> The player's current draw information. </param>
 	/// <param name="position"> The position that the eye will be drawn.
 	/// <para/>Defaults to <see cref="Vector2.Zero"/> which will be the player's eye position.
 	/// </param>
@@ -1455,7 +1455,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/>If you change the color, you'll also need to apply the lighting to the color:
 	/// <code>
 	/// Color eyeLidColor = Color.White; // Define the real color of the eye lid here.
-	/// color = drawinfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawinfo.drawPlayer.MountedCenter.X / 16, (int)drawinfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor, drawinfo.shadow);
+	/// color = drawInfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawInfo.drawPlayer.MountedCenter.X / 16, (int)drawInfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor, drawInfo.shadow);
 	/// </code>
 	/// <para/>Defaults to <see cref="PlayerDrawSet.colorHead"/> which will be the player's skin color.
 	/// </param>
@@ -1463,7 +1463,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/>Defaults to <see cref="PlayerDrawSet.skinDyePacked"/> which will be the player's dye.
 	/// </param>
 	/// <param name="eyeFrame"> The frame show the eyelid as.</param>
-	public virtual void ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
+	public virtual void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
 	{
 
 	}

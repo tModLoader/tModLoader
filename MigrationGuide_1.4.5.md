@@ -795,4 +795,10 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
   * `bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)` to change where face accessories are positioned if the mount can face accessories.
     * By default, it uses the same offset as HeadItemOffset
     * Return false to prevent the HeadItemOffset from being applied.
-* `ModPlayer.ModifyEyelid(PlayerDrawSet drawinfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
+* `ModPlayer.ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
+
+## New ExampleMod examples
+
+In addition to changes adapting to vanilla changes listed in the "Other Changes" section above, 1.4.5 ExampleMod also contains several new examples.
+
+* `ExampleFlyingTransformation` and `ExampleBeastTransformation` are examples of transformation mounts similar to the Pixie and Velociraptor transformations.
