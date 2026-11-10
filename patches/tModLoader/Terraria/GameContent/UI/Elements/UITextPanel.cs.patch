@@ -14,24 +14,16 @@
  public class UITextPanel<T> : UIPanel
  {
  	protected T _text;
-@@ -17,6 +_,12 @@
+@@ -16,6 +_,8 @@
+ 	public float TextHAlign = 0.5f;
  	public bool HideContents;
  	private string _asterisks;
- 
-+	// Added by TML [[
-+	protected Vector2 textOffset = Vector2.Zero;
-+	protected bool drawTextAsChild = false;
++	// Added by tML
 +	protected virtual bool SetTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
-+	// ]]
-+
+ 
  	public bool IsLarge => _isLarge;
  
- 	public bool DrawPanel {
-@@ -98,10 +_,23 @@
- 
- 	public virtual void SetText(T text, float textScale, bool large)
- 	{
-+		textOffset = Vector2.Zero;
+@@ -101,7 +_,19 @@
  		_text = text;
  		_textScale = textScale;
  		_isLarge = large;
@@ -51,30 +43,13 @@
  		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
  	}
-@@ -111,7 +_,16 @@
- 		if (_drawPanel)
- 			base.DrawSelf(spriteBatch);
- 
-+		if (!drawTextAsChild)
--		DrawText(spriteBatch);
-+			DrawText(spriteBatch);
-+	}
-+
-+	protected override void DrawChildren(SpriteBatch spriteBatch)
-+	{
-+		if (drawTextAsChild)
-+			DrawText(spriteBatch);
-+
-+		base.DrawChildren(spriteBatch);
+@@ -127,7 +_,8 @@
+ 		DrawText(spriteBatch, text, TextDrawPosition, _color);
  	}
  
- 	protected void DrawText(SpriteBatch spriteBatch)
-@@ -129,6 +_,8 @@
- 
- 	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
++	// tML: Made virtual
+-	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
++	protected virtual void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
  	{
-+		position += textOffset;
-+
  		if (_isLarge)
  			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);
- 		else
