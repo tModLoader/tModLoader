@@ -243,7 +243,8 @@ internal class UIModConfigList : UIState
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
 			// -2 to account for padding in texture to avoid texture atlas issues
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
-			var (configPanel, sideIndicator) = CreatePanel(config.DisplayName, indicatorTexture, indicatorFrame);
+			// -2 here because the padding gap looks too large
+			var (configPanel, sideIndicator) = CreatePanel(config.DisplayName, indicatorTexture, indicatorFrame, -2f);
 
 			configPanel.AddState("Default", UIButton.State.DefaultWithHover with {
 				ClickSound = SoundID.MenuOpen,
@@ -283,7 +284,7 @@ internal class UIModConfigList : UIState
 		list.Recalculate();
 	}
 
-	private static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
+	private static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame, float extraIconPadding = 0f)
 	{
 		var panel = new UIButton(text) {
 			MinWidth = { Percent = 1f },
@@ -313,8 +314,7 @@ internal class UIModConfigList : UIState
 		icon.MarginLeft = icon.MarginTop / 2f;
 
 		// Pad the left of the panel so the text doesn't overlap the icon
-		float iconPadding = panel.PaddingLeft;
-		float iconOffset = iconSize.X + icon.MarginLeft * 2 + iconPadding;
+		float iconOffset = iconSize.X + icon.MarginLeft * 2 + panel.PaddingLeft + extraIconPadding;
 		panel.PaddingLeft += iconOffset;
 		icon.MarginLeft -= iconOffset;
 
