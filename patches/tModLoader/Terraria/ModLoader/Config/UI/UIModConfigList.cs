@@ -197,16 +197,13 @@ internal class UIModConfigList : UIState
 			if (ConfigManager.Configs.ContainsKey(mod)) {
 				modPanel.GetCurrentState = () => selectedMod == mod ? "Selected" : "Default";
 
-				var selectedState = UIButton.State.DefaultWithHover with {
-					ClickSound = SoundID.MenuTick,
-				};
-
-				modPanel.AddState("Default", selectedState with {
+				modPanel.AddState("Default", UIButton.State.DefaultWithHover with {
 					PanelColor = UICommon.MainPanelBackground,
 					HoverPanelColor = UICommon.MainPanelBackground * 1.25f,
+					ClickSound = SoundID.MenuTick,
 				});
 
-				modPanel.AddState("Selected", selectedState);
+				modPanel.AddState("Selected", UIButton.State.DefaultWithHover);
 
 				modPanel.OnLeftClick += (_, _) => {
 					if (selectedMod == mod)
@@ -288,7 +285,6 @@ internal class UIModConfigList : UIState
 
 	private static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
 	{
-		// TODO: fix clipping into the edge of the UI list
 		var panel = new UIButton(text) {
 			MinWidth = { Percent = 1f },
 			MinHeight = { Pixels = 40 },
@@ -304,21 +300,23 @@ internal class UIModConfigList : UIState
 		panel.OnMouseOver += (_, _) => panel.MarqueeText.IsScrolling = true;
 		panel.OnMouseOut += (_, _) => panel.MarqueeText.IsScrolling = false;
 
-		// TODO: redo all of these calculations
-		float iconOffset = iconFrame?.Width ?? iconTexture.Width();
-		// float indicatorPadding = 6; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
-		panel.PaddingLeft += iconOffset;
-
 		var icon = new UIImageFramed(iconTexture, iconFrame ?? Utils.CornerRectangle(Vector2.Zero, iconTexture.Size())) {
 			VAlign = 0.5f,
 			HAlign = 0f,
 			Color = Color.White,
-			MarginLeft = -iconOffset,// + 4, // 4 for alignment
 		};
 
-		// The original calculations were for when the panel padding was 6px, but it was later changed to 12 px
-		icon.MarginLeft -= 6;
-		icon.MarginTop -= 6;
+		var iconSize = iconFrame?.Size() ?? iconTexture.Size();
+
+		// Align the icon
+		icon.MarginTop = panel.MaxHeight.Pixels - panel.PaddingTop - panel.PaddingBottom - iconSize.Y;
+		icon.MarginLeft = icon.MarginTop / 2f;
+
+		// Pad the left of the panel so the text doesn't overlap the icon
+		float iconPadding = panel.PaddingLeft;
+		float iconOffset = iconSize.X + icon.MarginLeft * 2 + iconPadding;
+		panel.PaddingLeft += iconOffset;
+		icon.MarginLeft -= iconOffset;
 
 		panel.Append(icon);
 
