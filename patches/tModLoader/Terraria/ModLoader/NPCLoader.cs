@@ -463,6 +463,30 @@ public static class NPCLoader
 		}
 	}
 
+	private delegate void DelegateUpdateDOTTally(NPC npc, ref NPC.DOTTally tally);
+	private static HookList HookUpdateDOTTally = AddHook<DelegateUpdateDOTTally>(g => g.UpdateDOTTally);
+
+	public static void UpdateDOTTally(NPC npc, ref NPC.DOTTally tally)
+	{
+		npc.ModNPC?.UpdateDOTTally(ref tally);
+
+		foreach (var g in HookUpdateDOTTally.Enumerate(npc)) {
+			g.UpdateDOTTally(npc, ref tally);
+		}
+	}
+
+	private delegate void DelegateModifyDOT(NPC npc, int buffType, ref NPC.DOTTally contribution);
+	private static HookList HookModifyDOT = AddHook<DelegateModifyDOT>(g => g.ModifyDOT);
+
+	public static void ModifyDOT(NPC npc, int buffType, ref NPC.DOTTally contribution)
+	{
+		npc.ModNPC?.ModifyDOT(buffType, ref contribution);
+
+		foreach (var g in HookModifyDOT.Enumerate(npc)) {
+			g.ModifyDOT(npc, buffType, ref contribution);
+		}
+	}
+
 	private delegate void DelegateUpdateLifeRegen(NPC npc, ref int damage);
 	private static HookList HookUpdateLifeRegen = AddHook<DelegateUpdateLifeRegen>(g => g.UpdateLifeRegen);
 

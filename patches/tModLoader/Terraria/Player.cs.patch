@@ -60,7 +60,16 @@
  			if (playerIndex == Main.myPlayer)
  				_localMinionRespawner.Clear();
  
-@@ -645,12 +_,15 @@
+@@ -639,18 +_,24 @@
+ 		public void NewMessage(string message, int displayTime)
+ 		{
+ 			chatText = message;
++			snippets = ChatManager.ParseMessage(chatText, color).ToArray(); // Use color here so chat tag colors are applied to snippet rather than draw call
++			/*
+ 			snippets = ChatManager.ParseMessage(chatText, Color.White).ToArray();
++			*/
+ 			messageSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, snippets, Vector2.One);
+ 			timeLeft = displayTime;
  		}
  	}
  
@@ -107,6 +116,14 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
+@@ -742,6 +_,7 @@
+ 	public float manaSickReduction;
+ 	public bool manaSick;
+ 	public bool slowMagicUse;
++	private bool slowMagicUseAppliedToReuseDelay; // Added by tML
+ 	public float manaHeat;
+ 	public float latestManaPotionDamageBonus;
+ 	public float latestManaPotionDuration;
 @@ -751,6 +_,7 @@
  	public int afkCounterForKiting;
  	public static int AFKTimeNeededForAutoKiting = 3600;
@@ -317,7 +334,7 @@
  	public int wingsLogic;
  	public bool hasWings;
  	public int wingTimeMax;
-@@ -953,11 +_,24 @@
+@@ -953,17 +_,43 @@
  	public bool acceleratePoisons;
  	public bool blueLightning;
  	public bool redLightning;
@@ -342,6 +359,25 @@
  	public int townNPCs;
  	public double headFrameCounter;
  	public double bodyFrameCounter;
+ 	public double legFrameCounter;
++	/// <summary>
++	/// When true, the player is immune to general damage (<see cref="ImmunityCooldownID.General"/>). Set in tandem with <see cref="immuneTime"/>. When a player is hurt by attacks without a special immunity cooldown slot, this is set to true and the player will not take damage again until <see cref="immuneTime"/> ticks pass, which resets this to false.
++	/// <para/> <see cref="hurtCooldowns"/> contains the immunity cooldowns for non-general damage.
++	/// <para/> <see cref="SetImmuneTimeForAllTypes(int)"/>, <see cref="GiveImmuneTimeForCollisionAttack"/>, and <see cref="AddImmuneTime(int, int)"/> are some ways to work with this value.
++	/// <para/> The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame">Invincibility frame wiki page</see> has more details about player immunity.
++	/// </summary>
+ 	public bool immune;
++	/// <summary>
++	/// If true, the player will not blink (fade in and out) while <see cref="immune"/>. This is used when the player became immune not from taking damage, but from some other effect, like a dash or mount attack.
++	/// <para/> Usually set by calling <see cref="GiveImmuneTimeForCollisionAttack"/> 
++	/// </summary>
+ 	public bool immuneNoBlink;
++	/// <summary>
++	/// The remaining ticks the player will be <see cref="immune"/> for. Only counts general damage.
++	/// </summary>
+ 	public int immuneTime;
+ 	public int immuneAlphaDirection;
+ 	public int immuneAlpha;
 @@ -974,10 +_,21 @@
  	public static int nameLen = 20;
  	public int sign = -1;
@@ -364,17 +400,18 @@
  	public bool mouseInterface;
  	public bool lastMouseInterface;
  	public int noThrow;
-@@ -996,9 +_,19 @@
+@@ -996,9 +_,20 @@
  	public const int miscSlotMount = 3;
  	public const int miscSlotHook = 4;
  	public const int SupportedMiscSlotCount = 5;
 +	/// <summary>
 +	/// The player's armor and accessories. Indexes 0-2 hold head, chest, and legs armor while 10-12 hold the respective social armor items. Indexes 3-9 hold the accessories and 13-19 hold the social accessory items. Modded accessory slots are stored separately.<br/><br/>
 +	/// Generally speaking, modders <b>should not be accessing this array</b> to check for specific accessories, that is not how Terraria is designed and is not scalable, especially since modded accessory slots exist and each can have special logic. Modders should be using <see cref="ModItem.UpdateAccessory(Player, bool)"/> to set fields in a <see cref="ModPlayer"/> class, then use those values for gameplay effects. <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/SimpleModPlayer.cs">SimpleModPlayer.cs</see> shows the proper approach and explains this pattern.<br/><br/>
++	/// Use <see cref="GetEffectiveArmor(int)"/> to include items shared from another loadout.<br/><br/>
 +	/// The corresponding dye items are found in <see cref="dye"/>. The player's inventory is <see cref="inventory"/>. For equipment, see <see cref="miscEquips"/> and <see cref="miscDyes"/>. <see cref="trashItem"/> is the trash slot.<br/><br/>
 +	/// </summary>
  	public Item[] armor = new Item[20];
-+	/// <summary> The dye items corresponding to the <see cref="armor"/> items. </summary>
++	/// <summary> The dye items corresponding to the <see cref="armor"/> items. Use <see cref="GetEffectiveDye(int)"/> to include dyes shared from another loadout. </summary>
  	public Item[] dye = new Item[10];
 +	/// <summary>
 +	/// The player's equipment items. From indexes 0-4: Pet, Light Pet, Minecart, Mount, and Hook.
@@ -842,6 +879,16 @@
  	public bool noItems;
  	public bool cursed;
  	public bool hungry;
+@@ -1453,6 +_,9 @@
+ 	public Item starCloakItem_starVeilOverrideItem;
+ 	public Item starCloakItem_beeCloakOverrideItem;
+ 	public Item starCloakItem_snakeCloakOverrideItem;
++	/// <summary>
++	/// When true, immunity timers are set to values longer than usual. Set by <see cref="ItemID.CrossNecklace"/>. The <see href="https://terraria.wiki.gg/wiki/Invincibility_frame#Invincibility_frame_length">Invincibility frame length</see> wiki page has exact details.
++	/// </summary>
+ 	public bool longInvince;
+ 	public bool pStone;
+ 	public static readonly float PhilosopherStoneDurationMultiplier = 0.75f;
 @@ -1467,30 +_,103 @@
  	public bool ballistaPanic;
  	public bool JustDroppedAnItem;
@@ -1293,6 +1340,16 @@
  	public float luck;
  	public float luckMinimumCap = -0.7f;
  	public float luckMaximumCap = 1f;
+@@ -1832,6 +_,9 @@
+ 	private int _lockTileInteractionsTimer;
+ 	private bool extractinateHover;
+ 	public int hoveredChestIndex = -1;
++	/// <summary>
++	/// Similar to <see cref="immune"/>, but contains a separate cooldown for each type of immunity (Indexed by <see cref="ImmunityCooldownID"/> values). If greater than 0, the player is immune to damage using that immunity type for that many ticks. Multiple immunity types are used by the game to prevent players from using intentional damage to avoid attacks from high damage sources. 
++	/// </summary>
+ 	public int[] hurtCooldowns = new int[ImmunityCooldownID.Count];
+ 	public static PlayerGetItemLogger GetItemLogger = new PlayerGetItemLogger();
+ 	public static int FlexibleWandRandomSeed;
 @@ -1866,7 +_,7 @@
  	private const int SaveSlotIndex_GuideItem = 2;
  	private const int SaveSlotIndex_TinkererItem = 3;
@@ -1596,7 +1653,7 @@
  		int num = 0;
  		if (sItem.autoReuse && sItem.reuseDelay == 0 && sItem.useTime <= sItem.useAnimation && sItem.shoot > 0 && sItem.useStyle == 5)
  			num = 1;
-@@ -2874,6 +_,26 @@
+@@ -2874,6 +_,27 @@
  		}
  
  		reuseDelay = sItem.reuseDelay;
@@ -1619,6 +1676,7 @@
 +		SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +		reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
++		slowMagicUseAppliedToReuseDelay = DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse;
 +		ItemUsesThisAnimation = 0;
  	}
  
@@ -1817,7 +1875,7 @@
  			Loadouts[CurrentLoadoutIndex].Swap(this);
  			Loadouts[loadoutIndex].Swap(this);
  			CurrentLoadoutIndex = loadoutIndex;
-@@ -3893,6 +_,8 @@
+@@ -3893,15 +_,22 @@
  					UniqueInfoPiece = loadoutIndex
  				}, whoAmI);
  			}
@@ -1826,6 +1884,38 @@
  		}
  	}
  
++	/// <summary>
++	/// Gets the item equipped in or shared to a vanilla <see cref="armor"/> slot (provided it does not conflict with other effective equipment)
++	/// </summary>
+ 	public Item GetEffectiveArmor(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveArmor(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveArmor(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the item is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveArmor(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (armor[slot].IsAir) {
+@@ -3946,12 +_,17 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Gets the dye equipped in or shared to a vanilla <see cref="dye"/> slot
++	/// </summary>
+ 	public Item GetEffectiveDye(int slot)
+ 	{
+ 		int? sharedFromLoadout;
+ 		return GetEffectiveDye(slot, out sharedFromLoadout);
+ 	}
+ 
++	/// <inheritdoc cref="GetEffectiveDye(int)"/>
++	/// <param name="sharedFromLoadout">The index into <see cref="Loadouts"/> the dye is shared from, or <see langword="null"/> if it is equipped in the active loadout</param>
+ 	public Item GetEffectiveDye(int slot, out int? sharedFromLoadout)
+ 	{
+ 		if (dye[slot].IsAir) {
 @@ -3973,7 +_,7 @@
  		if (Main.LocalPlayerHasPendingInventoryActions() || cursed || CCed || dead || spectating >= 0)
  			return;
@@ -3364,7 +3454,7 @@
  			}
  
  			ApplyMusicBox(currentItem);
-@@ -13017,6 +_,9 @@
+@@ -13017,17 +_,26 @@
  
  		if (currentItem.type == 6146)
  			musicBoxSilence = true;
@@ -3374,6 +3464,23 @@
  	}
  
  	public void UpdateArmorSets(int i)
+ 	{
++		/*
+ 		ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this))?.Effect(this);
++		*/
++		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext(this));
++		ActiveArmorSetBonus = armorSetBonus;
++		armorSetBonus?.Effect?.Invoke(this);
+ 		UpdateArmorSets_Always_Beetle();
+ 		UpdateArmorSets_Always_Solar();
+ 		UpdateArmorSets_Always_Stardust();
+ 		UpdateArmorSets_Always_Chlorophyte();
+ 		UpdateArmorSets_Always_Vortex();
+ 		ApplyArmorSoundAndDustChanges();
++		ItemLoader.UpdateArmorSet(this, armorSetBonus, armor[0], armor[1], armor[2]);
+ 	}
+ 
+ 	private void UpdateArmorSets_Always_Vortex()
 @@ -13387,6 +_,12 @@
  			HasGardenGnomeNearby = SceneMetrics.HasGardenGnome;
  		}
@@ -3423,11 +3530,12 @@
  	}
  
  	public void UpdateDead()
-@@ -13575,6 +_,7 @@
+@@ -13575,6 +_,8 @@
  		ResetFloorFlags();
  		wings = 0;
  		wingsLogic = 0;
 +		equippedWings = null; // Added by TML
++		ActiveArmorSetBonus = null; // Added by TML
  		hasWings = false;
  		ResetVisibleAccessories();
  		poisoned = false;
@@ -3980,6 +4088,18 @@
  			addDPS(dmg);
  
  		int num = BannerSystem.NPCtoBanner(npc.BannerID());
+@@ -16578,6 +_,11 @@
+ 		return true;
+ 	}
+ 
++	/// <summary>
++	/// Used to set the player as immune to damage for <paramref name="time"/> ticks. <see cref="immuneNoBlink"/> is also set, indicating that the player immunity did not come from being hurt.
++	/// <para/> This is used by mounts (<see cref="MountID.Slime"/>, <see cref="MountID.Unicorn"/>), dashes (<see cref="ItemID.EoCShield"/>, and shield parries (<see cref="ItemID.BouncingShield"/>). A small immunity window is given to the player when they hit an NPC with these types of collision attacks so that they don't take damage from the same NPC immediately after hitting it.
++	/// </summary>
++	/// <param name="time"></param>
+ 	public void GiveImmuneTimeForCollisionAttack(int time)
+ 	{
+ 		if (_timeSinceLastImmuneGet <= 20)
 @@ -16622,7 +_,7 @@
  
  				Rectangle rect2 = nPC.getRect();
@@ -5607,6 +5727,18 @@
  			dead = false;
  			deadTime = 0;
  			immuneTime = 0;
+@@ -31386,6 +_,11 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Sets the player as immune to damage for <paramref name="time"/> ticks. This affects all <see cref="ImmunityCooldownID"/> cooldown timers (<see cref="immune"/>, <see cref="hurtCooldowns"/>).
++	/// <para/> This is used by dodges (such as <see cref="BuffID.ShadowDodge"/>) and <see cref="ItemID.StrangeBrew"/>. 
++	/// </summary>
++	/// <param name="time"></param>
+ 	public void SetImmuneTimeForAllTypes(int time)
+ 	{
+ 		immune = true;
 @@ -31556,21 +_,83 @@
  		return false;
  	}
@@ -5791,14 +5923,16 @@
  			beetleOrbs--;
  			for (int l = 0; l < maxBuffs; l++) {
  				if (buffType[l] >= 95 && buffType[l] <= 97)
-@@ -31674,7 +_,10 @@
+@@ -31674,7 +_,12 @@
  			beetleCounter = 0f;
  		}
  
++		// Damage has already been reduced by 1/4, so vanilla's threshold of 4 becomes 3
++		// Damage < 9999 changed to Dodgeable (more correct for vanilla content, will be fixed in vanilla too)
 +		/*
  		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && num2 >= 4.0 && Damage < 9999) {
 +		*/
-+		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 4.0 && info.SourceDamage < 9999) { // TODO: Should this be checking InstantKill?
++		if (defendedByPaladin && ImmunityCooldownID.Sets.TeamDamageShare[cooldownCounter] && info.Damage >= 3 && info.Dodgeable) {
  			Player player = null;
  			float num8 = float.MaxValue;
  			for (int m = 0; m < 255; m++) {
@@ -5811,7 +5945,7 @@
  			if (player != null) {
  				num2 = (int)(num2 * 0.75);
 +			*/
-+			{
++			if (player != null) {
 +				int damage = info.Damage / 3; // Damage has already been reduced by 1/4 when applying to target player, so dividing by 3 gives us the correct value
  				if (player == Main.LocalPlayer && num8 < PaladinsShieldRange)
  					Main.LocalPlayer.Hurt(PlayerDeathReason.ByOther(20), damage, 0, pvp: false, quiet: false, Crit: false, ImmunityCooldownID.PaladinsShield, dodgeable: false);
@@ -7519,7 +7653,23 @@
  		if (sItem.type == 2223)
  			projToShoot = 357;
  
-@@ -39060,7 +_,10 @@
+@@ -39047,6 +_,7 @@
+ 			projToShoot = overrideFishingBobber;
+ 
+ 		if (withAudioVisualFeedback) {
++			/*
+ 			if (DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse) {
+ 				float slowMagicMultiplier = GetSlowMagicMultiplier();
+ 				ApplyItemTime(sItem, slowMagicMultiplier);
+@@ -39054,13 +_,18 @@
+ 			else {
+ 				ApplyItemTime(sItem);
+ 			}
++			*/
++			ApplyItemTime(sItem);
+ 		}
+ 
+ 		Vector2 mountedCenter = MountedCenter;
  		Vector2 pointPosition = RotatedRelativePoint(mountedCenter);
  		bool flag = true;
  		int type = sItem.type;
@@ -7801,6 +7951,32 @@
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;
+@@ -43455,6 +_,12 @@
+ 
+ 	private void UndoSlowMagicUse()
+ 	{
++		// Only restore a delay that was slowed when the animation started.
++		if (slowMagicUseAppliedToReuseDelay) {
++			reuseDelay = (int)(reuseDelay / GetSlowMagicMultiplier());
++			slowMagicUseAppliedToReuseDelay = false;
++		}
++
+ 		if (itemAnimation != 0 && itemTime != 0) {
+ 			float slowMagicUseRate = GetSlowMagicUseRate();
+ 			int num = 2;
+@@ -43462,8 +_,12 @@
+ 			itemAnimation = (int)Math.Max(num, (float)itemAnimation * slowMagicUseRate);
+ 			itemTimeMax = (int)Math.Max(num, (float)itemTimeMax * slowMagicUseRate);
+ 			itemTime = (int)Math.Max(num, (float)itemTime * slowMagicUseRate);
++			/*
+ 			slowMagicUse = false;
++			*/
+ 		}
++
++		slowMagicUse = false;
+ 	}
+ 
+ 	private void ApplyManaPotionManaHeat(Item item)
 @@ -43529,6 +_,9 @@
  
  	private bool ItemCheck_CheckCanUse_Inner(Item sItem, bool ignoreCursed = false)
@@ -7831,6 +8007,14 @@
  			return true;
  
  		if (sItem.shoot > 0 && ProjectileID.Sets.TurretFeature[sItem.shoot] && altFire)
+@@ -44187,6 +_,7 @@
+ 		itemAnimation = reuseDelay;
+ 		itemTime = reuseDelay;
+ 		reuseDelay = 0;
++		slowMagicUseAppliedToReuseDelay = false;
+ 	}
+ 
+ 	private void ItemCheck_HackHoldStyles(Item sItem)
 @@ -44221,6 +_,13 @@
  		if (sItem.IsAir || (selectedItemState.HasBufferedChange && (sItem.shoot <= 0 || ItemTimeIsZero)))
  			return;

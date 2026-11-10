@@ -22,6 +22,64 @@
  {
  	internal struct PlayerNetSyncState
  	{
+@@ -51,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	public struct DOTTally
++	public partial struct DOTTally
+ 	{
+ 		public NPC npc;
+ 		public int LifeRegenLoss;
+@@ -59,6 +_,7 @@
+ 		public int ExpectedDamagePerSecond;
+ 		public bool BlockNaturalRegeneration;
+ 		public int SuperNaturalLifeRegen;
++		private bool _hasFlammableDamage; // Added by tML
+ 
+ 		public static DOTTally None => default(DOTTally);
+ 
+@@ -67,6 +_,7 @@
+ 			SuperNaturalLifeRegen += amount;
+ 		}
+ 
++		[OriginalOverload]
+ 		public void Add(int regenLoss, int expectedAmountPerSecond = 0)
+ 		{
+ 			BlockNaturalRegeneration = true;
+@@ -75,20 +_,24 @@
+ 				ExpectedDamagePerSecond = expectedAmountPerSecond;
+ 		}
+ 
++		[OriginalOverload]
+ 		public void AddPoison(int regenLoss, int expectedAmountPerSecond = 0)
+ 		{
+ 			SupportAcceleration(regenLoss);
+ 			Add(regenLoss, expectedAmountPerSecond);
+ 		}
+ 
++		[OriginalOverload]
+ 		public void AddBloodLoss(int regenLoss, int expectedAmountPerSecond = 0)
+ 		{
+ 			SupportAcceleration(regenLoss);
+ 			Add(regenLoss, expectedAmountPerSecond);
+ 		}
+ 
++		[OriginalOverload]
+ 		public void AddFlamable(int regenLoss, int expectedAmountPerSecond = 0)
+ 		{
++			HasFlammableDamage = true; // Added by tML
+ 			if (npc.drippingSlime)
+ 				regenLoss *= 2;
+ 
+@@ -99,6 +_,7 @@
+ 			Add(regenLoss, expectedAmountPerSecond);
+ 		}
+ 
++		[OriginalOverload]
+ 		public void AddStackedProjecitle(short projTypeToLookFor, int damagePerSecond, int expectedDamagePerSecondDivider)
+ 		{
+ 			int whoAmI = npc.whoAmI;
 @@ -122,7 +_,11 @@
  		}
  	}
@@ -351,7 +409,7 @@
  	public bool canDisplayBuffs = true;
  	public bool midas;
  	public bool ichor;
-@@ -4576,13 +_,33 @@
+@@ -4576,13 +_,34 @@
  	public bool shadowFlame;
  	public bool soulDrain;
  	public bool shimmering;
@@ -359,7 +417,8 @@
 +	/// The rate of this NPC's life regeneration or loss in health per tick, divided by <c>120</c>. To put it another way, it is health regeneration every 2 seconds. Used to implement the damage over time of debuffs.
 +	/// <br/> For example, subtracting <c>12</c> from this value loses <c>12 / 120</c> = <c>1/10</c> health per tick, or 6 health per second.
 +	/// <br/> Life regeneration is accumulated every tick in <see cref="lifeRegenCount"/>.
-+	/// <br/> This value should be subtracted from in <see cref="ModNPC.UpdateLifeRegen(ref int)"/> or <see cref="GlobalNPC.UpdateLifeRegen(NPC, ref int)"/>. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example. The game does not actually use positive life regen for NPC, so positive values might not work as expected.
++	/// <br/> Use <see cref="ModNPC.UpdateDOTTally(ref DOTTally)"/> or <see cref="GlobalNPC.UpdateDOTTally(NPC, ref DOTTally)"/> to add damage over time, and <see cref="ModNPC.UpdateLifeRegen(ref int)"/> or <see cref="GlobalNPC.UpdateLifeRegen(NPC, ref int)"/> to modify the final value.
++	/// <br/> Positive regeneration added before the tally is applied can be suppressed by <see cref="DOTTally.BlockNaturalRegeneration"/>. Use <see cref="DOTTally.AddSuperNaturalRegeneration(int)"/> for regeneration that should offset debuff damage.
 +	/// </summary>
  	public int lifeRegen;
 +	/// <summary>
@@ -2728,7 +2787,7 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type) {
-+				if (BuffLoader.ReApply(type, this, time, i)) // TODO: Adjust this for proper syncing
++				if (BuffLoader.ReApply(type, this, time, i))
 +					return;
 +
  				if (buffTime[i] >= time)
@@ -2936,11 +2995,139 @@
  		if (wet) {
  			if (shimmerWet) {
  				gravity = 0.15f;
-@@ -77033,6 +_,9 @@
+@@ -76941,71 +_,95 @@
+ 		if (!dontTakeDamage) {
+ 			DOTTally none = DOTTally.None;
+ 			none.npc = this;
++			// Preserve Oiled eligibility for the special-seed slime that suppresses On Fire damage.
++			none.HasFlammableDamage = onFire && type == NPCID.BlueSlime && ai[1] == 8f && Main.getGoodWorld;
+ 			int num = -1;
+ 			if (poisoned)
+-				none.AddPoison(12);
++				/* none.AddPoison(12); */
++				none.AddPoison(12, 0, BuffID.Poisoned);
+ 
+ 			if (bleeding)
+-				none.AddBloodLoss(24, 4);
++				/* none.AddBloodLoss(24, 4); */
++				none.AddBloodLoss(24, 4, BuffID.Bleeding);
+ 
+ 			if (hemorrhage)
+-				none.AddBloodLoss(200, 40);
++				/* none.AddBloodLoss(200, 40); */
++				none.AddBloodLoss(200, 40, BuffID.Hemorrhage);
+ 
+ 			if (onFire && (type != 1 || ai[1] != 8f || !Main.getGoodWorld))
+-				none.AddFlamable(8);
++				/* none.AddFlamable(8); */
++				none.AddFlamable(8, 0, BuffID.OnFire);
+ 
+ 			if (onFire3)
+-				none.AddFlamable(30, 5);
++				/* none.AddFlamable(30, 5); */
++				none.AddFlamable(30, 5, BuffID.OnFire3);
+ 
+ 			if (onFrostBurn)
+-				none.AddFlamable(16, 2);
++				/* none.AddFlamable(16, 2); */
++				none.AddFlamable(16, 2, BuffID.Frostburn);
+ 
+ 			if (onFrostBurn2)
+-				none.AddFlamable(50, 10);
++				/* none.AddFlamable(50, 10); */
++				none.AddFlamable(50, 10, BuffID.Frostburn2);
+ 
+ 			if (onFire2)
+-				none.AddFlamable(48, 10);
++				/* none.AddFlamable(48, 10); */
++				none.AddFlamable(48, 10, BuffID.CursedInferno);
+ 
+ 			if (venom)
+-				none.AddPoison(60, 15);
++				/* none.AddPoison(60, 15); */
++				none.AddPoison(60, 15, BuffID.Venom);
+ 
+ 			if (potentAcid)
+-				none.AddPoison(180, 60);
++				/* none.AddPoison(180, 60); */
++				none.AddPoison(180, 60, BuffID.PotentAcid);
+ 
+ 			if (chlorophyteSpore)
+-				none.AddPoison(180, 60);
++				/* none.AddPoison(180, 60); */
++				none.AddPoison(180, 60, BuffID.ChlorophyteSpore);
+ 
+ 			if (shadowFlame)
+-				none.AddFlamable(30, 5);
++				/* none.AddFlamable(30, 5); */
++				none.AddFlamable(30, 5, BuffID.ShadowFlame);
+ 
++			/*
+ 			if (oiled && (onFire || onFire2 || onFire3 || onFrostBurn || onFrostBurn2 || shadowFlame))
+ 				none.Add(50, 10);
++			*/
+ 
+ 			if (javelined)
+-				none.AddStackedProjecitle(598, 3, 1);
++				/* none.AddStackedProjecitle(598, 3, 1); */
++				none.AddStackedProjecitle(598, 3, 1, BuffID.BoneJavelin);
+ 
+ 			if (tentacleSpiked)
+-				none.AddStackedProjecitle(971, 3, 1);
++				/* none.AddStackedProjecitle(971, 3, 1); */
++				none.AddStackedProjecitle(971, 3, 1, BuffID.TentacleSpike);
+ 
+ 			if (markedByEelWhip)
+-				none.Add(100, 50);
++				/* none.Add(100, 50); */
++				none.Add(100, 50, BuffID.EelWhipNPCDebuff);
+ 
+ 			if (bloodButchered)
+-				none.AddStackedProjecitle(975, 4, 1);
++				/* none.AddStackedProjecitle(975, 4, 1); */
++				none.AddStackedProjecitle(975, 4, 1, BuffID.BloodButcherer);
+ 
+ 			if (daybreak)
+-				none.AddStackedProjecitle(636, 100, 4);
++				/* none.AddStackedProjecitle(636, 100, 4); */
++				none.AddStackedProjecitle(636, 100, 4, BuffID.Daybreak);
+ 
+ 			if (celled)
+-				none.AddStackedProjecitle(614, 20, 1);
++				/* none.AddStackedProjecitle(614, 20, 1); */
++				none.AddStackedProjecitle(614, 20, 1, BuffID.StardustMinionBleed);
+ 
+ 			if (dryadBane) {
+ 				int dryadsBaneDamagePerSecond = GetDryadsBaneDamagePerSecond();
++				/* none.Add(dryadsBaneDamagePerSecond * 2, dryadsBaneDamagePerSecond / 3); */
+-				none.Add(dryadsBaneDamagePerSecond * 2, dryadsBaneDamagePerSecond / 3);
++				none.Add(dryadsBaneDamagePerSecond * 2, dryadsBaneDamagePerSecond / 3, BuffID.DryadsWardDebuff);
+ 			}
+ 
+ 			if (soulDrain && realLife == -1)
+-				none.Add(50, 5);
++				/* none.Add(50, 5); */
++				none.Add(50, 5, BuffID.SoulDrain);
+ 
+ 			if (type == 59 && ai[1] == 174f && lavaWet)
+ 				none.AddSuperNaturalRegeneration(32);
+@@ -77017,6 +_,12 @@
+ 					none.AddSuperNaturalRegeneration(24);
+ 			}
+ 
++			NPCLoader.UpdateDOTTally(this, ref none);
++
++			// Evaluate Oiled after modded fire contributions, once per NPC.
++			if (oiled && none.HasFlammableDamage)
++				none.Add(50, 10, BuffID.Oiled);
++
+ 			if (none.BlockNaturalRegeneration && lifeRegen > 0)
+ 				lifeRegen = 0;
+ 
+@@ -77033,6 +_,8 @@
  			if (none.ExpectedDamagePerSecond != 0)
  				num = none.ExpectedDamagePerSecond;
  
-+			// Apply mod hooks after vanilla life regeneration and damage calculations.
 +			NPCLoader.UpdateLifeRegen(this, ref num);
 +
  			lifeRegenCount += lifeRegen;
