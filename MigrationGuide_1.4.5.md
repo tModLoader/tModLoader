@@ -505,6 +505,12 @@ Global substitutions are text substitutions that automatically and dynamically u
 
 Global substitutions are also usable as conditions. Using substitutions as conditions allows filtering out text options that are not relevant to the current state of the world. For example, in the `"{PartyGirl} is always so loud"` example, the corresponding `LocalizedText` will automatically detect that there is no Party Girl in the world and `LocalizedText.ConditionsMet` will be `false`. Helper methods like `Lang.CreateDialogFilter` will automatically filter out all text that doesn't satisfy their conditions, making chat dialogue code much simpler. Substitutions with a `?` at the start (`{?GlobalSubstitutionKeyHere}`) can be used to filter out text options that satisfy the conditions without affecting the text itself. This is usually used for substitutions that return a `bool`, like `{?Day}`. `{?!Day}` checks that it is night time.
 
+When updating existing code:
+
+* `Lang.CreateDialogFilter(prefix)` now checks `LocalizedText.ConditionsMet`. Pass `checkConditions: false` to retain the old prefix-only filtering.
+* `LocalizedText.CanFormatWith` is now `ConditionsMetWith`; tModPorter handles this rename.
+* `LocalizedText.Value` and `Language.GetTextValue` resolve global substitutions automatically. Keep `FormatWith` and `GetTextValueWith` when supplying a custom substitution object.
+
 We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
 
 #### Text Variation
