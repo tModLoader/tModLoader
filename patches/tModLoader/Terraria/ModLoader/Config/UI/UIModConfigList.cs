@@ -195,37 +195,33 @@ internal class UIModConfigList : UIState
 			var (modPanel, _) = CreatePanel(mod.DisplayName, mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon, null);
 
 			if (ConfigManager.Configs.ContainsKey(mod)) {
+				modPanel.GetCurrentState = () => selectedMod == mod ? "Selected" : "Default";
+
+				var selectedState = UIButton.State.DefaultWithHover with {
+					ClickSound = SoundID.MenuTick,
+				};
+
+				modPanel.AddState("Default", selectedState with {
+					PanelColor = UICommon.MainPanelBackground,
+					HoverPanelColor = UICommon.MainPanelBackground * 1.25f,
+				});
+
+				modPanel.AddState("Selected", selectedState);
+
 				modPanel.OnLeftClick += (_, _) => {
 					if (selectedMod == mod)
 						return;
 
-					SoundEngine.PlaySound(SoundID.MenuOpen);
 					selectedMod = mod;
 					PopulateConfigs();
 				};
-
-
-
-				modPanel.OnMouseOver += (_, _) => {
-					SoundEngine.PlaySound(SoundID.MenuTick);
-					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlue : UICommon.MainPanelBackground * (1 / 0.8f);
-					modPanel.BorderColor = UICommon.DefaultUIBorderMouseOver;
-				};
-
-				modPanel.OnMouseOut += (_, _) => {
-					modPanel.BackgroundColor = selectedMod == mod ? UICommon.DefaultUIBlueMouseOver : UICommon.MainPanelBackground;
-					modPanel.BorderColor = UICommon.DefaultUIBorder;
-				};
 			}
 			else {
-				modPanel.BackgroundColor = Color.Gray;
-
-				modPanel.OnDraw += (_, _) => {
-					if (!modPanel.IsMouseHovering)
-						return;
-
-					UICommon.TooltipMouseText(Language.GetTextValue("tModLoader.ModConfigModLoaderButNoConfigs"));
-				};
+				modPanel.AddState("Default", UIButton.State.Default with {
+					PanelColor = Color.Gray,
+					HoverText = Language.GetText("tModLoader.ModConfigModLoaderButNoConfigs"),
+					TooltipText = true,
+				});
 			}
 
 			modList.Add(modPanel);
@@ -252,10 +248,11 @@ internal class UIModConfigList : UIState
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 			var (configPanel, sideIndicator) = CreatePanel(config.DisplayName, indicatorTexture, indicatorFrame);
 
-			configPanel.WithFadedMouseOver();
-			configPanel.OnLeftClick += (_, _) => {
-				SoundEngine.PlaySound(SoundID.MenuOpen);
+			configPanel.AddState("Default", UIButton.State.DefaultWithHover with {
+				ClickSound = SoundID.MenuOpen,
+			});
 
+			configPanel.OnLeftClick += (_, _) => {
 				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
@@ -289,11 +286,10 @@ internal class UIModConfigList : UIState
 		list.Recalculate();
 	}
 
-	// TODO: switch this to UIButton in the future when it is updated to use UIMarqueeTextPanel
-	private static (UIMarqueeTextPanel, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
+	private static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame)
 	{
 		// TODO: fix clipping into the edge of the UI list
-		var panel = new UIMarqueeTextPanel(text) {
+		var panel = new UIButton(text) {
 			MinWidth = { Percent = 1f },
 			MinHeight = { Pixels = 40 },
 			TextHAlign = 0f,
