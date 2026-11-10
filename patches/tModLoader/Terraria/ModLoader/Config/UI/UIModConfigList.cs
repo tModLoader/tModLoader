@@ -289,30 +289,23 @@ internal class UIModConfigList : UIState
 		var sortedConfigs = configs.OrderBy(x => Utils.CleanChatTags(x.DisplayName.Value)).ToList();
 
 		foreach (var config in sortedConfigs) {
-			var configPanel = new UIButton<string>("") {
-				Width = { Percent = 1f, Pixels = -1, }, // -1 to prevent clipping the right edge of the panel
-				Height = { Pixels = 40 },
-				HAlign = 0.5f,
-				ScalePanel = false,
-				UseInnerDimensions = true,
-				ClickSound = SoundID.MenuOpen,
-			};
-			configPanel.SetPadding(6);
-
-			var configName = new UIMarqueeText(config.DisplayName) {
-				Width = { Percent = 1f },
-				Height = { Percent = 1f },
+			var configPanel = new UIMarqueeTextPanel(config.DisplayName) {
+				MinWidth = { Percent = 1f, Pixels = -1 }, // -1 to prevent clipping the right edge of the panel
+				MinHeight = { Pixels = 40 },
+				MaxWidth = MinWidth,
+				MaxHeight = Height,
+				TextHAlign = 0f,
 				MarqueeText = {
 					IsScrolling = false,
 				},
-			};
+			}.WithFadedMouseOver();
 
-			configPanel.Append(configName);
-
-			configPanel.OnMouseOver += (_, _) => configName.MarqueeText.IsScrolling = true;
-			configPanel.OnMouseOut += (_, _) => configName.MarqueeText.IsScrolling = false;
+			configPanel.OnMouseOver += (_, _) => configPanel.MarqueeText.IsScrolling = true;
+			configPanel.OnMouseOut += (_, _) => configPanel.MarqueeText.IsScrolling = false;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+
 				Interface.modConfig.SetMod(selectedMod, config);
 				if (Main.gameMenu)
 					Main.menuMode = Interface.modConfigID;
@@ -326,7 +319,7 @@ internal class UIModConfigList : UIState
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 
 			float indicatorOffset = indicatorFrame.Width;
-			float indicatorPadding = 8; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
+			float indicatorPadding = 6; // Supposed to be 12, but the icons have a lot of spare transparency on the sides which wastes space
 			configPanel.PaddingLeft += indicatorOffset + indicatorPadding;
 
 			var sideIndicator = new UIImageFramed(indicatorTexture, indicatorFrame) {
@@ -335,6 +328,10 @@ internal class UIModConfigList : UIState
 				Color = Color.White,
 				MarginLeft = -indicatorOffset - indicatorPadding + 4, // 4 for alignment
 			};
+
+			// The original calculations were for when the panel padding was 6px, but it was later changed to 12 px
+			sideIndicator.MarginLeft -= 6;
+			sideIndicator.MarginTop -= 6;
 
 			sideIndicator.OnDraw += delegate (UIElement affectedElement, SpriteBatch spriteBatch) {
 				if (sideIndicator.IsMouseHovering) {
