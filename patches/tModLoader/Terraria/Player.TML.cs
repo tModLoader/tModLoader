@@ -351,6 +351,10 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		float attackSpeed = GetTotalAttackSpeed(sItem.DamageType);
 		// apply a scale based on the set. It's not recommended for mods to use this, but vanilla does for super fast melee weapons so here we are
 		attackSpeed = 1 + ((attackSpeed - 1) * ItemID.Sets.BonusMeleeSpeedMultiplier[sItem.type]);
+
+		if (DebugOptions.ManaV2 && sItem.mana > 0)
+			attackSpeed *= GetSlowMagicUseRate();
+
 		return attackSpeed;
 	}
 
@@ -557,8 +561,6 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		return false;
 	}
-
-	private bool reuseDelayIsSlowed;
 
 	/// <summary>
 	/// Returns true if an item animation is currently running.

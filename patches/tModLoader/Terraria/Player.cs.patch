@@ -116,6 +116,14 @@
  	public int numberOfDeathsPVE;
  	public int numberOfDeathsPVP;
  	public static int crystalLeafDamage = 100;
+@@ -742,6 +_,7 @@
+ 	public float manaSickReduction;
+ 	public bool manaSick;
+ 	public bool slowMagicUse;
++	private bool slowMagicUseAppliedToReuseDelay; // Added by tML
+ 	public float manaHeat;
+ 	public float latestManaPotionDamageBonus;
+ 	public float latestManaPotionDuration;
 @@ -751,6 +_,7 @@
  	public int afkCounterForKiting;
  	public static int AFKTimeNeededForAutoKiting = 3600;
@@ -1629,7 +1637,7 @@
 +		SetItemAnimation(CombinedHooks.TotalAnimationTime(sItem.useAnimation * multiplier, this, sItem));
 +
 +		reuseDelay = (int)((itemReuseDelay ?? sItem.reuseDelay) / CombinedHooks.TotalUseSpeedMultiplier(this, sItem));
-+		reuseDelayIsSlowed = DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse;
++		slowMagicUseAppliedToReuseDelay = DebugOptions.ManaV2 && sItem.mana > 0 && slowMagicUse;
 +		ItemUsesThisAnimation = 0;
  	}
  
@@ -7883,19 +7891,21 @@
  	private void UndoSlowMagicUse()
  	{
 +		// Only restore a delay that was slowed when the animation started.
-+		if (reuseDelayIsSlowed) {
++		if (slowMagicUseAppliedToReuseDelay) {
 +			reuseDelay = (int)(reuseDelay / GetSlowMagicMultiplier());
-+			reuseDelayIsSlowed = false;
++			slowMagicUseAppliedToReuseDelay = false;
 +		}
 +
  		if (itemAnimation != 0 && itemTime != 0) {
  			float slowMagicUseRate = GetSlowMagicUseRate();
  			int num = 2;
-@@ -43462,8 +_,9 @@
+@@ -43462,8 +_,12 @@
  			itemAnimation = (int)Math.Max(num, (float)itemAnimation * slowMagicUseRate);
  			itemTimeMax = (int)Math.Max(num, (float)itemTimeMax * slowMagicUseRate);
  			itemTime = (int)Math.Max(num, (float)itemTime * slowMagicUseRate);
--			slowMagicUse = false;
++			/*
+ 			slowMagicUse = false;
++			*/
  		}
 +
 +		slowMagicUse = false;
@@ -7936,7 +7946,7 @@
  		itemAnimation = reuseDelay;
  		itemTime = reuseDelay;
  		reuseDelay = 0;
-+		reuseDelayIsSlowed = false;
++		slowMagicUseAppliedToReuseDelay = false;
  	}
  
  	private void ItemCheck_HackHoldStyles(Item sItem)
