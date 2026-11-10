@@ -261,16 +261,18 @@ internal class UIModConfigList : UIState
 
 			modPanel.Append(modIcon);
 
-			var modName = new MarqueeText(mod.DisplayName) {
+			var modName = new UIMarqueeText(mod.DisplayName) {
 				Width = { Percent = 1f },
 				Height = { Percent = 1f },
-				IsScrolling = false,
+				MarqueeText = {
+					IsScrolling = false,
+				},
 			};
 
 			modPanel.Append(modName);
 
-			modPanel.OnMouseOver += (_, _) => modName.IsScrolling = true;
-			modPanel.OnMouseOut += (_, _) => modName.IsScrolling = false;
+			modPanel.OnMouseOver += (_, _) => modName.MarqueeText.IsScrolling = true;
+			modPanel.OnMouseOut += (_, _) => modName.MarqueeText.IsScrolling = false;
 		}
 	}
 
@@ -297,16 +299,18 @@ internal class UIModConfigList : UIState
 			};
 			configPanel.SetPadding(6);
 
-			var configName = new MarqueeText(config.DisplayName) {
+			var configName = new UIMarqueeText(config.DisplayName) {
 				Width = { Percent = 1f },
 				Height = { Percent = 1f },
-				IsScrolling = false,
+				MarqueeText = {
+					IsScrolling = false,
+				},
 			};
 
 			configPanel.Append(configName);
 
-			configPanel.OnMouseOver += (_, _) => configName.IsScrolling = true;
-			configPanel.OnMouseOut += (_, _) => configName.IsScrolling = false;
+			configPanel.OnMouseOver += (_, _) => configName.MarqueeText.IsScrolling = true;
+			configPanel.OnMouseOut += (_, _) => configName.MarqueeText.IsScrolling = false;
 
 			configPanel.OnLeftClick += delegate (UIMouseEvent evt, UIElement listeningElement) {
 				Interface.modConfig.SetMod(selectedMod, config);
