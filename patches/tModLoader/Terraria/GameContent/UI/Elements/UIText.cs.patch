@@ -1,5 +1,28 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UIText.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UIText.cs
+@@ -14,7 +_,8 @@
+ {
+ 	private object _text = "";
+ 	private float _textScale = 1f;
++	// tML: Made protected
+-	private Vector2 _textSize = Vector2.Zero;
++	protected Vector2 _textSize = Vector2.Zero;
+ 	private bool _isLarge;
+ 	private Color _color = Color.White;
+ 	private Color _shadowColor = Color.Black;
+@@ -23,6 +_,12 @@
+ 	private List<PositionedSnippet> _textLayout;
+ 	private string _lastTextReference;
+ 
++	// Added by TML [[
++	protected Vector2 textOffset = Vector2.Zero;
++	protected bool drawTextAsChild = false;
++	protected virtual bool SetTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
++	// ]]
++
+ 	public string Text => _text.ToString();
+ 
+ 	public float TextOriginX { get; set; }
 @@ -37,6 +_,8 @@
  		}
  		set {
@@ -8,4 +31,76 @@
 +				MinWidth.Set(0, 0); // TML: IsWrapped when true should prevent changing MinWidth, otherwise can't shrink in width due to CreateWrappedText+GetInnerDimensions logic. IsWrapped is false in ctor, so need to undo changes.
  			InternalSetText(_text, _textScale, _isLarge);
  		}
+ 	}
+@@ -79,6 +_,12 @@
+ 		InternalSetText(text, textScale, large);
+ 	}
+ 
++	// tML: Object ctor
++	public UIText(object text, float textScale = 1f, bool large = false) : this("", textScale, large)
++	{
++		InternalSetText(text, textScale, large);
++	}
++
+ 	public override void Recalculate()
+ 	{
+ 		InternalSetText(_text, _textScale, _isLarge);
+@@ -108,6 +_,21 @@
+ 	protected override void DrawSelf(SpriteBatch spriteBatch)
+ 	{
+ 		base.DrawSelf(spriteBatch);
++
++		if (!drawTextAsChild)
++			DrawText(spriteBatch);
++	}
++
++	protected override void DrawChildren(SpriteBatch spriteBatch)
++	{
++		if (drawTextAsChild)
++			DrawText(spriteBatch);
++
++		base.DrawChildren(spriteBatch);
++	}
++
++	private void DrawText(SpriteBatch spriteBatch)
++	{
+ 		VerifyTextState();
+ 		CalculatedStyle innerDimensions = GetInnerDimensions();
+ 		Vector2 position = innerDimensions.Position();
+@@ -132,6 +_,7 @@
+ 
+ 		position.X += (innerDimensions.Width - textSize.X) * TextOriginX;
+ 		position.Y += (innerDimensions.Height - textSize.Y) * TextOriginY;
++		position += textOffset;
+ 		Color shadowColor = _shadowColor * ((float)(int)_color.A / 255f);
+ 		DynamicSpriteFont font = (_isLarge ? FontAssets.DeathText.Value : FontAssets.MouseText.Value);
+ 		ChatManager.DrawColorCodedStringShadow(spriteBatch, font, _textLayout, position, shadowColor, 0f, Vector2.Zero, scale, 1.5f);
+@@ -144,8 +_,10 @@
+ 			InternalSetText(_text, _textScale, _isLarge);
+ 	}
+ 
++	// tML: Made protected virtual
+-	private void InternalSetText(object text, float textScale, bool large)
++	protected virtual void InternalSetText(object text, float textScale, bool large)
+ 	{
++		textOffset = Vector2.Zero;
+ 		_text = text;
+ 		_isLarge = large;
+ 		_textScale = textScale;
+@@ -160,8 +_,16 @@
+ 		else
+ 			_textSize.Y = (large ? 32f : 16f) * _textScale;
+ 
++		if (!SetTextUsesMinSize) {
++			Width.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
++			Height.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
++			goto skipMinSize;
++		}
++
+ 		MinWidth.Set((IsWrapped || DynamicallyScaleDownToWidth) ? 0f : (_textSize.X + PaddingLeft + PaddingRight), 0f);
+ 		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
++
++	skipMinSize:
+ 		if (this.OnInternalTextChange != null)
+ 			this.OnInternalTextChange();
  	}

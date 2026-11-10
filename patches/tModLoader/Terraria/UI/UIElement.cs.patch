@@ -172,6 +172,25 @@
  	public virtual void Update(GameTime gameTime)
  	{
  		if (this.OnUpdate != null)
+@@ -198,10 +_,15 @@
+ 		}
+ 	}
+ 
++	public virtual Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
++	{
++		return CalculateClippingRectangle(_innerDimensions, spriteBatch);
++	}
++
+-	public Rectangle GetClippingRectangle(SpriteBatch spriteBatch)
++	public static Rectangle CalculateClippingRectangle(CalculatedStyle dimensions, SpriteBatch spriteBatch)
+ 	{
+-		Vector2 vector = new Vector2(_innerDimensions.X, _innerDimensions.Y);
++		Vector2 vector = new Vector2(dimensions.X, dimensions.Y);
+-		Vector2 position = new Vector2(_innerDimensions.Width, _innerDimensions.Height) + vector;
++		Vector2 position = new Vector2(dimensions.Width, dimensions.Height) + vector;
+ 		vector = Vector2.Transform(vector, Main.UIScaleMatrix);
+ 		position = Vector2.Transform(position, Main.UIScaleMatrix);
+ 		Rectangle rectangle = new Rectangle((int)vector.X, (int)vector.Y, (int)(position.X - vector.X), (int)(position.Y - vector.Y));
 @@ -297,6 +_,9 @@
  	public virtual bool ContainsPoint(Vector2 point) => _dimensions.ToRectangle().Contains(point.ToPoint());
  	public virtual Rectangle GetViewCullingArea() => _dimensions.ToRectangle();
