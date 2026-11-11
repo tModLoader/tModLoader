@@ -2,6 +2,9 @@ namespace Terraria.ModLoader.Setup.Core;
 
 public sealed record PatchTaskParameters
 {
+	/// <summary>Name of the layer, matching its patch and diff subcommands.</summary>
+	public required string Name { get; init; }
+
 	public required string BaseDir { get; init; }
 
 	public required string PatchedDir { get; init; }
@@ -10,9 +13,16 @@ public sealed record PatchTaskParameters
 
 	public required ProgramSetting<DateTime?> Cutoff { get; init; }
 
+	public static PatchTaskParameters[] All(ProgramSettings programSettings) => [
+		ForTerraria(programSettings),
+		ForTerrariaNetCore(programSettings),
+		ForTModLoader(programSettings),
+	];
+
 	public static PatchTaskParameters ForTerraria(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
+			Name = "terraria",
 			BaseDir = PathConstants.DecompiledFolder,
 			PatchedDir = PathConstants.TerrariaSourceFolder,
 			PatchDir = PathConstants.TerrariaPatchesFolder,
@@ -23,6 +33,7 @@ public sealed record PatchTaskParameters
 	public static PatchTaskParameters ForTerrariaNetCore(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
+			Name = "netcore",
 			BaseDir = PathConstants.TerrariaSourceFolder,
 			PatchedDir = PathConstants.TerrariaNetCoreSourceFolder,
 			PatchDir = PathConstants.TerrariaNetCorePatchesFolder,
@@ -33,6 +44,7 @@ public sealed record PatchTaskParameters
 	public static PatchTaskParameters ForTModLoader(ProgramSettings programSettings)
 	{
 		return new PatchTaskParameters {
+			Name = "tml",
 			BaseDir = PathConstants.TerrariaNetCoreSourceFolder,
 			PatchedDir = PathConstants.TModLoaderSourceFolder,
 			PatchDir = PathConstants.TModLoaderPatchesFolder,

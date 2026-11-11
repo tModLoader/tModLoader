@@ -15,6 +15,38 @@ public class PatchCommandSettings : BaseCommandSettings
 	[CommandOption("-f|--no-prompts")]
 	[Description("Execute command without prompting for confirmation or any missing information.")]
 	public bool NoPrompts { get; init; }
+
+	[CommandOption("-s|--safe-mode")]
+	[Description("Abort instead of overwriting source files edited since the last patch or diff.")]
+	public bool SafeMode { get; init; }
+
+	/// <summary>
+	///     In safe mode, checks the layers about to be patched for edits which patching would discard. Writes an
+	///     explanation to stderr and returns false if any are found.
+	/// </summary>
+	public bool CheckSafeMode(params PatchTaskParameters[] layers)
+	{
+		if (!SafeMode) {
+			return true;
+		}
+
+		foreach (PatchTaskParameters layer in layers) {
+			if (PatchTask.FindEditedFile(layer) is not string editedFile) {
+				continue;
+			}
+
+			Console.Error.WriteLine(
+				$"""
+				 {layer.PatchedDir} has edits newer than the last patch or diff, including:
+				   {editedFile}
+				 Safe mode: not patching. Capture them with 'diff {layer.Name}', or run again without --safe-mode to discard them.
+				 """);
+
+			return false;
+		}
+
+		return true;
+	}
 }
 public sealed class PatchTerrariaCommand(TaskRunner taskRunner, ProgramSettings programSettings, IServiceProvider serviceProvider)
 	: PatchBaseCommand(taskRunner, programSettings, serviceProvider)
@@ -59,7 +91,13 @@ public abstract class PatchBaseCommand : CancellableAsyncCommand<PatchCommandSet
 		CancellationToken cancellationToken)
 	{
 		programSettings.PatchMode = settings.PatchMode;
-		PatchTask patchTask = new PatchTask(GetPatchTaskParameters(programSettings), serviceProvider);
+		PatchTaskParameters parameters = GetPatchTaskParameters(programSettings);
+
+		if (!settings.CheckSafeMode(parameters)) {
+			return 1;
+		}
+
+		PatchTask patchTask = new PatchTask(parameters, serviceProvider);
 
 		return await taskRunner.Run(patchTask, settings, settings.NoPrompts, cancellationToken: cancellationToken);
 	}
