@@ -1603,6 +1603,40 @@ Mods: {
 			FreeBaitBuilderToggle.NameText: Бесплатная наживка: {0}
 		}
 
+		CreativeCategories: {
+			ExampleCreativeCategory: {
+				// DisplayName: Example Category
+				// Description: Example powers from Example Mod
+			}
+		}
+
+		CreativePowers: {
+			ExampleGlowToggle: {
+				// DisplayName: Example Glow
+				// Description: Make your character give off light
+			}
+
+			ExampleRestoreManaButton: {
+				// DisplayName: Restore Mana
+				// Description: Fill your mana to full
+			}
+
+			ExampleHealButton: {
+				// DisplayName: Heal
+				// Description: Restore your life to full
+			}
+
+			ExampleRunSpeedSlider: {
+				// DisplayName: Run Speed
+				// Description: Change how fast you run
+				// TopLabel: x3
+				// MiddleLabel: x2
+				// BottomLabel: x1
+			}
+		}
+
+		// ExampleCreativePowersSystem.RightClickToHeal: Right click to fully heal
+
 		# This is the command names for mod emotes
 		# It is suggested to use a prefix like ex- for all emotes of your mod to avoid name collisions
 		# If there is a collision, one will just override the other

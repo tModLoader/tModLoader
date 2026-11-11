@@ -772,6 +772,12 @@
 		"PreviousInfoAccPage": "Poprzednia strona",
 		"FirstInfoAccPage": "Przejdź do pierwszej strony",
 		"LastInfoAccPage": "Przejdź do ostatniej strony"
+
+		// Journey Mode power menu
+		// "CreativeMenuOpen": "Open {0}",
+		// "CreativeMenuClose": "Close {0}",
+		// "CreativePowerEnabled": "{0} Enabled",
+		// "CreativePowerDisabled": "{0} Disabled"
 	},
 	"CommonItemTooltip": {
 		"IncreasesDefenseBy": "Zwiększ obronę o {0}",

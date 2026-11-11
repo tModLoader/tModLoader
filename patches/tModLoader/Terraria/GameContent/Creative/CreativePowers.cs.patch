@@ -1,0 +1,34 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Creative/CreativePowers.cs
++++ src/tModLoader/Terraria/GameContent/Creative/CreativePowers.cs
+@@ -9,6 +_,7 @@
+ using Terraria.GameInput;
+ using Terraria.Initializers;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.Net;
+ using Terraria.UI;
+ 
+@@ -150,6 +_,7 @@
+ 			groupOptionButton.OnLeftClick += button_OnClick;
+ 			groupOptionButton.OnUpdate += button_OnUpdate;
+ 			elements.Add(groupOptionButton);
++			SystemLoader.ModifyCreativePowerButton(this, groupOptionButton); // TML: #CreativePowerHooks - Added ModifyCreativePowerButton
+ 		}
+ 
+ 		private void button_OnUpdate(UIElement affectedElement)
+@@ -381,6 +_,7 @@
+ 			groupOptionButton.OnLeftClick += button_OnClick;
+ 			groupOptionButton.OnUpdate += button_OnUpdate;
+ 			elements.Add(groupOptionButton);
++			SystemLoader.ModifyCreativePowerButton(this, groupOptionButton); // TML: #CreativePowerHooks - Added ModifyCreativePowerButton
+ 		}
+ 
+ 		private void button_OnUpdate(UIElement affectedElement)
+@@ -460,6 +_,7 @@
+ 			groupOptionButton.OnLeftClick += button_OnClick;
+ 			groupOptionButton.OnUpdate += button_OnUpdate;
+ 			elements.Add(groupOptionButton);
++			SystemLoader.ModifyCreativePowerButton(this, groupOptionButton); // TML: #CreativePowerHooks - Added ModifyCreativePowerButton
+ 		}
+ 
+ 		private void button_OnUpdate(UIElement affectedElement)
