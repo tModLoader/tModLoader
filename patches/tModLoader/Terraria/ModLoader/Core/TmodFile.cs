@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
-using Ionic.Zlib;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;
 using Terraria.ModLoader.UI;

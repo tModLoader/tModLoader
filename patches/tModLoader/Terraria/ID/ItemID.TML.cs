@@ -220,5 +220,11 @@ partial class ItemID
 			GolfClubMythrilIron, GolfClubLeadPutter, GolfClubGoldWedge, GolfClubPearlwoodDriver,
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
+
+		/// <summary>
+		/// Dictates which dirt tiles each grass seed item (<see cref="GrassSeeds"/>) can be planted on. Only checked for modded tiles. Used for smart cursor. 
+		/// <br/> Defaults to <see langword="null"/>.
+		/// </summary>
+		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
 	}
 }
