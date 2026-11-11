@@ -110,7 +110,7 @@ public class UIConfirmDialog : UIElement
 				TextColor = Color.White,
 				Width = new StyleDimension(0f, 2f / 3f),
 				Height = { Pixels = 40 },
-				VAlign = 0.95f,
+				VAlign = 0.85f,
 				HAlign = 0.5f,
 			}.WithFadedMouseOver();
 			dialog.Append(yesDontAskAgainButton);
