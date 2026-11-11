@@ -12,6 +12,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public bool IsMet() => Predicate();
 
+#pragma warning disable format
 	// Near Liquids
 	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWaterSource || Main.LocalPlayer.adjTile[TileID.Sinks]);
 	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
@@ -242,13 +243,15 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases12 =				new("Conditions.MoonPhases12",				() => Main.moonPhase == 1 || Main.moonPhase == 2);
 	public static readonly Condition MoonPhases35 =				new("Conditions.MoonPhases35",				() => Main.moonPhase == 3 || Main.moonPhase == 5);
 	public static readonly Condition MoonPhases67 =				new("Conditions.MoonPhases67",				() => Main.moonPhase == 6 || Main.moonPhase == 7);
+#pragma warning restore format
 
-	// Parameters
-	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
+    // Parameters
+    public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
 	public static Condition GolfScoreOver(int score) => new(Language.GetText("Conditions.GolfScoreOver").WithFormatArgs(score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 	public static Condition NpcIsPresent(int npcId) => new(Language.GetText("Conditions.NpcIsPresent").WithFormatArgs(Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
 	public static Condition AnglerQuestsFinishedOver(int quests) => new(Language.GetText("Conditions.AnglerQuestsFinishedOver").WithFormatArgs(quests), () => Main.LocalPlayer.anglerQuestsFinished >= quests);
-	public static Condition BestiaryFilledPercent(int percent) {
+	public static Condition BestiaryFilledPercent(int percent)
+	{
 		if (percent >= 100)
 			return new Condition("Conditions.BestiaryFull", () => Main.GetBestiaryProgressReport().CompletionPercent >= 1f);
 
