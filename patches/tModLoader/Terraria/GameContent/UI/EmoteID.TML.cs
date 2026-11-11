@@ -1,4 +1,4 @@
-namespace Terraria.GameContent.UI;
+﻿namespace Terraria.GameContent.UI;
 
 public partial class EmoteID
 {

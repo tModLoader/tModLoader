@@ -18,28 +18,17 @@ public class TagPrinter
 
 	private string TypeString(Type type)
 	{
-		if (type == typeof(byte))
-			return "byte";
-		if (type == typeof(short))
-			return "short";
-		if (type == typeof(int))
-			return "int";
-		if (type == typeof(long))
-			return "long";
-		if (type == typeof(float))
-			return "float";
-		if (type == typeof(double))
-			return "double";
-		if (type == typeof(string))
-			return "string";
-		if (type == typeof(byte[]))
-			return "byte[]";
-		if (type == typeof(int[]))
-			return "int[]";
-		if (type == typeof(TagCompound))
-			return "object";
-		if (type == typeof(IList))
-			return "list";
+		if (type == typeof(byte)) return "byte";
+		if (type == typeof(short)) return "short";
+		if (type == typeof(int)) return "int";
+		if (type == typeof(long)) return "long";
+		if (type == typeof(float)) return "float";
+		if (type == typeof(double)) return "double";
+		if (type == typeof(string)) return "string";
+		if (type == typeof(byte[])) return "byte[]";
+		if (type == typeof(int[])) return "int[]";
+		if (type == typeof(TagCompound)) return "object";
+		if (type == typeof(IList)) return "list";
 		throw new ArgumentException("Unknown Type: " + type);
 	}
 
@@ -49,18 +38,14 @@ public class TagPrinter
 		indent += "  ";
 		var first = true;
 		foreach (var entry in list) {
-			if (first)
-				first = false;
-			else
-				sb.Append(multiline ? "," : ", ");
+			if (first) first = false;
+			else sb.Append(multiline ? "," : ", ");
 
-			if (multiline)
-				sb.AppendLine().Append(indent);
+			if (multiline) sb.AppendLine().Append(indent);
 			write(entry);
 		}
 		indent = indent.Substring(2);
-		if (multiline && !first)
-			sb.AppendLine().Append(indent);
+		if (multiline && !first) sb.AppendLine().Append(indent);
 		sb.Append(end);
 	}
 

@@ -8,13 +8,13 @@ public static class ModBrowserSortModesExtensions
 	{
 		switch (sortmode) {
 			//case ModBrowserSortMode.DisplayNameAtoZ:
-			//return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
+				//return Language.GetTextValue("tModLoader.ModsSortNamesAlph");
 			//case ModBrowserSortMode.DisplayNameZtoA:
-			//return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
+				//return Language.GetTextValue("tModLoader.ModsSortNamesReverseAlph");
 			case ModBrowserSortMode.DownloadsDescending:
 				return Language.GetTextValue("tModLoader.MBSortDownloadDesc");
 			//case ModBrowserSortMode.DownloadsAscending:
-			//return Language.GetTextValue("tModLoader.MBSortDownloadAsc");
+				//return Language.GetTextValue("tModLoader.MBSortDownloadAsc");
 			case ModBrowserSortMode.RecentlyUpdated:
 				return Language.GetTextValue("tModLoader.MBSortByRecentlyUpdated");
 			case ModBrowserSortMode.Hot:

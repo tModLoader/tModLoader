@@ -1,4 +1,4 @@
-using Terraria.Localization;
+﻿using Terraria.Localization;
 
 namespace Terraria.ModLoader.UI.ModBrowser;
 

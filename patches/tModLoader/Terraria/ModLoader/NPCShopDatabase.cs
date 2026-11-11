@@ -206,15 +206,15 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
-		yield return new Entry(ItemID.TeleportationPylonPurity, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonSnow, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonDesert, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonUnderworld, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InUnderworld).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonUnderground, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonOcean, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonJungle, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonHallow, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
-		yield return new Entry(ItemID.TeleportationPylonMushroom, Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderworld,    Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InUnderworld).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonUnderground,   Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, cavernPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonOcean,         Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, oceanPylonCondition).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonJungle,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InJungle).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
+		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
 		// Aether Pylon is not sold, it is obtained by shimmer transmuted any other pylon.
 
 
@@ -238,30 +238,30 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.CopperPickaxe)
 			.Add(ItemID.CopperAxe)
 			.Add(ItemID.Torch)
-			.Add(ItemID.JungleTorch, Condition.NotTheBeesWorld, Condition.NotRemixWorld)
+			.Add(ItemID.JungleTorch,		Condition.NotTheBeesWorld, Condition.NotRemixWorld)
 			.Add(ItemID.LesserHealingPotion)
-			.Add(ItemID.HealingPotion, Condition.Hardmode)
+			.Add(ItemID.HealingPotion,		Condition.Hardmode)
 			.Add(ItemID.LesserManaPotion)
-			.Add(ItemID.ManaPotion, Condition.Hardmode)
+			.Add(ItemID.ManaPotion,			Condition.Hardmode)
 			.Add(ItemID.WoodenArrow)
 			.Add(ItemID.Shuriken)
 			.Add(ItemID.Rope)
-			.Add(ItemID.Marshmallow, Condition.InSnow)
-			.Add(ItemID.Furnace, furnaceCondition)
-			.Add(ItemID.PinWheel, Condition.TimeDay, Condition.HappyWindyDay)
-			.Add(ItemID.ThrowingKnife, Condition.BloodMoon)
-			.Add(ItemID.Glowstick, Condition.TimeNight)
-			.Add(ItemID.RainbowGlowstick, Condition.BirthdayParty)
-			.Add(ItemID.Safe, Condition.DownedSkeletron)
-			.Add(ItemID.DiscoBall, Condition.Hardmode)
-			.Add(ItemID.Flare, carriesFlareGun)
-			.Add(ItemID.BlueFlare, carriesFlareGun)
+			.Add(ItemID.Marshmallow,		Condition.InSnow)
+			.Add(ItemID.Furnace,			furnaceCondition)
+			.Add(ItemID.PinWheel,			Condition.TimeDay, Condition.HappyWindyDay)
+			.Add(ItemID.ThrowingKnife,		Condition.BloodMoon)
+			.Add(ItemID.Glowstick,			Condition.TimeNight)
+			.Add(ItemID.RainbowGlowstick,	Condition.BirthdayParty)
+			.Add(ItemID.Safe,				Condition.DownedSkeletron)
+			.Add(ItemID.DiscoBall,			Condition.Hardmode)
+			.Add(ItemID.Flare,				carriesFlareGun)
+			.Add(ItemID.BlueFlare,			carriesFlareGun)
 			.Add(ItemID.Sickle)
-			.Add(ItemID.GoldDust, Condition.Hardmode)
-			.Add(ItemID.SharpeningStation, Condition.Hardmode)
-			.Add(ItemID.DrumSet, drumSetCondition)
-			.Add(ItemID.DrumStick, drumSetCondition)
-			.Add(ItemID.Nail, Condition.PlayerCarriesItem(ItemID.NailGun))
+			.Add(ItemID.GoldDust,			Condition.Hardmode)
+			.Add(ItemID.SharpeningStation,	Condition.Hardmode)
+			.Add(ItemID.DrumSet,			drumSetCondition)
+			.Add(ItemID.DrumStick,			drumSetCondition)
+			.Add(ItemID.Nail,				Condition.PlayerCarriesItem(ItemID.NailGun))
 			.Register();
 	}
 
@@ -269,24 +269,24 @@ public static partial class NPCShopDatabase
 	{
 		new NPCShop(NPCID.ArmsDealer)
 			.Add(ItemID.MusketBall)
-			.Add(ItemID.SilverBullet, Condition.BloodMoonOrHardmode, new Condition("Conditions.WorldGenSilver", () => WorldGen.SavedOreTiers.Silver == TileID.Silver))
-			.Add(ItemID.TungstenBullet, Condition.BloodMoonOrHardmode, new Condition("Conditions.WorldGenTungsten", () => WorldGen.SavedOreTiers.Silver == TileID.Tungsten))
-			.Add(ItemID.UnholyArrow, new Condition("Conditions.NightAfterEvilOrHardmode", () => (NPC.downedBoss2 && !Main.dayTime) || Main.hardMode))
+			.Add(ItemID.SilverBullet,			Condition.BloodMoonOrHardmode, new Condition("Conditions.WorldGenSilver", () => WorldGen.SavedOreTiers.Silver == TileID.Silver))
+			.Add(ItemID.TungstenBullet,			Condition.BloodMoonOrHardmode, new Condition("Conditions.WorldGenTungsten", () => WorldGen.SavedOreTiers.Silver == TileID.Tungsten))
+			.Add(ItemID.UnholyArrow,			new Condition("Conditions.NightAfterEvilOrHardmode", () => (NPC.downedBoss2 && !Main.dayTime) || Main.hardMode))
 			.Add(ItemID.FlintlockPistol)
 			.Add(ItemID.Minishark)
-			.Add(ItemID.QuadBarrelShotgun, Condition.InGraveyard, Condition.DownedSkeletron)
-			.Add(ItemID.IllegalGunParts, Condition.TimeNight)
-			.Add(ItemID.Shotgun, Condition.Hardmode)
-			.Add(ItemID.EmptyBullet, Condition.Hardmode)
-			.Add(ItemID.AmmoBox, Condition.Hardmode)
-			.Add(ItemID.StyngerBolt, Condition.PlayerCarriesItem(ItemID.Stynger))
-			.Add(ItemID.Stake, Condition.PlayerCarriesItem(ItemID.StakeLauncher))
-			.Add(ItemID.Nail, Condition.PlayerCarriesItem(ItemID.NailGun))
-			.Add(ItemID.CandyCorn, Condition.PlayerCarriesItem(ItemID.CandyCornRifle))
-			.Add(ItemID.ExplosiveJackOLantern, Condition.PlayerCarriesItem(ItemID.JackOLanternLauncher))
-			.Add(ItemID.NurseHat, Condition.Halloween)
-			.Add(ItemID.NurseShirt, Condition.Halloween)
-			.Add(ItemID.NursePants, Condition.Halloween)
+			.Add(ItemID.QuadBarrelShotgun,		Condition.InGraveyard, Condition.DownedSkeletron)
+			.Add(ItemID.IllegalGunParts,		Condition.TimeNight)
+			.Add(ItemID.Shotgun,				Condition.Hardmode)
+			.Add(ItemID.EmptyBullet,			Condition.Hardmode)
+			.Add(ItemID.AmmoBox,				Condition.Hardmode)
+			.Add(ItemID.StyngerBolt,			Condition.PlayerCarriesItem(ItemID.Stynger))
+			.Add(ItemID.Stake,					Condition.PlayerCarriesItem(ItemID.StakeLauncher))
+			.Add(ItemID.Nail,					Condition.PlayerCarriesItem(ItemID.NailGun))
+			.Add(ItemID.CandyCorn,				Condition.PlayerCarriesItem(ItemID.CandyCornRifle))
+			.Add(ItemID.ExplosiveJackOLantern,	Condition.PlayerCarriesItem(ItemID.JackOLanternLauncher))
+			.Add(ItemID.NurseHat,				Condition.Halloween)
+			.Add(ItemID.NurseShirt,				Condition.Halloween)
+			.Add(ItemID.NursePants,				Condition.Halloween)
 			.Register();
 	}
 
@@ -295,35 +295,35 @@ public static partial class NPCShopDatabase
 		var notRemixORInfectedSeedORCelebrationmk10ANDNotForTheWorthy = new Condition("Conditions.BiomeSpreadingItemsWithInfectedSeed", () => !Main.remixWorld || Main.infectedSeed || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
 
 		new NPCShop(NPCID.Dryad)
-			.Add(ItemID.ViciousPowder, Condition.BloodMoon, Condition.CrimsonWorld, Condition.BiomeSpreadingItems)
-			.Add(ItemID.CrimsonSeeds, Condition.BloodMoon, Condition.CrimsonWorld)
-			.Add(ItemID.CrimsonGrassEcho, Condition.BloodMoon, Condition.CrimsonWorld)
-			.Add(ItemID.VilePowder, Condition.BloodMoon, Condition.CorruptWorld, Condition.NotRemixWorld)
-			.Add(ItemID.CorruptSeeds, Condition.BloodMoon, Condition.CorruptWorld)
-			.Add(ItemID.CorruptGrassEcho, Condition.BloodMoon, Condition.CorruptWorld)
-			.Add(ItemID.PurificationPowder, Condition.NotBloodMoon, notRemixORInfectedSeedORCelebrationmk10ANDNotForTheWorthy)
-			.Add(ItemID.GrassSeeds, Condition.NotBloodMoon)
-			.Add(ItemID.Sunflower, Condition.NotBloodMoon)
-			.Add(ItemID.GrassWall, Condition.NotBloodMoon)
-			.Add(ItemID.CrimsonSeeds, Condition.Hardmode, Condition.InGraveyard, Condition.CorruptWorld)
-			.Add(ItemID.CorruptSeeds, Condition.Hardmode, Condition.InGraveyard, Condition.CrimsonWorld)
+			.Add(ItemID.ViciousPowder,					Condition.BloodMoon, Condition.CrimsonWorld, Condition.BiomeSpreadingItems)
+			.Add(ItemID.CrimsonSeeds,					Condition.BloodMoon, Condition.CrimsonWorld)
+			.Add(ItemID.CrimsonGrassEcho,				Condition.BloodMoon, Condition.CrimsonWorld)
+			.Add(ItemID.VilePowder,						Condition.BloodMoon, Condition.CorruptWorld, Condition.NotRemixWorld)
+			.Add(ItemID.CorruptSeeds,					Condition.BloodMoon, Condition.CorruptWorld)
+			.Add(ItemID.CorruptGrassEcho,				Condition.BloodMoon, Condition.CorruptWorld)
+			.Add(ItemID.PurificationPowder,				Condition.NotBloodMoon, notRemixORInfectedSeedORCelebrationmk10ANDNotForTheWorthy)
+			.Add(ItemID.GrassSeeds,						Condition.NotBloodMoon)
+			.Add(ItemID.Sunflower,						Condition.NotBloodMoon)
+			.Add(ItemID.GrassWall,						Condition.NotBloodMoon)
+			.Add(ItemID.CrimsonSeeds,					Condition.Hardmode, Condition.InGraveyard, Condition.CorruptWorld)
+			.Add(ItemID.CorruptSeeds,					Condition.Hardmode, Condition.InGraveyard, Condition.CrimsonWorld)
 			.Add(ItemID.Acorn)
 			.Add(ItemID.DontHurtNatureBook)
 			.Add(ItemID.DirtRod)
 			.Add(ItemID.PumpkinSeed)
 			.Add(ItemID.FlowerWall)
-			.Add(ItemID.JungleWall, Condition.Hardmode)
-			.Add(ItemID.HallowedSeeds, Condition.Hardmode)
-			.Add(ItemID.HallowedGrassEcho, Condition.Hardmode)
-			.Add(ItemID.AshGrassSeeds, Condition.InUnderworld)
-			.Add(ItemID.MushroomGrassSeeds, Condition.NotInUnderworld, Condition.InGlowshroom)
-			.Add(ItemID.DryadCoverings, Condition.Halloween)
-			.Add(ItemID.DryadLoincloth, Condition.Halloween)
+			.Add(ItemID.JungleWall,						Condition.Hardmode)
+			.Add(ItemID.HallowedSeeds,					Condition.Hardmode)
+			.Add(ItemID.HallowedGrassEcho,				Condition.Hardmode)
+			.Add(ItemID.AshGrassSeeds,					Condition.InUnderworld)
+			.Add(ItemID.MushroomGrassSeeds,				Condition.NotInUnderworld, Condition.InGlowshroom)
+			.Add(ItemID.DryadCoverings,					Condition.Halloween)
+			.Add(ItemID.DryadLoincloth,					Condition.Halloween)
 			.Add(ItemID.DayBloomPlanterBox)
 			.Add(ItemID.MoonglowPlanterBox)
 			.Add(ItemID.BlinkrootPlanterBox)
-			.Add(ItemID.CorruptPlanterBox, Condition.CorruptWorld)
-			.Add(ItemID.CrimsonPlanterBox, Condition.CrimsonWorld)
+			.Add(ItemID.CorruptPlanterBox,				Condition.CorruptWorld)
+			.Add(ItemID.CrimsonPlanterBox,				Condition.CrimsonWorld)
 			.Add(ItemID.WaterleafPlanterBox)
 			.Add(ItemID.ShiverthornPlanterBox)
 			.Add(ItemID.FireBlossomPlanterBox)
@@ -336,21 +336,21 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FlowerPacketBlue)
 			.Add(ItemID.FlowerPacketWild)
 			.Add(ItemID.FlowerPacketTallGrass)
-			.Add(ItemID.PottedForestCedar, Condition.Hardmode, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.PottedJungleCedar, Condition.Hardmode, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.PottedHallowCedar, Condition.Hardmode, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.PottedForestTree, Condition.Hardmode, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.PottedJungleTree, Condition.Hardmode, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.PottedHallowTree, Condition.Hardmode, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.PottedForestPalm, Condition.Hardmode, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.PottedJunglePalm, Condition.Hardmode, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.PottedHallowPalm, Condition.Hardmode, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.PottedForestBamboo, Condition.Hardmode, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.PottedJungleBamboo, Condition.Hardmode, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.PottedHallowBamboo, Condition.Hardmode, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.Torch, Condition.PreHardmode, Condition.VampireSeed, Condition.InfectedSeed)
-			.Add(ItemID.CorruptTorch, Condition.PreHardmode, Condition.CorruptWorld, Condition.VampireSeed, Condition.InfectedSeed)
-			.Add(ItemID.CrimsonTorch, Condition.PreHardmode, Condition.CrimsonWorld, Condition.VampireSeed, Condition.InfectedSeed)
+			.Add(ItemID.PottedForestCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedJungleCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedHallowCedar,				Condition.Hardmode, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.PottedForestTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedJungleTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedHallowTree,				Condition.Hardmode, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.PottedForestPalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedJunglePalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedHallowPalm,				Condition.Hardmode, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.PottedForestBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.PottedJungleBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.PottedHallowBamboo,				Condition.Hardmode, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Torch,							Condition.PreHardmode, Condition.VampireSeed, Condition.InfectedSeed)
+			.Add(ItemID.CorruptTorch,					Condition.PreHardmode, Condition.CorruptWorld, Condition.VampireSeed, Condition.InfectedSeed)
+			.Add(ItemID.CrimsonTorch,					Condition.PreHardmode, Condition.CrimsonWorld, Condition.VampireSeed, Condition.InfectedSeed)
 			.Register();
 	}
 
@@ -359,17 +359,17 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Demolitionist)
 			.Add(ItemID.Grenade)
 			.Add(ItemID.Bomb)
-			.Add(ItemID.FreezeBomb, Condition.TimeNight, new Condition("DownedKingSlimeOrEoC", () => NPC.downedBoss1 || NPC.downedSlimeKing))
+			.Add(ItemID.FreezeBomb,			Condition.TimeNight, new Condition("DownedKingSlimeOrEoC", () => NPC.downedBoss1 || NPC.downedSlimeKing))
 			.Add(ItemID.Dynamite)
-			.Add(ItemID.HellfireArrow, Condition.Hardmode)
+			.Add(ItemID.HellfireArrow,		Condition.Hardmode)
 			.Add(ItemID.PortableKiln)
 			.Add(ItemID.MiteyTitey)
-			.Add(ItemID.LandMine, Condition.Hardmode, Condition.DownedPlantera, Condition.DownedPirates)
-			.Add(ItemID.ExplosivePowder, Condition.Hardmode)
-			.Add(ItemID.DryBomb, Condition.PlayerCarriesItem(ItemID.DryBomb))
-			.Add(ItemID.WetBomb, Condition.PlayerCarriesItem(ItemID.WetBomb))
-			.Add(ItemID.LavaBomb, Condition.PlayerCarriesItem(ItemID.LavaBomb))
-			.Add(ItemID.HoneyBomb, Condition.PlayerCarriesItem(ItemID.HoneyBomb))
+			.Add(ItemID.LandMine,			Condition.Hardmode, Condition.DownedPlantera, Condition.DownedPirates)
+			.Add(ItemID.ExplosivePowder,	Condition.Hardmode)
+			.Add(ItemID.DryBomb,			Condition.PlayerCarriesItem(ItemID.DryBomb))
+			.Add(ItemID.WetBomb,			Condition.PlayerCarriesItem(ItemID.WetBomb))
+			.Add(ItemID.LavaBomb,			Condition.PlayerCarriesItem(ItemID.LavaBomb))
+			.Add(ItemID.HoneyBomb,			Condition.PlayerCarriesItem(ItemID.HoneyBomb))
 			.Register();
 	}
 
@@ -380,61 +380,61 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Clothier)
 			.Add(ItemID.BlackThread)
 			.Add(ItemID.PinkThread)
-			.Add(ItemID.SummerHat, Condition.TimeDay, Condition.NotInGraveyard)
-			.Add(ItemID.PlumbersShirt, Condition.MoonPhaseFull)
-			.Add(ItemID.PlumbersPants, Condition.MoonPhaseFull)
-			.Add(ItemID.WhiteTuxedoShirt, Condition.MoonPhaseFull, Condition.TimeNight)
-			.Add(ItemID.WhiteTuxedoPants, Condition.MoonPhaseFull, Condition.TimeNight)
-			.Add(ItemID.TheDoctorsShirt, Condition.MoonPhaseWaningGibbous)
-			.Add(ItemID.TheDoctorsPants, Condition.MoonPhaseWaningGibbous)
+			.Add(ItemID.SummerHat,						Condition.TimeDay, Condition.NotInGraveyard)
+			.Add(ItemID.PlumbersShirt,					Condition.MoonPhaseFull)
+			.Add(ItemID.PlumbersPants,					Condition.MoonPhaseFull)
+			.Add(ItemID.WhiteTuxedoShirt,				Condition.MoonPhaseFull, Condition.TimeNight)
+			.Add(ItemID.WhiteTuxedoPants,				Condition.MoonPhaseFull, Condition.TimeNight)
+			.Add(ItemID.TheDoctorsShirt,				Condition.MoonPhaseWaningGibbous)
+			.Add(ItemID.TheDoctorsPants,				Condition.MoonPhaseWaningGibbous)
 			.Add(ItemID.FamiliarShirt)
 			.Add(ItemID.FamiliarPants)
 			.Add(ItemID.FamiliarWig)
-			.Add(ItemID.ClownHat, Condition.DownedClown)
-			.Add(ItemID.ClownShirt, Condition.DownedClown)
-			.Add(ItemID.ClownPants, Condition.DownedClown)
-			.Add(ItemID.MimeMask, Condition.BloodMoon)
-			.Add(ItemID.FallenTuxedoShirt, Condition.BloodMoon)
-			.Add(ItemID.FallenTuxedoPants, Condition.BloodMoon)
-			.Add(ItemID.WhiteLunaticHood, Condition.TimeDay, Condition.DownedCultist)
-			.Add(ItemID.WhiteLunaticRobe, Condition.TimeDay, Condition.DownedCultist)
-			.Add(ItemID.BlueLunaticHood, Condition.TimeNight, Condition.DownedCultist)
-			.Add(ItemID.BlueLunaticRobe, Condition.TimeNight, Condition.DownedCultist)
-			.Add(ItemID.TaxCollectorHat, taxCollectorIsPresent)
-			.Add(ItemID.TaxCollectorSuit, taxCollectorIsPresent)
-			.Add(ItemID.TaxCollectorPants, taxCollectorIsPresent)
-			.Add(ItemID.UndertakerHat, Condition.InGraveyard)
-			.Add(ItemID.UndertakerCoat, Condition.InGraveyard)
-			.Add(ItemID.FuneralHat, Condition.InGraveyard)
-			.Add(ItemID.FuneralCoat, Condition.InGraveyard)
-			.Add(ItemID.FuneralPants, Condition.InGraveyard)
-			.Add(ItemID.TragicUmbrella, Condition.InGraveyard)
-			.Add(ItemID.VictorianGothHat, Condition.InGraveyard)
-			.Add(ItemID.VictorianGothDress, Condition.InGraveyard)
-			.Add(ItemID.Beanie, Condition.InSnow)
-			.Add(ItemID.GuyFawkesMask, Condition.Halloween)
-			.Add(ItemID.TamOShanter, Condition.Hardmode, Condition.MoonPhaseThirdQuarter)
-			.Add(ItemID.GraduationCapBlue, Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
-			.Add(ItemID.GraduationGownBlue, Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
-			.Add(ItemID.Tiara, Condition.Hardmode, Condition.MoonPhaseNew)
-			.Add(ItemID.PrincessDress, Condition.Hardmode, Condition.MoonPhaseNew)
-			.Add(ItemID.GraduationCapMaroon, Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
-			.Add(ItemID.GraduationGownMaroon, Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
-			.Add(ItemID.CowboyHat, Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
-			.Add(ItemID.CowboyJacket, Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
-			.Add(ItemID.CowboyPants, Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
-			.Add(ItemID.GraduationCapBlack, Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
-			.Add(ItemID.GraduationGownBlack, Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
-			.Add(ItemID.BallaHat, Condition.DownedFrostLegion, Condition.TimeDay)
-			.Add(ItemID.GangstaHat, Condition.DownedFrostLegion, Condition.TimeNight)
-			.Add(ItemID.ClothierJacket, Condition.Halloween)
-			.Add(ItemID.ClothierPants, Condition.Halloween)
-			.Add(ItemID.PartyBundleOfBalloonsAccessory, Condition.BirthdayParty)
-			.Add(ItemID.PartyBalloonAnimal, Condition.BirthdayParty)
-			.Add(ItemID.FlowerBoyHat, Condition.BirthdayParty)
-			.Add(ItemID.FlowerBoyShirt, Condition.BirthdayParty)
-			.Add(ItemID.FlowerBoyPants, Condition.BirthdayParty)
-			.Add(ItemID.HunterCloak, Condition.GolfScoreOver(2000))
+			.Add(ItemID.ClownHat,						Condition.DownedClown)
+			.Add(ItemID.ClownShirt,						Condition.DownedClown)
+			.Add(ItemID.ClownPants,						Condition.DownedClown)
+			.Add(ItemID.MimeMask,						Condition.BloodMoon)
+			.Add(ItemID.FallenTuxedoShirt,				Condition.BloodMoon)
+			.Add(ItemID.FallenTuxedoPants,				Condition.BloodMoon)
+			.Add(ItemID.WhiteLunaticHood,				Condition.TimeDay, Condition.DownedCultist)
+			.Add(ItemID.WhiteLunaticRobe,				Condition.TimeDay, Condition.DownedCultist)
+			.Add(ItemID.BlueLunaticHood,				Condition.TimeNight, Condition.DownedCultist)
+			.Add(ItemID.BlueLunaticRobe,				Condition.TimeNight, Condition.DownedCultist)
+			.Add(ItemID.TaxCollectorHat,				taxCollectorIsPresent)
+			.Add(ItemID.TaxCollectorSuit,				taxCollectorIsPresent)
+			.Add(ItemID.TaxCollectorPants,				taxCollectorIsPresent)
+			.Add(ItemID.UndertakerHat,					Condition.InGraveyard)
+			.Add(ItemID.UndertakerCoat,					Condition.InGraveyard)
+			.Add(ItemID.FuneralHat,						Condition.InGraveyard)
+			.Add(ItemID.FuneralCoat,					Condition.InGraveyard)
+			.Add(ItemID.FuneralPants,					Condition.InGraveyard)
+			.Add(ItemID.TragicUmbrella,					Condition.InGraveyard)
+			.Add(ItemID.VictorianGothHat,				Condition.InGraveyard)
+			.Add(ItemID.VictorianGothDress,				Condition.InGraveyard)
+			.Add(ItemID.Beanie,							Condition.InSnow)
+			.Add(ItemID.GuyFawkesMask,					Condition.Halloween)
+			.Add(ItemID.TamOShanter,					Condition.Hardmode, Condition.MoonPhaseThirdQuarter)
+			.Add(ItemID.GraduationCapBlue,				Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.GraduationGownBlue,				Condition.Hardmode, Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.Tiara,							Condition.Hardmode, Condition.MoonPhaseNew)
+			.Add(ItemID.PrincessDress,					Condition.Hardmode, Condition.MoonPhaseNew)
+			.Add(ItemID.GraduationCapMaroon,			Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.GraduationGownMaroon,			Condition.Hardmode, Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.CowboyHat,						Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.CowboyJacket,					Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.CowboyPants,					Condition.Hardmode, Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.GraduationCapBlack,				Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
+			.Add(ItemID.GraduationGownBlack,			Condition.Hardmode, Condition.MoonPhaseWaxingGibbous)
+			.Add(ItemID.BallaHat,						Condition.DownedFrostLegion, Condition.TimeDay)
+			.Add(ItemID.GangstaHat,						Condition.DownedFrostLegion, Condition.TimeNight)
+			.Add(ItemID.ClothierJacket,					Condition.Halloween)
+			.Add(ItemID.ClothierPants,					Condition.Halloween)
+			.Add(ItemID.PartyBundleOfBalloonsAccessory,	Condition.BirthdayParty)
+			.Add(ItemID.PartyBalloonAnimal,				Condition.BirthdayParty)
+			.Add(ItemID.FlowerBoyHat,					Condition.BirthdayParty)
+			.Add(ItemID.FlowerBoyShirt,					Condition.BirthdayParty)
+			.Add(ItemID.FlowerBoyPants,					Condition.BirthdayParty)
+			.Add(ItemID.HunterCloak,					Condition.GolfScoreOver(2000))
 			.Add(ItemID.PlacePainting)
 			.Add(ItemID.PaintingRPlace2023)
 			.Register();
@@ -465,8 +465,8 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.Book)
 			.Add(ItemID.MusicBox)
 			.Add(ItemID.EmptyDropper)
-			.Add(ItemID.DeadCellsKillingDeck, Condition.Hardmode, Condition.BloodMoon)
-			.Add(ItemID.WizardsHat, Condition.Halloween)
+			.Add(ItemID.DeadCellsKillingDeck,	Condition.Hardmode, Condition.BloodMoon)
+			.Add(ItemID.WizardsHat,				Condition.Halloween)
 			.Register();
 	}
 
@@ -528,13 +528,13 @@ public static partial class NPCShopDatabase
 	private static void RegisterTruffle()
 	{
 		new NPCShop(NPCID.Truffle)
-			.Add(ItemID.MushroomSpear, Condition.DownedMechBossAny)
-			.Add(ItemID.Hammush, Condition.DownedMechBossAny)
+			.Add(ItemID.MushroomSpear,		Condition.DownedMechBossAny)
+			.Add(ItemID.Hammush,			Condition.DownedMechBossAny)
 			.Add(ItemID.MushroomCap)
-			.Add(ItemID.Autohammer, Condition.DownedPlantera)
+			.Add(ItemID.Autohammer,			Condition.DownedPlantera)
 			.Add(ItemID.StrangeGlowingMushroom)
 			.Add(ItemID.MySon)
-			.Add(ItemID.DarkBlueSolution, Condition.BiomeSpreadingItems)
+			.Add(ItemID.DarkBlueSolution,	Condition.BiomeSpreadingItems)
 			.Register();
 	}
 
@@ -543,13 +543,13 @@ public static partial class NPCShopDatabase
 		var steampunkerOutfitCondition = new Condition("Conditions.MoonPhasesHalf0OrPreHardmode", () => Condition.PreHardmode.IsMet() || Condition.MoonPhasesHalf0.IsMet());
 
 		new NPCShop(NPCID.Steampunker)
-			.Add(ItemID.Clentaminator, Condition.BiomeSpreadingItems)
-			.Add(ItemID.SteampunkHat, steampunkerOutfitCondition)
-			.Add(ItemID.SteampunkShirt, steampunkerOutfitCondition)
-			.Add(ItemID.SteampunkPants, steampunkerOutfitCondition)
-			.Add(ItemID.Jetpack, Condition.Hardmode, Condition.MoonPhasesHalf1)
-			.Add(ItemID.SteampunkWings, Condition.DownedGolem)
-			.Add(ItemID.StaticHook, Condition.Hardmode)
+			.Add(ItemID.Clentaminator,		Condition.BiomeSpreadingItems)
+			.Add(ItemID.SteampunkHat,		steampunkerOutfitCondition)
+			.Add(ItemID.SteampunkShirt,		steampunkerOutfitCondition)
+			.Add(ItemID.SteampunkPants,		steampunkerOutfitCondition)
+			.Add(ItemID.Jetpack,			Condition.Hardmode, Condition.MoonPhasesHalf1)
+			.Add(ItemID.SteampunkWings,		Condition.DownedGolem)
+			.Add(ItemID.StaticHook,			Condition.Hardmode)
 			.Add(ItemID.LogicGate_AND)
 			.Add(ItemID.LogicGate_OR)
 			.Add(ItemID.LogicGate_XOR)
@@ -561,25 +561,25 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.LogicGateLamp_Faulty)
 			.Add(ItemID.ConveyorBeltLeft)
 			.Add(ItemID.ConveyorBeltRight)
-			.Add(ItemID.BlendOMatic, new Condition("Conditions.HardmodeFTW", () => Main.hardMode || !Main.getGoodWorld))
-			.Add(ItemID.SteampunkBoiler, Condition.DownedEyeOfCthulhu, Condition.DownedEowOrBoc, Condition.DownedSkeletron)
-			.Add(ItemID.FleshCloningVaat, Condition.CrimsonWorld)
-			.Add(ItemID.LesionStation, Condition.CorruptWorld)
-			.Add(ItemID.BoneWelder, Condition.InGraveyard)
-			.Add(ItemID.HoneyDispenser, Condition.InJungle)
-			.Add(ItemID.LihzahrdFurnace, Condition.InJungle, Condition.DownedGolem)
-			.Add(ItemID.IceMachine, Condition.InSnow)
-			.Add(ItemID.SkyMill, Condition.InSpace)
-			.Add(ItemID.RedSolution, Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CrimsonWorld)
-			.Add(ItemID.PurpleSolution, Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CorruptWorld)
-			.Add(ItemID.BlueSolution, Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.InHallow)
-			.Add(ItemID.GreenSolution, Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.NotInHallow)
-			.Add(ItemID.SandSolution, Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
-			.Add(ItemID.SnowSolution, Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
-			.Add(ItemID.DirtSolution, Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
-			.Add(ItemID.Cog, Condition.Hardmode)
-			.Add(ItemID.SteampunkMinecart, Condition.Hardmode)
-			.Add(ItemID.SteampunkGoggles, Condition.Halloween)
+			.Add(ItemID.BlendOMatic,		new Condition("Conditions.HardmodeFTW", () => Main.hardMode || !Main.getGoodWorld))
+			.Add(ItemID.SteampunkBoiler,	Condition.DownedEyeOfCthulhu, Condition.DownedEowOrBoc, Condition.DownedSkeletron)
+			.Add(ItemID.FleshCloningVaat,	Condition.CrimsonWorld)
+			.Add(ItemID.LesionStation,		Condition.CorruptWorld)
+			.Add(ItemID.BoneWelder,			Condition.InGraveyard)
+			.Add(ItemID.HoneyDispenser,		Condition.InJungle)
+			.Add(ItemID.LihzahrdFurnace,	Condition.InJungle, Condition.DownedGolem)
+			.Add(ItemID.IceMachine,			Condition.InSnow)
+			.Add(ItemID.SkyMill,			Condition.InSpace)
+			.Add(ItemID.RedSolution,		Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CrimsonWorld)
+			.Add(ItemID.PurpleSolution,		Condition.BiomeSpreadingItems, Condition.EclipseOrBloodMoon, Condition.CorruptWorld)
+			.Add(ItemID.BlueSolution,		Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.InHallow)
+			.Add(ItemID.GreenSolution,		Condition.BiomeSpreadingItems, Condition.NotEclipseAndNotBloodMoon, Condition.NotInHallow)
+			.Add(ItemID.SandSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
+			.Add(ItemID.SnowSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
+			.Add(ItemID.DirtSolution,		Condition.BiomeSpreadingItems, Condition.DownedMoonLord)
+			.Add(ItemID.Cog,				Condition.Hardmode)
+			.Add(ItemID.SteampunkMinecart,	Condition.Hardmode)
+			.Add(ItemID.SteampunkGoggles,	Condition.Halloween)
 			.Register();
 	}
 
@@ -588,15 +588,15 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.DyeTrader)
 			.Add(ItemID.DyeVat)
 			.Add(ItemID.EasterBlock)
-			.Add(ItemID.DyeTraderTurban, Condition.Halloween)
-			.Add(ItemID.DyeTraderRobe, Condition.Halloween)
+			.Add(ItemID.DyeTraderTurban,	Condition.Halloween)
+			.Add(ItemID.DyeTraderRobe,		Condition.Halloween)
 			.Add(ItemID.SilverDye)
 			.Add(ItemID.BrownDye)
-			.Add(ItemID.TeamDye, Condition.Multiplayer)
-			.Add(ItemID.ShadowDye, Condition.MoonPhaseFull)
-			.Add(ItemID.NegativeDye, Condition.MoonPhaseFull)
-			.Add(ItemID.BloodbathDye, Condition.BloodMoon)
-			.Add(ItemID.FogboundDye, Condition.InGraveyard)
+			.Add(ItemID.TeamDye,			Condition.Multiplayer)
+			.Add(ItemID.ShadowDye,			Condition.MoonPhaseFull)
+			.Add(ItemID.NegativeDye,		Condition.MoonPhaseFull)
+			.Add(ItemID.BloodbathDye,		Condition.BloodMoon)
+			.Add(ItemID.FogboundDye,		Condition.InGraveyard)
 			.Register();
 	}
 
@@ -604,11 +604,11 @@ public static partial class NPCShopDatabase
 	{
 		new NPCShop(NPCID.PartyGirl)
 			.Add(ItemID.BeachBall)
-			.Add(ItemID.Football, Condition.GolfScoreOver(500))
+			.Add(ItemID.Football,				Condition.GolfScoreOver(500))
 			.Add(ItemID.ConfettiGun)
 			.Add(ItemID.SmokeBomb)
-			.Add(ItemID.BubbleMachine, Condition.TimeDay)
-			.Add(ItemID.FogMachine, Condition.TimeNight)
+			.Add(ItemID.BubbleMachine,			Condition.TimeDay)
+			.Add(ItemID.FogMachine,				Condition.TimeNight)
 			.Add(ItemID.Confetti)
 			.Add(ItemID.BubbleWand)
 			.Add(ItemID.LavaLamp)
@@ -617,32 +617,32 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.FireworkFountain)
 			.Add(ItemID.PartyMinecart)
 			.Add(ItemID.KiteSpectrum)
-			.Add(ItemID.ReleaseDoves, Condition.InGraveyard)
-			.Add(ItemID.ReleaseLantern, Condition.LanternNight)
-			.Add(ItemID.PartyGirlGrenade, Condition.PlayerCarriesItem(ItemID.PartyGirlGrenade))
-			.Add(ItemID.ConfettiCannon, Condition.NpcIsPresent(NPCID.Pirate))
-			.Add(ItemID.FireworksLauncher, Condition.DownedGolem)
-			.Add(ItemID.Bubble, Condition.Hardmode)
-			.Add(ItemID.SmokeBlock, Condition.Hardmode)
-			.Add(ItemID.RedRocket, Condition.Hardmode)
-			.Add(ItemID.GreenRocket, Condition.Hardmode)
-			.Add(ItemID.BlueRocket, Condition.Hardmode)
-			.Add(ItemID.YellowRocket, Condition.Hardmode)
+			.Add(ItemID.ReleaseDoves,			Condition.InGraveyard)
+			.Add(ItemID.ReleaseLantern,			Condition.LanternNight)
+			.Add(ItemID.PartyGirlGrenade,		Condition.PlayerCarriesItem(ItemID.PartyGirlGrenade))
+			.Add(ItemID.ConfettiCannon,			Condition.NpcIsPresent(NPCID.Pirate))
+			.Add(ItemID.FireworksLauncher,		Condition.DownedGolem)
+			.Add(ItemID.Bubble,					Condition.Hardmode)
+			.Add(ItemID.SmokeBlock,				Condition.Hardmode)
+			.Add(ItemID.RedRocket,				Condition.Hardmode)
+			.Add(ItemID.GreenRocket,			Condition.Hardmode)
+			.Add(ItemID.BlueRocket,				Condition.Hardmode)
+			.Add(ItemID.YellowRocket,			Condition.Hardmode)
 			.Add(ItemID.PogoStick)
 			.Add(ItemID.PartyMonolith)
 			.Add(ItemID.PartyHat)
 			.Add(ItemID.SillyBalloonMachine)
-			.Add(ItemID.PartyPresent, Condition.BirthdayParty)
-			.Add(ItemID.Pigronata, Condition.BirthdayParty)
-			.Add(ItemID.SillyStreamerBlue, Condition.BirthdayParty)
-			.Add(ItemID.SillyStreamerGreen, Condition.BirthdayParty)
-			.Add(ItemID.SillyStreamerPink, Condition.BirthdayParty)
-			.Add(ItemID.SillyBalloonPurple, Condition.BirthdayParty)
-			.Add(ItemID.SillyBalloonGreen, Condition.BirthdayParty)
-			.Add(ItemID.SillyBalloonPink, Condition.BirthdayParty)
-			.Add(ItemID.SillyBalloonTiedGreen, Condition.BirthdayParty)
+			.Add(ItemID.PartyPresent,			Condition.BirthdayParty)
+			.Add(ItemID.Pigronata,				Condition.BirthdayParty)
+			.Add(ItemID.SillyStreamerBlue,		Condition.BirthdayParty)
+			.Add(ItemID.SillyStreamerGreen,		Condition.BirthdayParty)
+			.Add(ItemID.SillyStreamerPink,		Condition.BirthdayParty)
+			.Add(ItemID.SillyBalloonPurple,		Condition.BirthdayParty)
+			.Add(ItemID.SillyBalloonGreen,		Condition.BirthdayParty)
+			.Add(ItemID.SillyBalloonPink,		Condition.BirthdayParty)
+			.Add(ItemID.SillyBalloonTiedGreen,	Condition.BirthdayParty)
 			.Add(ItemID.SillyBalloonTiedPurple, Condition.BirthdayParty)
-			.Add(ItemID.SillyBalloonTiedPink, Condition.BirthdayParty)
+			.Add(ItemID.SillyBalloonTiedPink,	Condition.BirthdayParty)
 			.Register();
 	}
 
@@ -653,27 +653,27 @@ public static partial class NPCShopDatabase
 
 		new NPCShop(NPCID.Cyborg)
 			.Add(ItemID.RocketI)
-			.Add(ItemID.RocketII, Condition.BloodMoon)
-			.Add(ItemID.RocketIII, Condition.NightOrEclipse)
-			.Add(ItemID.RocketIV, Condition.Eclipse)
-			.Add(ItemID.ClusterRocketI, Condition.DownedMartians)
-			.Add(ItemID.ClusterRocketII, Condition.DownedMartians, Condition.EclipseOrBloodMoon)
-			.Add(ItemID.DryRocket, Condition.Hardmode)
-			.Add(ItemID.ProximityMineLauncher, Condition.Hardmode)
-			.Add(ItemID.Nanites, Condition.Hardmode)
-			.Add(ItemID.JimsDroneVisor, Condition.Hardmode)
-			.Add(ItemID.JimsDrone, Condition.Hardmode)
-			.Add(ItemID.RemoteControlCar, Condition.Hardmode)
+			.Add(ItemID.RocketII,				Condition.BloodMoon)
+			.Add(ItemID.RocketIII,				Condition.NightOrEclipse)
+			.Add(ItemID.RocketIV,				Condition.Eclipse)
+			.Add(ItemID.ClusterRocketI,			Condition.DownedMartians)
+			.Add(ItemID.ClusterRocketII,		Condition.DownedMartians, Condition.EclipseOrBloodMoon)
+			.Add(ItemID.DryRocket,				Condition.Hardmode)
+			.Add(ItemID.ProximityMineLauncher,	Condition.Hardmode)
+			.Add(ItemID.Nanites,				Condition.Hardmode)
+			.Add(ItemID.JimsDroneVisor,			Condition.Hardmode)
+			.Add(ItemID.JimsDrone,				Condition.Hardmode)
+			.Add(ItemID.RemoteControlCar,		Condition.Hardmode)
 			.Add(ItemID.CRTMonolith)
 			.Add(ItemID.RetroMonolith)
-			.Add(ItemID.SpectreGoggles, Condition.InGraveyard)
-			.Add(ItemID.EchoBlock, Condition.InGraveyard)
-			.Add(ItemID.CyborgHelmet, Condition.Halloween)
-			.Add(ItemID.CyborgShirt, Condition.Halloween)
-			.Add(ItemID.CyborgPants, Condition.Halloween)
-			.Add(ItemID.HiTekSunglasses, Condition.DownedMartians)
-			.Add(ItemID.NightVisionHelmet, Condition.DownedMartians)
-			.Add(ItemID.PortalGunStation, portalGunStation)
+			.Add(ItemID.SpectreGoggles,			Condition.InGraveyard)
+			.Add(ItemID.EchoBlock,				Condition.InGraveyard)
+			.Add(ItemID.CyborgHelmet,			Condition.Halloween)
+			.Add(ItemID.CyborgShirt,			Condition.Halloween)
+			.Add(ItemID.CyborgPants,			Condition.Halloween)
+			.Add(ItemID.HiTekSunglasses,		Condition.DownedMartians)
+			.Add(ItemID.NightVisionHelmet,		Condition.DownedMartians)
+			.Add(ItemID.PortalGunStation,		portalGunStation)
 			.Add(ItemID.ToyBreakerBlock)
 			.Register();
 	}
@@ -700,23 +700,23 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GrayPaint)
 			.Add(ItemID.WhitePaint)
 			.Add(ItemID.BrownPaint)
-			.Add(ItemID.ShadowPaint, Condition.Hardmode)
-			.Add(ItemID.NegativePaint, Condition.Hardmode)
-			.Add(ItemID.GlowPaint, Condition.InGraveyard)
-			.Add(ItemID.EchoCoating, Condition.InGraveyard, new Condition(Language.GetText("Conditions.NpcIsPresentOrDownedPlantera").WithFormatArgs(Lang.GetNPCName(NPCID.Mechanic)), () => NPC.downedPlantBoss || NPC.AnyNPCs(NPCID.Mechanic)))
+			.Add(ItemID.ShadowPaint,		Condition.Hardmode)
+			.Add(ItemID.NegativePaint,		Condition.Hardmode)
+			.Add(ItemID.GlowPaint,			Condition.InGraveyard)
+			.Add(ItemID.EchoCoating,		Condition.InGraveyard, new Condition(Language.GetText("Conditions.NpcIsPresentOrDownedPlantera").WithFormatArgs(Lang.GetNPCName(NPCID.Mechanic)), () => NPC.downedPlantBoss || NPC.AnyNPCs(NPCID.Mechanic)))
 			.Register();
 
 		new NPCShop(NPCID.Painter, "Decor") // Decor shop
-			.Add(ItemID.ChristmasTreeWallpaper, Condition.Christmas)
-			.Add(ItemID.OrnamentWallpaper, Condition.Christmas)
-			.Add(ItemID.CandyCaneWallpaper, Condition.Christmas)
-			.Add(ItemID.FestiveWallpaper, Condition.Christmas)
-			.Add(ItemID.StarsWallpaper, Condition.Christmas)
-			.Add(ItemID.SquigglesWallpaper, Condition.Christmas)
-			.Add(ItemID.SnowflakeWallpaper, Condition.Christmas)
-			.Add(ItemID.KrampusHornWallpaper, Condition.Christmas)
-			.Add(ItemID.BluegreenWallpaper, Condition.Christmas)
-			.Add(ItemID.GrinchFingerWallpaper, Condition.Christmas)
+			.Add(ItemID.ChristmasTreeWallpaper,		Condition.Christmas)
+			.Add(ItemID.OrnamentWallpaper,			Condition.Christmas)
+			.Add(ItemID.CandyCaneWallpaper,			Condition.Christmas)
+			.Add(ItemID.FestiveWallpaper,			Condition.Christmas)
+			.Add(ItemID.StarsWallpaper,				Condition.Christmas)
+			.Add(ItemID.SquigglesWallpaper,			Condition.Christmas)
+			.Add(ItemID.SnowflakeWallpaper,			Condition.Christmas)
+			.Add(ItemID.KrampusHornWallpaper,		Condition.Christmas)
+			.Add(ItemID.BluegreenWallpaper,			Condition.Christmas)
+			.Add(ItemID.GrinchFingerWallpaper,		Condition.Christmas)
 			.Add(ItemID.BubbleWallpaper)
 			.Add(ItemID.CopperPipeWallpaper)
 			.Add(ItemID.DuckyWallpaper)
@@ -727,31 +727,31 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.RainbowWallpaper)
 			.Add(ItemID.SparkleStoneWallpaper)
 			.Add(ItemID.StarlitHeavenWallpaper)
-			.Add(ItemID.Daylight, Condition.NotInGraveyard)
-			.Add(ItemID.FirstEncounter, Condition.NotInGraveyard, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.GoodMorning, Condition.NotInGraveyard, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.UndergroundReward, Condition.NotInGraveyard, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.ThroughtheWindow, Condition.NotInGraveyard, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.Purity, Condition.InShoppingZoneForest)
-			.Add(ItemID.DeadlandComesAlive, Condition.InCrimson)
-			.Add(ItemID.LightlessChasms, Condition.InCorrupt)
-			.Add(ItemID.TheLandofDeceivingLooks, Condition.InHallow)
-			.Add(ItemID.DoNotStepontheGrass, Condition.InJungle)
-			.Add(ItemID.WinterAtVaringskollen, Condition.InSnow)
-			.Add(ItemID.ColdWatersintheWhiteLand, Condition.InSnow)
-			.Add(ItemID.SecretoftheSands, Condition.InDesert)
-			.Add(ItemID.EvilPresence, Condition.BloodMoon)
-			.Add(ItemID.PlaceAbovetheClouds, Condition.NotInGraveyard, Condition.InSpace)
-			.Add(ItemID.SkyGuardian, Condition.NotInGraveyard, Condition.Hardmode, Condition.InSpace)
-			.Add(ItemID.Thunderbolt, Condition.Thunderstorm)
-			.Add(ItemID.Nevermore, Condition.InGraveyard)
-			.Add(ItemID.Reborn, Condition.InGraveyard)
-			.Add(ItemID.Graveyard, Condition.InGraveyard)
-			.Add(ItemID.GhostManifestation, Condition.InGraveyard)
-			.Add(ItemID.WickedUndead, Condition.InGraveyard)
-			.Add(ItemID.HailtotheKing, Condition.InGraveyard)
-			.Add(ItemID.BloodyGoblet, Condition.InGraveyard)
-			.Add(ItemID.StillLife, Condition.InGraveyard)
+			.Add(ItemID.Daylight,					Condition.NotInGraveyard)
+			.Add(ItemID.FirstEncounter,				Condition.NotInGraveyard, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.GoodMorning,				Condition.NotInGraveyard, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.UndergroundReward,			Condition.NotInGraveyard, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.ThroughtheWindow,			Condition.NotInGraveyard, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Purity,						Condition.InShoppingZoneForest)
+			.Add(ItemID.DeadlandComesAlive,			Condition.InCrimson)
+			.Add(ItemID.LightlessChasms,			Condition.InCorrupt)
+			.Add(ItemID.TheLandofDeceivingLooks,	Condition.InHallow)
+			.Add(ItemID.DoNotStepontheGrass,		Condition.InJungle)
+			.Add(ItemID.WinterAtVaringskollen,		Condition.InSnow)
+			.Add(ItemID.ColdWatersintheWhiteLand,	Condition.InSnow)
+			.Add(ItemID.SecretoftheSands,			Condition.InDesert)
+			.Add(ItemID.EvilPresence,				Condition.BloodMoon)
+			.Add(ItemID.PlaceAbovetheClouds,		Condition.NotInGraveyard, Condition.InSpace)
+			.Add(ItemID.SkyGuardian,				Condition.NotInGraveyard, Condition.Hardmode, Condition.InSpace)
+			.Add(ItemID.Thunderbolt,				Condition.Thunderstorm)
+			.Add(ItemID.Nevermore,					Condition.InGraveyard)
+			.Add(ItemID.Reborn,						Condition.InGraveyard)
+			.Add(ItemID.Graveyard,					Condition.InGraveyard)
+			.Add(ItemID.GhostManifestation,			Condition.InGraveyard)
+			.Add(ItemID.WickedUndead,				Condition.InGraveyard)
+			.Add(ItemID.HailtotheKing,				Condition.InGraveyard)
+			.Add(ItemID.BloodyGoblet,				Condition.InGraveyard)
+			.Add(ItemID.StillLife,					Condition.InGraveyard)
 			.Register();
 	}
 
@@ -760,16 +760,16 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.WitchDoctor)
 			.Add(ItemID.ImbuingStation)
 			.Add(ItemID.Blowgun)
-			.Add(ItemID.BewitchingTable, Condition.NpcIsPresent(NPCID.Wizard))
-			.Add(ItemID.GiantTiki, Condition.InJungle)
-			.Add(ItemID.PygmyNecklace, Condition.TimeNight)
-			.Add(ItemID.TikiMask, Condition.DownedPlantera)
-			.Add(ItemID.TikiShirt, Condition.DownedPlantera)
-			.Add(ItemID.TikiPants, Condition.DownedPlantera)
-			.Add(ItemID.HerculesBeetle, Condition.DownedPlantera, Condition.InJungle)
-			.Add(ItemID.VialofVenom, Condition.DownedPlantera)
-			.Add(ItemID.TikiTotem, Condition.Hardmode, Condition.InJungle)
-			.Add(ItemID.LeafWings, Condition.Hardmode, Condition.InJungle, Condition.TimeNight, Condition.DownedPlantera)
+			.Add(ItemID.BewitchingTable,	Condition.NpcIsPresent(NPCID.Wizard))
+			.Add(ItemID.GiantTiki,			Condition.InJungle)
+			.Add(ItemID.PygmyNecklace,		Condition.TimeNight)
+			.Add(ItemID.TikiMask,			Condition.DownedPlantera)
+			.Add(ItemID.TikiShirt,			Condition.DownedPlantera)
+			.Add(ItemID.TikiPants,			Condition.DownedPlantera)
+			.Add(ItemID.HerculesBeetle,		Condition.DownedPlantera, Condition.InJungle)
+			.Add(ItemID.VialofVenom,		Condition.DownedPlantera)
+			.Add(ItemID.TikiTotem,			Condition.Hardmode, Condition.InJungle)
+			.Add(ItemID.LeafWings,			Condition.Hardmode, Condition.InJungle, Condition.TimeNight, Condition.DownedPlantera)
 			.Add(ItemID.PureWaterFountain)
 			.Add(ItemID.DesertWaterFountain)
 			.Add(ItemID.JungleWaterFountain)
@@ -780,9 +780,9 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.BloodWaterFountain)
 			.Add(ItemID.CavernFountain)
 			.Add(ItemID.OasisFountain)
-			.Add(ItemID.Stake, Condition.PlayerCarriesItem(ItemID.StakeLauncher))
-			.Add(ItemID.StyngerBolt, Condition.PlayerCarriesItem(ItemID.Stynger))
-			.Add(ItemID.Cauldron, Condition.Halloween)
+			.Add(ItemID.Stake,				Condition.PlayerCarriesItem(ItemID.StakeLauncher))
+			.Add(ItemID.StyngerBolt,		Condition.PlayerCarriesItem(ItemID.Stynger))
+			.Add(ItemID.Cauldron,			Condition.Halloween)
 			.Register();
 	}
 
@@ -801,8 +801,8 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.PiratePants)
 			.Add(ItemID.Sail)
 			.Add(ItemID.JellyfishBlock, Condition.InGraveyard)
-			.Add(ItemID.ParrotCracker, beachCondition)
-			.Add(ItemID.BunnyCannon, Condition.NpcIsPresent(NPCID.PartyGirl), Condition.Hardmode, Condition.DownedMechBossAny)
+			.Add(ItemID.ParrotCracker,	beachCondition)
+			.Add(ItemID.BunnyCannon,	Condition.NpcIsPresent(NPCID.PartyGirl), Condition.Hardmode, Condition.DownedMechBossAny)
 			.Register();
 	}
 
@@ -833,19 +833,19 @@ public static partial class NPCShopDatabase
 		new NPCShop(NPCID.Stylist)
 			.Add(ItemID.HairDyeRemover)
 			.Add(ItemID.DepthHairDye)
-			.Add(ItemID.LifeHairDye, maxLife)
-			.Add(ItemID.ManaHairDye, maxMana)
-			.Add(ItemID.MoneyHairDye, moneyHair)
-			.Add(ItemID.TimeHairDye, timeHair)
-			.Add(ItemID.TeamHairDye, teamHair)
-			.Add(ItemID.BiomeHairDye, Condition.Hardmode)
-			.Add(ItemID.PartyHairDye, Condition.NpcIsPresent(NPCID.PartyGirl))
-			.Add(ItemID.RainbowHairDye, Condition.Hardmode, Condition.DownedTwins, Condition.DownedSkeletronPrime, Condition.DownedDestroyer)
-			.Add(ItemID.SpeedHairDye, Condition.Hardmode, Condition.DownedMechBossAny)
-			.Add(ItemID.MartianHairDye, Condition.DownedMartians)
-			.Add(ItemID.TwilightHairDye, Condition.DownedMartians)
+			.Add(ItemID.LifeHairDye,		maxLife)
+			.Add(ItemID.ManaHairDye,		maxMana)
+			.Add(ItemID.MoneyHairDye,		moneyHair)
+			.Add(ItemID.TimeHairDye,		timeHair)
+			.Add(ItemID.TeamHairDye,		teamHair)
+			.Add(ItemID.BiomeHairDye,		Condition.Hardmode)
+			.Add(ItemID.PartyHairDye,		Condition.NpcIsPresent(NPCID.PartyGirl))
+			.Add(ItemID.RainbowHairDye,		Condition.Hardmode, Condition.DownedTwins, Condition.DownedSkeletronPrime, Condition.DownedDestroyer)
+			.Add(ItemID.SpeedHairDye,		Condition.Hardmode, Condition.DownedMechBossAny)
+			.Add(ItemID.MartianHairDye,		Condition.DownedMartians)
+			.Add(ItemID.TwilightHairDye,	Condition.DownedMartians)
 			.Add(ItemID.WilsonBeardShort)
-			.Add(ItemID.PrettyMirror, Condition.InGraveyard)
+			.Add(ItemID.PrettyMirror,		Condition.InGraveyard)
 			.Register();
 	}
 
@@ -860,40 +860,40 @@ public static partial class NPCShopDatabase
 		var torchCondition = new Condition("Conditions.Periodically", () => Main.time % 60 > 30);
 
 		new NPCShop(NPCID.SkeletonMerchant)
-			.Add(ItemID.WoodenBoomerang, Condition.MoonPhaseFull)
-			.Add(ItemID.Umbrella, Condition.MoonPhaseWaningGibbous)
-			.Add(ItemID.WandofSparking, Condition.MoonPhaseThirdQuarter, Condition.NotRemixWorld)
-			.Add(ItemID.MagicDagger, Condition.MoonPhaseThirdQuarter, Condition.RemixWorld)
-			.Add(ItemID.PortableStool, Condition.MoonPhaseWaningCrescent)
-			.Add(ItemID.Aglet, Condition.MoonPhaseNew)
-			.Add(ItemID.ClimbingClaws, Condition.MoonPhaseWaxingCrescent)
-			.Add(ItemID.CordageGuide, Condition.MoonPhaseFirstQuarter)
-			.Add(ItemID.Radar, Condition.MoonPhaseWaxingGibbous)
-			.Add(ItemID.StrangeBrew, Condition.MoonPhasesEven)
-			.Add(ItemID.LesserHealingPotion, Condition.MoonPhasesOdd)
-			.Add(ItemID.HealingPotion, Condition.Hardmode, Condition.MoonPhasesOdd)
-			.Add(ItemID.SpelunkerGlowstick, spelunkerGlowCondition)
-			.Add(ItemID.SpelunkerFlare, spelunkerGlowCondition, Condition.PlayerCarriesItem(ItemID.FlareGun))
-			.Add(ItemID.Glowstick, glowstickCondition)
-			.Add(ItemID.BoneTorch, boneTorchCondition)
-			.Add(ItemID.Torch, torchCondition)
-			.Add(ItemID.BoneArrow, Condition.MoonPhasesEvenQuarters)
-			.Add(ItemID.WoodenArrow, Condition.MoonPhasesOddQuarters)
-			.Add(ItemID.BlueCounterweight, Condition.MoonPhases04)
-			.Add(ItemID.RedCounterweight, Condition.MoonPhases15)
-			.Add(ItemID.PurpleCounterweight, Condition.MoonPhases26)
-			.Add(ItemID.GreenCounterweight, Condition.MoonPhases37)
+			.Add(ItemID.WoodenBoomerang,		Condition.MoonPhaseFull)
+			.Add(ItemID.Umbrella,				Condition.MoonPhaseWaningGibbous)
+			.Add(ItemID.WandofSparking,			Condition.MoonPhaseThirdQuarter, Condition.NotRemixWorld)
+			.Add(ItemID.MagicDagger,			Condition.MoonPhaseThirdQuarter, Condition.RemixWorld)
+			.Add(ItemID.PortableStool,			Condition.MoonPhaseWaningCrescent)
+			.Add(ItemID.Aglet,					Condition.MoonPhaseNew)
+			.Add(ItemID.ClimbingClaws,			Condition.MoonPhaseWaxingCrescent)
+			.Add(ItemID.CordageGuide,			Condition.MoonPhaseFirstQuarter)
+			.Add(ItemID.Radar,					Condition.MoonPhaseWaxingGibbous)
+			.Add(ItemID.StrangeBrew,			Condition.MoonPhasesEven)
+			.Add(ItemID.LesserHealingPotion,	Condition.MoonPhasesOdd)
+			.Add(ItemID.HealingPotion,			Condition.Hardmode, Condition.MoonPhasesOdd)
+			.Add(ItemID.SpelunkerGlowstick,		spelunkerGlowCondition)
+			.Add(ItemID.SpelunkerFlare,			spelunkerGlowCondition, Condition.PlayerCarriesItem(ItemID.FlareGun))
+			.Add(ItemID.Glowstick,				glowstickCondition)
+			.Add(ItemID.BoneTorch,				boneTorchCondition)
+			.Add(ItemID.Torch,					torchCondition)
+			.Add(ItemID.BoneArrow,				Condition.MoonPhasesEvenQuarters)
+			.Add(ItemID.WoodenArrow,			Condition.MoonPhasesOddQuarters)
+			.Add(ItemID.BlueCounterweight,		Condition.MoonPhases04)
+			.Add(ItemID.RedCounterweight,		Condition.MoonPhases15)
+			.Add(ItemID.PurpleCounterweight,	Condition.MoonPhases26)
+			.Add(ItemID.GreenCounterweight,		Condition.MoonPhases37)
 			.Add(ItemID.RollerSkatesGreenMountItem, Condition.MoonPhases12)
 			.Add(ItemID.RollerSkatesClassicMountItem, Condition.MoonPhases35)
 			.Add(ItemID.RollerSkatesPartyMountItem, Condition.MoonPhases67)
 			.Add(ItemID.Bomb)
 			.Add(ItemID.Rope)
-			.Add(ItemID.Gradient, Condition.Hardmode)
-			.Add(ItemID.YoYoGlove, Condition.Hardmode)
-			.Add(ItemID.MagicString, Condition.Hardmode, Condition.DownedMechBossAny)
-			.Add(ItemID.SlapHand, Condition.Hardmode, Condition.BloodMoon)
-			.Add(ItemID.MagicLantern, Condition.TimeNight, Condition.MoonPhaseFull)
-			.Add(ItemID.ArtisanLoaf, artisanCondition, Condition.MoonPhasesNearNew)
+			.Add(ItemID.Gradient,				Condition.Hardmode)
+			.Add(ItemID.YoYoGlove,				Condition.Hardmode)
+			.Add(ItemID.MagicString,			Condition.Hardmode, Condition.DownedMechBossAny)
+			.Add(ItemID.SlapHand,				Condition.Hardmode, Condition.BloodMoon)
+			.Add(ItemID.MagicLantern,			Condition.TimeNight, Condition.MoonPhaseFull)
+			.Add(ItemID.ArtisanLoaf,			artisanCondition, Condition.MoonPhasesNearNew)
 			.Register();
 	}
 
@@ -910,7 +910,7 @@ public static partial class NPCShopDatabase
 
 		// 1st row
 		shop.Add(ItemID.Ale);
-		shop.Add(new Entry(ItemID.DD2ElderCrystal).AddShopOpenedCallback((item, npc) => {                   // Eternia Crystal
+		shop.Add(new Entry(ItemID.DD2ElderCrystal).AddShopOpenedCallback((item, npc) => {					// Eternia Crystal
 			if (NPC.downedGolemBoss) {
 				item.shopCustomPrice = Item.buyPrice(gold: 4);
 			}
@@ -921,51 +921,51 @@ public static partial class NPCShopDatabase
 				item.shopCustomPrice = Item.buyPrice(silver: 25);
 			}
 		}));
-		shop.Add(ItemID.DD2ElderCrystalStand);                                                              // Eternia Crystal Stand
+		shop.Add(ItemID.DD2ElderCrystalStand);																// Eternia Crystal Stand
 		AddEntry(ItemID.DefendersForge, 50);
 
-		AddEntry(ItemID.SquireGreatHelm, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquirePlating, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquireGreaves, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.SquireAltHead, 50, Condition.Hardmode, Condition.DownedGolem);          // Valhalla Knight's Helm
-		AddEntry(ItemID.SquireAltShirt, 50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Breastplate
-		AddEntry(ItemID.SquireAltPants, 50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Greaves
+		AddEntry(ItemID.SquireGreatHelm,			15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquirePlating,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquireGreaves,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.SquireAltHead,				50, Condition.Hardmode, Condition.DownedGolem);			// Valhalla Knight's Helm
+		AddEntry(ItemID.SquireAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Breastplate
+		AddEntry(ItemID.SquireAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Valhalla Knight's Greaves
 
 		// 2nd row
-		AddEntry(ItemID.DD2FlameburstTowerT1Popper, 5);                                                     // Flameburst Rod
-		AddEntry(ItemID.DD2BallistraTowerT1Popper, 5);                                                      // Ballista Rod
-		AddEntry(ItemID.DD2ExplosiveTrapT1Popper, 5);                                                       // Explosive Trap Rod
-		AddEntry(ItemID.DD2LightningAuraT1Popper, 5);                                                       // Lightning Aura Rod
-		AddEntry(ItemID.ApprenticeHat, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeRobe, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeTrousers, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.ApprenticeAltHead, 50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Hat
-		AddEntry(ItemID.ApprenticeAltShirt, 50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Robes
-		AddEntry(ItemID.ApprenticeAltPants, 50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Leggings
+		AddEntry(ItemID.DD2FlameburstTowerT1Popper,	5);														// Flameburst Rod
+		AddEntry(ItemID.DD2BallistraTowerT1Popper,	5);														// Ballista Rod
+		AddEntry(ItemID.DD2ExplosiveTrapT1Popper,	5);														// Explosive Trap Rod
+		AddEntry(ItemID.DD2LightningAuraT1Popper,	5);														// Lightning Aura Rod
+		AddEntry(ItemID.ApprenticeHat,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeRobe,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeTrousers,			15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.ApprenticeAltHead,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Hat
+		AddEntry(ItemID.ApprenticeAltShirt,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Robes
+		AddEntry(ItemID.ApprenticeAltPants,			50, Condition.Hardmode, Condition.DownedGolem);         // Dark Atrist's Leggings
 
 		// 3rd row
 		AddEntry(ItemID.DD2FlameburstTowerT2Popper, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Flameburst Cane
-		AddEntry(ItemID.DD2BallistraTowerT2Popper, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Ballista Cane
-		AddEntry(ItemID.DD2ExplosiveTrapT2Popper, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Explosive Trap Cane
-		AddEntry(ItemID.DD2LightningAuraT2Popper, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Lightning Aura Cane
-		AddEntry(ItemID.HuntressWig, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressJerkin, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressPants, 15, Condition.Hardmode, Condition.DownedMechBossAny);
-		AddEntry(ItemID.HuntressAltHead, 50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Hood
-		AddEntry(ItemID.HuntressAltShirt, 50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Dress
-		AddEntry(ItemID.HuntressAltPants, 50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Leggings
+		AddEntry(ItemID.DD2BallistraTowerT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Ballista Cane
+		AddEntry(ItemID.DD2ExplosiveTrapT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Explosive Trap Cane
+		AddEntry(ItemID.DD2LightningAuraT2Popper,	15, Condition.Hardmode, Condition.DownedMechBossAny);   // Lightning Aura Cane
+		AddEntry(ItemID.HuntressWig,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressJerkin,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressPants,				15, Condition.Hardmode, Condition.DownedMechBossAny);
+		AddEntry(ItemID.HuntressAltHead,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Hood
+		AddEntry(ItemID.HuntressAltShirt,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Dress
+		AddEntry(ItemID.HuntressAltPants,			50, Condition.Hardmode, Condition.DownedGolem);         // Red Riding Leggings
 
 		// 4th row
 		AddEntry(ItemID.DD2FlameburstTowerT3Popper, 60, Condition.Hardmode, Condition.DownedGolem);         // Flameburst Staff
-		AddEntry(ItemID.DD2BallistraTowerT3Popper, 60, Condition.Hardmode, Condition.DownedGolem);         // Ballista Staff
-		AddEntry(ItemID.DD2ExplosiveTrapT3Popper, 60, Condition.Hardmode, Condition.DownedGolem);         // Explosive Trap Staff
-		AddEntry(ItemID.DD2LightningAuraT3Popper, 60, Condition.Hardmode, Condition.DownedGolem);         // Lightning Aura Staff
-		AddEntry(ItemID.MonkBrows, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Bushy Brow Bald Cap
-		AddEntry(ItemID.MonkShirt, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Shirt
-		AddEntry(ItemID.MonkPants, 15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Pants
-		AddEntry(ItemID.MonkAltHead, 50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Helmet
-		AddEntry(ItemID.MonkAltShirt, 50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Torso
-		AddEntry(ItemID.MonkAltPants, 50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Pants
+		AddEntry(ItemID.DD2BallistraTowerT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Ballista Staff
+		AddEntry(ItemID.DD2ExplosiveTrapT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Explosive Trap Staff
+		AddEntry(ItemID.DD2LightningAuraT3Popper,	60, Condition.Hardmode, Condition.DownedGolem);         // Lightning Aura Staff
+		AddEntry(ItemID.MonkBrows,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Bushy Brow Bald Cap
+		AddEntry(ItemID.MonkShirt,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Shirt
+		AddEntry(ItemID.MonkPants,					15, Condition.Hardmode, Condition.DownedMechBossAny);   // Monk's Pants
+		AddEntry(ItemID.MonkAltHead,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Helmet
+		AddEntry(ItemID.MonkAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Torso
+		AddEntry(ItemID.MonkAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Pants
 
 		shop.Register();
 	}
@@ -982,88 +982,88 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GolfClubBronzeWedge)                                                                    // Worn Golf Club (Wedge)
 			.Add(ItemID.GolfClubRustyPutter)                                                                    // Worn Golf Club (Putter)
 			.Add(ItemID.GolfCupFlagWhite)                                                                       // White Pin Flag
-			.Add(ItemID.GolfCupFlagRed)                                                                         // Red Pin Flag
+			.Add(ItemID.GolfCupFlagRed)																			// Red Pin Flag
 			.Add(ItemID.GolfCupFlagGreen)                                                                       // Green Pin Flag
-			.Add(ItemID.GolfCupFlagBlue)                                                                        // Blue Pin Flag
-			.Add(ItemID.GolfCupFlagYellow)                                                                      // Yellow Pin Flag
+			.Add(ItemID.GolfCupFlagBlue)																		// Blue Pin Flag
+			.Add(ItemID.GolfCupFlagYellow)																		// Yellow Pin Flag
 			.Add(ItemID.GolfCupFlagPurple)                                                                      // Purple Pin Flag
-			.Add(ItemID.GolfClubIron, scoreOver500)                                               // Golf Club (Iron)
-			.Add(ItemID.GolfClubDriver, scoreOver500)                                               // Golf Club (Driver)
-			.Add(ItemID.GolfClubWedge, scoreOver500)                                               // Golf Club (Wedge)
-			.Add(ItemID.GolfClubPutter, scoreOver500)                                               // Golf Club (Putter)
+			.Add(ItemID.GolfClubIron,				scoreOver500)                                               // Golf Club (Iron)
+			.Add(ItemID.GolfClubDriver,				scoreOver500)                                               // Golf Club (Driver)
+			.Add(ItemID.GolfClubWedge,				scoreOver500)                                               // Golf Club (Wedge)
+			.Add(ItemID.GolfClubPutter,				scoreOver500)                                               // Golf Club (Putter)
 			.Add(ItemID.GolfTee)
 			.Add(ItemID.GolfBall)
 			.Add(ItemID.GolfWhistle)
 			.Add(ItemID.GolfCup)
 			.Add(ItemID.ArrowSign)
 			.Add(ItemID.PaintedArrowSign)
-			.Add(ItemID.GolfClubMythrilIron, scoreOver1000)                                              // Fancy Golf Club (Iron)
-			.Add(ItemID.GolfClubPearlwoodDriver, scoreOver1000)                                              // Fancy Golf Club (Driver)
-			.Add(ItemID.GolfClubGoldWedge, scoreOver1000)                                              // Fancy Golf Club (Wedge)
-			.Add(ItemID.GolfClubLeadPutter, scoreOver1000)                                              // Fancy Golf Club (Putter)
-			.Add(ItemID.GolfHat)                                                                                // Country Club Cap
+			.Add(ItemID.GolfClubMythrilIron,		scoreOver1000)                                              // Fancy Golf Club (Iron)
+			.Add(ItemID.GolfClubPearlwoodDriver,	scoreOver1000)                                              // Fancy Golf Club (Driver)
+			.Add(ItemID.GolfClubGoldWedge,			scoreOver1000)                                              // Fancy Golf Club (Wedge)
+			.Add(ItemID.GolfClubLeadPutter,			scoreOver1000)                                              // Fancy Golf Club (Putter)
+			.Add(ItemID.GolfHat)																				// Country Club Cap
 			.Add(ItemID.GolfVisor)                                                                              // Country Club Visor
 			.Add(ItemID.GolfShirt)                                                                              // Country Club Vest
 			.Add(ItemID.GolfPants)                                                                              // Country Club Trousers
 			.Add(ItemID.LawnMower)
-			.Add(ItemID.GolfChest, scoreOver500)
-			.Add(ItemID.GolfClubTitaniumIron, scoreOver2000)                                              // Premium Golf Club (Iron)
-			.Add(ItemID.GolfClubChlorophyteDriver, scoreOver2000)                                              // Premium Golf Club (Driver)
-			.Add(ItemID.GolfClubDiamondWedge, scoreOver2000)                                              // Premium Golf Club (Wedge)
-			.Add(ItemID.GolfClubShroomitePutter, scoreOver2000)                                              // Premium Golf Club (Putter)
-			.Add(ItemID.GolfCart, scoreOver2000, Condition.DownedSkeletron)                 // Golf Cart Keys
-			.Add(ItemID.GolfTrophyBronze, scoreOver500)                                             // Bronze Golf Trophy
-			.Add(ItemID.GolfTrophySilver, scoreOver1000)                                                // Silver Golf Trophy
-			.Add(ItemID.GolfTrophyGold, scoreOver2000)                                              // Gold Golf Trophy
-			.Add(ItemID.GolfPainting1, scoreOver2000, Condition.MoonPhasesQuarter0)             // The Rolling Greens
-			.Add(ItemID.GolfPainting2, scoreOver2000, Condition.MoonPhasesQuarter1)             // Study of a Ball at Rest
-			.Add(ItemID.GolfPainting3, scoreOver2000, Condition.MoonPhasesQuarter2)             // Fore!
-			.Add(ItemID.GolfPainting4, scoreOver2000, Condition.MoonPhasesQuarter3)             // The Duplicity of Reflections
+			.Add(ItemID.GolfChest,					scoreOver500)
+			.Add(ItemID.GolfClubTitaniumIron,		scoreOver2000)                                              // Premium Golf Club (Iron)
+			.Add(ItemID.GolfClubChlorophyteDriver,	scoreOver2000)                                              // Premium Golf Club (Driver)
+			.Add(ItemID.GolfClubDiamondWedge,		scoreOver2000)                                              // Premium Golf Club (Wedge)
+			.Add(ItemID.GolfClubShroomitePutter,	scoreOver2000)                                              // Premium Golf Club (Putter)
+			.Add(ItemID.GolfCart,					scoreOver2000, Condition.DownedSkeletron)					// Golf Cart Keys
+			.Add(ItemID.GolfTrophyBronze,			scoreOver500)												// Bronze Golf Trophy
+			.Add(ItemID.GolfTrophySilver,			scoreOver1000)												// Silver Golf Trophy
+			.Add(ItemID.GolfTrophyGold,				scoreOver2000)												// Gold Golf Trophy
+			.Add(ItemID.GolfPainting1,				scoreOver2000, Condition.MoonPhasesQuarter0)				// The Rolling Greens
+			.Add(ItemID.GolfPainting2,				scoreOver2000, Condition.MoonPhasesQuarter1)				// Study of a Ball at Rest
+			.Add(ItemID.GolfPainting3,				scoreOver2000, Condition.MoonPhasesQuarter2)				// Fore!
+			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.MoonPhasesQuarter3)				// The Duplicity of Reflections
 			.Register();
 	}
 
 	private static void RegisterZoologist()
 	{
 		new NPCShop(NPCID.BestiaryGirl)
-			.Add(ItemID.FairyGlowstick, new Condition("Conditions.BestiaryWinx", () => Chest.BestiaryGirl_IsFairyTorchAvailable()))
+			.Add(ItemID.FairyGlowstick,				new Condition("Conditions.BestiaryWinx", () => Chest.BestiaryGirl_IsFairyTorchAvailable()))
 			.Add(ItemID.DontHurtCrittersBook)
-			.Add(ItemID.TheWerewolf, Condition.MoonPhaseFull, Condition.TimeNight)
-			.Add(ItemID.PaintingKaguya, Condition.BestiaryFilledPercent(45))
-			.Add(ItemID.SquirrelHook, Condition.BestiaryFilledPercent(10))
-			.Add(ItemID.BlandWhip, Condition.BestiaryFilledPercent(3))
+			.Add(ItemID.TheWerewolf,				Condition.MoonPhaseFull, Condition.TimeNight)
+			.Add(ItemID.PaintingKaguya,				Condition.BestiaryFilledPercent(45))
+			.Add(ItemID.SquirrelHook,				Condition.BestiaryFilledPercent(10))
+			.Add(ItemID.BlandWhip,					Condition.BestiaryFilledPercent(3))
 			.Add(ItemID.LicenseCat)
-			.Add(ItemID.LicenseDog, Condition.BestiaryFilledPercent(25))
-			.Add(ItemID.LicenseBunny, Condition.BestiaryFilledPercent(45))
-			.Add(ItemID.VanityTreeSakuraSeed, Condition.BestiaryFilledPercent(30))
+			.Add(ItemID.LicenseDog,					Condition.BestiaryFilledPercent(25))
+			.Add(ItemID.LicenseBunny,				Condition.BestiaryFilledPercent(45))
+			.Add(ItemID.VanityTreeSakuraSeed,		Condition.BestiaryFilledPercent(30))
 			.Add(ItemID.VanityTreeYellowWillowSeed, Condition.BestiaryFilledPercent(30))
-			.Add(ItemID.KiteCrawltipede, Condition.DownedSolarPillar)
-			.Add(ItemID.KiteKoi, Condition.BestiaryFilledPercent(10))
-			.Add(ItemID.CritterShampoo, Condition.BestiaryFilledPercent(30))
-			.Add(ItemID.MolluskWhistle, Condition.BestiaryFilledPercent(25))
-			.Add(ItemID.PaintedHorseSaddle, Condition.BestiaryFilledPercent(30))
-			.Add(ItemID.MajesticHorseSaddle, Condition.BestiaryFilledPercent(30))
-			.Add(ItemID.DarkHorseSaddle, Condition.BestiaryFilledPercent(30))
-			.Add(ItemID.JoustingLance, Condition.BestiaryFilledPercent(30), Condition.Hardmode)
-			.Add(ItemID.DiggingMoleMinecart, Condition.BestiaryFilledPercent(25))
-			.Add(ItemID.RabbitOrder, Condition.BestiaryFilledPercent(40))
-			.Add(ItemID.FullMoonSqueakyToy, Condition.Hardmode, Condition.BloodMoon)
-			.Add(ItemID.MudBud, Condition.DownedPlantera)
-			.Add(ItemID.TreeGlobe, Condition.BestiaryFilledPercent(50))
-			.Add(ItemID.WorldGlobe, Condition.BestiaryFilledPercent(50))
-			.Add(ItemID.MoonGlobe, Condition.BestiaryFilledPercent(50))
-			.Add(ItemID.LightningCarrot, Condition.BestiaryFilledPercent(50))
-			.Add(ItemID.BallOfFuseWire, Condition.BestiaryFilledPercent(70))
-			.Add(ItemID.TeleportationPylonVictory, Condition.BestiaryFilledPercent(100))
-			.Add(ItemID.DeadCellsSwarmGrenade, Condition.BirthdayParty)
-			.Add(ItemID.DogEars, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.DogTail, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.FoxEars, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.FoxTail, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.LizardEars, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.LizardTail, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.BunnyEars, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.BunnyTail, Condition.MoonPhasesQuarter3)
-			.Add(ItemID.Torch, Condition.VampireSeed, Condition.NotInfectedSeed)
+			.Add(ItemID.KiteCrawltipede,			Condition.DownedSolarPillar)
+			.Add(ItemID.KiteKoi,					Condition.BestiaryFilledPercent(10))
+			.Add(ItemID.CritterShampoo,				Condition.BestiaryFilledPercent(30))
+			.Add(ItemID.MolluskWhistle,				Condition.BestiaryFilledPercent(25))
+			.Add(ItemID.PaintedHorseSaddle,			Condition.BestiaryFilledPercent(30))
+			.Add(ItemID.MajesticHorseSaddle,		Condition.BestiaryFilledPercent(30))
+			.Add(ItemID.DarkHorseSaddle,			Condition.BestiaryFilledPercent(30))
+			.Add(ItemID.JoustingLance,				Condition.BestiaryFilledPercent(30), Condition.Hardmode)
+			.Add(ItemID.DiggingMoleMinecart,		Condition.BestiaryFilledPercent(25))
+			.Add(ItemID.RabbitOrder,				Condition.BestiaryFilledPercent(40))
+			.Add(ItemID.FullMoonSqueakyToy,			Condition.Hardmode, Condition.BloodMoon)
+			.Add(ItemID.MudBud,						Condition.DownedPlantera)
+			.Add(ItemID.TreeGlobe,					Condition.BestiaryFilledPercent(50))
+			.Add(ItemID.WorldGlobe,					Condition.BestiaryFilledPercent(50))
+			.Add(ItemID.MoonGlobe,					Condition.BestiaryFilledPercent(50))
+			.Add(ItemID.LightningCarrot,			Condition.BestiaryFilledPercent(50))
+			.Add(ItemID.BallOfFuseWire,				Condition.BestiaryFilledPercent(70))
+			.Add(ItemID.TeleportationPylonVictory,	Condition.BestiaryFilledPercent(100))
+			.Add(ItemID.DeadCellsSwarmGrenade,		Condition.BirthdayParty)
+			.Add(ItemID.DogEars,					Condition.MoonPhasesQuarter0)
+			.Add(ItemID.DogTail,					Condition.MoonPhasesQuarter0)
+			.Add(ItemID.FoxEars,					Condition.MoonPhasesQuarter1)
+			.Add(ItemID.FoxTail,					Condition.MoonPhasesQuarter1)
+			.Add(ItemID.LizardEars,					Condition.MoonPhasesQuarter2)
+			.Add(ItemID.LizardTail,					Condition.MoonPhasesQuarter2)
+			.Add(ItemID.BunnyEars,					Condition.MoonPhasesQuarter3)
+			.Add(ItemID.BunnyTail,					Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Torch,						Condition.VampireSeed, Condition.NotInfectedSeed)
 			.Register();
 	}
 
@@ -1079,17 +1079,17 @@ public static partial class NPCShopDatabase
 		shop.Add(ItemID.PrincessStyle)
 			.Add(ItemID.SuspiciouslySparkly)
 			.Add(ItemID.TerraBladeChronicles)
-			.Add(ItemID.RoyalRomance, Condition.DownedKingSlime, Condition.DownedQueenSlime)
-			.Add(ItemID.MusicBoxCredits, Condition.Hardmode, Condition.DownedMoonLord)
-			.Add(ItemID.SlimeStaff, Condition.TenthAnniversaryWorld)
-			.Add(ItemID.HeartLantern, Condition.TenthAnniversaryWorld)
-			.Add(ItemID.FlaskofParty, Condition.TenthAnniversaryWorld)
+			.Add(ItemID.RoyalRomance,		Condition.DownedKingSlime, Condition.DownedQueenSlime)
+			.Add(ItemID.MusicBoxCredits,	Condition.Hardmode, Condition.DownedMoonLord)
+			.Add(ItemID.SlimeStaff,			Condition.TenthAnniversaryWorld)
+			.Add(ItemID.HeartLantern,		Condition.TenthAnniversaryWorld)
+			.Add(ItemID.FlaskofParty,		Condition.TenthAnniversaryWorld)
 			.Add(ItemID.SandstorminaBottle, Condition.TenthAnniversaryWorld, Condition.InDesert)
-			.Add(ItemID.Terragrim, Condition.TenthAnniversaryWorld, Condition.BloodMoon)
-			.Add(ItemID.PirateStaff, Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter0)
-			.Add(ItemID.DiscountCard, Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter1)
-			.Add(ItemID.LuckyCoin, Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter2)
-			.Add(ItemID.CoinGun, Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter3)
+			.Add(ItemID.Terragrim,			Condition.TenthAnniversaryWorld, Condition.BloodMoon)
+			.Add(ItemID.PirateStaff,		Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter0)
+			.Add(ItemID.DiscountCard,		Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter1)
+			.Add(ItemID.LuckyCoin,			Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter2)
+			.Add(ItemID.CoinGun,			Condition.TenthAnniversaryWorld, Condition.Hardmode, Condition.DownedPirates, Condition.MoonPhasesQuarter3)
 			.Add(ItemID.BerniePetItem)
 			.Register();
 	}

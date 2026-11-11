@@ -397,8 +397,7 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				FileName = path,
 				Arguments = "--version"
 			});
-			if (proc == null)
-				return false;
+			if (proc == null) return false;
 
 			proc.WaitForExit();
 			if (proc.ExitCode == 0) {
@@ -408,7 +407,8 @@ internal class UIModSources : UIState, IHaveBackButtonCommand
 				Logging.tML.Debug("Process ended with exit code: " + proc.ExitCode);
 			}
 		}
-		catch (Exception e) {
+		catch (Exception e)
+		{
 			Logging.tML.Debug("Caught Exception during dotnet check:" + e);
 		}
 

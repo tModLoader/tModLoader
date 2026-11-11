@@ -518,8 +518,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <para/> Return false to prevent the projectile from despawning.
 	/// <para/> Called on the local client.
 	/// </summary>
-	public virtual bool PreTryDespawning(ref bool giveItem)
-	{
+	public virtual bool PreTryDespawning(ref bool giveItem) {
 		return true;
 	}
 }

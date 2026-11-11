@@ -90,13 +90,13 @@ public partial class NPCID
 		static Sets()
 		{
 			ImmuneToWhipTags = Factory.CreateBoolSet();
-			ImmuneToRegularBuffs = Factory.CreateBoolSet();
+			ImmuneToRegularBuffs  = Factory.CreateBoolSet();
 			SpecificDebuffImmunity = Factory.CreateCustomSet<bool?[]>(null);
 			for (int type = 0; type < NPCLoader.NPCCount; type++) {
 				SpecificDebuffImmunity[type] = new bool?[BuffLoader.BuffCount];
 				if (DebuffImmunitySets.TryGetValue(type, out var data) && data != null) {
 					ImmuneToWhipTags[type] = data.ImmuneToWhips;
-					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;
+					ImmuneToRegularBuffs[type] = data.ImmuneToAllBuffsThatAreNotWhips;				
 					if (data.SpecificallyImmuneTo != null) {
 						foreach (var buff in data.SpecificallyImmuneTo) {
 							SpecificDebuffImmunity[type][buff] = true;
@@ -106,7 +106,7 @@ public partial class NPCID
 				SpecificDebuffImmunity[type][BuffID.Shimmer] = ShimmerImmunity[type];
 			}
 		}
-
+		
 		// All BelongsToInvasion set IDs taken from NPC.GetNPCInvasionGroup
 		/// <summary>
 		/// If <see langword="true"/> for a given NPC type (<see cref="NPC.type"/>), then that NPC belongs to the Goblin Army invasion.

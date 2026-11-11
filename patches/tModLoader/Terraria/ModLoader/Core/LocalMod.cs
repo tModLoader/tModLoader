@@ -76,7 +76,7 @@ internal class LocalMod
 		return !string.IsNullOrWhiteSpace(description);
 	}
 
-	public string DetailedInfo => $"{Name} {Version} for tML {tModLoaderVersion} from {location}" + (Path.GetFileNameWithoutExtension(modFile.path) != Name ? $" ({Path.GetFileName(modFile.path)})" : "");
+	public string DetailedInfo => $"{Name} {Version} for tML {tModLoaderVersion} from {location}" + (Path.GetFileNameWithoutExtension(modFile.path) != Name ? $" ({Path.GetFileName(modFile.path)})": "");
 
 	public LocalMod(ModLocation location, TmodFile modFile, BuildProperties properties)
 	{

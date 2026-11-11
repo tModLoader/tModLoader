@@ -29,8 +29,8 @@ internal class UIModItem : UIPanel
 	private CancellationTokenSource _ratingCts;
 	private ulong _publishId;
 	private bool? _ratedUp; // null = not rated, false = rated down
-	private bool _gotRating;
-	private float _bufferRotation;
+    private bool _gotRating;
+    private float _bufferRotation;
 
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
@@ -64,7 +64,7 @@ internal class UIModItem : UIPanel
 	private string ToggleModStateText {
 		get {
 			if (_mod.Enabled) {
-				if (_modDependents.Any())
+				if(_modDependents.Any())
 					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
 				return Language.GetTextValue("tModLoader.ModsDisable");
 			}
@@ -314,11 +314,9 @@ internal class UIModItem : UIPanel
 				return;
 
 			// Prevent infinite recursion.
-			if (e.Target.GetType() == typeof(UIModStateText))
-				return;
+			if (e.Target.GetType() == typeof(UIModStateText)) return;
 			// Ignore inner elements that may not react immediately.
-			if (e.Target == _rateButton)
-				return;
+			if (e.Target == _rateButton) return;
 
 			_uiModStateText.LeftClick(e);
 		};
@@ -350,21 +348,22 @@ internal class UIModItem : UIPanel
 			};
 			_rateButton.OnLeftClick += Rate;
 
-			var bufferImage = new UIElement() {
-				Width = { Percent = 1f },
-				Height = { Percent = 1f },
-				IgnoresMouseInteraction = true
-			};
-			bufferImage.OnDraw += DrawRatingBuffer;
-			_rateButton.Append(bufferImage);
-
+            var bufferImage = new UIElement()
+            {
+                Width = { Percent = 1f },
+                Height = { Percent = 1f },
+                IgnoresMouseInteraction = true
+            };
+            bufferImage.OnDraw += DrawRatingBuffer;
+            _rateButton.Append(bufferImage);
+            
 			Append(_rateButton);
 
 			_ratingCts?.Cancel(false);
 			_ratingCts?.Dispose();
 			_ratingCts = new CancellationTokenSource();
-			Task.Run(GetRating, _ratingCts.Token);
-		}
+            Task.Run(GetRating, _ratingCts.Token);
+        }
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
 		if (oldModVersionData != default) {
@@ -454,15 +453,16 @@ internal class UIModItem : UIPanel
 				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 		}
 
-		if (!_gotRating)
-			_rateButton?.Frame = new Rectangle(0, 0, 36, 36);
-		else if (_rateButton?.IsMouseHovering == false) {
-			if (_ratedUp == null)
-				_rateButton?.Frame = new Rectangle(0, 38, 36, 36);
-			else
-				_rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
-		}
-
+        if (!_gotRating)
+            _rateButton?.Frame = new Rectangle(0, 0, 36, 36);
+        else if (_rateButton?.IsMouseHovering == false)
+        {
+            if (_ratedUp == null)
+                _rateButton?.Frame = new Rectangle(0, 38, 36, 36);
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+        }
+        
 		if (_moreInfoButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
 		}
@@ -471,20 +471,21 @@ internal class UIModItem : UIPanel
 		}
 		else if (_rateButton?.IsMouseHovering == true && _gotRating) {
 			bool ratingUp = UserInterface.ActiveInstance.MousePosition.Y < _rateButton.GetDimensions().Center().Y;
-			if (_ratedUp != true && ratingUp)
-				_tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
-			else if (_ratedUp != false && !ratingUp)
-				_tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
+            if (_ratedUp != true && ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
+            else if (_ratedUp != false && !ratingUp)
+                _tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
 
-			if (_ratedUp != null) {
-				if (_ratedUp != ratingUp)
-					_rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
-				else
-					_rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
-			}
-			else
-				_rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
-		}
+            if (_ratedUp != null)
+            {
+                if (_ratedUp != ratingUp)
+                    _rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
+                else 
+                    _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+            }
+            else
+                _rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
+        }
 		else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
 		}
@@ -518,18 +519,18 @@ internal class UIModItem : UIPanel
 
 		// Update rating buffer.
 		if (!_gotRating) {
-			_bufferRotation -= 0.15f;
+	        _bufferRotation -= 0.15f;
 		}
 	}
 
 	private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
-	{
-		if (_gotRating)
-			return;
-
-		var texture = UICommon.SmallLoaderTexture.Value;
-		spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
-	}
+    {
+        if (_gotRating)
+            return;
+                
+        var texture = UICommon.SmallLoaderTexture.Value;
+        spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+    }
 
 	public override void MouseOver(UIMouseEvent evt)
 	{
@@ -798,14 +799,14 @@ internal class UIModItem : UIPanel
 	}
 
 	private void Rate(UIMouseEvent evt, UIElement listeningElement)
-	{
+    {
 		bool ratingUp = evt.MousePosition.Y < listeningElement.GetDimensions().Center().Y;
 		if (!_gotRating || (ratingUp && _ratedUp == true) || (!ratingUp && _ratedUp == false))
 			return;
 
 		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
 
-		_gotRating = false;
+        _gotRating = false;
 		_ratingCts?.Cancel(false);
 		_ratingCts?.Dispose();
 		_ratingCts = new CancellationTokenSource();
@@ -816,13 +817,13 @@ internal class UIModItem : UIPanel
 	}
 
 	private async Task GetRating()
-	{
-		_gotRating = false;
+    {
+        _gotRating = false;
 
 		var result = await SteamedWraps.GetUserRating(_publishId);
-		if (result != null) {
-			RefreshRating(result.Value);
-			_gotRating = true;
+        if (result != null) {
+            RefreshRating(result.Value);
+	        _gotRating = true;
 		}
 	}
 

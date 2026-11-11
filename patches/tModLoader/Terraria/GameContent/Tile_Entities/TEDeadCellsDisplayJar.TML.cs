@@ -1,8 +1,7 @@
-using System.IO;
+﻿using System.IO;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.GameContent.Tile_Entities;
-
 public partial class TEDeadCellsDisplayJar
 {
 	public override void SaveData(TagCompound tag)

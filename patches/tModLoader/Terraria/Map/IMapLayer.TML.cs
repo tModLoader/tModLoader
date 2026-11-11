@@ -1,4 +1,4 @@
-namespace Terraria.Map;
+﻿namespace Terraria.Map;
 
 public partial interface IMapLayer
 {

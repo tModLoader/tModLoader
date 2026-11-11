@@ -277,8 +277,7 @@ public class TmodFile : IEnumerable<TmodFile.FileEntry>
 					Reopen();
 			}
 			catch {
-				try { Close(); }
-				catch { }
+				try { Close(); } catch {}
 				throw;
 			}
 		}

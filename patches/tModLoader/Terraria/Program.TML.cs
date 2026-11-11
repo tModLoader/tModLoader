@@ -282,8 +282,8 @@ public static partial class Program
 		// Moving files from 1.4.4-preview (beta) to 1.4.4-stable - August 1st 2023 steam release
 		if (BuildInfo.IsStable)
 			PortFilesFromXtoY(savePath, PreviewFolder, ReleaseFolder, maxVersionOfSource: "2023.6", isCloud, isAtomicLockable: false, migrationDay: new DateTime(2023, 9, 1));
-		// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
-		// Steam: Move files if canary file doesn't exist.
+			// Local: Files and destination folder likely exist, copying in new files is expected/desired. Rely on already migrated file (canary file) to determine if migration should happen
+			// Steam: Move files if canary file doesn't exist.
 
 		// 1.4.5_RELEASE_FLAG
 	}
@@ -356,10 +356,10 @@ public static partial class Program
 
 			SetSavePath();
 
-			if (!isServer) {
-				ModLoader.Engine.NativeLibraries.CheckNativeFAudioDependencies();
-				FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
-			}
+		    if (!isServer) {
+		    	ModLoader.Engine.NativeLibraries.CheckNativeFAudioDependencies();
+		       	FNALogging.RedirectLogs(); // Needs to run after CheckDependencies
+		    }
 		}
 		catch (Exception ex) {
 			ErrorReporting.FatalExit("An unexpected error occurred during tML startup", ex);

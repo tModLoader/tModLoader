@@ -206,7 +206,7 @@ public record struct SoundStyle
 		set {
 			if (value.minPitch > value.maxPitch)
 				throw new ArgumentException("Min pitch cannot be greater than max pitch.", nameof(value));
-
+			
 			Pitch = (value.minPitch + value.maxPitch) * 0.5f;
 			PitchVariance = value.maxPitch - value.minPitch;
 		}
@@ -315,7 +315,7 @@ public record struct SoundStyle
 
 	internal SoundStyle WithVolume(float volume)
 		=> this with { Volume = volume };
-
+	
 	internal SoundStyle WithPitchVariance(float pitchVariance)
 		=> this with { PitchVariance = pitchVariance };
 
@@ -341,7 +341,7 @@ public record struct SoundStyle
 			// Simple random.
 			return Random.Next(variants!.Length);
 		}
-
+		
 		// Weighted random.
 		totalVariantWeight ??= variantsWeights.Sum();
 

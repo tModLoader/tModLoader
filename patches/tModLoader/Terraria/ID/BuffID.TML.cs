@@ -19,7 +19,7 @@ public partial class BuffID
 			Frostburn, new List<int>() { Frostburn2 },
 			// These are not fully reciprocal. If immune to Venom, then immune to Poisoned, but not necessarily the other way.
 			Poisoned, new List<int>() { Venom } // 5
-												// Ichor, new List<int>() { BetsysCurse } // 3
+		    // Ichor, new List<int>() { BetsysCurse } // 3
 		);
 
 		static Sets()

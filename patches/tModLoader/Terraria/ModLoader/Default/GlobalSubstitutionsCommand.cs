@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -37,7 +37,7 @@ internal class GlobalSubstitutionsCommand : ModCommand
 		}
 
 		foreach (var globalSubstitution in Lang.GetGlobalSubstitutions()) {
-			if (searchTerm != null && !globalSubstitution.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) {
+			if(searchTerm != null && !globalSubstitution.Key.Contains(searchTerm, StringComparison.OrdinalIgnoreCase)) {
 				continue;
 			}
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Json;
@@ -76,8 +76,7 @@ internal static class SteamWebWrapper
 
 	private static KeyValuePair<string, string> GetKeyValuePair(string key, string value) => new KeyValuePair<string, string>(key, value);
 
-	internal static async Task<string> PostHttpsAsync(string apiEndpoint, List<KeyValuePair<string, string>> arguments)
-	{
+	internal static async Task<string> PostHttpsAsync(string apiEndpoint, List<KeyValuePair<string, string>> arguments) {
 		using HttpResponseMessage response = await _httpClient.PostAsync(
 			requestUri: apiEndpoint,
 			new FormUrlEncodedContent(arguments)

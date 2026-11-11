@@ -148,8 +148,7 @@ public static class SteamedWraps
 
 	public static async Task<GetUserItemVoteResult_t?> GetUserRating(ulong fileId)
 	{
-		if (!SteamClient)
-			return null;
+		if (!SteamClient) return null;
 
 		var ioFailure = false;
 		var result = default(GetUserItemVoteResult_t);
@@ -159,20 +158,16 @@ public static class SteamedWraps
 		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
 		while (true) {
 			CoreSocialModule.Pulse();
-			if (ioFailure)
-				return null;
-			if (result.m_eResult == EResult.k_EResultOK)
-				return result;
-			if (result.m_eResult != EResult.k_EResultNone)
-				return null;
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
 			await Task.Delay(1);
 		}
 	}
 
 	public static async Task<SetUserItemVoteResult_t?> SetUserRating(ulong fileId, bool up)
 	{
-		if (!SteamClient)
-			return null;
+		if (!SteamClient) return null;
 
 		var ioFailure = false;
 		var result = default(SetUserItemVoteResult_t);
@@ -182,12 +177,9 @@ public static class SteamedWraps
 		// Since Gameserver doesn't have user ratings, we use CoreSocialModule.Pulse() instead of SteamedWraps.RunCallbacks().
 		while (true) {
 			CoreSocialModule.Pulse();
-			if (ioFailure)
-				return null;
-			if (result.m_eResult == EResult.k_EResultOK)
-				return result;
-			if (result.m_eResult != EResult.k_EResultNone)
-				return null;
+			if (ioFailure) return null;
+			if (result.m_eResult == EResult.k_EResultOK) return result;
+			if (result.m_eResult != EResult.k_EResultNone) return null;
 			await Task.Delay(1);
 		}
 	}
@@ -395,7 +387,7 @@ public static class SteamedWraps
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 			SteamUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 		}
-		else if (SteamAvailable) {
+		else if (SteamAvailable){
 			SteamGameServerUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumUniqueSubscriptions, out downloads);
 			SteamGameServerUGC.GetQueryUGCStatistic(handle, index, EItemStatistic.k_EItemStatistic_NumSecondsPlayedDuringTimePeriod, out hot); //Temp: based on how often being played lately?
 		}

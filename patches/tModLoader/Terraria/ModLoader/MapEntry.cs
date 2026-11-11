@@ -14,7 +14,7 @@ public struct MapEntry
 	{
 		this.color = color;
 		this.name = name == null ? LocalizedText.Empty : name;
-
+		
 		this.getName = getName == null ? sameName : getName;
 	}
 

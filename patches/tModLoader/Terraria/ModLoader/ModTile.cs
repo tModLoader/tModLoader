@@ -75,8 +75,7 @@ public abstract class ModTile : ModTileOrWall
 	/// </summary>
 	/// <param name="itemType"></param>
 	/// <param name="tileStyles"></param>
-	public void RegisterItemDrop(int itemType, params int[] tileStyles)
-	{
+	public void RegisterItemDrop(int itemType, params int[] tileStyles) {
 		// Runs before TileLoader.FinishSetup
 		if (tileStyles == null || tileStyles.Length == 0) {
 			TileLoader.tileTypeAndTileStyleToItemType[(Type, -1)] = itemType;

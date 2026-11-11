@@ -1,4 +1,4 @@
-using System.Linq;
+﻿using System.Linq;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.IO;

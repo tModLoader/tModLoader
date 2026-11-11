@@ -412,7 +412,7 @@ public static class AssemblyManager
 	/// <param name="assembly">Assembly to load type from</param>
 	/// <param name="type">Target type to get</param>
 	/// <returns></returns>
-#nullable enable
+	#nullable enable
 	private static Type? GetType(Assembly assembly, Type type) {
 		try {
 			return assembly.GetType(type.FullName, throwOnError: true, ignoreCase: false);
@@ -422,7 +422,7 @@ public static class AssemblyManager
 			throw;
 		}
 	}
-#nullable disable
+	#nullable disable
 
 	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);

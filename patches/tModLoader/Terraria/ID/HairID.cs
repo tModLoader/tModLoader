@@ -1,8 +1,7 @@
-using ReLogic.Reflection;
+﻿using ReLogic.Reflection;
 using Terraria.ModLoader;
 
 namespace Terraria.ID;
-
 public class HairID
 {
 	public class Sets

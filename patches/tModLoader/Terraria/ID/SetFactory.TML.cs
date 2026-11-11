@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -199,8 +199,7 @@ public partial class SetFactory
 		namedSets.Clear();
 	}
 
-	public BoolListSet CreateBoolListSet(params int[] types)
-	{
+	public BoolListSet CreateBoolListSet(params int[] types) {
 		var set = new BoolListSet(_size);
 		foreach (var t in types)
 			set[t] = true;

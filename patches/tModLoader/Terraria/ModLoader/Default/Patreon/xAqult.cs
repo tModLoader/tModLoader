@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
@@ -10,37 +10,33 @@ namespace Terraria.ModLoader.Default.Patreon
 {
 	[AutoloadEquip(EquipType.Head)]
 	internal class xAqult_Head : PatreonItem
-	{
+    {
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.width = 22;
 			Item.height = 10;
 		}
-	}
+    }
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class xAqult_Body : PatreonItem
 	{
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.width = 34;
@@ -53,8 +49,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.width = 22;
@@ -75,8 +70,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_Scar_{EquipType.Head}", EquipType.Head, name: $"{Name}_Scar");
 		}*/
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.width = 30;
@@ -89,8 +83,7 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
-		public override void Load()
-		{
+		public override void Load() {
 			if (Main.netMode == NetmodeID.Server) {
 				return;
 			}
@@ -98,8 +91,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_Blue_{EquipType.Face}", EquipType.Face, name: $"{Name}_Blue");
 		}
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
 			if (Main.netMode == NetmodeID.Server) {
@@ -110,8 +102,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			ArmorIDs.Face.Sets.DrawInFaceUnderHairLayer[EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face)] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.width = 18;
@@ -125,15 +116,13 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
 
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			base.SetStaticDefaults();
 
 			ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			base.SetDefaults();
 
 			Item.vanity = false;
@@ -145,8 +134,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 	internal class xAqultPlayer : ModPlayer
 	{
-		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo)
-		{
+		public override void ModifyDrawInfo(ref PlayerDrawSet drawInfo) {
 			if (Player.head == EquipLoader.GetEquipSlot(Mod, "xAqult_Mask", EquipType.Head)) {
 				if (Player.face < 0) {
 					drawInfo.drawPlayer.face = EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face);
@@ -163,19 +151,16 @@ namespace Terraria.ModLoader.Default.Patreon
 
 	internal class xAqultFaceLayer : PlayerDrawLayer
 	{
-		public override Position GetDefaultPosition()
-		{
+		public override Position GetDefaultPosition() {
 			return new AfterParent(PlayerDrawLayers.Head);
 		}
 
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
-		{
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
 			return drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens", EquipType.Face)
 				|| drawInfo.drawPlayer.face == EquipLoader.GetEquipSlot(Mod, "xAqult_Lens_Blue", EquipType.Face);
 		}
 
-		protected override void Draw(ref PlayerDrawSet drawInfo)
-		{
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			int insertIndex = -1;
 			for (int k = 0; k < drawInfo.DrawDataCache.Count; k++) {
 				if (drawInfo.DrawDataCache[k].texture == TextureAssets.Players[drawInfo.skinVar, 2].Value) {
@@ -209,28 +194,25 @@ namespace Terraria.ModLoader.Default.Patreon
 	}
 
 	internal class xAqultWingLayer : PlayerDrawLayer
-	{
-		public override Position GetDefaultPosition()
-		{
+    {
+		public override Position GetDefaultPosition() {
 			return new AfterParent(PlayerDrawLayers.Wings);
-		}
+        }
 
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
-		{
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
 			return drawInfo.drawPlayer.wings == EquipLoader.GetEquipSlot(Mod, "xAqult_Wings", EquipType.Wings);
 		}
 
-		protected override void Draw(ref PlayerDrawSet drawInfo)
-		{
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
 			if (drawInfo.drawPlayer.dead) {
 				return;
-			}
+            }
 			DrawData? wingData = null;
 			foreach (DrawData data in drawInfo.DrawDataCache) {
 				if (data.texture == ModContent.Request<Texture2D>("ModLoader/Patreon.xAqult_Wings_Wings", AssetRequestMode.ImmediateLoad).Value) {
 					wingData = data;
-				}
-			}
+                }
+            }
 			if (wingData.HasValue) {
 				DrawData glow = new DrawData(
 					texture: ModContent.Request<Texture2D>("ModLoader/Patreon.xAqult_Wings_Wings_Glow", AssetRequestMode.ImmediateLoad).Value,
@@ -246,6 +228,6 @@ namespace Terraria.ModLoader.Default.Patreon
 				glow.shader = wingData.Value.shader;
 				drawInfo.DrawDataCache.Add(glow);
 			}
-		}
-	}
+        }
+    }
 }

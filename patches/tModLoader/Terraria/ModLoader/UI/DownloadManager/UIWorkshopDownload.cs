@@ -76,8 +76,7 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.reset = true;
 
 			needToUpdateProgressData = true;
-		}
-		;
+		};
 	}
 
 	/**
@@ -92,7 +91,6 @@ internal class UIWorkshopDownload : UIProgress, IDownloadProgress
 			progressData.totalBytesNeeded = totalBytesNeeded;
 
 			needToUpdateProgressData = true;
-		}
-		;
+		};
 	}
 }

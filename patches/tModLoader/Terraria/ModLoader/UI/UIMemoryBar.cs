@@ -57,8 +57,7 @@ internal class UIMemoryBar : UIElement
 
 	protected override void DrawSelf(SpriteBatch spriteBatch)
 	{
-		if (RecalculateMemoryNeeded)
-			return;
+		if (RecalculateMemoryNeeded) return;
 
 		var rectangle = GetInnerDimensions().ToRectangle();
 

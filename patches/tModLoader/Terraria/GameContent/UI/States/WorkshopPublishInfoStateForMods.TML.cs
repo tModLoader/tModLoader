@@ -149,7 +149,7 @@ public class WorkshopPublishInfoStateForMods : AWorkshopPublishInfoState<TmodFil
 		ShowOptionDescription(evt, listeningElement);
 	}
 
-	private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) => SteamedWraps.ShowWorkshopEula();
+	private void TmlDisclaimerText_OnClick(UIMouseEvent evt, UIElement listeningElement) =>	SteamedWraps.ShowWorkshopEula();
 
 	public override void OnInitialize()
 	{

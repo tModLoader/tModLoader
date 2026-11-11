@@ -1,8 +1,7 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader.Default;
-
 public sealed class UnloadedPrefix : ModPrefix
 {
 	public override LocalizedText DisplayName => LocalizedText.Empty;

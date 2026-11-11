@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
@@ -17,8 +17,7 @@ public abstract class VanillaBuilderToggle : BuilderToggle
 	public override int NumberOfStates => 2;
 	public override string DisplayValue() => "";
 
-	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		drawParams.Color = CurrentState == 0 ? Color.White : new Color(127, 127, 127);
 		drawParams.Frame = Type < 10 ? new Rectangle(Type * 16, 16, 14, 14) : drawParams.Frame;
 		return true;
@@ -29,8 +28,7 @@ public class RulerLineBuilderToggle : VanillaBuilderToggle
 {
 	public override bool Active() => Main.player[Main.myPlayer].rulerLine;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -49,8 +47,7 @@ public class RulerGridBuilderToggle : VanillaBuilderToggle
 {
 	public override bool Active() => Main.player[Main.myPlayer].rulerGrid;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -69,8 +66,7 @@ public class AutoActuateBuilderToggle : VanillaBuilderToggle
 {
 	public override bool Active() => Main.player[Main.myPlayer].autoActuator;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -89,8 +85,7 @@ public class AutoPaintBuilderToggle : VanillaBuilderToggle
 {
 	public override bool Active() => Main.player[Main.myPlayer].autoPaint;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -111,8 +106,7 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 	public override int NumberOfStates => 3;
 	public override bool Active() => Main.player[Main.myPlayer].InfoAccMechShowWires;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (Type) {
 			case 4:
@@ -151,8 +145,7 @@ public abstract class WireVisibilityBuilderToggle : VanillaBuilderToggle
 		return $"{text}: {text2}";
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		base.Draw(spriteBatch, ref drawParams);
 		drawParams.Color = default;
 		switch (CurrentState) {
@@ -185,8 +178,7 @@ public class HideAllWiresBuilderToggle : WireVisibilityBuilderToggle
 {
 	public override int NumberOfStates => 2;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -209,8 +201,7 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 	public override string HoverTexture => "Terraria/Images/UI/BlockReplace_0";
 	public override bool Active() => true;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -224,24 +215,21 @@ public class BlockSwapBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		drawParams.Color = Color.White;
 		drawParams.Frame = drawParams.Texture.Frame(3, 1, CurrentState == 0 ? 0 : 1);
 		drawParams.Position += new Vector2(1, 0);
 		return true;
 	}
 
-	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		drawParams.Frame = drawParams.Texture.Frame(3, 1, 2);
 		drawParams.Position += new Vector2(1, 0);
 		drawParams.Scale = 0.9f;
 		return true;
 	}
 
-	public override bool OnLeftClick(ref SoundStyle? sound)
-	{
+	public override bool OnLeftClick(ref SoundStyle? sound) {
 		sound = SoundID.Unlock;
 		return true;
 	}
@@ -253,8 +241,7 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 	public override string HoverTexture => "Terraria/Images/Extra_211";
 	public override bool Active() => Main.player[Main.myPlayer].unlockedBiomeTorches;
 
-	public override string DisplayValue()
-	{
+	public override string DisplayValue() {
 		string text = "";
 		switch (CurrentState) {
 			case 0:
@@ -268,24 +255,21 @@ public class TorchBiomeBuilderToggle : VanillaBuilderToggle
 		return text;
 	}
 
-	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool Draw(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		drawParams.Color = Color.White;
 		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 1 : 0);
 		drawParams.Position += new Vector2(1, 0);
 		return true;
 	}
 
-	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams)
-	{
+	public override bool DrawHover(SpriteBatch spriteBatch, ref BuilderToggleDrawParams drawParams) {
 		drawParams.Frame = drawParams.Texture.Frame(4, 1, CurrentState == 0 ? 3 : 2);
 		drawParams.Position += new Vector2(1, 0);
 		drawParams.Scale = 0.9f;
 		return true;
 	}
 
-	public override bool OnLeftClick(ref SoundStyle? sound)
-	{
+	public override bool OnLeftClick(ref SoundStyle? sound) {
 		sound = SoundID.Unlock;
 		return true;
 	}

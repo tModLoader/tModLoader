@@ -45,12 +45,12 @@ internal static class InstallVerifier
 	private readonly static Dictionary<string, RuntimeVerifierMetadata> runtimeMetadataLookup = new Dictionary<string, RuntimeVerifierMetadata>() {
 		{"win-x86", new RuntimeVerifierMetadata {
 			// Included for completeness
-			tMLSteamApiFileName= "/libsteam_api.dll", tMLSteamApiHash=ToByteArray("46ac40df9f50026772f50ae1cab3d819"),
+			tMLSteamApiFileName= "/libsteam_api.dll", tMLSteamApiHash=ToByteArray("46ac40df9f50026772f50ae1cab3d819"), 
 			vanillaSteamApiFileName="steam_api.dll", vanillaSteamApiHash=ToByteArray("1ea72236140aafb8737e5664557266c3"),
 			gogHash=ToByteArray("18013fe58e2b64be3ed0d7b7161c6800")}
 		},
 		{"win-x64", new RuntimeVerifierMetadata {
-			tMLSteamApiFileName= "/steam_api64.dll", tMLSteamApiHash=ToByteArray("c61c81530e1b48a0ae8c35c789d35bf3"),
+			tMLSteamApiFileName= "/steam_api64.dll", tMLSteamApiHash=ToByteArray("c61c81530e1b48a0ae8c35c789d35bf3"), 
 			vanillaSteamApiFileName="steam_api.dll", vanillaSteamApiHash=ToByteArray("1ea72236140aafb8737e5664557266c3"),
 			gogHash=ToByteArray("18013fe58e2b64be3ed0d7b7161c6800")}
 		},
@@ -290,7 +290,8 @@ internal static class InstallVerifier
 	// Check if GOG install is correct
 	private static void CheckGoG()
 	{
-		if (!HashMatchesFile(vanillaExePath, runtimeMetadataLookup[portableRid].gogHash)) {
+		if (!HashMatchesFile(vanillaExePath, runtimeMetadataLookup[portableRid].gogHash))
+		{
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.GOGHashMismatch", vanillaExePath, TerrariaVersion, CheckExe));
 		}
 

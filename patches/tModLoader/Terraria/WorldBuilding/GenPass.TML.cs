@@ -1,4 +1,4 @@
-namespace Terraria.WorldBuilding;
+﻿namespace Terraria.WorldBuilding;
 
 partial class GenPass
 {

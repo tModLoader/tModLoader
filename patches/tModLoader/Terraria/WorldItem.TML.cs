@@ -1,7 +1,6 @@
-using Terraria.ModLoader;
+﻿using Terraria.ModLoader;
 
 namespace Terraria;
-
 public partial class WorldItem
 {
 	public bool master => inner.master;

@@ -70,8 +70,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 	{
 		if (enumerable is not null) {
 			SetProvider(new(enumerable));
-		}
-		else {
+		} else {
 			SetProvider(null);
 		}
 	}
@@ -117,8 +116,7 @@ public abstract class UIAsyncList<TResource, TUIElement> : UIList where TUIEleme
 		State = state;
 		if (State.IsFinished()) {
 			OnFinished(State, Provider?.Exception);
-		}
-		else {
+		} else {
 			OnStartLoading(State);
 		}
 	}

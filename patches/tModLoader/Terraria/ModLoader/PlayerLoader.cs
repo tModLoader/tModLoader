@@ -143,8 +143,7 @@ public static class PlayerLoader
 	public static void UpdateDead(Player player)
 	{
 		foreach (var modPlayer in HookUpdateDead.Enumerate(player)) {
-			try { modPlayer.UpdateDead(); }
-			catch { }
+			try { modPlayer.UpdateDead(); } catch { }
 		}
 	}
 
@@ -193,8 +192,7 @@ public static class PlayerLoader
 	public static void CopyClientState(Player player, Player targetCopy)
 	{
 		foreach (var modPlayer in HookCopyClientState.Enumerate(player)) {
-			try { modPlayer.CopyClientState(targetCopy.modPlayers[modPlayer.Index]); }
-			catch { }
+			try { modPlayer.CopyClientState(targetCopy.modPlayers[modPlayer.Index]); } catch { }
 		}
 	}
 
@@ -203,8 +201,7 @@ public static class PlayerLoader
 	public static void SyncPlayer(Player player, int toWho, int fromWho, bool newPlayer)
 	{
 		foreach (var modPlayer in HookSyncPlayer.Enumerate(player)) {
-			try { modPlayer.SyncPlayer(toWho, fromWho, newPlayer); }
-			catch { }
+			try { modPlayer.SyncPlayer(toWho, fromWho, newPlayer); } catch { }
 		}
 	}
 
@@ -213,8 +210,7 @@ public static class PlayerLoader
 	public static void SendClientChanges(Player player, Player clientPlayer)
 	{
 		foreach (var modPlayer in HookSendClientChanges.Enumerate(player)) {
-			try { modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index]); }
-			catch { }
+			try { modPlayer.SendClientChanges(clientPlayer.modPlayers[modPlayer.Index]); } catch { }
 		}
 	}
 
@@ -223,8 +219,7 @@ public static class PlayerLoader
 	public static void UpdateBadLifeRegen(Player player)
 	{
 		foreach (var modPlayer in HookUpdateBadLifeRegen.Enumerate(player)) {
-			try { modPlayer.UpdateBadLifeRegen(); }
-			catch { }
+			try { modPlayer.UpdateBadLifeRegen(); } catch { }
 		}
 	}
 
@@ -233,8 +228,7 @@ public static class PlayerLoader
 	public static void UpdateLifeRegen(Player player)
 	{
 		foreach (var modPlayer in HookUpdateLifeRegen.Enumerate(player)) {
-			try { modPlayer.UpdateLifeRegen(); }
-			catch { }
+			try { modPlayer.UpdateLifeRegen(); } catch { }
 		}
 	}
 
@@ -244,8 +238,7 @@ public static class PlayerLoader
 	public static void NaturalLifeRegen(Player player, ref float regen)
 	{
 		foreach (var modPlayer in HookNaturalLifeRegen.Enumerate(player)) {
-			try { modPlayer.NaturalLifeRegen(ref regen); }
-			catch { }
+			try { modPlayer.NaturalLifeRegen(ref regen); } catch { }
 		}
 	}
 
@@ -263,8 +256,7 @@ public static class PlayerLoader
 	public static void PreUpdate(Player player)
 	{
 		foreach (var modPlayer in HookPreUpdate.Enumerate(player)) {
-			try { modPlayer.PreUpdate(); }
-			catch { }
+			try { modPlayer.PreUpdate(); } catch { }
 		}
 	}
 
@@ -273,8 +265,7 @@ public static class PlayerLoader
 	public static void SetControls(Player player)
 	{
 		foreach (var modPlayer in HookSetControls.Enumerate(player)) {
-			try { modPlayer.SetControls(); }
-			catch { }
+			try { modPlayer.SetControls(); } catch { }
 		}
 	}
 
@@ -283,8 +274,7 @@ public static class PlayerLoader
 	public static void PreUpdateBuffs(Player player)
 	{
 		foreach (var modPlayer in HookPreUpdateBuffs.Enumerate(player)) {
-			try { modPlayer.PreUpdateBuffs(); }
-			catch { }
+			try { modPlayer.PreUpdateBuffs(); } catch { }
 		}
 	}
 
@@ -293,8 +283,7 @@ public static class PlayerLoader
 	public static void PostUpdateBuffs(Player player)
 	{
 		foreach (var modPlayer in HookPostUpdateBuffs.Enumerate(player)) {
-			try { modPlayer.PostUpdateBuffs(); }
-			catch { }
+			try { modPlayer.PostUpdateBuffs(); } catch { }
 		}
 	}
 
@@ -304,8 +293,7 @@ public static class PlayerLoader
 	public static void UpdateEquips(Player player)
 	{
 		foreach (var modPlayer in HookUpdateEquips.Enumerate(player)) {
-			try { modPlayer.UpdateEquips(); }
-			catch { }
+			try { modPlayer.UpdateEquips(); } catch { }
 		}
 	}
 
@@ -314,8 +302,7 @@ public static class PlayerLoader
 	public static void PostUpdateEquips(Player player)
 	{
 		foreach (var modPlayer in HookPostUpdateEquips.Enumerate(player)) {
-			try { modPlayer.PostUpdateEquips(); }
-			catch { }
+			try { modPlayer.PostUpdateEquips(); } catch { }
 		}
 	}
 
@@ -324,8 +311,7 @@ public static class PlayerLoader
 	public static void UpdateVisibleAccessories(Player player)
 	{
 		foreach (var modPlayer in HookUpdateVisibleAccessories.Enumerate(player)) {
-			try { modPlayer.UpdateVisibleAccessories(); }
-			catch { }
+			try { modPlayer.UpdateVisibleAccessories(); } catch { }
 		}
 	}
 
@@ -334,8 +320,7 @@ public static class PlayerLoader
 	public static void UpdateVisibleVanityAccessories(Player player)
 	{
 		foreach (var modPlayer in HookUpdateVisibleVanityAccessories.Enumerate(player)) {
-			try { modPlayer.UpdateVisibleVanityAccessories(); }
-			catch { }
+			try { modPlayer.UpdateVisibleVanityAccessories(); } catch { }
 		}
 	}
 
@@ -344,8 +329,7 @@ public static class PlayerLoader
 	public static void UpdateDyes(Player player)
 	{
 		foreach (var modPlayer in HookUpdateDyes.Enumerate(player)) {
-			try { modPlayer.UpdateDyes(); }
-			catch { }
+			try { modPlayer.UpdateDyes(); } catch { }
 		}
 	}
 
@@ -354,8 +338,7 @@ public static class PlayerLoader
 	public static void PostUpdateMiscEffects(Player player)
 	{
 		foreach (var modPlayer in HookPostUpdateMiscEffects.Enumerate(player)) {
-			try { modPlayer.PostUpdateMiscEffects(); }
-			catch { }
+			try { modPlayer.PostUpdateMiscEffects(); } catch { }
 		}
 	}
 
@@ -364,8 +347,7 @@ public static class PlayerLoader
 	public static void PostUpdateRunSpeeds(Player player)
 	{
 		foreach (var modPlayer in HookPostUpdateRunSpeeds.Enumerate(player)) {
-			try { modPlayer.PostUpdateRunSpeeds(); }
-			catch { }
+			try { modPlayer.PostUpdateRunSpeeds(); } catch { }
 		}
 	}
 
@@ -374,8 +356,7 @@ public static class PlayerLoader
 	public static void PreUpdateMovement(Player player)
 	{
 		foreach (var modPlayer in HookPreUpdateMovement.Enumerate(player)) {
-			try { modPlayer.PreUpdateMovement(); }
-			catch { }
+			try { modPlayer.PreUpdateMovement(); } catch { }
 		}
 	}
 
@@ -384,8 +365,7 @@ public static class PlayerLoader
 	public static void PostUpdate(Player player)
 	{
 		foreach (var modPlayer in HookPostUpdate.Enumerate(player)) {
-			try { modPlayer.PostUpdate(); }
-			catch { }
+			try { modPlayer.PostUpdate(); } catch { }
 		}
 	}
 
@@ -395,8 +375,7 @@ public static class PlayerLoader
 	public static void ModifyExtraJumpDurationMultiplier(ExtraJump jump, Player player, ref float duration)
 	{
 		foreach (var modPlayer in HookModifyExtraJumpDurationMultiplier.Enumerate(player)) {
-			try { modPlayer.ModifyExtraJumpDurationMultiplier(jump, ref duration); }
-			catch { }
+			try { modPlayer.ModifyExtraJumpDurationMultiplier(jump, ref duration); } catch { }
 		}
 	}
 
@@ -408,8 +387,7 @@ public static class PlayerLoader
 			try {
 				if (!modPlayer.CanStartExtraJump(jump))
 					return false;
-			}
-			catch { }
+			} catch { }
 		}
 
 		return true;
@@ -421,8 +399,7 @@ public static class PlayerLoader
 	public static void OnExtraJumpStarted(ExtraJump jump, Player player, ref bool playSound)
 	{
 		foreach (var modPlayer in HookOnExtraJumpStarted.Enumerate(player)) {
-			try { modPlayer.OnExtraJumpStarted(jump, ref playSound); }
-			catch { }
+			try { modPlayer.OnExtraJumpStarted(jump, ref playSound); } catch { }
 		}
 	}
 
@@ -431,8 +408,7 @@ public static class PlayerLoader
 	public static void OnExtraJumpEnded(ExtraJump jump, Player player)
 	{
 		foreach (var modPlayer in HookOnExtraJumpEnded.Enumerate(player)) {
-			try { modPlayer.OnExtraJumpEnded(jump); }
-			catch { }
+			try { modPlayer.OnExtraJumpEnded(jump); } catch { }
 		}
 	}
 
@@ -441,8 +417,7 @@ public static class PlayerLoader
 	public static void OnExtraJumpRefreshed(ExtraJump jump, Player player)
 	{
 		foreach (var modPlayer in HookOnExtraJumpRefreshed.Enumerate(player)) {
-			try { modPlayer.OnExtraJumpRefreshed(jump); }
-			catch { }
+			try { modPlayer.OnExtraJumpRefreshed(jump); } catch { }
 		}
 	}
 
@@ -451,8 +426,7 @@ public static class PlayerLoader
 	public static void ExtraJumpVisuals(ExtraJump jump, Player player)
 	{
 		foreach (var modPlayer in HookExtraJumpVisuals.Enumerate(player)) {
-			try { modPlayer.ExtraJumpVisuals(jump); }
-			catch { }
+			try { modPlayer.ExtraJumpVisuals(jump); } catch { }
 		}
 	}
 
@@ -464,8 +438,7 @@ public static class PlayerLoader
 			try {
 				if (!modPlayer.CanShowExtraJumpVisuals(jump))
 					return false;
-			}
-			catch { }
+			} catch { }
 		}
 
 		return true;
@@ -476,8 +449,7 @@ public static class PlayerLoader
 	public static void FrameEffects(Player player)
 	{
 		foreach (var modPlayer in HookFrameEffects.Enumerate(player)) {
-			try { modPlayer.FrameEffects(); }
-			catch { }
+			try { modPlayer.FrameEffects(); } catch { }
 		}
 	}
 
@@ -535,8 +507,7 @@ public static class PlayerLoader
 		}
 
 		foreach (var modPlayer in HookModifyHurt.Enumerate(player)) {
-			try { modPlayer.ModifyHurt(ref modifiers); }
-			catch { }
+			try { modPlayer.ModifyHurt(ref modifiers); } catch { }
 		}
 	}
 
@@ -591,8 +562,7 @@ public static class PlayerLoader
 	public static void Kill(Player player, double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
 	{
 		foreach (var modPlayer in HookKill.Enumerate(player)) {
-			try { modPlayer.Kill(damage, hitDirection, pvp, damageSource); }
-			catch { }
+			try { modPlayer.Kill(damage, hitDirection, pvp, damageSource); } catch { }
 		}
 	}
 
@@ -624,8 +594,7 @@ public static class PlayerLoader
 	{
 		bool ret = true;
 		foreach (var modPlayer in HookPreItemCheck.Enumerate(player)) {
-			try { ret &= modPlayer.PreItemCheck(); }
-			catch { }
+			try { ret &= modPlayer.PreItemCheck(); } catch { }
 		}
 		return ret;
 	}
@@ -635,8 +604,7 @@ public static class PlayerLoader
 	public static void PostItemCheck(Player player)
 	{
 		foreach (var modPlayer in HookPostItemCheck.Enumerate(player)) {
-			try { modPlayer.PostItemCheck(); }
-			catch { }
+			try { modPlayer.PostItemCheck(); } catch { }
 		}
 	}
 
@@ -785,8 +753,7 @@ public static class PlayerLoader
 	public static void ProcessTriggers(Player player, TriggersSet triggersSet)
 	{
 		foreach (var modPlayer in HookProcessTriggers.Enumerate(player)) {
-			try { modPlayer.ProcessTriggers(triggersSet); }
-			catch { }
+			try { modPlayer.ProcessTriggers(triggersSet); }	catch { }
 		}
 	}
 
@@ -808,8 +775,7 @@ public static class PlayerLoader
 
 	public static void ModifyWeaponCrit(Player player, Item item, ref float crit)
 	{
-		if (item.IsAir)
-			return;
+		if (item.IsAir) return;
 		foreach (var modPlayer in HookModifyWeaponCrit.Enumerate(player)) {
 			modPlayer.ModifyWeaponCrit(item, ref crit);
 		}
@@ -1232,8 +1198,7 @@ public static class PlayerLoader
 		var player = drawInfo.drawPlayer;
 
 		foreach (var modPlayer in HookDrawEffects.Enumerate(player)) {
-			try { modPlayer.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright); }
-			catch { }
+			try { modPlayer.DrawEffects(drawInfo, ref r, ref g, ref b, ref a, ref fullBright); } catch { }
 		}
 	}
 
@@ -1245,8 +1210,7 @@ public static class PlayerLoader
 		var player = drawInfo.drawPlayer;
 
 		foreach (var modPlayer in HookModifyDrawInfo.Enumerate(player)) {
-			try { modPlayer.ModifyDrawInfo(ref drawInfo); }
-			catch { }
+			try { modPlayer.ModifyDrawInfo(ref drawInfo); } catch { }
 		}
 	}
 
@@ -1268,8 +1232,7 @@ public static class PlayerLoader
 	public static void ModifyDrawLayerOrdering(IDictionary<PlayerDrawLayer, PlayerDrawLayer.Position> positions)
 	{
 		foreach (var modPlayer in HookModifyDrawLayerOrdering.Enumerate()) {
-			try { modPlayer.ModifyDrawLayerOrdering(positions); }
-			catch { }
+			try { modPlayer.ModifyDrawLayerOrdering(positions); } catch { }
 		}
 	}
 
@@ -1280,8 +1243,7 @@ public static class PlayerLoader
 		var player = drawInfo.drawPlayer;
 
 		foreach (var modPlayer in HookModifyDrawLayers.Enumerate(player)) {
-			try { modPlayer.HideDrawLayers(drawInfo); }
-			catch { }
+			try { modPlayer.HideDrawLayers(drawInfo); } catch { }
 		}
 	}
 
@@ -1290,8 +1252,7 @@ public static class PlayerLoader
 	public static void ModifyScreenPosition(Player player)
 	{
 		foreach (var modPlayer in HookModifyScreenPosition.Enumerate(player)) {
-			try { modPlayer.ModifyScreenPosition(); }
-			catch { }
+			try { modPlayer.ModifyScreenPosition(); } catch { }
 		}
 	}
 
@@ -1301,8 +1262,7 @@ public static class PlayerLoader
 	public static void ModifyZoom(Player player, ref float panFactor, ref bool needsMouseRight)
 	{
 		foreach (var modPlayer in HookModifyZoom.Enumerate(player)) {
-			try { modPlayer.ModifyZoom(ref panFactor, ref needsMouseRight); }
-			catch { }
+			try { modPlayer.ModifyZoom(ref panFactor, ref needsMouseRight); } catch { }
 		}
 	}
 
@@ -1342,8 +1302,7 @@ public static class PlayerLoader
 	public static void OnRespawn(Player player)
 	{
 		foreach (var modPlayer in HookOnRespawn.Enumerate(player)) {
-			try { modPlayer.OnRespawn(); }
-			catch { }
+			try { modPlayer.OnRespawn(); } catch { }
 		}
 	}
 
@@ -1567,8 +1526,7 @@ public static class PlayerLoader
 
 	private static HookList HookDrawPlayer = AddHook<Action<Camera>>(p => p.DrawPlayer);
 
-	public static void DrawPlayer(Player player, Camera camera)
-	{
+	public static void DrawPlayer(Player player, Camera camera) {
 		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
 			modPlayer.DrawPlayer(camera);
 		}

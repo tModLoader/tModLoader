@@ -1,4 +1,4 @@
-using Terraria.GameContent.Liquid;
+﻿using Terraria.GameContent.Liquid;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Default;

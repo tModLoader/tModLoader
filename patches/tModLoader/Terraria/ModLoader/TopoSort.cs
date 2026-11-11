@@ -47,8 +47,7 @@ public class TopoSort<T>
 			dependencyDict[dependent] = list = new List<T>();
 		list.Add(dependency);
 
-		if (!dependentDict.TryGetValue(dependency, out list))
-			dependentDict[dependency] = list = new List<T>();
+		if (!dependentDict.TryGetValue(dependency, out list)) dependentDict[dependency] = list = new List<T>();
 		list.Add(dependent);
 	}
 

@@ -91,8 +91,7 @@ internal class EnumElement : RangeElement
 		return valueStrings[index];
 	}
 
-	public override void Draw(SpriteBatch spriteBatch)
-	{
+	public override void Draw(SpriteBatch spriteBatch) {
 		base.Draw(spriteBatch);
 
 		if (IngameOptions.inBar) {

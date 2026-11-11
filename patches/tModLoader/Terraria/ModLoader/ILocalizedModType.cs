@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using Terraria.Localization;
 
 namespace Terraria.ModLoader;
