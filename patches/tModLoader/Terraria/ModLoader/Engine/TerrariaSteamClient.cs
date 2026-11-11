@@ -104,8 +104,14 @@ internal class TerrariaSteamClient
 
 		SendCmd(MsgAck);
 
-		// We put a Thread.Sleep here since there were ~5-10% users with issues with the steam current game reporting Terraria rather than tModLoader
-		Thread.Sleep(300);
+		// We put a Thread.Sleep here since there were ~5-10% Windows users with issues with the steam current game reporting Terraria rather than tModLoader
+		// This issue also affects linux heavily
+		if (int.TryParse(Environment.GetEnvironmentVariable("TERRARIA_EXIT_WAIT_TIME"), out int terrariaClientExitWaitTime) && terrariaClientExitWaitTime > 0) {
+			Logger.Debug($"Terraria_Exit_Wait_Time environment variable specified. Used {terrariaClientExitWaitTime}ms default");
+			Thread.Sleep(terrariaClientExitWaitTime);
+		} else {
+			Thread.Sleep(300);
+		}
 
 		return LaunchResult.Ok;
 	}
