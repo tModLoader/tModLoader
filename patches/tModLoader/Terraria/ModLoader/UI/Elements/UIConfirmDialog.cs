@@ -46,7 +46,6 @@ public class UIConfirmDialog : UIElement
 			Color = Color.Black * 0.5f,
 			ScaleToFit = true,
 		};
-
 		blockInput.OnLeftMouseDown += (_, _) => Close();
 		Append(blockInput);
 
@@ -58,7 +57,6 @@ public class UIConfirmDialog : UIElement
 			BackgroundColor = new Color(63, 82, 151),
 			BorderColor = Color.Black,
 		}.WithPadding(6f);
-
 		Append(dialog);
 
 		var confirmText = new UIText(ConfirmText) {
@@ -67,16 +65,17 @@ public class UIConfirmDialog : UIElement
 			VAlign = ShowYesDontShowAgainButton ? 0.2f : 0.3f,
 			IsWrapped = true,
 		};
-
 		dialog.Append(confirmText);
 
 		if (SubText != null) {
+			Recalculate();
+
 			var subText = new UIText(SubText) {
-				Width = { Percent = 0.75f },
-				HAlign = 0.5f,
-				VAlign = ShowYesDontShowAgainButton ? 0.3f : 0.4f,
 				IsWrapped = true,
 			};
+
+			subText.CopyStyle(confirmText);
+			subText.Top.Pixels = confirmText.MinHeight.Pixels;
 			dialog.Append(subText);
 		}
 
@@ -87,11 +86,11 @@ public class UIConfirmDialog : UIElement
 			VAlign = ShowYesDontShowAgainButton ? 0.6f : 0.85f,
 			HAlign = 0.15f,
 		}.WithFadedMouseOver();
+		dialog.Append(yesButton);
 		yesButton.OnLeftClick += Close;
+
 		if (YesAction != null)
 			yesButton.OnLeftClick += YesAction;
-
-		dialog.Append(yesButton);
 
 		var noButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
 			TextColor = Color.White,
@@ -100,29 +99,31 @@ public class UIConfirmDialog : UIElement
 			VAlign = ShowYesDontShowAgainButton ? 0.6f : 0.85f,
 			HAlign = 0.85f,
 		}.WithFadedMouseOver();
+		dialog.Append(noButton);
 		noButton.OnLeftClick += Close;
+
 		if (NoAction != null)
 			yesButton.OnLeftClick += NoAction;
 
-		dialog.Append(noButton);
+		if (ShowYesDontShowAgainButton) {
+			var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
+				TextColor = Color.White,
+				Width = new StyleDimension(0f, 2f / 3f),
+				Height = { Pixels = 40 },
+				VAlign = 0.95f,
+				HAlign = 0.5f,
+			}.WithFadedMouseOver();
+			dialog.Append(yesDontAskAgainButton);
+			yesDontAskAgainButton.OnLeftClick += Close;
 
-		if (!ShowYesDontShowAgainButton)
-			return;
+			if (YesAction != null)
+				yesDontAskAgainButton.OnLeftClick += YesAction;
 
-		var yesDontAskAgainButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("tModLoader.YesDontAskAgain")) {
-			TextColor = Color.White,
-			Width = new StyleDimension(0f, 2f / 3f),
-			Height = { Pixels = 40 },
-			VAlign = 0.95f,
-			HAlign = 0.5f,
-		}.WithFadedMouseOver();
-		yesDontAskAgainButton.OnLeftClick += Close;
-		if (YesAction != null)
-			yesDontAskAgainButton.OnLeftClick += YesAction;
-		if (DontShowAgainAction != null)
-			yesDontAskAgainButton.OnLeftClick += DontShowAgainAction;
+			if (DontShowAgainAction != null)
+				yesDontAskAgainButton.OnLeftClick += DontShowAgainAction;
+		}
 
-		dialog.Append(yesDontAskAgainButton);
+		Recalculate();
 	}
 
 	public void Close(bool playSound) {
