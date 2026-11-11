@@ -350,3 +350,24 @@ Longer TODOs that would clutter above
 +	/// Associates a <see cref="TileID.Dressers"/> style with the item type (<see cref="Item.type"/>) that is dropped when the dresser is destroyed.
 +	/// <br/> <see cref="maxDresserTypes"/> elements long.
 +	/// </summary>
+
+
+## NPC damage over time and regeneration
+
+`ModNPC.UpdateLifeRegen` and `GlobalNPC.UpdateLifeRegen` remain available and run after the vanilla and modded damage-over-time tally is applied. Use them to adjust the final `NPC.lifeRegen` and damage event size.
+
+For new effects, add contributions in `ModNPC.UpdateDOTTally` or `GlobalNPC.UpdateDOTTally`:
+
+```cs
+public override void UpdateDOTTally(NPC npc, ref NPC.DOTTally tally)
+{
+	if (examplePoison)
+		tally.AddPoison(20, 2, ModContent.BuffType<ExamplePoisonDebuff>());
+}
+```
+
+Life regeneration loss is twice the intended damage per second. The second argument controls damage batching, not the damage rate. `AddPoison` and `AddBloodLoss` support poison acceleration; `AddFlamable` also supports vanilla fire interactions and the shared Oiled bonus. Set `NPC.acceleratePoisons` during buff updates, before the tally is collected. Ordinary positive `NPC.lifeRegen` is suppressed by `BlockNaturalRegeneration`; use `AddSuperNaturalRegeneration` for regeneration that should still offset debuff damage.
+
+Use the overloads with a buff type to make a contribution available to `ModNPC.ModifyDOT` and `GlobalNPC.ModifyDOT`. Those hooks run once per identified contribution, before aggregation. Both vanilla and modded contributions are supported. When scaling damage, scale `LifeRegenLoss`, `LifeRegenLossThatCanBeBoosted`, and the intended `ExpectedDamagePerSecond`. To cancel an entry completely, clear its damage and expected damage, `BlockNaturalRegeneration`, and `HasFlammableDamage`. Modify the supplied contribution directly; do not add another identified contribution recursively.
+
+Existing calls without a buff type remain valid, but cannot be selected by `ModifyDOT`. No automatic rewrite of `UpdateLifeRegen` is provided: deciding whether an effect is poison, fire, regeneration, or a final modifier requires reviewing its behavior. See `DamageOverTimeGlobalNPC` and `ExampleRegeneratingSlime` in ExampleMod.

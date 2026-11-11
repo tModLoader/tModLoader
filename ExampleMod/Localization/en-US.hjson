@@ -177,6 +177,8 @@ Mods: {
 					}
 				}
 			}
+
+			ExampleRegeneratingSlime.DisplayName: Example Regenerating Slime
 		}
 
 		Tiles: {
@@ -1309,6 +1311,11 @@ Mods: {
 				DisplayName: Example Special Glide Wings
 				Tooltip: ""
 			}
+
+			ExampleDOTAccessory: {
+				DisplayName: Example Debuff Amplifier
+				Tooltip: Hits mark enemies for 5 seconds, doubling Poisoned, On Fire!, and the example poison and fire debuffs
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1451,6 +1458,21 @@ Mods: {
 			ExampleCrowdControlledDebuff: {
 				DisplayName: Example Crowd Controlled Debuff
 				Description: You can't move your arms or legs
+			}
+
+			ExamplePoisonDebuff: {
+				DisplayName: Example Poison
+				Description: Losing life to poison
+			}
+
+			ExampleFireDebuff: {
+				DisplayName: Example Fire
+				Description: Losing life to fire
+			}
+
+			ExampleDOTAmplification: {
+				DisplayName: Example Debuff Amplification
+				Description: Certain damage-over-time debuffs deal double damage
 			}
 		}
 

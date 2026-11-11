@@ -338,11 +338,30 @@ public abstract class ModNPC : ModType<NPC, ModNPC>, ILocalizedModType
 	}
 
 	/// <summary>
+	/// Adds NPC damage over time and regeneration before the tally is applied. Use the buff-identified overloads to support per-buff modifiers.
+	/// Set poison acceleration in buff updates, before contributions are collected. Called on the server and clients.
+	/// </summary>
+	public virtual void UpdateDOTTally(ref NPC.DOTTally tally)
+	{
+	}
+
+	/// <summary>
+	/// Modifies one identified contribution before aggregation, after its vanilla fire interactions but before poison acceleration is applied.
+	/// Scale both life regeneration loss fields when changing damage. Keep damage values nonnegative.
+	/// To suppress a contribution entirely, clear its damage, expected damage, regeneration blocking and fire-presence values.
+	/// Do not add identified contributions from this hook. Called on the server and clients.
+	/// </summary>
+	public virtual void ModifyDOT(int buffType, ref NPC.DOTTally contribution)
+	{
+	}
+
+	/// <summary>
 	/// Allows you to make the NPC either regenerate health or take damage over time by setting <see cref="NPC.lifeRegen"/>. This is useful for implementing damage over time debuffs such as <see cref="BuffID.Poisoned"/> or <see cref="BuffID.OnFire"/>. Regeneration or damage will occur at a rate of half of <see cref="NPC.lifeRegen"/> per second.
 	/// <para/>Essentially, modders implementing damage over time debuffs should subtract from <see cref="NPC.lifeRegen"/> a number that is twice as large as the intended damage per second. See <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/GlobalNPCs/DamageOverTimeGlobalNPC.cs#L16">DamageOverTimeGlobalNPC.cs</see> for an example of this.
-	/// <para/>The damage parameter is the number that appears above the NPC's head if it takes damage over time.
+	/// <para/>The damage parameter controls damage popup size and the life loss threshold for each damage event.
 	/// <para/>Multiple debuffs work together by following some conventions: <see cref="NPC.lifeRegen"/> should not be assigned a number, rather it should be subtracted from. <paramref name="damage"/> should only be assigned if the intended popup text is larger then its current value.
 	/// <para/> Called on the server and clients.
+	/// <para/> Runs after vanilla and modded tally calculations. Prefer UpdateDOTTally for new damage-over-time effects that should participate in vanilla interactions.
 	/// </summary>
 	/// <param name="damage"></param>
 	public virtual void UpdateLifeRegen(ref int damage)
