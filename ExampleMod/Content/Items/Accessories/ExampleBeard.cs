@@ -15,8 +15,6 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 14;
 			Item.maxStack = 1;
 			Item.color = Main.LocalPlayer.hairColor;
 			Item.value = Item.sellPrice(0, 1);

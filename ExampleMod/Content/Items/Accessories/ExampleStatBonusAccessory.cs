@@ -23,8 +23,6 @@ namespace ExampleMod.Content.Items.Accessories
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(AdditiveDamageBonus, MultiplicativeDamageBonus, BaseDamageBonus, FlatDamageBonus, MeleeCritBonus, RangedAttackSpeedBonus, MagicArmorPenetration, ExampleKnockback, AdditiveCritDamageBonus);
 
 		public override void SetDefaults() {
-			Item.width = 40;
-			Item.height = 40;
 			Item.accessory = true;
 		}
 

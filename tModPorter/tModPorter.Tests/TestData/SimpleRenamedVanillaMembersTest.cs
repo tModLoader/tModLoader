@@ -139,6 +139,9 @@ public class SimpleRenamedVanillaMembersTest
 		var owner = item.owner;
 		var vanity = item.canBePlacedInVanityRegardlessOfConditions;
 		item.DefaultToPlacableWall(0);
+		item.width = 20;
+		item.height = 30;
+		item.Size = new Vector2(20, 30);
 
 		var item2 = new Item();
 		var isTheSameAs = item.IsTheSameAs(item2);

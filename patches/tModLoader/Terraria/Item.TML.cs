@@ -29,17 +29,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
-	/// <summary>
-	/// The item <see cref="width"/> and <see cref="height"/> values as a vector.
-	/// </summary>
-	public Vector2 Size {
-		get => new Vector2(width, height);
-		set {
-			width = (int)value.X;
-			height = (int)value.Y;
-		}
-	}
-
 	#region Globals
 	int IEntityWithGlobals<GlobalItem>.Type => type;
 	internal GlobalItem[] _globals;

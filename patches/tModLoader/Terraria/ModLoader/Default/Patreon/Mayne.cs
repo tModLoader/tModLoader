@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
@@ -9,34 +9,16 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Head)]
     internal class Mayne_Head : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 28;
-			Item.height = 18;
-        }
     }
 
     [AutoloadEquip(EquipType.Body)]
 	internal class Mayne_Body : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 26;
-			Item.height = 26;
-        }
     }
 
     [AutoloadEquip(EquipType.Legs)]
 	internal class Mayne_Legs : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 20;
-			Item.height = 16;
-        }
     }
 
     [AutoloadEquip(EquipType.Wings)]
@@ -52,8 +34,6 @@ namespace Terraria.ModLoader.Default.Patreon
             base.SetDefaults();
 
 			Item.vanity = false;
-			Item.width = 34;
-			Item.height = 20;
 			Item.accessory = true;
         }
 	}

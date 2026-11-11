@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Items.Weapons
 			// Hover over DefaultToStaff in Visual Studio to read the documentation!
 			// Shoot a black bolt, also known as the projectile shot from the onyx blaster.
 			Item.DefaultToStaff(ProjectileID.BlackBolt, 7, 20, 11);
-			Item.width = 34;
-			Item.height = 40;
 			Item.UseSound = SoundID.Item71;
 
 			// A special method that sets the damage, knockback, and bonus critical strike chance.

@@ -13,8 +13,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useStyle = ItemUseStyleID.Rapier; // Makes the player do the proper arm motion
 			Item.useAnimation = 12;
 			Item.useTime = 12;
-			Item.width = 32;
-			Item.height = 32;
 			Item.UseSound = SoundID.Item1;
 			Item.DamageType = DamageClass.MeleeNoSpeed;
 			Item.autoReuse = false;

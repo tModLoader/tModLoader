@@ -21,8 +21,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 20;
+			// This item's defaults do not deviate from the defaults
 		}
 
 		public override void AddRecipes() {
@@ -60,8 +59,7 @@ namespace ExampleMod.Content.Items
 		public override string Texture => "ExampleMod/Content/Items/ExampleItem";
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 20;
+			// This item's defaults do not deviate from the defaults
 		}
 
 		public override void AddRecipes() {

@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Pets.ExampleLightPet
 			Item.damage = 0;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shoot = ModContent.ProjectileType<ExampleLightPetProjectile>();
-			Item.width = 16;
-			Item.height = 30;
 			Item.UseSound = SoundID.Item2;
 			Item.useAnimation = 20;
 			Item.useTime = 20;

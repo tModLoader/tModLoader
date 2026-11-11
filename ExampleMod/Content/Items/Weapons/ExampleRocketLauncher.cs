@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			Item.DefaultToRangedWeapon(ProjectileID.RocketI, AmmoID.Rocket, singleShotTime: 30, shotVelocity: 5f, hasAutoReuse: true);
-			Item.width = 50;
-			Item.height = 20;
 			Item.damage = 55;
 			Item.knockBack = 4f;
 			Item.UseSound = SoundID.Item11;

@@ -18,8 +18,6 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 20;
 			Item.maxStack = 20;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Blue;

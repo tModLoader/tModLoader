@@ -16,9 +16,6 @@ namespace ExampleMod.Content.Items.Accessories
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(MoveSpeedBonus, LavaImmunityTime);
 
 		public override void SetDefaults() {
-			Item.width = 22;
-			Item.height = 22;
-
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Red;
 			Item.value = Item.buyPrice(gold: 1); // Equivalent to Item.buyPrice(0, 1, 0, 0);

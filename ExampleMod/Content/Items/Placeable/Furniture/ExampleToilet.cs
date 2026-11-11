@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.Furniture.ExampleToilet>());
-			Item.width = 16;
-			Item.height = 24;
 			Item.value = 150;
 		}
 

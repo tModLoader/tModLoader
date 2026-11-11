@@ -23,10 +23,16 @@
  {
  	private class DefaultAssignNewItemsToPlayer_OverrideHandle : IDisposable
  	{
-@@ -38,9 +_,28 @@
+@@ -36,11 +_,34 @@
  
+ 	public delegate void NewItemModifier(WorldItem item);
+ 
++	/* Make internal, they are not used anymore and will be removed in the future.
  	public int width;
  	public int height;
++	*/
++	internal int width;
++	internal int height;
 +
 +	/// <summary>
 +	/// The additional distance, in pixels, that coins may be grabbed from if the player has the Gold Ring or its upgrades (<see cref="Player.goldRing"/>).<br/>
@@ -1309,7 +1315,7 @@
  				break;
  			case 6153:
  				SetShopValues(ItemRarityColor.Blue1, sellPrice(0, 0, 40));
-@@ -47272,6 +_,19 @@
+@@ -47272,6 +_,17 @@
  		voiceSlot = voiceOverrideID;
  	}
  
@@ -1318,8 +1324,6 @@
 +	/// Specifically:<code>
 +	///	shoot = projectileId - 145;
 +	/// ammo = AmmoID.Solution;
-+	/// width = 10;
-+	///	height = 12;
 +	/// value = buyPrice(0, 0, 15);
 +	/// rare = 3;
 +	///	consumable = true;
@@ -1437,7 +1441,7 @@
  	public void DefaultToStaff(int projType, float pushForwardSpeed, int singleShotTime, int manaPerShot)
  	{
  		DefaultToMagicWeapon(projType, singleShotTime, pushForwardSpeed, hasAutoReuse: true);
-@@ -47473,6 +_,25 @@
+@@ -47473,6 +_,23 @@
  		UseSound = SoundID.Item43;
  	}
  
@@ -1448,8 +1452,6 @@
 +	/// useAnimation = animationTime;
 +	/// useTime = animationTime;
 +	/// shootSpeed = pushForwardSpeed;
-+	/// width = 32;
-+	/// height = 32;
 +	/// UseSound = SoundID.Item1;
 +	/// shoot = projType;
 +	/// noMelee = true;
@@ -1628,7 +1630,7 @@
  	{
  		flame = true;
  		noWet = !allowWaterPlacement;
-@@ -47937,11 +_,29 @@
+@@ -47937,11 +_,27 @@
  		useTime = 10;
  	}
  
@@ -1643,8 +1645,6 @@
 +	/// Specifically:<code>
 +	/// createTile = tileIDToPlace;
 +	/// placeStyle = tileStyleToPlace;
-+	/// width = 14;
-+	/// height = 14;
 +	/// useStyle = <see cref="ItemUseStyleID.Swing"/>;
 +	/// useAnimation = 15;
 +	/// useTime = 10;

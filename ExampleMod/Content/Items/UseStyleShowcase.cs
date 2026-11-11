@@ -24,9 +24,6 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.width = 40;
-			Item.height = 40;
-
 			// In Visual Studio, you can click on "ItemUseStyleID" and then press F12 to see the list of possible values. You can also type "ItemUseStyleID." to view the list of possible values.
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTime = 30;

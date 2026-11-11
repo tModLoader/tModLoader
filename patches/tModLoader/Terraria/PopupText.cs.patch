@@ -242,6 +242,19 @@
  	public static int NewText(PopupTextContext context, Item newItem, Vector2 position, int stack, bool noStack = false, bool longText = false)
  	{
  		if (!Main.showItemText)
+@@ -224,8 +_,12 @@
+ 			popupText.stack += stack;
+ 			popupText.scale = 0f;
+ 			popupText.rotation = 0f;
++			/* Fix this code using item.width/height for no discernable reason
+ 			popupText.position.X = position.X + (float)newItem.width * 0.5f - vector.X * 0.5f;
+ 			popupText.position.Y = position.Y + (float)newItem.height * 0.25f - vector.Y * 0.5f;
++			*/
++			popupText.position.X = position.X - vector.X * 0.5f;
++			popupText.position.Y = position.Y - vector.Y * 0.5f;
+ 			popupText.velocity.Y = -7f;
+ 			popupText.context = context;
+ 			popupText.npcNetID = 0;
 @@ -253,6 +_,8 @@
  			popupText2.active = true;
  			popupText2.position.X = position.X - vector2.X * 0.5f;

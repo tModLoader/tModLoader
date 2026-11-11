@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
@@ -9,24 +9,11 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Head)]
     internal class HER0zero_Head : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 30;
-			Item.height = 20;
-        }
     }
 
     [AutoloadEquip(EquipType.Body)]
 	internal class HER0zero_Body : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 32;
-			Item.height = 20;
-        }
-
 		public override bool IsVanitySet(int head, int body, int legs) {
 			return head == EquipLoader.GetEquipSlot(Mod, "HER0zero_Head", EquipType.Head)
 				&& body == EquipLoader.GetEquipSlot(Mod, "HER0zero_Body", EquipType.Body)
@@ -41,12 +28,6 @@ namespace Terraria.ModLoader.Default.Patreon
     [AutoloadEquip(EquipType.Legs)]
 	internal class HER0zero_Legs : PatreonItem
     {
-		public override void SetDefaults() {
-            base.SetDefaults();
-
-			Item.width = 24;
-			Item.height = 16;
-        }
 	}
 
 	internal class HER0zeroPlayer : ModPlayer

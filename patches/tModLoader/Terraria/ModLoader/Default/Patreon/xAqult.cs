@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.DataStructures;
@@ -17,13 +17,6 @@ namespace Terraria.ModLoader.Default.Patreon
 			base.SetStaticDefaults();
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-
-			Item.width = 22;
-			Item.height = 10;
-		}
     }
 
 	[AutoloadEquip(EquipType.Body)]
@@ -35,26 +28,12 @@ namespace Terraria.ModLoader.Default.Patreon
 			base.SetStaticDefaults();
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
 		}
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-
-			Item.width = 34;
-			Item.height = 26;
-		}
 	}
 
 	[AutoloadEquip(EquipType.Legs)]
 	internal class xAqult_Legs : PatreonItem
 	{
 		public override LocalizedText Tooltip => this.GetLocalization(nameof(Tooltip), () => "");
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-
-			Item.width = 22;
-			Item.height = 18;
-		}
 	}
 
 	[AutoloadEquip(EquipType.Head)]
@@ -69,13 +48,6 @@ namespace Terraria.ModLoader.Default.Patreon
 
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_Scar_{EquipType.Head}", EquipType.Head, name: $"{Name}_Scar");
 		}*/
-
-		public override void SetDefaults() {
-			base.SetDefaults();
-
-			Item.width = 30;
-			Item.height = 34;
-		}
 	}
 
 	[AutoloadEquip(EquipType.Face)]
@@ -105,8 +77,6 @@ namespace Terraria.ModLoader.Default.Patreon
 		public override void SetDefaults() {
 			base.SetDefaults();
 
-			Item.width = 18;
-			Item.height = 20;
 			Item.accessory = true;
 		}
 	}
@@ -126,8 +96,6 @@ namespace Terraria.ModLoader.Default.Patreon
 			base.SetDefaults();
 
 			Item.vanity = false;
-			Item.width = 28;
-			Item.height = 52;
 			Item.accessory = true;
 		}
 	}

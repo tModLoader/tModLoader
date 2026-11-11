@@ -17,8 +17,6 @@ namespace ExampleMod.Content.Items.Weapons
 
 		public override void SetDefaults() {
 			// Common Properties
-			Item.width = 46;
-			Item.height = 48;
 			Item.value = Item.sellPrice(gold: 2, silver: 50);
 			Item.rare = ItemRarityID.Green;
 

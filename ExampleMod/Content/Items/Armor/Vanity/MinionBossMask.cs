@@ -10,9 +10,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 	public class MinionBossMask : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 22;
-			Item.height = 28;
-
 			// Common values for every boss mask
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 75);

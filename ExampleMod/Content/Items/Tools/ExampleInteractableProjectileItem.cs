@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Items.Tools
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 4f;
 			Item.shoot = ModContent.ProjectileType<ExampleInteractableProjectile>();
-			Item.width = 26;
-			Item.height = 24;
 			Item.UseSound = SoundID.Item59;
 			Item.useAnimation = 28;
 			Item.useTime = 28;

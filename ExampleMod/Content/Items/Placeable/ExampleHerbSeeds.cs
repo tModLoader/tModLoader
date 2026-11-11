@@ -13,8 +13,6 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleHerb>());
-			Item.width = 12;
-			Item.height = 14;
 			Item.value = 80;
 		}
 

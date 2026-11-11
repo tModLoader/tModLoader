@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Items.Tools
 			// These are, with a few modifications, the properties applied to the base Bug Net; they're provided here so that you can mess with them as you please.
 			// Explanations on them will be glossed over here, as they're not the primary point of the lesson.
 			// Common Properties
-			Item.width = 24;
-			Item.height = 28;
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.buyPrice(0, 0, 40);
 
