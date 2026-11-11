@@ -207,6 +207,7 @@ public static class MountLoader
 		}
 		return Vector2.Zero;
 	}
+
 	public static Vector2 HeldItemOffset(Mount mount, Player player, Vector2 originalPos)
 	{
 		if (IsModMount(mount._data)) {
@@ -237,6 +238,16 @@ public static class MountLoader
 				return;
 			}
 			player.ApplyHeadOffsetFromMount(ref pos); // Default, run the offset for the head.
+		}
+	}
+
+	/// <summary>
+	/// See <see cref="ModMount.BreathBubblePosition(Player, ref Vector2)"/>
+	/// </summary>
+	public static void BreathBubblePosition(Mount mount, Player player, ref Vector2 mouthPos)
+	{
+		if (IsModMount(mount._data)) {
+			mount._data.ModMount.BreathBubblePosition(player, ref mouthPos);
 		}
 	}
 }

@@ -1484,6 +1484,15 @@
  
  	public bool UsingOrReusingItem {
  		get {
+@@ -2562,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private bool hasBreathingReed {
++	public bool hasBreathingReed {
+ 		get {
+ 			if (inventory[selectedItem].type == 186) {
+ 				if (mount.Active)
 @@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
@@ -4390,6 +4399,18 @@
  	}
  
  	public void StickyMovement()
+@@ -18922,6 +_,11 @@
+ 				if (hasBreathingReed)
+ 					vector += new Vector2(-14f, -58f) * Directions;
+ 			}
++
++			if (mount.Type >= MountID.Count) {
++				vector = MouthPosition.Value;
++				MountLoader.BreathBubblePosition(mount, this, ref vector);
++			}
+ 		}
+ 
+ 		Dust.NewDust(vector, width - 8, 8, 34, 0f, 0f, 0, default(Color), 1.2f);
 @@ -19269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;

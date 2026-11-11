@@ -105,6 +105,13 @@ namespace ExampleMod.Content.Mounts
 			return true;
 		}
 
+		// Adjust the breath bubble position from the mouth position.
+		public override void BreathBubblePosition(Player player, ref Vector2 mouthPos) {
+			mouthPos += new Vector2(-6f, -2f);
+			if (player.hasBreathingReed)
+				mouthPos += new Vector2(-14f, -58f) * player.Directions;
+		}
+
 		// Mounts that have flightTimeMax > 0 can automatically fly.
 		// This mount can only fly if the player if the has wings.
 		public override bool? CanFly(Player player) {

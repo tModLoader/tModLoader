@@ -795,6 +795,7 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
   * `bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)` to change where face accessories are positioned if the mount can face accessories.
     * By default, it uses the same offset as HeadItemOffset
     * Return false to prevent the HeadItemOffset from being applied.
+  * `ModMount.BreathBubblePosition(Player player, ref Vector2 mouthPos)` to adjust where air bubbles spawn while underwater.
 * `ModPlayer.ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
 
 ## New ExampleMod examples

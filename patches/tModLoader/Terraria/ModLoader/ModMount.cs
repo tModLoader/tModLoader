@@ -300,4 +300,14 @@ public abstract class ModMount : ModType<Mount.MountData, ModMount>
 	{
 		return true;
 	}
+
+	/// <summary>
+	/// Allows you to adjust where breath bubbles spawn from. Only called if <see cref="Mount.MountDelegatesData.MouthPosition"/> is used.
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="mouthPos"></param>
+	/// <returns></returns>
+	public virtual void BreathBubblePosition(Player player, ref Vector2 mouthPos)
+	{
+	}
 }
