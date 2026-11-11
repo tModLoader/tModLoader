@@ -99,7 +99,7 @@ internal partial class UIModBrowser : UIState, IHaveBackButtonCommand
 		foreach (var tagIndex in CategoryTagsFilter) {
 			tags.Add(SteamedWraps.ModTags[tagIndex].InternalNameForAPIs);
 		}
-		if(LanguageTagFilter != -1) {
+		if (LanguageTagFilter != -1) {
 			tags.Add(SteamedWraps.ModTags[LanguageTagFilter].InternalNameForAPIs);
 		}
 		return tags.ToArray();

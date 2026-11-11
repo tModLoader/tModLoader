@@ -49,7 +49,7 @@ public class UnloadedChest : UnloadedTile
 	public override ushort GetMapOption(int i, int j)
 	{
 		return 0; // I don't think locked is used currently
-		//return (ushort)(Main.tile[i, j].TileFrameX / 36);
+				  //return (ushort)(Main.tile[i, j].TileFrameX / 36);
 	}
 
 	public static string MapChestName(string name, int i, int j)

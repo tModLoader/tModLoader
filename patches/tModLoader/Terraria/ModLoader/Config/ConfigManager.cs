@@ -323,7 +323,7 @@ public static class ConfigManager
 				activeConfig.OnChanged();
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				if(broadcast)
+				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);
@@ -444,7 +444,7 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true); // on the class
-		// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
+																				// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
 	}
 
 	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attribute on the generic Type.

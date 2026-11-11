@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;

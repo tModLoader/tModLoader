@@ -239,7 +239,8 @@ public static class TagIO
 
 	public static T Deserialize<T>(object? tag)
 	{
-		if (tag is T t) return t;
+		if (tag is T t)
+			return t;
 		return (T)Deserialize(typeof(T), tag);
 	}
 
@@ -362,7 +363,7 @@ public static class TagIO
 
 			// Can cut parsing times by up to half
 			// The deserialized tag is stored in full memory anyway, so assume we have enough for the serialized representation too
-			var ms = new MemoryStream(1<<20);
+			var ms = new MemoryStream(1 << 20);
 			stream.CopyTo(ms);
 			ms.Position = 0;
 			stream = ms;
@@ -392,9 +393,11 @@ public static class TagIO
 
 	public static void ToStream(TagCompound root, Stream stream, bool compress = true)
 	{
-		if (compress) stream = new GZipStream(stream, CompressionMode.Compress, true);
+		if (compress)
+			stream = new GZipStream(stream, CompressionMode.Compress, true);
 		Write(root, new BigEndianWriter(stream));
-		if (compress) stream.Close();
+		if (compress)
+			stream.Close();
 	}
 
 	/// <summary>

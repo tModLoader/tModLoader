@@ -28,7 +28,7 @@ public struct TileTypeData : ITileData
 public struct WallTypeData : ITileData
 {
 	public ushort Type;
-}	
+}
 
 public struct LiquidData : ITileData
 {

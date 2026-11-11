@@ -109,7 +109,8 @@ internal class TerrariaSteamClient
 		if (int.TryParse(Environment.GetEnvironmentVariable("TERRARIA_EXIT_WAIT_TIME"), out int terrariaClientExitWaitTime) && terrariaClientExitWaitTime > 0) {
 			Logger.Debug($"Terraria_Exit_Wait_Time environment variable specified. Used {terrariaClientExitWaitTime}ms default");
 			Thread.Sleep(terrariaClientExitWaitTime);
-		} else {
+		}
+		else {
 			Thread.Sleep(300);
 		}
 
@@ -241,13 +242,15 @@ internal class TerrariaSteamClient
 		try {
 			Logger.Info("Marking Steam Terraria Installation as Corrupt to force 'Verify Local Files' on next run");
 			SendCmd(MsgInvalidateTerrariaInstall);
-		} catch {	}
+		}
+		catch { }
 	}
 
 	internal static void Shutdown()
 	{
 		try {
 			SendCmd(MsgShutdown);
-		} catch { }
+		}
+		catch { }
 	}
 }
