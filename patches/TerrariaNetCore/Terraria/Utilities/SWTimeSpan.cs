@@ -9,11 +9,11 @@ namespace Terraria.Utilities;
 /// </summary>
 public readonly struct SWTimeSpan(long swTicks)
 {
-    public readonly long Ticks = swTicks;
+	public readonly long Ticks = swTicks;
 
-    public readonly double TotalSeconds => Ticks / (double)Stopwatch.Frequency;
-    public readonly double TotalMilliseconds => Ticks / (double)(Stopwatch.Frequency * 1000);
+	public readonly double TotalSeconds => Ticks / (double)Stopwatch.Frequency;
+	public readonly double TotalMilliseconds => Ticks / (double)(Stopwatch.Frequency * 1000);
 
-    public static SWTimeSpan operator -(SWTimeSpan a, SWTimeSpan b) => new(a.Ticks - b.Ticks);
-    public static SWTimeSpan operator +(SWTimeSpan a, SWTimeSpan b) => new(a.Ticks + b.Ticks);
+	public static SWTimeSpan operator -(SWTimeSpan a, SWTimeSpan b) => new(a.Ticks - b.Ticks);
+	public static SWTimeSpan operator +(SWTimeSpan a, SWTimeSpan b) => new(a.Ticks + b.Ticks);
 }
