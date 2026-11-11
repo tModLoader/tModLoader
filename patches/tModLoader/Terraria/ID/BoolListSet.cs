@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
@@ -18,7 +18,8 @@ public readonly struct BoolListSet
 	public bool this[int index] {
 		get => set[index];
 		set {
-			if (value == set[index]) return;
+			if (value == set[index])
+				return;
 
 			if (value)
 				values.Add(index);

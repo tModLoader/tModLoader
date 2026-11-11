@@ -152,9 +152,11 @@ internal static class BackupIO
 
 		private static void WriteArchive(ZipArchive zip, bool isCloudSave, string path)
 		{
-			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
+			if (FileUtilities.Exists(path, isCloudSave))
+				zip.AddZipEntry(path, isCloudSave);
 			path = Path.ChangeExtension(path, ".twld");
-			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
+			if (FileUtilities.Exists(path, isCloudSave))
+				zip.AddZipEntry(path, isCloudSave);
 		}
 	}
 
@@ -175,13 +177,17 @@ internal static class BackupIO
 		private static void WriteArchive(ZipArchive zip, bool isCloudSave, string path)
 		{
 			// Write .plr and .tplr files
-			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
+			if (FileUtilities.Exists(path, isCloudSave))
+				zip.AddZipEntry(path, isCloudSave);
 			path = Path.ChangeExtension(path, ".tplr");
-			if (FileUtilities.Exists(path, isCloudSave)) zip.AddZipEntry(path, isCloudSave);
+			if (FileUtilities.Exists(path, isCloudSave))
+				zip.AddZipEntry(path, isCloudSave);
 
 			// Write other files, such as tmap files to the zip
-			if (isCloudSave) WriteCloudFiles(zip, path);
-			else WriteLocalFiles(zip, path);
+			if (isCloudSave)
+				WriteCloudFiles(zip, path);
+			else
+				WriteLocalFiles(zip, path);
 		}
 
 		/// <summary>
@@ -210,7 +216,8 @@ internal static class BackupIO
 		{
 			// Write map files from plr dir
 			var plrDir = Path.Combine(Path.GetDirectoryName(path), Path.GetFileNameWithoutExtension(path));
-			if (Directory.Exists(plrDir)) zip.AddZipEntry(plrDir);
+			if (Directory.Exists(plrDir))
+				zip.AddZipEntry(plrDir);
 		}
 	}
 }

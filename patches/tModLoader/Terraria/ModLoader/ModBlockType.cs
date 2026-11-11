@@ -25,7 +25,7 @@ public abstract class ModBlockType : ModTexturedType, ILocalizedModType
 	public ushort VanillaFallbackOnModDeletion { get; set; } = 0;
 
 	public abstract string LocalizationCategory { get; }
-	
+
 	internal void AddMapEntryToMapLoader(IDictionary<ushort, IList<MapEntry>> mapEntries, Color color, LocalizedText name, Func<string, int, int, string> nameFunc)
 	{
 		if (!MapLoader.initialized) {

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -236,7 +236,8 @@ internal static class ModOrganizer
 			cancelButton = Language.GetTextValue("tModLoader.KeepInstalled");
 			continueButton = Language.GetTextValue("tModLoader.DeleteMods");
 		}
-		else */ if (reuploadMDItems.Any()) {
+		else */
+		if (reuploadMDItems.Any()) {
 			cancelButton = Language.GetTextValue("tModLoader.ContinueAnyway");
 			continueButton = Language.GetTextValue("tModLoader.ResolveAbnormalMods");
 		}
@@ -258,7 +259,7 @@ internal static class ModOrganizer
 
 			if (reuploadMDItems.Any() && await UIModBrowser.DownloadMods(reuploadMDItems, Interface.loadModsID)) {
 				Main.menuMode = Interface.loadModsID;
-				Main.MenuUI.SetState(null);	
+				Main.MenuUI.SetState(null);
 			}
 
 			// Group 2: Delete mods that originated from workshop but workshop doesn't have a replacement
@@ -266,7 +267,7 @@ internal static class ModOrganizer
 			foreach (var mod in installedWorkshopModsNotFoundOnWorkshop)
 				DeleteMod(mod);
 			*/
-	};
+		};
 
 		// Messages for Users
 		var messages = new StringBuilder();
@@ -279,7 +280,7 @@ internal static class ModOrganizer
 			}
 		}
 		*/
-		
+
 		if (reuploadMDItems.Any()) {
 			messages.AppendLine(Language.GetTextValue("tModLoader.ReuploadedWorkshopMods"));
 			foreach (var mod in reuploadMDItems) {

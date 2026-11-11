@@ -115,7 +115,8 @@ public partial class UIManageControls : UIState
 				container.Append(right);
 
 				return container;
-			};
+			}
+			;
 		}
 	}
 }

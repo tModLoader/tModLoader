@@ -73,7 +73,8 @@ internal class UIDownloadProgress : UIProgress
 	{
 		downloadTimer.Start();
 		_downloadFile = _downloads.First();
-		if (_downloadFile == null) return;
+		if (_downloadFile == null)
+			return;
 		_progressBar.UpdateProgress(0f);
 		_progressBar.DisplayText = Language.GetTextValue("tModLoader.MBDownloadingMod", _downloadFile.DisplayText);
 		_downloadFile.Download(_cts.Token, UpdateDownloadProgress)
@@ -95,7 +96,8 @@ internal class UIDownloadProgress : UIProgress
 		bool hasError = task.Exception != null;
 		_downloads.Remove(_downloadFile);
 		if (_downloads.Count <= 0 || hasError) {
-			if (hasError) Logging.tML.Error($"There was a problem downloading the mod {_downloadFile.DisplayText}", task.Exception);
+			if (hasError)
+				Logging.tML.Error($"There was a problem downloading the mod {_downloadFile.DisplayText}", task.Exception);
 			Main.menuMode = gotoMenu;
 			OnDownloadsComplete?.Invoke();
 			return;

@@ -89,7 +89,7 @@ internal static partial class TileIO
 					numFlags = 1;
 				}
 			}
-			if(!(entity.Value is ModTileEntity))
+			if (!(entity.Value is ModTileEntity))
 				tileEntity++;
 		}
 

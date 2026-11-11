@@ -15,7 +15,8 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 
 	public void SetProgress(int i, int n = -1)
 	{
-		if (n >= 0) numProgressItems = n;
+		if (n >= 0)
+			numProgressItems = n;
 		Progress = i / (float)numProgressItems;
 	}
 
@@ -86,8 +87,7 @@ internal class UIBuildMod : UIProgress, ModCompile.IBuildStatus
 			var msg = Language.GetTextValue("tModLoader.BuildError", mod ?? "");
 
 			Action retry = null;
-			if (e is BuildException)
-			{
+			if (e is BuildException) {
 				msg += $"\n{e.Message}\n\n{e.InnerException?.ToString() ?? ""}";
 				retry = () => Interface.buildMod.Build(buildAction, reload);
 			}
