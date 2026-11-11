@@ -80,8 +80,8 @@ namespace ExampleMod.Content.NPCs
 			NPCID.Sets.NPCBestiaryDrawModifiers drawModifiers = new NPCID.Sets.NPCBestiaryDrawModifiers() {
 				Velocity = 1f, // Draws the NPC in the bestiary as if its walking +1 tiles in the x direction
 				Direction = 1 // -1 is left and 1 is right. NPCs are drawn facing the left by default but ExamplePerson will be drawn facing the right
-				// Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
-				// If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
+							  // Rotation = MathHelper.ToRadians(180) // You can also change the rotation of an NPC. Rotation is measured in radians
+							  // If you want to see an example of manually modifying these when the NPC is drawn, see PreDraw
 			};
 
 			NPCID.Sets.NPCBestiaryDrawOffset.Add(Type, drawModifiers);
@@ -93,7 +93,7 @@ namespace ExampleMod.Content.NPCs
 				.SetBiomeAffection<ForestBiome>(AffectionLevel.Like) // Example Person prefers the forest.
 				.SetBiomeAffection<SnowBiome>(AffectionLevel.Dislike) // Example Person dislikes the snow.
 				.SetBiomeAffection<DesertBiome>(AffectionLevel.Dislike) // Example Person dislikes the desert.
-				// Town NPCs automatically hate the Corruption, Crimson, and Dungeon.
+																		// Town NPCs automatically hate the Corruption, Crimson, and Dungeon.
 				.SetNPCAffection(NPCID.Dryad, AffectionLevel.Love) // Loves living near the dryad.
 				.SetNPCAffection(NPCID.Guide, AffectionLevel.Like) // Likes living near the guide.
 				.SetNPCAffection(NPCID.BestiaryGirl, AffectionLevel.Like) // Likes living near the zoologist.
@@ -113,7 +113,7 @@ namespace ExampleMod.Content.NPCs
 				.With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
 				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // Default portrait to use (not shimmered).
 			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-3f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
-			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
+																				   //NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 
 			ContentSamples.NpcBestiaryRarityStars[Type] = 3; // We can override the default bestiary star count calculation by setting this.
 
@@ -297,7 +297,7 @@ namespace ExampleMod.Content.NPCs
 
 				chat.Add(dialogueOption, weight);
 			}
-		
+
 			LocalizedText chosenChat = chat.Get(); // Now that all the chat options are added, select one at random.
 
 			// Here is some additional logic based on the chosen chat line. In this case, we want to display an item in the corner for StandardDialogue4.
@@ -337,7 +337,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Here is simple example of a custom button that is labeled "Awesomeify".
-		public class AwesomeifyButton : NPCInteraction {
+		public class AwesomeifyButton : NPCInteraction
+		{
 			// This is the label of the button. This points to a localization key that translates to "Awesomeify".
 			public override string GetText() => AwesomeifyButtonText.Value;
 
@@ -355,7 +356,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Here is another example of a custom button that only shows up if the player has a specific item in their inventory.
-		public class UpgradeButton : NPCInteraction {
+		public class UpgradeButton : NPCInteraction
+		{
 			public override string GetText() => UpgradeItemButtonText.Value;
 			public override bool Condition() => LocalPlayer.HasItem(ItemID.HiveBackpack);
 			public override void Interact() {
@@ -380,7 +382,8 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		// Here is an example of inheriting an existing NPCInteraction and modifying the condition.
-		public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(shopName, customTextKey) {
+		public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKey) : NPCInteractions.Actions.OpenShop(shopName, customTextKey)
+		{
 			public override bool Condition() {
 				// base.Condition() will run the base class' condition, so we don't have to copy that ourselves.
 				// Then we also add && Main.dayTime to make this button only show up during the day time.

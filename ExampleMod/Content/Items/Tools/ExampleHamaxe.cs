@@ -29,7 +29,7 @@ namespace ExampleMod.Content.Items.Tools
 
 		public override void MeleeEffects(Player player, Rectangle hitbox) {
 			if (Main.rand.NextBool(10)) { // This creates a 1/10 chance that a dust will spawn every frame that this item is in its 'Swinging' animation.
-				// Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
+										  // Creates a dust at the hitbox rectangle, following the rules of our 'if' conditional.
 				Dust.NewDust(new Vector2(hitbox.X, hitbox.Y), hitbox.Width, hitbox.Height, ModContent.DustType<Sparkle>());
 			}
 		}
