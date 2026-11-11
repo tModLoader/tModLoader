@@ -716,6 +716,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Main.HasInteractibleObjectThatIsNotATile` -> `Main.HasInteractableObjectThatIsNotATile`
 * 🤖: `Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile` -> `Main.HadAnActiveInteractableProjectile`
 * ⚙️: `NPC.netSkip` removed. No longer necessary when setting `life <= 0` and was never necessary when setting `active = false`.
+* ⚙️: `NPCSpawnParams.gameModeData` removed. Use `difficultyOverride` with a `GameDifficultyLevel` value for a fixed difficulty, or leave it `null` to use `Main.Difficulty`. Custom `GameModeData` settings need manual review.
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.

@@ -380,6 +380,7 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
+		RefactorInstanceMember("Terraria.NPCSpawnParams", "gameModeData", Removed("Use difficultyOverride with a GameDifficultyLevel value, or leave it null to use Main.Difficulty. Review custom GameModeData settings manually."));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.Player", "nonTorch", Removed("Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead"));
 		RefactorInstanceMember("Terraria.Player", "selectedItem", RewriteSelectedItemAssignment);
