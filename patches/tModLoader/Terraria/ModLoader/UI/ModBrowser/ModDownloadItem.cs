@@ -18,9 +18,10 @@ public class ModDownloadItem
 
 	public readonly string Author;
 	public readonly string ModIconUrl;
-	public readonly DateTime TimeStamp;
+	public readonly DateTime LastUpdatedTimeStamp;
 	public readonly bool Banned;
-	public readonly DeveloperMetadata DevMetadata;
+	internal readonly DeveloperMetadata LongFormDevMetadata;
+	internal readonly DeveloperMetadata BrowserVersionDevMetadata;
 
 	public readonly string ModReferencesBySlug;
 	public readonly ModPubId_t[] ModReferenceByModId;
@@ -33,36 +34,59 @@ public class ModDownloadItem
 	public readonly float VoteScore;
 	public readonly string Homepage;
 	public readonly Version ModloaderVersion;
+	public readonly List<string> SupportedVersions;
+	public readonly string[] Tags;
 
 	internal LocalMod Installed { get; set; }
 	public bool NeedUpdate { get; private set; }
 	public bool AppNeedRestartToReinstall { get; private set; }
 	public bool IsInstalled => Installed != null;
 
-	public ModDownloadItem(string displayName, string name, Version version, string author, string modReferences, ModSide modSide, string modIconUrl, string publishId, int downloads, int hot, DateTime timeStamp, Version modloaderversion, string homepage, string ownerId, string[] referencesById, bool banned, DeveloperMetadata devMetadata, uint upvotes, uint downvotes, float voteScore)
+	public ModDownloadItem(
+		// Properties that are invariant with tml Browser Version
+		string displayName, string name,  string author, string homepage,
+		int downloads, int hot, string modIconUrl, string publishId, string ownerId,
+		uint upvotes, uint downvotes, float voteScore, List<string> supportedVersions,
+		bool banned, DeveloperMetadata longFormDevMetadata,	DeveloperMetadata browserVersionDevMetadata,
+		DateTime lastUpdatedTimeStamp,
+
+		// Properties that could be variant with tML Browser Version
+		string modReferences, string[] referencesById, ModSide modSide,
+		string[] tags,
+
+		// Properties that are variant with tML Browser Version
+		Version version, Version modloaderversion
+		)
 	{
-		ModName = name;
 		DisplayName = displayName;
 		DisplayNameClean = Utils.CleanChatTags(displayName);
+		ModName = name;
+		Author = author;
+		Homepage = homepage;
+
+		Downloads = downloads;
+		Hot = hot;
+		ModIconUrl = modIconUrl;
 		PublishId = new ModPubId_t { m_ModPubId = publishId };
 		OwnerId = ownerId;
 
-		Author = author;
-		ModReferencesBySlug = modReferences;
-		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
-		ModSide = modSide;
-		ModIconUrl = modIconUrl;
-		Downloads = downloads;
-		Hot = hot;
-		Homepage = homepage;
-		TimeStamp = timeStamp;
-		Version = version;
-		ModloaderVersion = modloaderversion;
-		Banned = banned;
-		DevMetadata = devMetadata;
 		Upvotes = upvotes;
 		Downvotes = downvotes;
 		VoteScore = voteScore;
+		SupportedVersions = supportedVersions;
+
+		Banned = banned;
+		LongFormDevMetadata = longFormDevMetadata;
+		BrowserVersionDevMetadata = browserVersionDevMetadata;
+		LastUpdatedTimeStamp = lastUpdatedTimeStamp;
+
+		ModReferencesBySlug = modReferences;
+		ModReferenceByModId = Array.ConvertAll(referencesById, x => new ModPubId_t() { m_ModPubId = x});
+		ModSide = modSide;
+		Tags = tags; 
+		
+		Version = version;
+		ModloaderVersion = modloaderversion;
 
 		UpdateInstallState();
 	}
@@ -113,6 +137,11 @@ public class ModDownloadItem
 	public override int GetHashCode()
 	{
 		return GetComparable().GetHashCode();
+	}
+
+	public List<ModVersionHash> GetKnownWorkshopVersionHashes()
+	{
+		return LongFormDevMetadata.modVersionHashes.Concat(BrowserVersionDevMetadata.modVersionHashes).ToList();
 	}
 
 	public static IEnumerable<ModDownloadItem> NeedsInstallOrUpdate(IEnumerable<ModDownloadItem> downloads)
