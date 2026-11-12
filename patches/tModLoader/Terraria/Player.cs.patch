@@ -5221,7 +5221,7 @@
  				flag2 = true;
  				SoundEngine.PlaySound(28, myX * 16, myY * 16, 0);
  				int num17 = 3;
-@@ -26022,7 +_,10 @@
+@@ -26584,7 +_,10 @@
  				flag2 = true;
  				GamepadEnableGrappleCooldown();
  			}
