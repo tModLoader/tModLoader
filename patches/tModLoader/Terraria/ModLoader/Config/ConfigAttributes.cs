@@ -596,6 +596,22 @@ public class CycleAttribute : Attribute
 {
 }
 
+/// <summary>
+/// Changes the sorting order of this config by sorting it before or after another config.
+/// </summary>
+[AttributeUsage(AttributeTargets.Class)]
+public class SortConfigAttribute : Attribute
+{
+	public bool SortAfter { get; }
+	public string OtherConfigName { get; }
+
+	public SortConfigAttribute(bool after, string otherConfigName)
+	{
+		SortAfter = after;
+		OtherConfigName = otherConfigName;
+	}
+}
+
 // Unimplemented ideas below:
 /*
 
