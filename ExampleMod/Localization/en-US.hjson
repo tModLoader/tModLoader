@@ -1584,6 +1584,16 @@ Mods: {
 				IsSet: "{0} is set to {1}: [i:{2}]"
 				SaveValue: "{0} is saved as {1}"
 			}
+
+			ExampleMarqueeTextUI: {
+				Header: Marquee Text Examples
+				Description: This is a demo of the marquee text elements added by tML.
+				NormalText: Normal Text
+				MarqueeText: Marquee Text (watch me scroll)
+				MarqueeTextHover: Hover Marquee Text: Align = {0}
+				DynamicWidthMarqueeText: Dynamic Width: {0}
+				ConstantWidthMarqueeText: Constant Width: {0}
+			}
 		}
 
 		WorldGen: {
