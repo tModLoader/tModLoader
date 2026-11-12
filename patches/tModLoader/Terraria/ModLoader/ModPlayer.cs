@@ -1467,6 +1467,5 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <param name="eyeFrame"> The frame show the eyelid as.</param>
 	public virtual void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
 	{
-
 	}
 }

@@ -1540,10 +1540,13 @@
  
  	public bool UsingOrReusingItem {
  		get {
-@@ -2562,7 +_,7 @@
+@@ -2562,7 +_,10 @@
  		}
  	}
  
++	/// <summary>
++	/// Returns true if the player is actively holding the <see cref="ItemID.BreathingReed"/>. Accounts for if the active mount can't hold items.
++	/// </summary>
 -	private bool hasBreathingReed {
 +	public bool hasBreathingReed {
  		get {

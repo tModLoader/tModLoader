@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,23 +_,89 @@
+@@ -1,23 +_,93 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -66,6 +66,10 @@
 +		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] PlayerIsHidden = Factory.CreateBoolSet(52, 54, 55, 56, 61);
++		/// <summary>
++		/// Indicates that the player can't hold items while using this mount, preventing the selected item from being drawn as if held. Used along with <see cref="Player.IsAllowedToHoldItems"/>.
++		/// <para/> Used by <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
  		public static bool[] DontHoldItems = Factory.CreateBoolSet(55, 56, 61);
 +		/// <summary>
 +		/// The player will not be forcefully dismounted from this mount when they are "crowd controlled" (<see cref="Player.CCed"/>, such as stunned, frozen, etc). This is used by mounts that are meant to be transformations such as <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
