@@ -445,39 +445,39 @@ public static class ItemLoader
 		return multiplier;
 	}
 
-	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(g => g.GetHealLife);
 
 	/// <summary>
 	/// Calls ModItem.GetHealLife, then all GlobalItem.GetHealLife hooks.
 	/// </summary>
-	public static void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealLife(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealLife(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealLife.Enumerate(item)) {
-			g.GetHealLife(item, player, quickHeal, ref healValue);
+			g.GetHealLife(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 
-	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(g => g.GetHealMana);
 
 	/// <summary>
 	/// Calls ModItem.GetHealMana, then all GlobalItem.GetHealMana hooks.
 	/// </summary>
-	public static void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealMana(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealMana(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealMana.Enumerate(item)) {
-			g.GetHealMana(item, player, quickHeal, ref healValue);
+			g.GetHealMana(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 

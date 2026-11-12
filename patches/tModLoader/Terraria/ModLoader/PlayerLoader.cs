@@ -689,29 +689,29 @@ public static class PlayerLoader
 		return multiplier;
 	}
 
-	private delegate void DelegateGetHealLife(Item item, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealLife(Item item, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(p => p.GetHealLife);
 
-	public static void GetHealLife(Player player, Item item, bool quickHeal, ref int healValue)
+	public static void GetHealLife(Player player, Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
 		foreach (var modPlayer in HookGetHealLife.Enumerate(player)) {
-			modPlayer.GetHealLife(item, quickHeal, ref healValue);
+			modPlayer.GetHealLife(item, quickHeal, tooltip, ref healValue);
 		}
 	}
 
-	private delegate void DelegateGetHealMana(Item item, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealMana(Item item, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(p => p.GetHealMana);
 
-	public static void GetHealMana(Player player, Item item, bool quickHeal, ref int healValue)
+	public static void GetHealMana(Player player, Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
 		foreach (var modPlayer in HookGetHealMana.Enumerate(player)) {
-			modPlayer.GetHealMana(item, quickHeal, ref healValue);
+			modPlayer.GetHealMana(item, quickHeal, tooltip, ref healValue);
 		}
 	}
 

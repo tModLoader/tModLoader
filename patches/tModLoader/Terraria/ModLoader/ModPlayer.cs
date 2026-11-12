@@ -626,8 +626,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -637,8 +638,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 

@@ -71,4 +71,8 @@ public class GlobalItemTest : GlobalItem
 #endif
 
 	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
+
+	public override void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue) { }
+
+	public override void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue) { }
 }

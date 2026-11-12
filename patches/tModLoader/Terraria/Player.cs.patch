@@ -1851,14 +1851,16 @@
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type)
  				DelBuff(i);
-@@ -3759,6 +_,7 @@
+@@ -3759,7 +_,8 @@
  		if (item.potion)
  			ApplyPotionDelay(item);
  
+-		ApplyLifeAndOrMana(item);
 +		ItemLoader.UseItem(item, this);
- 		ApplyLifeAndOrMana(item);
++		ApplyLifeAndOrMana(item, true);
  		if (item.type == 5)
  			TryToResetHungerToNeutral();
+ 
 @@ -3771,7 +_,7 @@
  			AddBuff(item.buffType, num);
  		}
@@ -1892,9 +1894,10 @@
  		if (item.potion)
  			ApplyPotionDelay(item);
  
-+		ItemLoader.UseItem(item, this);
- 		ApplyLifeAndOrMana(item);
+-		ApplyLifeAndOrMana(item);
 -		if (CanConsumeConsumableItem(item)) {
++		ItemLoader.UseItem(item, this);
++		ApplyLifeAndOrMana(item, true);
 +		if (CanConsumeConsumableItem(item) && item.consumable && ItemLoader.ConsumeItem(item, this)) {
  			item.stack--;
  			if (item.stack <= 0)
@@ -8146,14 +8149,15 @@
 +			TryToResetHungerToNeutral();
  	}
  
- 	private void ApplyLifeAndOrMana(Item item)
+-	private void ApplyLifeAndOrMana(Item item)
++	private void ApplyLifeAndOrMana(Item item, bool quick = false)
  	{
 +		/*
  		int num = item.healLife;
  		int healMana = item.healMana;
 +		*/
-+		int num = item.healLife > 0 ? GetHealLife(item, true) : 0;
-+		int healMana = item.healMana > 0 ? GetHealMana(item, true) : 0;
++		int num = item.healLife > 0 ? GetHealLife(item, quick) : 0;
++		int healMana = item.healMana > 0 ? GetHealMana(item, quick) : 0;
  		if (item.type == 3001) {
  			int healLife = item.healLife;
  			int num2 = 120;

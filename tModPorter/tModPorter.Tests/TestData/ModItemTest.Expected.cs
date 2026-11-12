@@ -126,4 +126,8 @@ public class ModItemTest : ModItem
 #endif
 
 	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
+
+	public override void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue) { }
+
+	public override void GetHealMana(Player player, bool quickHeal, bool tooltip, ref int healValue) { }
 }
