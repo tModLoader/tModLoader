@@ -1,4 +1,5 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -16,30 +17,28 @@ namespace ExampleMod.Content.Items.Armor
 
 		public override void SetStaticDefaults() {
 			// If your head equipment should draw hair while drawn, use one of the following:
-			// ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false; // Don't draw the head at all. Used by Space Creature Mask
+			// ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true; // Don't draw the head at all. Used by Space Creature Mask
 			// ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true; // Draw hair as if a hat was covering the top. Used by Wizards Hat
 			// ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true; // Draw all hair as normal. Used by Mime Mask, Sunglasses
 			// ArmorIDs.Head.Sets.DrawsBackHairWithoutHeadgear[Item.headSlot] = true;
 
+			// This is the armor set bonus tooltip: "Increases dealt damage by 20%"
 			SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
+
+			// Registers an armor set. Note that ExampleHood also registers a similar armor set. The PartType parameter is needed in this case because the 2 sets have different tooltips.
+			AddArmorSet<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(SetBonusText, PrimaryPart: ArmorSetBonus.PartType.Head);
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18; // Width of the item
-			Item.height = 18; // Height of the item
+			Item.width = 18;
+			Item.height = 18;
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
 			Item.defense = 5; // The amount of defense the item will give when equipped
 		}
 
-		// IsArmorSet determines what armor pieces are needed for the setbonus to take effect
-		public override bool IsArmorSet(Item head, Item body, Item legs) {
-			return body.type == ModContent.ItemType<ExampleBreastplate>() && legs.type == ModContent.ItemType<ExampleLeggings>();
-		}
-
 		// UpdateArmorSet allows you to give set bonuses to the armor.
-		public override void UpdateArmorSet(Player player) {
-			player.setBonus = SetBonusText.Value; // This is the setbonus tooltip: "Increases dealt damage by 20%"
+		public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) {
 			player.GetDamage(DamageClass.Generic) += AdditiveGenericDamageBonus / 100f; // Increase dealt damage for all weapon classes by 20%
 		}
 

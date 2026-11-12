@@ -14,6 +14,7 @@ namespace Terraria.ModLoader;
 /// The <see href="https://github.com/tModLoader/tModLoader/wiki/Basic-Dust">Basic Dust Guide</see> teaches the basics of making modded dust.
 /// </summary>
 [Autoload(Side = ModSide.Client)]
+[CloneByReference]
 public abstract class ModDust : ModTexturedType
 {
 	/// <summary> Allows you to choose a type of dust for this type of dust to copy the behavior of. Defaults to -1, which means that no behavior is copied. </summary>

@@ -34,6 +34,7 @@ public partial class Recipe
 		public static IngredientQuantityCallback Alchemy = (Recipe recipe, int type, ref int amount, bool isDecrafting) => {
 			if (!Main.LocalPlayer.alchemyTable && !isDecrafting)
 				return;
+
 			for (int i = amount; i > 0; i--) {
 				if (Main.rand.NextBool(3))
 					amount--;
@@ -50,7 +51,7 @@ public partial class Recipe
 	[Obsolete($"Replaced by {nameof(IngredientQuantityCallback)} due to not accounting for shimmer decrafting")]
 	public delegate void ConsumeItemCallback(Recipe recipe, int type, ref int amount);
 	/// <summary>
-	/// Called for both <see cref="Create()"/> and <see cref="Item.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
+	/// Called for both <see cref="Create()"/> and <see cref="WorldItem.GetShimmered"/>, using <paramref name="isDecrafting"/> = <see langword="true"/> to denote a shimmer operation
 	/// </summary>
 	public delegate void IngredientQuantityCallback(Recipe recipe, int type, ref int amount, bool isDecrafting);
 	internal OnCraftCallback OnCraftHooks { get; private set; }
@@ -424,6 +425,7 @@ public partial class Recipe
 		clone.needWater = needWater;
 		clone.needLava = needLava;
 		clone.needSnowBiome = needSnowBiome;
+		clone.needTorchGodsFavor = needTorchGodsFavor;
 		clone.needGraveyardBiome = needGraveyardBiome;
 		clone.needMechdusa = needMechdusa;
 
@@ -459,6 +461,9 @@ public partial class Recipe
 
 		if (requiredTile == TileID.Bottles)
 			AddConsumeIngredientCallback(IngredientQuantityRules.Alchemy);
+
+		if (requiredTile >= 0)
+			TileUsedInRecipes[requiredTile] = true;
 
 		if (numRecipes >= maxRecipes) {
 			maxRecipes += 500;

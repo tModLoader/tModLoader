@@ -1,0 +1,12 @@
+--- src/TerrariaNetCore/Terraria/Map/DigtoiseMapLayer.cs
++++ src/tModLoader/Terraria/Map/DigtoiseMapLayer.cs
+@@ -8,6 +_,9 @@
+ 
+ public class DigtoiseMapLayer : IMapLayer
+ {
++	// Added by TML.
++	public bool Visible { get; set; } = true;
++
+ 	public void Draw(ref MapOverlayDrawContext context, ref string text)
+ 	{
+ 		Player localPlayer = Main.LocalPlayer;

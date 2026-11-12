@@ -3,6 +3,7 @@ using System.IO;
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
+using Terraria.Testing;
 
 namespace ExampleMod.Common.Systems
 {
@@ -36,6 +37,11 @@ namespace ExampleMod.Common.Systems
 		public override void LoadWorldData(TagCompound tag) {
 			downedMinionBoss = tag.ContainsKey("downedMinionBoss");
 			// downedOtherBoss = tag.ContainsKey("downedOtherBoss");
+		}
+
+		// Register our world state so it can be used with /checkpoint, /return and /replay testing commands
+		public override void Load() {
+			StateSnapshot.Gameplay.AddVal($"{Mod.Name}:{nameof(downedMinionBoss)}", () => downedMinionBoss, value => downedMinionBoss = value);
 		}
 
 		public override void NetSend(BinaryWriter writer) {

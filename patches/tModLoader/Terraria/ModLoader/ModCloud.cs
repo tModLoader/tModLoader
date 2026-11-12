@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.DataStructures;
+using Terraria.ID;
 
 namespace Terraria.ModLoader;
 
@@ -11,6 +12,7 @@ namespace Terraria.ModLoader;
 /// <para/> This class is not instanced, all clouds of the same type will share the same instance.
 /// </summary>
 [Autoload(Side = ModSide.Client)]
+[CloneByReference]
 public abstract class ModCloud : ModTexturedType
 {
 	internal string nameOverride;
@@ -33,6 +35,7 @@ public abstract class ModCloud : ModTexturedType
 	{
 		ModTypeLookup<ModCloud>.Register(this);
 		CloudLoader.RegisterModCloud(this);
+		CloudID.Search.Add(FullName, Type);
 	}
 
 	public sealed override void SetupContent() => SetStaticDefaults();

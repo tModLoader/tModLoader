@@ -130,12 +130,12 @@ namespace ExampleMod.Content.Projectiles
 					int segmentToDraw = 1;
 
 					if (i > totalSegments / 3) { // At 1/3 of the way across the whip, the second segment is used.
-						// Second Segment
+												 // Second Segment
 						segmentToDraw = 2;
 					}
 
 					if (i > 2 * (totalSegments / 3)) { // At 2/3 of the way across the whip, the third segment is used.
-						// Third segment
+													   // Third segment
 						segmentToDraw = 3;
 					}
 

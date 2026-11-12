@@ -27,7 +27,12 @@ namespace ExampleMod.Content.Tiles.Plants
 			TileObjectData.newTile.CoordinateHeights = [16, 18];
 			TileObjectData.newTile.CoordinateWidth = 16;
 			TileObjectData.newTile.CoordinatePadding = 2;
-			TileObjectData.newTile.AnchorValidTiles = [ModContent.TileType<ExampleBlock>(), TileID.Gold];
+			TileObjectData.newTile.AnchorValidTiles = [
+				ModContent.TileType<ExampleBlock>(),
+				ModContent.TileType<ExampleGrass_Dirt>(),
+				ModContent.TileType<ExampleGrass_ExampleBlock>(),
+				TileID.Gold
+			];
 			TileObjectData.newTile.StyleHorizontal = true;
 			TileObjectData.newTile.DrawFlipHorizontal = true;
 			TileObjectData.newTile.WaterPlacement = LiquidPlacement.NotAllowed;

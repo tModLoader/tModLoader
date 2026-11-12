@@ -63,7 +63,7 @@ public class SimpleRenamedVanillaMembersTest
 		bool isJourney = Main.IsJourneyMode;
 		_ = Main.PipsUseGrid;
 		_ = Main.PipsFastScroll;
-		_ = FocusHelper.AllowGameplayInputs/* tModPorter Suggestion: Also consider FocusHelper.AllowUIInputs, FocusHelper.UpdateVisualEffects, or others */;
+		_ = FocusHelper.IsSelectedApplication/* tModPorter Suggestion: Also consider FocusHelper.AllowInputProcessing, FocusHelper.GameplayActive, FocusHelper.UpdateVisualEffects, or others */;
 
 		PopupText popupText = PopupText.popupText[0];
 
@@ -153,6 +153,9 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		player.oldAdjTile/* tModPorter Note: Removed. No longer used. */[0] = false;
 #endif
+#if COMPILE_ERROR
+		int nonTorch = player.nonTorch/* tModPorter Note: Removed. Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead */;
+#endif
 
 		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
@@ -217,5 +220,20 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		Utils.FloodFillTile(10, 20, DelegateMethods.SpreadLightOpen_StopForSolids)/* tModPorter Parameters have changed */;
 #endif
+
+		Projectile projectile = Main.projectile[0];
+#if COMPILE_ERROR
+		Vector2 armPosition = Main.GetPlayerArmPosition(projectile, player)/* tModPorter Note: Removed. Use Player.GetArmPosition instead */;
+		_ = projectile.identity/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = projectile.projUUID/* tModPorter Note: Removed. Use Projectile.key instead. */;
+		_ = Projectile.GetByUUID(projectile.owner, projectile.whoAmI)/* tModPorter Note: Removed. Use Projectile.key instead. */;
+#endif
+
+		var tradeOption = new ItemTrader.TradeOption();
+		_ = tradeOption.GivingItemType;
+
+		_ = ContentSamples.CreativeHelper.ItemGroup.PlaceableObjects;
+
+		Item ammo = player.PickAmmo_PickAmmoItem(player.HeldItem);
 	}
 }

@@ -181,10 +181,6 @@ public static class CombinedHooks
 		player.ApplyBannerDefenseBuff(projectile.bannerIdToRespondTo, ref modifiers);
 		if (player.resistCold && projectile.coldDamage)
 			modifiers.IncomingDamageMultiplier *= 0.7f;
-
-		if (!projectile.reflected && !ProjectileID.Sets.PlayerHurtDamageIgnoresDifficultyScaling[projectile.type]) {
-			modifiers.SourceDamage *= GameDifficultyData.EnemyDamageMultiplier.Sample(Main.Difficulty);
-		}
 	}
 
 	public static void OnHitByProjectile(Player player, Projectile projectile, in Player.HurtInfo hurtInfo)

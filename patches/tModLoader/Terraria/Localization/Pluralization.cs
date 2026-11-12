@@ -10,7 +10,7 @@ public static class Pluralization
 	//   one, other
 	// Russian, Polish
 	//   one, few, many
-	// Chinese
+	// Chinese, Japanese, Korean, ChineseTraditional
 	//   other
 	public static int CardinalPluralRule(GameCulture culture, int count)
 	{
@@ -53,6 +53,9 @@ public static class Pluralization
 				return 2;
 
 			case (int)GameCulture.CultureName.Chinese:
+			case (int)GameCulture.CultureName.Japanese:
+			case (int)GameCulture.CultureName.Korean:
+			case (int)GameCulture.CultureName.ChineseTraditional:
 			default:
 				// Chinese
 				// other

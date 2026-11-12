@@ -41,6 +41,8 @@ public class TooltipLine
 	/// These are the names of the vanilla tooltip lines, in the order in which they appear, along with their functions. All of them will have a mod name of "Terraria". Remember that most of these tooltip lines will not exist depending on the item.<para />
 	/// <list type="bullet">
 	/// <item><description>"ItemName" - The name of the item.</description></item>
+	/// <item><description>"ItemLoadoutSharedFrom" - "Shared from loadout {0}"</description></item>
+	/// <item><description>"ItemLoadoutShared" - "Shared with other loadouts"</description></item>
 	/// <item><description>"Favorite" - Tells if the item is favorited.</description></item>
 	/// <item><description>"FavoriteDesc" - Tells what it means when an item is favorited.</description></item>
 	/// <item><description>"NoTransfer" - Warning that this item cannot be placed inside itself, used by Money Trough and Void Bag/Vault.</description></item>
@@ -65,6 +67,10 @@ public class TooltipLine
 	/// <item><description>"TileBoost" - How much farther the item can reach than normal items.</description></item>
 	/// <item><description>"HealLife" - How much health the item recovers when used.</description></item>
 	/// <item><description>"HealMana" - How much mana the item recovers when used.</description></item>
+	/// <item><description>"Buffs" - "Press {InputTrigger_QuickBuff} to use buffs"</description></item>
+	/// <item><description>"Healing" - "Press {InputTrigger_Healing} to use"</description></item>
+	/// <item><description>"ManaHealing" - "Press {InputTrigger_ManaHealing} to use"</description></item>
+	/// <item><description>"Mount" - "Press {InputTrigger_Mount} to use"</description></item>
 	/// <item><description>"UseMana" - Tells how much mana the item consumes upon usage.</description></item>
 	/// <item><description>"Placeable" - Tells if the item is placeable.</description></item>
 	/// <item><description>"Ammo" - Tells if the item is ammo.</description></item>
@@ -82,6 +88,8 @@ public class TooltipLine
 	/// <item><description>"WellFedExpert" - In expert mode, tells that food increases life regeneration.</description></item>
 	/// <item><description>"BuffTime" - Tells how long the item's buff lasts.</description></item>
 	/// <item><description>"OneDropLogo" - The One Drop logo for yoyos.This is a specially-marked tooltip line that has no text.</description></item>
+	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
+	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
 	/// <item><description>"PrefixDamage" - The damage modifier of the prefix.</description></item>
 	/// <item><description>"PrefixSpeed" - The usage speed modifier of the prefix.</description></item>
 	/// <item><description>"PrefixCritChance" - The critical strike chance modifier of the prefix.</description></item>
@@ -99,8 +107,7 @@ public class TooltipLine
 	/// <item><description>"PrefixAccMeleeSpeed" - The melee speed modifier of the accessory prefix.</description></item>
 	/// <item><description>"SetBonusSinglePiece" - The set bonus description from a single piece of armor that is not equipped.</description></item>
 	/// <item><description>"SetBonus" - The set bonus description of the armor set.</description></item>
-	/// <item><description>"Expert" - Tells whether the item is from expert-mode.</description></item>
-	/// <item><description>"Master" - Whether the item is exclusive to Master Mode.</description></item>
+	/// <item><description>"ItemLoadoutShareHint" - "{InputTriggerUI_FavoriteItem} to share across loadouts"</description></item>
 	/// <item><description>"JourneyResearch" - How many more items need to be researched to unlock duplication in Journey Mode.</description></item>
 	/// <item><description>"JourneyResearchTeammate" - The "Research completed by {0}" line.</description></item>
 	/// <item><description>"ModifiedByMods" - Whether the item has been modified by any mods and what mods when holding shift, added by tModLoader.</description></item>

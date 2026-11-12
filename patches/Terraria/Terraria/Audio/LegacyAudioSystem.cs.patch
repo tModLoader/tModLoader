@@ -1,6 +1,6 @@
 --- src/decompiled/Terraria/Audio/LegacyAudioSystem.cs
 +++ src/Terraria/Terraria/Audio/LegacyAudioSystem.cs
-@@ -68,6 +_,7 @@
+@@ -69,6 +_,7 @@
  			if (!contentSource.HasAsset(assetPath))
  				continue;
  
@@ -8,7 +8,7 @@
  			string extension = contentSource.GetExtension(assetPath);
  			try {
  				IAudioTrack audioTrack2 = null;
-@@ -93,6 +_,7 @@
+@@ -94,6 +_,7 @@
  				Main.IssueReporter.AddReport(textToShow);
  				Main.IssueReporterIndicator.AttemptLettingPlayerKnow();
  			}
@@ -16,10 +16,10 @@
  		}
  
  		return audioTrack;
-@@ -101,6 +_,9 @@
- 	public LegacyAudioSystem()
+@@ -115,6 +_,9 @@
+ 	public void Init(string renderer = "")
  	{
- 		Engine = new AudioEngine("Content\\TerrariaMusic.xgs");
+ 		Engine = new AudioEngine("Content\\TerrariaMusic.xgs", TimeSpan.FromMilliseconds(250.0), renderer);
 +#if FNA
 +		Console.WriteLine("SDL Audio Driver: " + SDL3.SDL.SDL_GetCurrentAudioDriver());
 +#endif

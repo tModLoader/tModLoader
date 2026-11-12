@@ -25,9 +25,9 @@ public class AutomaticTest {
 	public async Task RewriteCode(Document doc) {
 		RemoveIfExists(Path.ChangeExtension(doc.FilePath!, ".Out.cs"));
 
-		while (true) {
+		for (int i = 0; ; i++) {
 			var pDoc = doc;
-			doc = await tModPorter.RewriteOnce(doc);
+			doc = await tModPorter.RewriteOnce(doc, verifyTextChanges: i > 20);
 			if (doc == pDoc)
 				break;
 		}

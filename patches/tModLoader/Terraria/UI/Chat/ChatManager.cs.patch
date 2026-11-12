@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/Chat/ChatManager.cs
 +++ src/tModLoader/Terraria/UI/Chat/ChatManager.cs
-@@ -13,7 +_,7 @@
+@@ -14,7 +_,7 @@
  
  namespace Terraria.UI.Chat;
  
@@ -9,7 +9,7 @@
  {
  	public static class Regexes
  	{
-@@ -30,6 +_,9 @@
+@@ -31,6 +_,9 @@
  		Vector2.UnitY
  	};
  
@@ -19,7 +19,7 @@
  	public static Color WaveColor(Color color)
  	{
  		float num = (float)(int)Main.mouseTextColor / 255f;
-@@ -180,8 +_,14 @@
+@@ -175,8 +_,14 @@
  
  	public static void DrawColorCodedStringShadow(SpriteBatch spriteBatch, DynamicSpriteFont font, List<PositionedSnippet> snippets, Vector2 position, Color shadowColor, float rotation, Vector2 origin, Vector2 scale, float spread = 2f)
  	{

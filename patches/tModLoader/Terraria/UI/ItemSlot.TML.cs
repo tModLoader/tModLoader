@@ -6,6 +6,10 @@ namespace Terraria.UI;
 
 public partial class ItemSlot
 {
+	private static bool IsAccessoryContext(int context) => Math.Abs(context) is Context.EquipAccessory or Context.EquipAccessoryVanity;
+	internal static bool IsModdedLoadoutShareContext(int context) => context is Context.ModdedAccessorySlot or Context.ModdedVanityAccessorySlot or Context.ModdedDyeSlot;
+	internal static bool CanModdedLoadoutShare(int context, int slot) => IsModdedLoadoutShareContext(context) && AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer).CanLoadoutShare(context, slot);
+
 	/* TODO: Restore functionality in ArmorSwap. Try new approach rather than just fixing compile issues.
 	private static bool AccessorySwap(Player player, Item item, ref Item result)
 	{
@@ -169,4 +173,21 @@ public partial class ItemSlot
 
 		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
+
+	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context, bool vanity)
+	{
+		if (!checkItem.accessory)
+			return false;
+
+		AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
+		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, vanity)
+			&& accessorySlotLoader.ModSlotCheck(checkItem, slot, context);
+	}
+
+	private static int GetSlotColorContext(int context) => context switch {
+		Context.ModdedAccessorySlot => Context.EquipAccessory,
+		Context.ModdedVanityAccessorySlot => Context.EquipAccessoryVanity,
+		Context.ModdedDyeSlot => Context.EquipDye,
+		_ => context
+	};
 }

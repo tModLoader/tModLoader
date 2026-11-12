@@ -51,7 +51,8 @@
 +		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +		resourceDrawSettings.DisplaySet = this;
  		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 		_hpHovered = isHovered;
+-		_hpHovered = isHovered;
++		_hpHovered = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, true);
 +		SkipLifeDrawing:
 +
 +		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, true, color, drawText);
@@ -83,7 +84,8 @@
 +		resourceDrawSettings.StatsSnapshot = preparedSnapshot;
 +		resourceDrawSettings.DisplaySet = this;
  		resourceDrawSettings.Draw(spriteBatch, ref isHovered);
- 		_mpHovered = isHovered;
+-		_mpHovered = isHovered;
++		_mpHovered = isHovered && ResourceOverlayLoader.DisplayHoverText(preparedSnapshot, this, false);
 +		SkipManaDrawing:
 +
 +		ResourceOverlayLoader.PostDrawResourceDisplay(preparedSnapshot, this, false, color, drawText);

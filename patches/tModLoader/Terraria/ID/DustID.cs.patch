@@ -25,7 +25,7 @@
  	public const short PlanteraBulb = 168;
  	public const short IchorTorch = 169;
  	public const short IchorSplash = 170;
-@@ -206,4 +_,6 @@
+@@ -210,4 +_,6 @@
  	public const short GemRuby = 90;
  	public const short GemDiamond = 91;
  	public const short GemAmber = 138;

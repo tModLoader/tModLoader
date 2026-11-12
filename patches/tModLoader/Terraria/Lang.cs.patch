@@ -40,10 +40,42 @@
  
  	public static string GetMapObjectName(int id)
  	{
-@@ -67,6 +_,12 @@
+@@ -62,11 +_,44 @@
+ 		return string.Empty;
+ 	}
+ 
++	/// <summary>
++	/// Registers a "Global substitution". These are values that will influence the text value of LocalizedText automatically.
++	/// <para/> The <paramref name="key"/> must be start with a letter and can only contain letters, digits, underscores, periods, and forward slashes (/).
++	/// <para/> Some modded content will automatically register global substitutions:
++	/// <para/> <see cref="ModNPC"/>:
++	/// <br/> <b>Key</b>: <c>"NPCFirstName_{FullName}"</c> (For example, "NPCFirstName_ExampleMod/RandomBuff").
++	/// <br/> <b>Result</b>: The values of <see cref="NPC.GetFirstNPCNameOrNull"/>, which will be the first name or type name of the NPC if it exists in the world. If the NPC is not in the world this will return <see langword="null"/>, causing the LocalizedText fail <see cref="LocalizedText.ConditionsMet"/>. This is typically used in TownNPC dialogue to refer to other TownNPCs.
++	/// <para/> <see cref="ModKeybind"/>:
++	/// <br/> <b>Key</b>:  <c>"InputTrigger_{FullName}"</c> (For example, "InputTrigger_ExampleMod/RandomBuff").
++	/// <br/> <b>Result</b>: A comma-separated list of the assigned hotkeys for the keybind for the current input method or "&lt;Unbound&gt;" if no assigned hotkey.
++	/// </summary>
++	/// <param name="key"></param>
++	/// <param name="getValue"></param>
+ 	public static void RegisterGlobalSubstitution(string key, Func<object> getValue)
+ 	{
  		_globalSubstitutions[key] = getValue;
  	}
  
++	/// <summary>
++	/// <inheritdoc cref="RegisterGlobalSubstitution"/>
++	/// <para/> <b>RegisterModdedGlobalSubstitution specific behavior:</b>
++	/// <br/> Unlike <see cref="RegisterGlobalSubstitution(string, Func{object})"/>, this method will automatically prefix the key with the mod's name so that it is unique and will not conflict with substitutions from other mods. <c>"{mod.Name}/{key}"</c> will be the actual key and is what should be used to reference the substitution in localization entries.
++	/// </summary>
++	/// <param name="mod">The mod this substitution belongs to.</param>
++	/// <param name="key"></param>
++	/// <param name="getValue"></param>
++	public static void RegisterModdedGlobalSubstitution(Mod mod, string key, Func<object> getValue)
++	{
++		key = $"{mod.Name}/{key}";
++		_globalSubstitutions[key] = getValue;
++	}
++
 +	/// <summary>
 +	/// Gets the current current value of a global substitution. Used for keybindings, npc names, world evil substitutions, and guide tip conditions. <br/>
 +	/// If the value is <c>null</c>, then uses of <see cref="LocalizedText.TryFormatWith(object, out string)"/> or <see cref="LocalizedText.ConditionsMet"/> with {Key} will return false<br/>
@@ -53,7 +85,22 @@
  	public static object GetGlobalSubstitution(string key)
  	{
  		if (!_globalSubstitutions.TryGetValue(key, out var value))
-@@ -141,11 +_,13 @@
+@@ -75,6 +_,14 @@
+ 		return value();
+ 	}
+ 
++	internal static Dictionary<string, Func<object>> GetGlobalSubstitutions() => _globalSubstitutions;
++
++	internal static void ResetGlobalSubstitutions()
++	{
++		_globalSubstitutions.Clear();
++		InitGlobalSubstitutions();
++	}
++
+ 	private static void InitGlobalSubstitutions()
+ 	{
+ 		RegisterGlobalSubstitution("Nurse", () => NPC.GetFirstNPCNameOrNull(18));
+@@ -146,11 +_,13 @@
  
  	[Old("dialog is deprecated. Please use Language.GetText instead.")]
  	public static string dialog(int l, bool english = false) => Language.GetTextValue("LegacyDialog." + l);
@@ -68,7 +115,7 @@
  			return _npcNameCache[netID];
  
  		if (netID < 0 && -netID - 1 < _negativeNpcNameCache.Length)
-@@ -156,12 +_,13 @@
+@@ -161,12 +_,13 @@
  
  	public static ItemTooltip GetTooltip(int itemId) => _itemTooltipCache[itemId];
  
@@ -83,7 +130,7 @@
  			return _itemNameCache[id];
  
  		return LocalizedText.Empty;
-@@ -169,12 +_,13 @@
+@@ -174,12 +_,13 @@
  
  	public static LocalizedText GetEmojiName(int id)
  	{
@@ -98,7 +145,7 @@
  	public static string GetItemNameValue(int id) => GetItemName(id).Value;
  
  	public static string GetPrefixedItemName(int id, int prefixType)
-@@ -191,7 +_,9 @@
+@@ -196,7 +_,9 @@
  		});
  	}
  
@@ -108,28 +155,22 @@
  	public static string GetBuffDescription(int id) => _buffDescriptionCache[id].Value;
  
  	public static string GetDryadWorldStatusDialog(out bool worldIsEntirelyPure)
-@@ -335,7 +_,20 @@
+@@ -340,6 +_,14 @@
  		return npc.FullName;
  	}
  
 +	/// <summary>
-+	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter and if the conditions embedded into the LocalizedText are all satisfied by the data in <paramref name="substitutions"/>. See <see cref="LocalizedText.CanFormatWith(object)"/> for more information about conditions embedded in localization text. <br/><br/>
-+	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> that satisfy <paramref name="substitutions"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> that satisfies <paramref name="substitutions"/> will be returned.<br/><br/>
-+	/// </summary>
-+	/// <param name="startsWith"></param>
-+	/// <param name="substitutions"></param>
-+	/// <returns></returns>
- 	public static LanguageSearchFilter CreateDialogFilter(string startsWith, object substitutions) => (string key, LocalizedText text) => key.StartsWith(startsWith) && text.ConditionsMetWith(substitutions);
-+	/// <summary>
 +	/// Filters LocalizedText objects by checking if their key starts with the provided <paramref name="startsWith"/> parameter.<br/><br/>
-+	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>
++	/// If <paramref name="checkConditions"/> is true, then conditions embedded into the LocalizedText will be checked as well.<br/><br/>
++	/// When passed into <see cref="Language.FindAll(LanguageSearchFilter)"/>, all LocalizedText with keys starting with <paramref name="startsWith"/> and matching all conditions (if checkConditions is true), will be returned. When passed into <see cref="Language.SelectRandom(LanguageSearchFilter, UnifiedRandom)"/>, a single random LocalizedText with key starting with <paramref name="startsWith"/> will be returned.<br/><br/>	
 +	/// </summary>
 +	/// <param name="startsWith"></param>
++	/// <param name="checkConditions"></param>
 +	/// <returns></returns>
  	public static LanguageSearchFilter CreateDialogFilter(string startsWith, bool checkConditions = true) => (string key, LocalizedText text) => key.StartsWith(startsWith) && (!checkConditions || text.ConditionsMet);
  
  	public static string AnglerQuestChat(bool turnIn = false)
-@@ -347,9 +_,14 @@
+@@ -351,9 +_,14 @@
  			return Language.SelectRandom(CreateDialogFilter("AnglerQuestText.NoQuest_")).Value;
  
  		int id = (Main.npcChatCornerItem = Main.anglerQuestItemNetIDs[Main.anglerQuest]);
@@ -144,7 +185,7 @@
  	public static LocalizedText GetProjectileName(int type)
  	{
  		if (type >= 0 && type < _projectileNameCache.Length && _projectileNameCache[type] != null)
-@@ -456,7 +_,7 @@
+@@ -464,7 +_,7 @@
  		if (Main.dedServ)
  			return;
  
@@ -153,3 +194,21 @@
  		for (int i = 0; i < _mapLegendCache.Length; i++) {
  			_mapLegendCache[i] = LocalizedText.Empty;
  		}
+@@ -914,13 +_,16 @@
+ 		_mapLegendCache[MapHelper.TileToLookup(752, 0)] = itemNameCache[6142];
+ 	}
+ 
+-	public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int proj = -1, int other = -1, int projType = 0, int plrItemType = 0)
++	public static NetworkText CreateDeathMessage(string deadPlayerName, int plr = -1, int npc = -1, int unused/*proj*/ = -1, int other = -1, int projType = 0, int plrItemType = 0)
+ 	{
+ 		NetworkText networkText = NetworkText.Empty;
+ 		NetworkText networkText2 = NetworkText.Empty;
+ 		NetworkText networkText3 = NetworkText.Empty;
+ 		NetworkText networkText4 = NetworkText.Empty;
++		/*
+ 		if (proj >= 0)
++		*/
++		if (projType > 0)
+ 			networkText = NetworkText.FromKey(GetProjectileName(projType).Key);
+ 
+ 		if (npc >= 0)

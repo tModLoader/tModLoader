@@ -261,9 +261,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModProjectile",		"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile",	"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 
-		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false");
+		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.HidesHead[slot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[head] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawBody",		"After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[slot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[body] = true if you returned false");
@@ -486,7 +486,7 @@ public static partial class Config
 		RenameType(from: "Terraria.Recipe.Condition", to: "Terraria.Condition");
 		RenameStaticField("Terraria.Condition", from: "InGraveyardBiome", to: "InGraveyard");
 
-		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `maxStack == 1 || Item.AllowReforgeForStackableItem` or `Item.Prefix(-3)` to check whether an item is reforgeable"));
+		RefactorInstanceMember("Terraria.Item", "IsCandidateForReforge", Removed("Use `Item.CanHavePrefixes()` to check whether an item is reforgeable"));
 		RefactorInstanceMethodCall("Terraria.Item", "CloneWithModdedDataFrom", Removed("Use Clone, ResetPrefix or Refresh"));
 		RefactorInstanceMethodCall("Terraria.ModLoader.Mod", "CreateTranslation", ToStaticMethodCall("Terraria.ModLoader.LocalizationLoader", "CreateTranslation", targetBecomesFirstArg: true));
 
@@ -567,22 +567,29 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "UpdateArmorSet");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "UpdateArmorSet");
+		ChangeHookSignature("Terraria.ModLoader.ModPlayer", "ModifyZoom").RenameParameter("zoom", "panFactor");
 		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDraw", ProjectileDrawPlayerHint);
@@ -593,6 +600,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultDrawMapIcon", InsertArgument(oldArgCount: 6, index: 6, "out bool onScreen"));
+		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultMapClickHandle", InsertArgument(oldArgCount: 4, index: 1, "onScreen"));
 
 		HookRemoved("Terraria.ModLoader.ModProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile", "DrawBehind", "Set Projectile.drawLayer instead");
@@ -600,15 +609,24 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
+		HookRemoved("Terraria.ModLoader.GlobalItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifier", Removed("Set Color = Terraria.ID.Colors.PrefixGood instead"));
 		RefactorInstanceMember("Terraria.ModLoader.TooltipLine", "IsModifierBad", Removed("Set Color = Terraria.ID.Colors.PrefixBad instead"));
+		RefactorInstanceMember("Terraria.Item", "AllowReforgeForStackableItem", Removed("In 1.4.5 items with prefixes can stack"));
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
+		RenameStaticField("Terraria.ID.ArmorIDs.Head.Sets", from: "DrawHead", to: "HidesHead").FollowBy(InvertAssignedBool);
+
+		RenameMethod("Terraria.Player", "ChooseAmmo", "PickAmmo_PickAmmoItem");
+		
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
+
+		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));
 
 		RenameStaticField("Terraria.ID.NPCID.Sets", from: "ImmuneToAllBuffs", to: "ImmuneToRegularBuffs").FollowBy(AddCommentToFieldAccess("NPCID.Sets.ImmuneToAllBuffs was removed. If immunity to whip tag effects are desired, also set NPCID.Sets.ImmuneToWhipTags to true."));
 	}

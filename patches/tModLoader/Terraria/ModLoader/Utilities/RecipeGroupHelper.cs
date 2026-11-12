@@ -9,7 +9,7 @@ internal static class RecipeGroupHelper
 	internal static void ResetRecipeGroups()
 	{
 		RecipeGroup.recipeGroups.Clear();
-	//	RecipeGroup.recipeGroupIDs.Clear();
+		//	RecipeGroup.recipeGroupIDs.Clear();
 		RecipeGroup.nextRecipeGroupIndex = 0;
 	}
 

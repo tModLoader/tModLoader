@@ -301,7 +301,7 @@ public partial class NPC
 
 		/// <summary>
 		/// The amount of knockback to apply. Should always be >= 0. <br/>
-		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
+		/// Note that <see cref="NPC.StrikeNPC(HitInfo, bool, bool, int)"/> has a staggered knockback falloff, and that critical strikes automatically get extra 40% knockback in excess of this value.
 		/// </summary>
 		public float Knockback = 0;
 

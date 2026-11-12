@@ -81,6 +81,7 @@ public static class ItemLoader
 
 		//Textures
 		Array.Resize(ref TextureAssets.Item, ItemCount);
+		Main.ItemMapIconRenderer?.Reset(TextureAssets.Item);
 		Array.Resize(ref TextureAssets.ItemFlame, ItemCount);
 
 		//Sets
@@ -444,39 +445,39 @@ public static class ItemLoader
 		return multiplier;
 	}
 
-	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(g => g.GetHealLife);
 
 	/// <summary>
 	/// Calls ModItem.GetHealLife, then all GlobalItem.GetHealLife hooks.
 	/// </summary>
-	public static void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealLife(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealLife(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealLife.Enumerate(item)) {
-			g.GetHealLife(item, player, quickHeal, ref healValue);
+			g.GetHealLife(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 
-	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(g => g.GetHealMana);
 
 	/// <summary>
 	/// Calls ModItem.GetHealMana, then all GlobalItem.GetHealMana hooks.
 	/// </summary>
-	public static void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealMana(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealMana(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealMana.Enumerate(item)) {
-			g.GetHealMana(item, player, quickHeal, ref healValue);
+			g.GetHealMana(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 
@@ -1324,26 +1325,26 @@ public static class ItemLoader
 		}
 	}
 
-	private static HookList HookUpdateArmorSet = AddHook<Action<Player, string>>(g => g.UpdateArmorSet);
+	private static HookList HookUpdateArmorSet = AddHook<Action<Player, ArmorSetBonus>>(g => g.UpdateArmorSet);
 
 	/// <summary>
-	/// If the head's <see cref="ModItem.IsArmorSet(Item, Item, Item)"/> returns true, calls the head's <see cref="ModItem.UpdateArmorSet(Player)"/>. This is then repeated for the body, then the legs. Then for each GlobalItem, if <see cref="GlobalItem.IsArmorSet(Item, Item, Item)"/> returns a non-empty string, calls <see cref="GlobalItem.UpdateArmorSet(Player, string)"/> with that string.
+	/// Calls <see cref="ModItem.UpdateArmorSet(Player, ArmorSetBonus)"/> on the head, body, and legs modded items that belong to the active ArmorSetBonus. Then <see cref="GlobalItem.UpdateArmorSet(Player, ArmorSetBonus)"/> is called on each GlobalItem.
 	/// </summary>
-	public static void UpdateArmorSet(Player player, Item head, Item body, Item legs)
+	public static void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus, Item head, Item body, Item legs)
 	{
-		if (head.ModItem != null && head.ModItem.IsArmorSet(head, body, legs))
-			head.ModItem.UpdateArmorSet(player);
+		if (armorSetBonus != null) {
+			if (head.ModItem != null && armorSetBonus.Head == head.type)
+				head.ModItem.UpdateArmorSet(player, armorSetBonus);
 
-		if (body.ModItem != null && body.ModItem.IsArmorSet(head, body, legs))
-			body.ModItem.UpdateArmorSet(player);
+			if (body.ModItem != null && armorSetBonus.Body == body.type)
+				body.ModItem.UpdateArmorSet(player, armorSetBonus);
 
-		if (legs.ModItem != null && legs.ModItem.IsArmorSet(head, body, legs))
-			legs.ModItem.UpdateArmorSet(player);
+			if (legs.ModItem != null && armorSetBonus.Legs == legs.type)
+				legs.ModItem.UpdateArmorSet(player, armorSetBonus);
+		}
 
 		foreach (var g in HookUpdateArmorSet.Enumerate()) {
-			string set = g.IsArmorSet(head, body, legs);
-			if (!string.IsNullOrEmpty(set))
-				g.UpdateArmorSet(player, set);
+			g.UpdateArmorSet(player, armorSetBonus);
 		}
 	}
 
@@ -1520,16 +1521,13 @@ public static class ItemLoader
 	private static HookList HookCanStack = AddHook<Func<Item, Item, bool>>(g => g.CanStack);
 
 	/// <summary>
-	/// Returns false if item prefixes don't match. Then calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
+	/// Calls all GlobalItem.CanStack hooks until one returns false then ModItem.CanStack. Returns whether any of the hooks returned false.
 	/// </summary>
 	/// <param name="destination">The item instance that <paramref name="source"/> will attempt to stack onto</param>
 	/// <param name="source">The item instance being stacked onto <paramref name="destination"/></param>
 	/// <returns>Whether or not the items are allowed to stack</returns>
 	public static bool CanStack(Item destination, Item source)
 	{
-		if (destination.prefix != source.prefix) // #StackablePrefixWeapons
-			return false;
-
 		foreach (var g in HookCanStack.Enumerate(destination)) {
 			if (!g.CanStack(destination, source))
 				return false;
@@ -1891,32 +1889,31 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-    public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
-    {
-        // Notes:
-        // Glowmasks not supported yet, but might in future
-        // Front, called twice, once for each half of texture
-        // Head, can be called twice if Head.Sets.FrontToBackID used
-        // Shield, Can be called many times if parrying, but no api support for that yet
-        // Body, called 5 times for each CompositePlayerDrawContext
+	public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+	{
+		// Notes:
+		// Glowmasks not supported yet, but might in future
+		// Front, called twice, once for each half of texture
+		// Head, can be called twice if Head.Sets.FrontToBackID used
+		// Shield, Can be called many times if parrying, but no api support for that yet
+		// Body, called 5 times for each CompositePlayerDrawContext
 
-        if (slot <= 0)
-        {
-            drawInfo.DrawDataCache.Add(drawData);
-            return;
-        }
+		if (slot <= 0) {
+			drawInfo.DrawDataCache.Add(drawData);
+			return;
+		}
 
-        // TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
-        EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
-        bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+		// TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
+		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+		bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
 
-        if (result ?? true)
-            drawInfo.DrawDataCache.Add(drawData);
+		if (result ?? true)
+			drawInfo.DrawDataCache.Add(drawData);
 
-        return;
-    }
+		return;
+	}
 
-    private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
+	private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
 	/// <summary>
@@ -2442,5 +2439,18 @@ public static class ItemLoader
 
 		properties = default;
 		return false;
+	}
+
+	private static HookList HookModifyArmorSets = AddHook<Action>(g => g.ModifyArmorSets);
+
+	public static void ModifyArmorSets()
+	{
+		foreach (ModItem item in items) {
+			item.ModifyArmorSets();
+		}
+
+		foreach (GlobalItem g in HookModifyArmorSets.Enumerate()) {
+			g.ModifyArmorSets();
+		}
 	}
 }

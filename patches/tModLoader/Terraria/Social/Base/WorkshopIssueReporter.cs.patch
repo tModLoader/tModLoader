@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/Social/Base/WorkshopIssueReporter.cs
 +++ src/tModLoader/Terraria/Social/Base/WorkshopIssueReporter.cs
-@@ -39,12 +_,23 @@
+@@ -39,13 +_,34 @@
  	public void ReportInstantUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -11,20 +11,31 @@
 +			throw new NotImplementedException(textValue);
 +
  		AddReport(textValue);
- 		OpenReportsScreen();
- 	}
- 
- 	public void ReportInstantUploadProblemFromValue(string text)
- 	{
-+		// Logging and dedServ check added by TML.
++		OpenReportsScreen();
++	}
++
++	public void ReportInstantUploadProblemFromValue(string text) // TML added back in
++	{
 +		Utils.LogAndConsoleErrorMessage(text);
 +		if (Main.dedServ)
 +			throw new NotImplementedException(text);
 +
- 		AddReport(text);
++		AddReport(text);
  		OpenReportsScreen();
  	}
-@@ -52,6 +_,12 @@
+ 
+ 	public void ReportInstantUploadProblem(string textKey, object subs)
+ 	{
+ 		string textValueWith = Language.GetTextValueWith(textKey, subs);
++		// Logging and dedServ check added by TML.
++		Utils.LogAndConsoleErrorMessage(textValueWith);
++		if (Main.dedServ)
++			throw new NotImplementedException(textValueWith);
++
+ 		AddReport(textValueWith);
+ 		OpenReportsScreen();
+ 	}
+@@ -53,6 +_,12 @@
  	public void ReportDelayedUploadProblem(string textKey)
  	{
  		string textValue = Language.GetTextValue(textKey);
@@ -37,7 +48,20 @@
  		AddReport(textValue);
  		NotifyReportsScreen();
  	}
-@@ -63,6 +_,12 @@
+@@ -60,6 +_,12 @@
+ 	public void ReportDelayedUploadProblem(string textKey, object subs)
+ 	{
+ 		string textValueWith = Language.GetTextValueWith(textKey, subs);
++
++		// Logging and dedServ check added by TML.
++		Utils.LogAndConsoleErrorMessage(textValueWith);
++		if (Main.dedServ)
++			return;
++
+ 		AddReport(textValueWith);
+ 		NotifyReportsScreen();
+ 	}
+@@ -72,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);
@@ -50,20 +74,7 @@
  		AddReport(textValueWith);
  		NotifyReportsScreen();
  	}
-@@ -75,6 +_,12 @@
- 		};
- 
- 		string textValueWith = Language.GetTextValueWith(textKey, obj);
-+
-+		// Logging and dedServ check added by TML.
-+		Utils.LogAndConsoleErrorMessage(textValueWith);
-+		if (Main.dedServ)
-+			return;
-+
- 		AddReport(textValueWith);
- 		NotifyReportsScreen();
- 	}
-@@ -86,6 +_,12 @@
+@@ -83,6 +_,12 @@
  		};
  
  		string textValueWith = Language.GetTextValueWith(textKey, obj);

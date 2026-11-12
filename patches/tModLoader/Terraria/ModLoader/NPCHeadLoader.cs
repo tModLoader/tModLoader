@@ -1,10 +1,8 @@
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.GameContent;
-using Terraria.Graphics.Renderers;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
 
@@ -61,17 +59,11 @@ public static class NPCHeadLoader
 
 	internal static void ResizeAndFillArrays()
 	{
-		static void ResetHeadRenderer(ref OutlinedTextureRenderer renderer, Asset<Texture2D>[] textures)
-		{
-			Main.ContentThatNeedsRenderTargets.Remove(renderer);
-			Main.ContentThatNeedsRenderTargets.Add(renderer = new OutlinedTextureRenderer(textures));
-		}
-
 		//Textures
 		Array.Resize(ref TextureAssets.NpcHead, nextHead);
 		Array.Resize(ref TextureAssets.NpcHeadBoss, nextBossHead);
-		ResetHeadRenderer(ref Main.TownNPCHeadRenderer, TextureAssets.NpcHead);
-		ResetHeadRenderer(ref Main.BossNPCHeadRenderer, TextureAssets.NpcHeadBoss);
+		Main.TownNPCHeadRenderer?.Reset(TextureAssets.NpcHead);
+		Main.BossNPCHeadRenderer?.Reset(TextureAssets.NpcHeadBoss);
 
 		foreach (string texture in heads.Keys) {
 			TextureAssets.NpcHead[heads[texture]] = ModContent.Request<Texture2D>(texture);

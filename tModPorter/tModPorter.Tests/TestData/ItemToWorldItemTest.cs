@@ -30,6 +30,7 @@ public class ItemToWorldItemTest
 		foreach (Item item in Main.item) {
 			if (item.active && !item.beingGrabbed && hitbox.Intersects(item.Hitbox)) {
 				item.active = false;
+				_ = item.noGrabDelay;
 
 				NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 			}

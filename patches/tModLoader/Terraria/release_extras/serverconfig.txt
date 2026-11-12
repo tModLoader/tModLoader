@@ -72,7 +72,7 @@
 #secure=1
 
 #Sets the server language from its language code. 
-#English = en-US, German = de-DE, Italian = it-IT, French = fr-FR, Spanish = es-ES, Russian = ru-RU, Chinese = zh-Hans, Portuguese = pt-BR, Polish = pl-PL,
+#English = en-US, German = de-DE, Italian = it-IT, French = fr-FR, Spanish = es-ES, Russian = ru-RU, Simplified Chinese = zh-Hans, Portuguese = pt-BR, Polish = pl-PL, Japanese = ja-JP, Korean = ko-KR, Traditional Chinese = zh-Hant
 #language=en-US
 
 #Automatically forward ports with uPNP

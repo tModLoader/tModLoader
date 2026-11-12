@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Terraria.Localization;
+using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.IO;
 
 namespace Terraria.ModLoader.Core;
@@ -47,7 +48,7 @@ internal class BuildProperties
 	internal ModReference[] modReferences = new ModReference[0];
 	internal ModReference[] weakReferences = new ModReference[0];
 	//this mod will load after any mods in this list
-	//sortAfter includes (mod|weak)References that are not in sortBefore
+	//sortAfter includes (mod|weak)References that are not in sortBefore or sortIgnore
 	internal string[] sortAfter = new string[0];
 	//this mod will load before any mods in this list
 	internal string[] sortBefore = new string[0];
@@ -69,6 +70,7 @@ internal class BuildProperties
 	internal ModSide side;
 	internal bool playableOnPreview = true;
 	internal bool translationMod = false;
+	internal bool libraryMod = false;
 	internal string modSource = "";
 
 	public IEnumerable<ModReference> Refs(bool includeWeak) =>
@@ -130,6 +132,7 @@ internal class BuildProperties
 		if (File.Exists(descriptionfile)) {
 			properties.description = File.ReadAllText(descriptionfile);
 		}
+		string[] sortIgnore = [];
 		foreach (string line in File.ReadAllLines(propertiesFile)) {
 			if (string.IsNullOrWhiteSpace(line)) {
 				continue;
@@ -163,6 +166,9 @@ internal class BuildProperties
 				case "sortAfter":
 					properties.sortAfter = ReadList(value).ToArray();
 					break;
+				case "sortIgnore":
+					sortIgnore = ReadList(value).ToArray();
+					break;
 				case "author":
 					properties.author = value;
 					break;
@@ -171,7 +177,7 @@ internal class BuildProperties
 						properties.version = result;
 					}
 					else {
-						Logging.tML.Error($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
+						throw new BuildException($"The version found in {propertiesFile}, \"{value}\", is not a valid version number. Read the \"version\" section of https://github.com/tModLoader/tModLoader/wiki/build.txt#available-properties for more info on correct version numbers.");
 					}
 					break;
 				case "displayName":
@@ -189,6 +195,9 @@ internal class BuildProperties
 					break;
 				case "translationMod":
 					properties.translationMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
+					break;
+				case "libraryMod":
+					properties.libraryMod = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
 					break;
 				case "hideCode":
 					properties.hideCode = string.Equals(value, "true", StringComparison.OrdinalIgnoreCase);
@@ -216,8 +225,18 @@ internal class BuildProperties
 		if (properties.dllReferences.Intersect(properties.modReferences.Select(x => x.mod)).Any())
 			throw new Exception("dllReferences contains duplicate of modReferences");
 
-		//add (mod|weak)References that are not in sortBefore to sortAfter
-		properties.sortAfter = properties.RefNames(true).Where(dep => !properties.sortBefore.Contains(dep))
+		if (properties.sortBefore.Intersect(properties.sortAfter).Any())
+			throw new Exception("sortBefore contains duplicate of sortAfter");
+
+		if (sortIgnore.Intersect(properties.sortAfter.Concat(properties.sortBefore)).Any())
+			throw new Exception("sortIgnore contains duplicate of sortAfter/sortBefore");
+
+		if (sortIgnore.Except(refs).Any())
+			throw new Exception("sortIgnore contains mods which are not mod/weak references");
+
+		//add (mod|weak)References that are not in sortBefore or sortIgnore to sortAfter
+		properties.sortAfter = properties.RefNames(true)
+			.Where(dep => !properties.sortBefore.Contains(dep) && !sortIgnore.Contains(dep))
 			.Concat(properties.sortAfter).Distinct().ToArray();
 
 		// Interpolate description values
@@ -279,6 +298,9 @@ internal class BuildProperties
 				}
 				if (translationMod) {
 					writer.Write("translationMod");
+				}
+				if (libraryMod) {
+					writer.Write("libraryMod");
 				}
 				if (!hideCode) {
 					writer.Write("!hideCode");
@@ -371,6 +393,9 @@ internal class BuildProperties
 				if (tag == "translationMod") {
 					properties.translationMod = true;
 				}
+				if (tag == "libraryMod") {
+					properties.libraryMod = true;
+				}
 				if (tag == "!hideCode") {
 					properties.hideCode = false;
 				}
@@ -431,6 +456,8 @@ internal class BuildProperties
 			sb.AppendLine($"playableOnPreview = false");
 		if (properties.translationMod)
 			sb.AppendLine($"translationMod = true");
+		if (properties.libraryMod)
+			sb.AppendLine($"libraryMod = true");
 		// buildIgnores isn't preserved in Info, but it doesn't matter with extraction since the ignored files won't be present anyway.
 		// if (properties.buildIgnores.Length > 0)
 		//	sb.AppendLine($"buildIgnores = {string.Join(", ", properties.buildIgnores)}");
@@ -440,6 +467,11 @@ internal class BuildProperties
 			sb.AppendLine($"sortAfter = {string.Join(", ", properties.sortAfter)}");
 		if (properties.sortBefore.Length > 0)
 			sb.AppendLine($"sortBefore = {string.Join(", ", properties.sortBefore)}");
+
+		//sortIgnore is not stored in Info, but a reference with no sort entry could only have come from one
+		string[] sortIgnore = properties.RefNames(true).Except(properties.sortAfter).Except(properties.sortBefore).ToArray();
+		if (sortIgnore.Length > 0)
+			sb.AppendLine($"sortIgnore = {string.Join(", ", sortIgnore)}");
 		var bytes = Encoding.UTF8.GetBytes(sb.ToString());
 		dst.Write(bytes, 0, bytes.Length);
 	}

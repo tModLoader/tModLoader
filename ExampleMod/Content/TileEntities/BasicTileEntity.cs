@@ -210,7 +210,7 @@ namespace ExampleMod.Content.TileEntities
 				// The item is only spawned on the server or in single player. In multiplayer the KillTile is synced so this code will automatically spawn the item on the server and sync the WaterFillLevel changes to the clients.
 				if (Main.netMode != NetmodeID.MultiplayerClient) {
 					// By convention, EntitySource_TileBreak is used for TileEntity dropping items instead of EntitySource_TileInteraction
-					Item.NewItem(new EntitySource_TileBreak(i, j), tileEntity.Position.X * 16, tileEntity.Position.Y * 16, 32, 32, ItemID.WaterBucket);
+					Item.NewItem(new EntitySource_TileBreak(i, j), tileEntity.Position.ToWorldCoordinates(16, 16), ItemID.WaterBucket);
 					tileEntity.WaterFillLevel = 0;
 				}
 

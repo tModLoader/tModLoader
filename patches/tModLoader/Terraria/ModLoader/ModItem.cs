@@ -1,12 +1,12 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
-using ReLogic.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.RegularExpressions;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
+using ReLogic.Utilities;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Golf;
@@ -53,6 +53,40 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// You can use a vanilla texture by returning <c>$"Terraria/Images/Item_{ItemID.ItemNameHere}"</c> <br/>
 	/// </summary>
 	public virtual string Texture => (GetType().Namespace + "." + Name).Replace('.', '/');//GetType().FullName.Replace('.', '/');
+
+	// Helper methods that automatically link up UpdateArmorSet and automatically assign SetBonus localization key.
+
+	/// <summary>
+	/// Creates and registers a typical armor set consisting of the provided <paramref name="Head"/>, <paramref name="Body"/>, and <paramref name="Legs"/> armor items. <see cref="ItemID.None"/> can be used for any armor slot that is irrelevant to the armor set.
+	/// <para/> When a player is wearing these items, <paramref name="Effect"/> will run. <paramref name="Effect"/> can be used to apply stat changes to the player. The <see cref="UpdateArmorSet(Player, ArmorSetBonus)"/> method will also run for all items involved in the armor set and would be necessary if the effects depend on instanced item data. Use whichever approach you prefer.
+	/// <para/> <paramref name="LocalizedText"/> is the tooltip text for the armor set. If unassigned, the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key will be created and used.
+	/// <para/> <paramref name="PrimaryPart"/> indicates which equipment slot is responsible differentiating this set bonus from other similar set bonuses that share the remaining equipment items. This affects the tooltip of equipment items that are in the inventory instead of equipped. Rather than displaying the set bonus tooltip, they will display "Changes with (head/torso/leg) piece" since it is unknown which <paramref name="PrimaryPart"/> the item will be paired with. If unassigned, the items will all display the set bonus tooltip as usual.
+	/// <para/> <paramref name="Identifier"/> can be used to differentiate between multiple <see cref="ArmorSetBonus"/>. If unassigned, the default values will be <see cref="ModType.FullName"/> ("ModName/ModItemName"). To avoid name collisions, we recommend prepending "ModName/" to the identifier in most cases.
+	/// <para/> For armor sets with multiple options and sharing the same tooltip text, use <see cref="CreateArmorSet(LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/> instead. For armor sets with multiple options but different tooltip text, use this method multiple times alongside setting <paramref name="PrimaryPart"/>.
+	/// </summary>
+	public void AddArmorSet(int Head, int Body, int Legs, LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
+	{
+		ArmorSetBonuses.Add(Head, Body, Legs, Identifier ?? this.FullName, LocalizedText ?? this.GetLocalization("SetBonus"), Effect, PrimaryPart);
+	}
+
+	/// <inheritdoc cref="AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>
+	public void AddArmorSet<THead, TBody, TLegs>(LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
+		where THead : ModItem
+		where TBody : ModItem
+		where TLegs : ModItem
+	{
+		AddArmorSet(ModContent.ItemType<THead>(), ModContent.ItemType<TBody>(), ModContent.ItemType<TLegs>(), LocalizedText, Identifier, Effect, PrimaryPart);
+	}
+
+	/// <summary>
+	/// Similar to <see cref="AddArmorSet(int, int, int, LocalizedText, string, ArmorSetBonus.ArmorSetEffect, ArmorSetBonus.PartType)"/>, except this method is used to create multiple armor set options at once, all sharing the same identifier, armor set bonuses, tooltips, and primary part value. Follow-up this method with one or more calls to the <see cref="ArmorSetBonus.Builder.Set(int, int, int)"/> method, then finalize the armor sets by calling <see cref="ArmorSetBonus.Builder.Add"/>.
+	/// <para/> For example, <c>CreateArmorSet().Set(head, body, legs).Set(alternateHead, alternateBody, alternateLegs).Add();</c> adds 2 armor sets. The items are not interchangeable.
+	/// <para/> Use <see cref="ArmorSetBonus.Builder.Set(int[], int[], int[])"/> instead to make every option interchangeable.
+	/// </summary>
+	public ArmorSetBonus.Builder CreateArmorSet(LocalizedText LocalizedText = null, string Identifier = null, ArmorSetBonus.ArmorSetEffect Effect = null, ArmorSetBonus.PartType PrimaryPart = ArmorSetBonus.PartType.None)
+	{
+		return new ArmorSetBonus.Builder(Identifier ?? this.FullName, LocalizedText ?? this.GetLocalization("SetBonus"), Effect, PrimaryPart);
+	}
 
 	protected override Item CreateTemplateEntity() => new() { ModItem = this };
 
@@ -169,6 +203,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	public virtual bool MagicPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Magic);
 
+	/// <summary>
+	/// Allows you to change whether or not a weapon receives summon prefixes. Return true if the item should receive summon prefixes and false if it should not
+	/// </summary>
 	public virtual bool SummonPrefix()
 		=> Item.DamageType.GetsPrefixesFor(DamageClass.Summon);
 
@@ -273,8 +310,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -284,8 +322,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -872,28 +911,18 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	}
 
 	/// <summary>
-	/// Returns whether or not the head armor, body armor, and leg armor make up a set. If this returns true, then this item's <see cref="UpdateArmorSet(Player)"/> method will be called. Returns false by default.
-	/// <para/> Called on local, server, and remote clients.
-	/// </summary>
-	/// <param name="head">The head equipment.</param>
-	/// <param name="body">The body equipment.</param>
-	/// <param name="legs">The legs equipment.</param>
-	public virtual bool IsArmorSet(Item head, Item body, Item legs)
-	{
-		return false;
-	}
-
-	/// <summary>
-	/// Allows you to give set bonuses to the armor set that this armor is in. Set <see cref="Player.setBonus"/> to a string for the bonus description.
+	/// Allows you to give set bonuses to the armor set that this armor is in.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>
-	public virtual void UpdateArmorSet(Player player)
+	/// <param name="armorSetBonus">The armor set bonus.</param>
+	public virtual void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus)
 	{
 	}
 
 	/// <summary>
-	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the <see cref="PreUpdateVanitySet(Player)"/>, <see cref="UpdateVanitySet(Player)"/>, and <see cref="ArmorSetShadows(Player)"/> hooks. By default, this will return the same value as the <see cref="IsArmorSet(Item, Item, Item)"/> hook (passing the equipment textures' associated items as parameters), so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
+	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set. This hook is used for the <see cref="PreUpdateVanitySet(Player)"/>, <see cref="UpdateVanitySet(Player)"/>, and <see cref="ArmorSetShadows(Player)"/> hooks.
+	/// By default, this will return the <see cref="ArmorSetBonus"/> of any complete armor set that is found using the equipment textures' associated items as parameters, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets. Note that this hook is only ever called through this item's associated equipment texture.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="head">The visible head equipment slot (<see cref="Player.head"/>).</param>
@@ -919,7 +948,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 		Item legItem = ContentSamples.ItemsByType[legsItemType];
 
-		return IsArmorSet(headItem, bodyItem, legItem);
+		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext() { HeadItem = headItemType, BodyItem = bodyItemType, LegItem = legsItemType });
+		return armorSetBonus != null;
 	}
 
 	/// <summary>
@@ -997,7 +1027,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <para/> This is only called when attempting to stack with an item of the same type.
 	/// <para/> This is not called for coins in inventory/UI.
 	/// <para/> This covers all scenarios, if you just need to change in-world stacking behavior, use <see cref="CanStackInWorld"/>.
-	/// <para/> Called on the local client only.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <returns>Whether or not the item is allowed to stack</returns>
@@ -1009,7 +1039,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// <summary>
 	/// Allows you to decide if this item is allowed to stack with another of its type in the world.
 	/// <para/> This is only called when attempting to stack with an item of the same type.
-	/// <para/> Called on the local client or server, depending on who the item is reserved for.
+	/// <para/> Called on the server and the owning client.
 	/// </summary>
 	/// <param name="destination">The WorldItem for this item</param>
 	/// <param name="source">The WorldItem instance being stacked onto this item</param>
@@ -1021,8 +1051,8 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when items stack together.
-	/// <para/> This hook is called on item being stacked onto from <paramref name="source"/> and before the items are transferred
-	/// <para/> Called on the local client only.
+	/// <para/> This hook is called on the item being stacked onto before the items are transferred from <paramref name="source"/>. This will be called both for in-world and in-inventory stacking.
+	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="source">The item instance being stacked onto this item</param>
 	/// <param name="numToTransfer">The quantity of <paramref name="source"/> that will be transferred to this item</param>
@@ -1212,11 +1242,13 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when the player picks up this item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when the player picks up this item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The WorldItem instance of this item.</param>
-	/// <param name="player">The player.</param>
+	/// <param name="player">The local player.</param>
 	/// <returns></returns>
 	public virtual bool OnPickup(WorldItem item, Player player)
 	{
@@ -1461,7 +1493,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetReceive"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Allows you to send custom data for this item between client and server, which will be handled in NetReceive.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully sent, for example when the item is dropped into the world.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully sent, for example when the item is dropped into the world.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="writer">The writer.</param>
@@ -1472,7 +1504,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	//Does not use <see cref="NetSend"> because of inheritdoc on the equivalent GlobalItem hook
 	/// <summary>
 	/// Receives the custom data sent in NetSend.
-	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.InstancedItem"/> are successfully received.
+	/// <br/>Called whenever an item container syncs its contents (various MessageIDs and sources), or <see cref="MessageID.SyncItem"/> and <see cref="MessageID.SpawnInstancedItem"/> are successfully received.
 	/// <br/>Can be called on both server and client.
 	/// </summary>
 	/// <param name="reader">The reader.</param>
@@ -1569,5 +1601,29 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual bool ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipTexture equipTexture, string methodName)
 	{
 		return true;
+	}
+
+	/// <summary>
+	/// Allows modifying registered armor sets (<see cref="ArmorSetBonuses.All"/>). This is called after all armor sets have been registered, ensuring that modifications occur after all mods have finished registering armor sets.
+	/// <para/> Registering new armor sets should be done earlier in <c>SetStaticDefaults</c>.
+	/// </summary>
+	public virtual void ModifyArmorSets()
+	{
+	}
+
+	/// <summary>
+	/// Allows customizing the tile type, tile style, and random style offset that this item will place. Used for advanced scenarios where the usual placement logic is insufficient.
+	/// <para/> This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world.
+	/// <para/> <see cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/> also exists and is recommended for affecting manual tile placement (<see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>) instead of just placing tiles with an item.
+	/// <para/> <paramref name="previewPlaceStyle"/> and <paramref name="forcedRandom"/> only apply to tiles with TileObjectData, and <paramref name="overrideCanPlace"/> only applies to tiles without TileObjectData.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="tileToCreate">The tile type that will be placed</param>
+	/// <param name="previewPlaceStyle">The style of the tile to be placed</param>
+	/// <param name="forcedRandom">The random placement offset to use, if assigned</param>
+	/// <param name="overrideCanPlace">Indicates if the tile can be placed</param>
+	public virtual void OverridePlacementTile(int i, int j, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
+	{
 	}
 }

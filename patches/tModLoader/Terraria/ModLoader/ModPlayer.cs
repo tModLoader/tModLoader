@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.ID;
@@ -477,6 +478,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/> For dodges which consume a stack/buff or have a cooldown, use <see cref="ConsumableDodge"/> instead.
 	/// <para/> Called on the local client receiving damage.
 	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network. If visual indication of the dodge is required on remote clients, you will need to send your own packet.
+	/// <para/> A typical implementation will call <see cref="Player.SetImmuneTimeForAllTypes(int)"/>, spawn some visuals or sounds, and send a network packet to communicate the dodge to other clients. The ConsumableDodge method (and related code) in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleDamageModificationPlayer.cs">ExampleDamageModificationPlayer.cs</see> serves as a good example of how to correctly implement a dodge.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool FreeDodge(Player.HurtInfo info)
@@ -490,6 +492,7 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <para/> Called on the local client receiving damage.
 	/// <para/> If dodge is determined on the local player, the hit will not be sent across the network.
 	/// <para/> You may need to send your own packet to synchronize the consumption of the effect, or application of the cooldown in multiplayer.
+	/// <para/> A typical implementation will call <see cref="Player.SetImmuneTimeForAllTypes(int)"/>, spawn some visuals or sounds, and send a network packet to communicate the dodge to other clients. The ConsumableDodge method (and related code) in <see href="https://github.com/tModLoader/tModLoader/blob/stable/ExampleMod/Common/Players/ExampleDamageModificationPlayer.cs">ExampleDamageModificationPlayer.cs</see> serves as a good example of how to correctly implement a dodge.
 	/// </summary>
 	/// <returns>True to completely ignore the hit</returns>
 	public virtual bool ConsumableDodge(Player.HurtInfo info)
@@ -623,8 +626,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -634,8 +638,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -1184,11 +1189,14 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Use this to modify the zoom factor for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
+	/// Use this to modify the zoom factor (<paramref name="panFactor"/>) for the player. The zoom correlates to the percentage of half the screen size the zoom can reach. A value of -1 passed in means no vanilla scope is in effect. A value of 1.0 means the scope can zoom half a screen width/height away, putting the player on the edge of the game screen. Vanilla values include .8, .6666, and .5.
+	/// <para/> The game will automatically apply <paramref name="panFactor"/> based on the user's "Forward Zoom" control setting, so there is no need to check for the right mouse button being held down.
+	/// <para/> Use <paramref name="needsMouseRight"/> to indicate whether the player needs to hold right click to zoom in. This defaults to true but is false for Binoculars so they are always in effect, bypassing the "Forward Zoom" control setting. 
 	/// <para/> Called on the local client only.
 	/// </summary>
-	/// <param name="zoom"></param>
-	public virtual void ModifyZoom(ref float zoom)
+	/// <param name="panFactor"></param>
+	/// <param name="needsMouseRight"></param>
+	public virtual void ModifyZoom(ref float panFactor, ref bool needsMouseRight)
 	{
 	}
 
@@ -1400,8 +1408,10 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	}
 
 	/// <summary>
-	/// Allows you to make special things happen when this player picks up an item. Return false to stop the item from being added to the player's inventory; returns true by default.
+	/// Allows you to make special things happen when this player picks up an item. This is typically used for resource pickups, such as <see cref="ItemID.Heart"/>, <see cref="ItemID.Star"/>, or <see cref="ItemID.NebulaPickup1"/>.
+	/// <para/> Return false to stop the item from being added to the player's inventory. The world item will still be despawned.
 	/// <para/> Called on the local client only.
+	/// <para/> Returns true by default.
 	/// </summary>
 	/// <param name="item">The item being picked up</param>
 	/// <returns></returns>
@@ -1435,6 +1445,29 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <br/><br/> Called during <see cref="Terraria.Graphics.Renderers.LegacyPlayerRenderer.DrawPlayerFull(Graphics.Camera, Player)"/>.
 	/// </summary>
 	public virtual void DrawPlayer(Camera camera)
+	{
+	}
+
+	/// <summary>
+	/// Allows for modification of the player's eyelid.
+	/// </summary>
+	/// <param name="drawInfo"> The player's current draw information. </param>
+	/// <param name="position"> The position that the eye will be drawn.
+	/// <para/>Defaults to <see cref="Vector2.Zero"/> which will be the player's eye position.
+	/// </param>
+	/// <param name="color"> The color of the eyelid.
+	/// <para/>If you change the color, you'll also need to apply the lighting to the color:
+	/// <code>
+	/// Color eyeLidColor = Color.White; // Define the real color of the eye lid here.
+	/// color = drawInfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawInfo.drawPlayer.MountedCenter.X / 16, (int)drawInfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor, drawInfo.shadow);
+	/// </code>
+	/// <para/>Defaults to <see cref="PlayerDrawSet.colorHead"/> which will be the player's skin color.
+	/// </param>
+	/// <param name="shader"> The dye shader to apply to the eye lid.
+	/// <para/>Defaults to <see cref="PlayerDrawSet.skinDyePacked"/> which will be the player's dye.
+	/// </param>
+	/// <param name="eyeFrame"> The frame show the eyelid as.</param>
+	public virtual void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
 	{
 	}
 }

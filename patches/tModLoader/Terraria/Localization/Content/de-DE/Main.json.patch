@@ -38,7 +38,7 @@
  		"BartenderHelp": "Eternia-Kristall",
  		"ZoomIn": "{$LegacyMenu.168}",
  		"ZoomOut": "{$LegacyMenu.169}",
-@@ -593,13 +_,13 @@
+@@ -654,13 +_,13 @@
  		"Depth": "{0}'",
  		"WireModeForced": "Mechanische Anzeige: Gezwungen",
  		"WireModeNormal": "Mechanische Anzeige: Normal",
@@ -56,7 +56,7 @@
  		"ActuationDeviceOff": "Aktuatoraparat AUS",
  		"BlockReplacerOn": "Blocktausch ein",
  		"BlockReplacerOff": "Blocktausch aus",
-@@ -643,8 +_,8 @@
+@@ -704,8 +_,8 @@
  		"ZoomCategory": "Zoom",
  		"Misc": "Sonstiges",
  		"Gameplay": "Gameplay",
@@ -67,7 +67,7 @@
  		"MapScale": "Karten-Skala: {0}%",
  		"Emote": "Öffne das Emotefenster",
  		"HoverTextBoxesOn": "Schwebende Textfelder an",
-@@ -694,7 +_,7 @@
+@@ -759,7 +_,7 @@
  	},
  	"Social": {
  		"StatusInGame": "Online spielen.",
@@ -76,7 +76,7 @@
  		"JoiningFriend": "{0} wird beigetreten ...",
  		"Joining": "Wird beigetreten ..."
  	},
-@@ -792,11 +_,11 @@
+@@ -858,11 +_,11 @@
  		"Dissected": "{0} wurde brutal seziert.",
  		"ExtremitiesDetached": "{0} ließ sich den Kopf wegreißen.",
  		"Mangled": "{0}s Körper wurde verstümmelt.",
@@ -90,7 +90,7 @@
  		"Chopped": "{0} wurde zerkleinert.",
  		"Plead": "{0}s Bitte um den Tod wurde erhört.",
  		"Ripped": "{0}s Fleisch wurde von den Knochen gerissen.",
-@@ -980,7 +_,7 @@
+@@ -1048,7 +_,7 @@
  		"CollectorCategory": "Sammler",
  		"ExplorerCategory": "Entdecker",
  		"SlayerCategory": "Schlächter",
@@ -99,7 +99,7 @@
  		"Completed": "Erfolg erreicht! {0}",
  		"TIMBER_Name": "Holz!!!",
  		"TIMBER_Description": "Fälle deinen ersten Baum.",
-@@ -1009,7 +_,7 @@
+@@ -1077,7 +_,7 @@
  		"WORM_FODDER_Name": "Wurmfutter",
  		"WORM_FODDER_Description": "Besiege den Weltenfresser, einen gewaltigen Wurm, der im Verderben lebt.",
  		"MASTERMIND_Name": "Superhirn",
@@ -108,7 +108,7 @@
  		"WHERES_MY_HONEY_Name": "Wo ist mein Honig?",
  		"WHERES_MY_HONEY_Description": "Entdecke einen großen Bienenstock mitten im Dschungel.",
  		"STING_OPERATION_Name": "Flotte Bienen",
-@@ -1018,7 +_,7 @@
+@@ -1086,7 +_,7 @@
  		"BONED_Description": "Besiege Skeletron, den verfluchten Wächter des Verlieses.",
  		"DUNGEON_HEIST_Name": "Verliesüberfall",
  		"DUNGEON_HEIST_Description": "Stiehl den untoten Verliesbewohnern einen Schlüssel und öffne damit eine ihrer wertvollen goldenen Truhen.",
@@ -117,7 +117,7 @@
  		"ITS_GETTING_HOT_IN_HERE_Description": "Geh tief genug auf Erkundungstour, um die geschmolzene Unterwelt zu erreichen.",
  		"MINER_FOR_FIRE_Name": "Feuerbergarbeiter",
  		"MINER_FOR_FIRE_Description": "Stelle eine geschmolzene Spitzhacke her, indem du nur die heißesten Materialien benutzt.",
-@@ -1101,7 +_,7 @@
+@@ -1169,7 +_,7 @@
  		"VEHICULAR_MANSLAUGHTER_Name": "Fahrlässige Tötung",
  		"VEHICULAR_MANSLAUGHTER_Description": "Besiege einen Gegner, indem du ihn mit einer Lore überfährst.",
  		"BULLDOZER_Name": "Bulldozer",
@@ -126,7 +126,7 @@
  		"THERE_ARE_SOME_WHO_CALL_HIM_Name": "Es gibt ein paar Leute, die nennen ihn ...",
  		"THERE_ARE_SOME_WHO_CALL_HIM_Description": "Töte Tim.",
  		"DECEIVER_OF_FOOLS_Name": "Täuscher der Narren",
-@@ -1111,7 +_,7 @@
+@@ -1179,7 +_,7 @@
  		"LUCKY_BREAK_Name": "Glück gehabt",
  		"LUCKY_BREAK_Description": "Überlebe einen langen Fall mit nur einem Körnchen Leben.",
  		"THROWING_LINES_Name": "Rund um die Welt",
@@ -135,7 +135,7 @@
  		"DYE_HARD_Name": "Stirb mit Farbe",
  		"DYE_HARD_Description": "Rüste in jedem möglichen Farbstoff-Slot einen Farbstoff aus.",
  		"SICK_THROW_Name": "Mega-Wurf",
-@@ -1126,10 +_,10 @@
+@@ -1194,10 +_,10 @@
  		"TIL_DEATH_Description": "Töte den Bräutigam.",
  		"ARCHAEOLOGIST_Name": "Archäologe",
  		"ARCHAEOLOGIST_Description": "Töte Doktor Bones.",
@@ -148,7 +148,7 @@
  		"YOU_AND_WHAT_ARMY_Name": "Du und welche Armee?",
  		"YOU_AND_WHAT_ARMY_Description": "Befehlige neun beschworene Günstlinge gleichzeitig.",
  		"PRISMANCER_Name": "Prismatiker",
-@@ -1156,7 +_,7 @@
+@@ -1224,7 +_,7 @@
  		"TOPPED_OFF_Description": "Erreiche maximale Lebenspunkte und maximales Mana ohne Accessoires und Buffs.",
  		"SLAYER_OF_WORLDS_Name": "Schlächter der Welten",
  		"SLAYER_OF_WORLDS_Description": "Besiege jeden Boss in Terraria.",
@@ -157,7 +157,7 @@
  		"YOU_CAN_DO_IT_Description": "Überlebe die erste ganze Nacht deines Charakters.",
  		"MATCHING_ATTIRE_Name": "Passende Kleidung",
  		"MATCHING_ATTIRE_Description": "Rüste in allen drei Rüstungsslots Rüstung aus: Kopf, Brust, Füße.",
-@@ -1288,7 +_,7 @@
+@@ -1356,7 +_,7 @@
  		"InvasionLose": "Die Armee des Alten war siegreich",
  		"WaveComplete": "Welle abgeschlossen!",
  		"WaveCompleteFirst": "Welle abgeschlossen! Interagiere mit dem Kristall, um die nächste Welle zu beschleunigen!",

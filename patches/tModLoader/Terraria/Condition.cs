@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -12,6 +12,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public bool IsMet() => Predicate();
 
+#pragma warning disable format
 	// Near Liquids
 	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWaterSource || Main.LocalPlayer.adjTile[TileID.Sinks]);
 	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
@@ -103,6 +104,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotInfectedSeed =			new("Conditions.SeedNotInfected",			() => !Main.infectedSeed);
 	public static readonly Condition NotTeamBasedSpawnsSeed =	new("Conditions.SeedNotTeamBasedSpawns",	() => !Main.teamBasedSpawnsSeed);
 	public static readonly Condition NotDualDungeonsSeed =		new("Conditions.SeedNotDualDungeons",		() => !Main.dualDungeonsSeed);
+
+	// World Features
+	public static readonly Condition MechdusaSeedFeature =		new("Conditions.SeedFeatureMechdusa",		() => SpecialSeedFeatures.Mechdusa);
+
 	// Events
 	public static readonly Condition Christmas =				new("Conditions.Christmas",					() => Main.xMas);
 	public static readonly Condition Halloween =				new("Conditions.Halloween",					() => Main.halloween);
@@ -208,6 +213,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition NotIsNpcHomeless =			new("Conditions.NotIsNpcHomeless",			() => !Main.LocalPlayer.TalkNPC.homeless);
 	/// <summary> Not Remix world, OR Celebration Mk10 AND not For the Worthy worlds.</summary>
 	public static readonly Condition BiomeSpreadingItems =		new("Conditions.BiomeSpreadingItems",		() => !Main.remixWorld || (Main.tenthAnniversaryWorld && !Main.getGoodWorld));
+	public static readonly Condition NeedTorchGodsFavor =		new("Conditions.TorchGodsFavor",			() => Main.LocalPlayer.unlockedBiomeTorches);
 
 	// Moon phases :( thanks to Chicken Bones for help with those
 	public static readonly Condition MoonPhaseFull =			new("Conditions.FullMoon",					() => Main.GetMoonPhase() == MoonPhase.Full);
@@ -237,13 +243,15 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases12 =				new("Conditions.MoonPhases12",				() => Main.moonPhase == 1 || Main.moonPhase == 2);
 	public static readonly Condition MoonPhases35 =				new("Conditions.MoonPhases35",				() => Main.moonPhase == 3 || Main.moonPhase == 5);
 	public static readonly Condition MoonPhases67 =				new("Conditions.MoonPhases67",				() => Main.moonPhase == 6 || Main.moonPhase == 7);
+#pragma warning restore format
 
-	// Parameters
-	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
+    // Parameters
+    public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
 	public static Condition GolfScoreOver(int score) => new(Language.GetText("Conditions.GolfScoreOver").WithFormatArgs(score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 	public static Condition NpcIsPresent(int npcId) => new(Language.GetText("Conditions.NpcIsPresent").WithFormatArgs(Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
 	public static Condition AnglerQuestsFinishedOver(int quests) => new(Language.GetText("Conditions.AnglerQuestsFinishedOver").WithFormatArgs(quests), () => Main.LocalPlayer.anglerQuestsFinished >= quests);
-	public static Condition BestiaryFilledPercent(int percent) {
+	public static Condition BestiaryFilledPercent(int percent)
+	{
 		if (percent >= 100)
 			return new Condition("Conditions.BestiaryFull", () => Main.GetBestiaryProgressReport().CompletionPercent >= 1f);
 
@@ -253,4 +261,3 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
 }
-			

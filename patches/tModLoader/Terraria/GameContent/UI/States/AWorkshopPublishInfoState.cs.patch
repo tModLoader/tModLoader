@@ -113,15 +113,6 @@
  		if (info.tags != null) {
  			foreach (GroupOptionButton<WorkshopTagOption> tagOption in _tagOptions) {
  				bool flag = info.tags.Contains(tagOption.OptionValue.InternalNameForAPIs);
-@@ -209,7 +_,7 @@
- 		UIText uIText = new UIText(Language.GetText("Workshop.SteamDisclaimer")) {
- 			HAlign = 0f,
- 			VAlign = 0f,
--			Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
-+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
- 			Height = StyleDimension.FromPixelsAndPercent(0f, 1f),
- 			TextColor = Color.Cyan,
- 			IgnoresMouseInteraction = true
 @@ -329,41 +_,46 @@
  	private UIElement CreatePublicSettingsRow(float accumulatedHeight, float height, string tagGroup)
  	{
@@ -257,15 +248,6 @@
  			groupOptionButton.OnLeftMouseDown += ClickTagOption;
  			groupOptionButton.OnMouseOver += ShowOptionDescription;
  			groupOptionButton.OnMouseOut += ClearOptionDescription;
-@@ -437,7 +_,7 @@
- 		UIText uIText = new UIText(Language.GetText(titleTextKey)) {
- 			HAlign = 0f,
- 			VAlign = 0f,
--			Width = StyleDimension.FromPixelsAndPercent(-40f, 1f),
-+			Width = StyleDimension.FromPixelsAndPercent(0f, 1f),
- 			Height = StyleDimension.FromPixelsAndPercent(num, 0f),
- 			Top = StyleDimension.FromPixelsAndPercent(5f, 0f)
- 		};
 @@ -594,7 +_,8 @@
  
  	private void AddPublishButton(int backButtonYLift, UIElement outerContainer)

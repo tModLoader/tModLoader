@@ -7,6 +7,7 @@ namespace Terraria.ModLoader;
 /// <see cref="ExtraJump"/> is a singleton, defining the properties and behaviour of midair extra jumps.<br/>
 /// Fields defining the state of a jump per player are stored in <see cref="ExtraJumpState"/>
 /// </summary>
+[CloneByReference]
 public abstract partial class ExtraJump : ModType
 {
 	public static ExtraJump Flipper { get; private set; } = new FlipperJump();
@@ -77,7 +78,8 @@ public abstract partial class ExtraJump : ModType
 	/// By default, this hook returns whether the player is moving upwards with respect to <see cref="Player.gravDir"/>
 	/// </summary>
 	/// <param name="player">The player performing the jump</param>
-	public virtual bool CanShowVisuals(Player player) {
+	public virtual bool CanShowVisuals(Player player)
+	{
 		return (player.gravDir == 1f && player.velocity.Y < 0f) || (player.gravDir == -1f && player.velocity.Y > 0f);
 	}
 

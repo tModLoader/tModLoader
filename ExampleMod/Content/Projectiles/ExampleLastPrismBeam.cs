@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.IO;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.GameContent.Shaders;
@@ -73,8 +74,8 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// This property encloses the internal AI variable Projectile.ai[1].
-		private float HostPrismIndex {
-			get => Projectile.ai[1];
+		private ProjectileKey HostPrismKey {
+			get => (ProjectileKey)Projectile.ai[1];
 			set => Projectile.ai[1] = value;
 		}
 
@@ -106,8 +107,8 @@ namespace ExampleMod.Content.Projectiles
 
 		public override void AI() {
 			// If something has gone wrong with either the beam or the host Prism, destroy the beam.
-			Projectile hostPrism = Main.projectile[(int)HostPrismIndex];
-			if (Projectile.type != ModContent.ProjectileType<ExampleLastPrismBeam>() || !hostPrism.active || hostPrism.type != ModContent.ProjectileType<ExampleLastPrismHoldout>()) {
+			HostPrismKey.TryGetActive(out Projectile hostPrism);
+			if (Projectile.type != ModContent.ProjectileType<ExampleLastPrismBeam>() || hostPrism == null || !hostPrism.active || hostPrism.type != ModContent.ProjectileType<ExampleLastPrismHoldout>()) {
 				Projectile.Kill();
 				return;
 			}

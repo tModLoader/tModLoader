@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/MountID.cs
 +++ src/tModLoader/Terraria/ID/MountID.cs
-@@ -1,22 +_,67 @@
+@@ -1,23 +_,93 @@
 +using ReLogic.Reflection;
 +using Terraria.ModLoader;
 +
@@ -24,7 +24,7 @@
 +		/// If <see langword="true"/>, the player can use dashes while mounted on this mount, either normal player dashes or mount specific dashes (<see cref="Chillet"/>).
 +		/// <br/><br/> Some examples include <see cref="Bat"/>, <see cref="Pixie"/>, <see cref="Chillet"/> and <see cref="RollerSkates"/>.
 +		/// </summary>
- 		public static bool[] CanDash = Factory.CreateBoolSet(56, 57, 58, 59, 60, 61, 62, 63);
+ 		public static bool[] CanDash = Factory.CreateBoolSet(56, 57, 58, 59, 60, 61, 62, 63, 64, 65);
 +		/// <summary>
 +		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not affect the player's body frames (<see cref="Player.bodyFrame"/>), meaning the body will animate as normal as if the player were not mounted.
 +		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
@@ -41,6 +41,11 @@
 +		/// </summary>
  		public static bool[] DoesNotOverrideBackpackDraw = Factory.CreateBoolSet(57, 58, 59, 60);
 +		/// <summary>
++		/// If <see langword="true"/> for a given <see cref="MountID"/>, then that mount will not disable the player's wing visuals.
++		/// <br/><br/> This is used by <see cref="RollerSkates"/> and similar mounts.
++		/// </summary>
+ 		public static bool[] DoesNotOverrideWings = Factory.CreateBoolSet(57, 58, 59, 60);
++		/// <summary>
 +		/// This mount is a roller skates mount. Affects movement, animation, spawn dust, and more.
 +		/// </summary>
  		public static bool[] IsRollerSkates = Factory.CreateBoolSet(57, 58, 59, 60);
@@ -51,8 +56,9 @@
 +		/// </summary>
  		public static bool[] Cart = Factory.CreateBoolSet(6, 13, 11, 15, 16, 18, 19, 20, 21, 22, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 38, 39, 51, 53);
 +		/// <summary>
-+		/// Unused, but seemingly indicates mounts that transform the player into a completely new visuals. See also <see cref="PlayerIsHidden"/>.
-+		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// Indicates that this mount transforms the player into completely new visuals. See also <see cref="PlayerIsHidden"/>.
++		/// <para/> Affects sentry positioning when carrying sentries using the <see cref="ItemID.HeavySling"/> or similar accessories.
++		/// <para/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] IsTransformationMount = Factory.CreateBoolSet(52, 54, 55, 56, 61);
 +		/// <summary>
@@ -60,20 +66,40 @@
 +		/// <br/><br/> Some examples include <see cref="Wolf"/>, <see cref="Velociraptor"/>, <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] PlayerIsHidden = Factory.CreateBoolSet(52, 54, 55, 56, 61);
++		/// <summary>
++		/// Indicates that the player can't hold items while using this mount, preventing the selected item from being drawn as if held. Used along with <see cref="Player.IsAllowedToHoldItems"/>.
++		/// <para/> Used by <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
  		public static bool[] DontHoldItems = Factory.CreateBoolSet(55, 56, 61);
 +		/// <summary>
 +		/// The player will not be forcefully dismounted from this mount when they are "crowd controlled" (<see cref="Player.CCed"/>, such as stunned, frozen, etc). This is used by mounts that are meant to be transformations such as <see cref="Rat"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
 +		/// </summary>
  		public static bool[] DontDismountWhenCCed = Factory.CreateBoolSet(55, 56, 61);
++
++		// Added by TML
++		// Values taken from Mount.DoesHoverIgnoresFatigue()
++		/// <summary>
++		/// If set to true and the mount hovers with <see cref="Mount.MountData.usesHover"/>, it will ignore <see cref="Mount.MountData.fatigueMax"/>.
++		/// <para/> Used by infinite flight mounts: <see cref="UFO"/>, <see cref="Drill"/>, <see cref="CuteFishron"/>, <see cref="WitchBroom"/>, <see cref="PirateShip"/>, <see cref="LavaShark"/>, <see cref="Bat"/>, and <see cref="Pixie"/>.
++		/// </summary>
++		public static bool[] HoverIgnoresFatigue = Factory.CreateBoolSet(false, UFO, Drill, CuteFishron, WitchBroom, PirateShip, LavaShark, Bat, Pixie);
++
++		// Added by TML
++		/// <summary>
++		/// Allows head slot items to draw on the mount even if the mount hides the player.
++		/// <para/> <see cref="ArmorIDs.Head.Sets.CanDrawOnVelociraptorMount"/> must also be true for the head item to show up.
++		/// <para/> Used by <see cref="Velociraptor"/>.
++		/// </summary>
++		public static bool[] DrawHeadItemOnMountThatHidesThePlayer = Factory.CreateBoolSet(false, Velociraptor);
  	}
 +#endif
  
  	public const int None = -1;
  	public const int Rudolph = 0;
-@@ -84,4 +_,6 @@
- 	public const int Chillet = 62;
- 	public const int ChilletIgnis = 63;
- 	public static int Count = 64;
+@@ -87,4 +_,6 @@
+ 	public const int TrustyChillet = 64;
+ 	public const int TrustyChilletIgnis = 65;
+ 	public static int Count = 66;
 +
 +	public static IdDictionary Search = IdDictionary.Create<MountID, int>();
  }

@@ -19,6 +19,9 @@ public enum PrefixCategory
 	/// Can modify the mana usage of the weapon
 	/// </summary>
 	Magic,
+	/// <summary>
+	/// Can modify summon tag damage and armor penetration of the weapon
+	/// </summary>
 	Summon,
 	AnyWeapon,
 	Accessory,
@@ -31,6 +34,7 @@ public enum PrefixCategory
 /// <summary>
 /// Represents a modded prefix (or modifier). The <see href="https://terraria.wiki.gg/wiki/Modifiers">Modifiers page on the Terraria wiki</see> is a good resource for vanilla prefixes.
 /// </summary>
+[CloneByReference]
 public abstract class ModPrefix : ModType, ILocalizedModType
 {
 	public int Type { get; internal set; }
@@ -75,7 +79,8 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 	/// <br/><br/> Use <see cref="AllStatChangesHaveEffectOn"/> to implement that same restriction for modded stats. 
 	/// </summary>
 	public virtual void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult,
-		ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus) { }
+		ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
+	{ }
 
 	/// <summary>
 	/// Use this to check whether modifiers to custom stats would be too small to have an effect after rounding, and prevent the prefix from being applied to the given item if there would be no change.

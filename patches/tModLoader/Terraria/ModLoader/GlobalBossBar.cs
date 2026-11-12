@@ -6,6 +6,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A class that is used to modify existing boss health bars. To add them, use ModBossBar instead.
 /// </summary>
+[CloneByReference]
 public abstract class GlobalBossBar : ModType
 {
 	protected sealed override void Register() => BossBarLoader.AddGlobalBossBar(this);

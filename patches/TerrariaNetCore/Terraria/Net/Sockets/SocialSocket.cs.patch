@@ -4,11 +4,11 @@
  using System.Threading;
 +using System.Threading.Tasks;
  using Terraria.Social;
+ using Terraria.Testing;
  
- namespace Terraria.Net.Sockets;
-@@ -37,7 +_,11 @@
- 	void ISocket.AsyncSend(byte[] data, int offset, int size, SocketSendCallback callback, object state)
- 	{
+@@ -40,7 +_,11 @@
+ 		Invariant.Assert(_remoteAddress != null, "Send cannot be called on a null address");
+ 		Invariant.Assert(offset == 0, "Non-Zero offsets are not yet supported for Social Network Sends");
  		SocialAPI.Network.Send(_remoteAddress, data, size);
 +#if NETCORE
 +		Task.Run(() => callback.Invoke(state));
@@ -18,10 +18,10 @@
  	}
  
  	private void ReadCallback(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
-@@ -52,7 +_,11 @@
- 
+@@ -56,7 +_,11 @@
  	void ISocket.AsyncReceive(byte[] data, int offset, int size, SocketReceiveCallback callback, object state)
  	{
+ 		Invariant.Assert(_remoteAddress != null, "Receive cannot be called on a null address");
 +#if NETCORE
 +		Task.Run(() => new InternalReadCallback(ReadCallback).Invoke(data, offset, size, callback, state));
 +#else

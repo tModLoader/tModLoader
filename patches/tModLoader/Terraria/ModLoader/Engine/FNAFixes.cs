@@ -39,7 +39,8 @@ internal static class FNAFixes
 
 	private static void TryLinkOrCopyAgilitySDK()
 	{
-		if (!OperatingSystem.IsWindows()) return;
+		if (!OperatingSystem.IsWindows())
+			return;
 
 		var sdkDir = MonoLaunch.NativesDir;
 		var processDir = Path.GetDirectoryName(Environment.ProcessPath);
@@ -51,13 +52,15 @@ internal static class FNAFixes
 
 		var sdkPath = Path.Combine(MonoLaunch.NativesDir, "D3D12Core.dll");
 		var targetPath = Path.Combine(processDir, "D3D12", "D3D12Core.dll");
-		if (File.Exists(targetPath) && File.ReadAllBytes(targetPath).SequenceEqual(File.ReadAllBytes(sdkPath))) return;
+		if (File.Exists(targetPath) && File.ReadAllBytes(targetPath).SequenceEqual(File.ReadAllBytes(sdkPath)))
+			return;
 
 		try {
 			using var _ = new Logging.QuietExceptionHandle();
 			Directory.CreateDirectory(Path.GetDirectoryName(targetPath));
 			File.Copy(sdkPath, targetPath, overwrite: true);
-		} catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) {
+		}
+		catch (Exception ex) when (ex is IOException or UnauthorizedAccessException) {
 			Logging.FNA.Warn($"Failed to install Agility SDK to \"{targetPath}\"");
 
 			// For developers of tModLoader itself running system dotnet, we'll need elevated permissions to copy the file to the destination.
@@ -80,7 +83,7 @@ internal static class FNAFixes
 			You should only see this message if you are developing tModLoader itself on Windows 10 or earlier.
 			""", "Elevated file copy", buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Error);
 
-		if(result != DialogResult.OK) {
+		if (result != DialogResult.OK) {
 			Logging.FNA.Warn($"User opted out of elevated copy to \"{destination}\".");
 			return;
 		}
@@ -106,16 +109,16 @@ internal static class FNAFixes
 	private static void EnableHighDPI()
 	{
 		// Don't know if this is needed, maybe it helps us get resolutions? - Chicken Bones, SDL3 update
-
-		// High DPI is used by Windows for its 'SCALE' setting. This ensures that 200% SCALE does not break the game rendering
-		// On OSX, it creates issues and it is unknown whether this is needed on Linux. -- Solxan, forward port PR#4951 during 1.4.5
 		if (OperatingSystem.IsWindows()) {
 			[DllImport("user32.dll")]
 			static extern bool SetProcessDPIAware();
 			SetProcessDPIAware();
-
-			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 		}
+
+		// Without high DPI, the Windows 'SCALE' setting breaks game rendering and Wayland fractional scaling makes the window blurry (#5390).
+		// On OSX it creates issues (#4257, #4951), so it is left to FNA's /enablehighdpi:1 launch argument there.
+		if (!OperatingSystem.IsMacOS())
+			Environment.SetEnvironmentVariable("FNA_GRAPHICS_ENABLE_HIGHDPI", "1");
 	}
 
 	private static void ConfigureDrivers()

@@ -26,7 +26,7 @@
  		writer.Write((short)item.stack);
  	}
  
-@@ -54,30 +_,38 @@
+@@ -54,26 +_,34 @@
  	public void DropItem()
  	{
  		if (Main.netMode != 1)
@@ -42,11 +42,7 @@
  		WorldGen.RangeFrame(x, y, x + 1, y + 1);
  		if (!TileEntity.TryGetAt<TEFoodPlatter>(x, y, out var result)) {
 +			/*
- 			int num = Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, 1);
- 			Main.item[num].SetDefaults(type);
- 			Main.item[num].Prefix(prefix);
- 			Main.item[num].stack = stack;
- 			NetMessage.SendData(21, -1, -1, null, num);
+ 			Item.NewItem(new EntitySource_TileBreak(x, y), x * 16, y * 16, 16, 16, type, stack, noBroadcast: false, prefix);
 +			*/
 +			Item.NewItem(new EntitySource_TileBreak(x, y), new Rectangle(x * 16, y * 16, 16, 16), item);
  			return;
@@ -67,7 +63,7 @@
  		NetMessage.SendData(86, -1, -1, null, result.ID, x, y);
  	}
  
-@@ -115,16 +_,20 @@
+@@ -111,16 +_,20 @@
  				NetMessage.SendData(17, -1, -1, null, 0, Player.tileTargetX, y, 1f);
  		}
  

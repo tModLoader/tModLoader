@@ -6,6 +6,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A class that is used to swap out the entire boss bar display system with your own implementation
 /// </summary>
+[CloneByReference]
 public abstract class ModBossBarStyle : ModType
 {
 	/// <summary>

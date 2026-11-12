@@ -4,7 +4,7 @@
 
 filename = '../src/tModLoader/Terraria/Localization/Content/{0}/tModLoader.json'
 
-languages = ['zh-Hans', 'ru-RU', 'pt-BR', 'pl-PL', 'it-IT', 'fr-FR', 'es-ES', 'de-DE']
+languages = ['zh-Hans', 'ru-RU', 'pt-BR', 'pl-PL', 'it-IT', 'fr-FR', 'es-ES', 'de-DE', 'ja-JP', 'ko-KR', 'zh-Hant']
 missings = []
 for language in languages:
     #language = 'zh-Hans'
