@@ -678,7 +678,7 @@
  	public bool fireWalk;
  	public bool channel;
  	public int step = -1;
-@@ -1202,50 +_,142 @@
+@@ -1202,53 +_,146 @@
  	public RabbitOrderFrameHelper rabbitOrderFrame;
  	public bool creativeGodMode;
  	private const int MaxAdvancedShadows = 60;
@@ -822,6 +822,10 @@
  	public bool strongBees;
  	public bool sporeSac;
  	public bool shinyStone;
++	/// <summary> Effect of the <see href="https://terraria.wiki.gg/wiki/Soaring_Insignia"/> </summary>
+ 	public bool empressBrooch;
+ 	public bool volatileGelatin;
+ 	public int volatileGelatinCounter;
 @@ -1278,7 +_,15 @@
  	public bool unlockedBiomeTorches;
  	public bool ateArtisanBread;
@@ -1536,6 +1540,18 @@
  
  	public bool UsingOrReusingItem {
  		get {
+@@ -2562,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Returns true if the player is actively holding the <see cref="ItemID.BreathingReed"/>. Accounts for if the active mount can't hold items.
++	/// </summary>
+-	private bool hasBreathingReed {
++	public bool hasBreathingReed {
+ 		get {
+ 			if (inventory[selectedItem].type == 186) {
+ 				if (mount.Active)
 @@ -2633,6 +_,15 @@
  		y = vector.Y;
  	}
@@ -1703,15 +1719,47 @@
  	public void InterruptItemUsageIfOverTile(int tileTypeToBeOver)
  	{
  		Tile tile = Main.tile[tileTargetX, tileTargetY];
-@@ -3218,7 +_,7 @@
+@@ -3103,6 +_,9 @@
+ 			return zero;
+ 
+ 		if (mount.Type == 54) {
++			if (head >= 0)
++				return ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[head] * Directions;
++			/*
+ 			switch (head) {
+ 				case 13:
+ 				case 15:
+@@ -3178,6 +_,7 @@
+ 					zero += new Vector2(-2f, -4f) * Directions;
+ 					break;
+ 			}
++			*/
+ 		}
+ 
+ 		return zero;
+@@ -3218,15 +_,22 @@
  			return beardOffset;
  
  		if (mount.Type == 54) {
--			sbyte b = beard;
-+			int b = beard; // sbyte->int
++			// TML: Remove type check limit.
++			/*
+ 			sbyte b = beard;
  			if ((uint)(b - 1) <= 3u) {
++			*/
  				beardOffset += new Vector2(8f, 4f) * Directions;
  				if (mount.Frame == 6)
+ 					beardOffset += new Vector2(0f, 2f) * Directions;
+ 				else if (mount.Frame == 7)
+ 					beardOffset += new Vector2(-2f, 4f) * Directions;
++			/*
+ 			}
++			*/
+ 		}
++
++		beardOffset += MountLoader.BeardOffset(mount, this);
+ 
+ 		return beardOffset;
+ 	}
 @@ -3252,7 +_,7 @@
  	public Vector2 GetFrontDrawOffset()
  	{
@@ -4432,6 +4480,18 @@
  	}
  
  	public void StickyMovement()
+@@ -18922,6 +_,11 @@
+ 				if (hasBreathingReed)
+ 					vector += new Vector2(-14f, -58f) * Directions;
+ 			}
++
++			if (mount.Type >= MountID.Count) {
++				vector = MouthPosition.Value;
++				MountLoader.BreathBubblePosition(mount, this, ref vector);
++			}
+ 		}
+ 
+ 		Dust.NewDust(vector, width - 8, 8, 34, 0f, 0f, 0, default(Color), 1.2f);
 @@ -19269,10 +_,10 @@
  		if (gravDir == -1f)
  			num2 = (int)(position.Y - 0.1f) / 16;
@@ -7990,6 +8050,24 @@
 +	{
  		if (Main.dedServ)
  			return;
+ 
+@@ -43102,6 +_,8 @@
+ 			}
+ 		}
+ 
++		zero += MountLoader.HeldItemOffset(mount, this, pos);
++
+ 		pos += zero;
+ 	}
+ 
+@@ -43198,6 +_,8 @@
+ 			}
+ 		}
+ 
++		vector += MountLoader.HeadItemOffset(mount, this);
++
+ 		pos += vector;
+ 	}
  
 @@ -43219,6 +_,9 @@
  		if (grappling[0] > -1) {

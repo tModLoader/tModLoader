@@ -787,3 +787,30 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
 * `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
 * `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   
+* New `ModMount` features:
+  * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
+  * `MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer` to allow for head items to draw on mounts even if they hide the player.
+  * `ArmorID.Head.Sets.VelociraptorMountHeadOffset` contains helmet offsets used by the Velociraptor.
+  * `ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)` to allow for editing the player's draw data before it is finalized.
+    * Example: setting `drawInfo.hideEntirePlayer`.
+  * `ModMount.ResetFlightTime(Player player, ref int flightTime)` to allow things to happen when flight time resets.
+  * `bool? ModMount.CanFly(Player player)` to allow change whether the mount is allowed to fly.
+    * Mounts that have `flightTimeMax > 0` can automatically fly.
+    * Return `null` for vanilla decision.
+  * `ModMount.UpdateAfterEquips(Player player)` to allows you to make things happen to the mount right after the player's equipment is run.
+    * Used by the Velociraptor to give infinite flight if the player has the Soaring Insignia equipped.
+    * Used by the Rat to climb up walls by boosting Player.spikedBoots.
+  * `Vector2 ModMount.HeadItemOffset(Player player)` to change where head items sit on the mount if the mount can wear head items.
+  * `Vector2 ModMount.HeldItemOffset(Player player, Vector2 originalPos)` to change where the held item is positioned if the mount can hold items.
+  * `Vector2 ModMount.BeardOffset(Player player)` to change where beards items are positioned if the mount can wear beards.
+  * `bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)` to change where face accessories are positioned if the mount can face accessories.
+    * By default, it uses the same offset as HeadItemOffset
+    * Return false to prevent the HeadItemOffset from being applied.
+  * `ModMount.BreathBubblePosition(Player player, ref Vector2 mouthPos)` to adjust where air bubbles spawn while underwater.
+* `ModPlayer.ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
+
+## New ExampleMod examples
+
+In addition to changes adapting to vanilla changes listed in the "Other Changes" section above, 1.4.5 ExampleMod also contains several new examples.
+
+* `ExampleFlyingTransformation` and `ExampleBeastTransformation` are examples of transformation mounts similar to the Pixie and Velociraptor transformations.

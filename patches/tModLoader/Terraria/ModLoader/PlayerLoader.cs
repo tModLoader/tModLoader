@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.ModLoader.Default;
@@ -1571,6 +1572,17 @@ public static class PlayerLoader
 	{
 		foreach (var modPlayer in HookDrawPlayer.Enumerate(player)) {
 			modPlayer.DrawPlayer(camera);
+		}
+	}
+
+	private delegate void DelegateModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame);
+
+	private static HookList HookModifyEyelid = AddHook<DelegateModifyEyelid>(p => p.ModifyEyelid);
+
+	public static void ModifyEyelid(Player player, PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
+	{
+		foreach (var modPlayer in HookModifyEyelid.Enumerate(player)) {
+			modPlayer.ModifyEyelid(drawInfo, ref position, ref color, ref shader, ref eyeFrame);
 		}
 	}
 }
