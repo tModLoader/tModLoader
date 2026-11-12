@@ -18,6 +18,7 @@ public class TagPrinter
 
 	private string TypeString(Type type)
 	{
+#pragma warning disable format
 		if (type == typeof(byte)) return "byte";
 		if (type == typeof(short)) return "short";
 		if (type == typeof(int)) return "int";
@@ -29,6 +30,7 @@ public class TagPrinter
 		if (type == typeof(int[])) return "int[]";
 		if (type == typeof(TagCompound)) return "object";
 		if (type == typeof(IList)) return "list";
+#pragma warning restore format
 		throw new ArgumentException("Unknown Type: " + type);
 	}
 
@@ -38,14 +40,18 @@ public class TagPrinter
 		indent += "  ";
 		var first = true;
 		foreach (var entry in list) {
-			if (first) first = false;
-			else sb.Append(multiline ? "," : ", ");
+			if (first)
+				first = false;
+			else
+				sb.Append(multiline ? "," : ", ");
 
-			if (multiline) sb.AppendLine().Append(indent);
+			if (multiline)
+				sb.AppendLine().Append(indent);
 			write(entry);
 		}
 		indent = indent.Substring(2);
-		if (multiline && !first) sb.AppendLine().Append(indent);
+		if (multiline && !first)
+			sb.AppendLine().Append(indent);
 		sb.Append(end);
 	}
 

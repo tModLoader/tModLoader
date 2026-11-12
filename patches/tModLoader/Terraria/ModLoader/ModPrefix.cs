@@ -79,7 +79,8 @@ public abstract class ModPrefix : ModType, ILocalizedModType
 	/// <br/><br/> Use <see cref="AllStatChangesHaveEffectOn"/> to implement that same restriction for modded stats. 
 	/// </summary>
 	public virtual void SetStats(ref float damageMult, ref float knockbackMult, ref float useTimeMult,
-		ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus) { }
+		ref float scaleMult, ref float shootSpeedMult, ref float manaMult, ref int critBonus)
+	{ }
 
 	/// <summary>
 	/// Use this to check whether modifiers to custom stats would be too small to have an effect after rounding, and prevent the prefix from being applied to the given item if there would be no change.

@@ -343,7 +343,7 @@ internal static class PlayerIO
 	{
 		var hidden = new List<string>();
 		for (int i = 0; i < InfoDisplayLoader.InfoDisplays.Count; i++) {
-			if(!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
+			if (!(InfoDisplayLoader.InfoDisplays[i] is VanillaInfoDisplay)) {
 				if (player.hideInfo[i])
 					hidden.Add(InfoDisplayLoader.InfoDisplays[i].FullName);
 			}
@@ -364,8 +364,8 @@ internal static class PlayerIO
 	internal static List<TagCompound> SaveBuilderToggles(Player player)
 	{
 		return BuilderToggleLoader.BuilderToggles
-			.Where(x=> x is not VanillaBuilderToggle)
-			.Select(x=> new TagCompound {
+			.Where(x => x is not VanillaBuilderToggle)
+			.Select(x => new TagCompound {
 				["fullName"] = x.FullName,
 				["currentState"] = player.builderAccStatus[x.Type] // Can't use x.CurrentState, that is LocalPlayer.
 			}).ToList();

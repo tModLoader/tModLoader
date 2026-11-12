@@ -50,4 +50,12 @@ public class GlobalItemTest : GlobalItem
 	public override void OnHitNPC(Item item, Player player, NPC target, int damage, float knockBack, bool crit) { }
 	public override void ModifyHitPvp(Item item, Player player, Player target, ref int damage, ref bool crit) { }
 	public override void OnHitPvp(Item item, Player player, Player target, int damage, bool crit) { }
+
+	public override string IsArmorSet(Item head, Item body, Item legs) { return ""; }
+
+	public override void UpdateArmorSet(Player player, string set) { }
+
+	public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) { }
+
+	public override void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue) { }
 }

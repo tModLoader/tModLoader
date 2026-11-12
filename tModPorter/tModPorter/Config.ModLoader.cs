@@ -567,22 +567,28 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "UpdateArmorSet");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "UpdateArmorSet");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer", "ModifyZoom").RenameParameter("zoom", "panFactor");
 		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
@@ -603,6 +609,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
+		HookRemoved("Terraria.ModLoader.GlobalItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));

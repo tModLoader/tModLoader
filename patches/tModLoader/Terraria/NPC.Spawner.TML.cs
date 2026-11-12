@@ -1,7 +1,8 @@
-﻿using Terraria.ID;
+using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace Terraria;
+
 public partial class NPC
 {
 	public partial class Spawner

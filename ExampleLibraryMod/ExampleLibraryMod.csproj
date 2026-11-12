@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\tModLoader.targets" />
+  <PropertyGroup>
+    <AssemblyName>ExampleLibraryMod</AssemblyName>
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Old\**" />
+    <EmbeddedResource Remove="Old\**" />
+    <None Remove="Old\**" />
+  </ItemGroup>
+</Project>

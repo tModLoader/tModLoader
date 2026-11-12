@@ -50,6 +50,11 @@ internal class TerrariaSteamClient
 			return LaunchResult.Ok;
 		}
 
+		// As of Nov 2026, the Steam Runtime 3.0 (Sniper) establishes a container to run tModLoader natively (for consistency between distributions)
+		// Unfortunately, this container interferes with the ability for SteamClient to work properly as we aren't able to kill the first tMod steam hook properly before starting Terraria
+		if (Environment.GetEnvironmentVariable("PRESSURE_VESSEL_RUNTIME_BASE") is not null)
+			return LaunchResult.Ok;
+
 		serverPipe = new AnonymousPipeServerStream(PipeDirection.Out, HandleInheritability.Inheritable);
 		var tMLName = Path.GetFileName(Assembly.GetExecutingAssembly().Location);
 		var proc = new Process() {
@@ -104,8 +109,16 @@ internal class TerrariaSteamClient
 
 		SendCmd(MsgAck);
 
-		// We put a Thread.Sleep here since there were ~5-10% users with issues with the steam current game reporting Terraria rather than tModLoader
-		Thread.Sleep(300);
+		// We put a Thread.Sleep here since there were ~5-10% Windows users with issues with the steam current game reporting Terraria rather than tModLoader.
+		// In order for this to 'work', it has to be launched in the order: steam client -> steam client process exit --> locally start Terraria --> locally start tModLoader
+		// This issue also affects linux heavily. The sleep condition helps delay the start of tModLoader to give more time for the steam client process to exit
+		if (int.TryParse(Environment.GetEnvironmentVariable("TERRARIA_EXIT_WAIT_TIME"), out int terrariaClientExitWaitTime) && terrariaClientExitWaitTime > 0) {
+			Logger.Debug($"Terraria_Exit_Wait_Time environment variable specified. Used {terrariaClientExitWaitTime}ms default");
+			Thread.Sleep(terrariaClientExitWaitTime);
+		}
+		else {
+			Thread.Sleep(300);
+		}
 
 		return LaunchResult.Ok;
 	}
@@ -235,13 +248,15 @@ internal class TerrariaSteamClient
 		try {
 			Logger.Info("Marking Steam Terraria Installation as Corrupt to force 'Verify Local Files' on next run");
 			SendCmd(MsgInvalidateTerrariaInstall);
-		} catch {	}
+		}
+		catch { }
 	}
 
 	internal static void Shutdown()
 	{
 		try {
 			SendCmd(MsgShutdown);
-		} catch { }
+		}
+		catch { }
 	}
 }
