@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Tiles
 		}
 
 		// We use RandomUpdate to spread this grass and also grow ExamplePlants on top.
-		public override void RandomUpdate(int i, int j) {
+		public override void RandomUpdate(int i, int j, bool underground) {
 			Tile tile = Main.tile[i, j];
 			int grassType = tile.TileType;
 
