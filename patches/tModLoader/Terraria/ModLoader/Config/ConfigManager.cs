@@ -91,9 +91,9 @@ public static class ConfigManager
 	internal static void FinishSetup()
 	{
 		// Apply custom config sorting
-		foreach (var mod in Configs.Keys)
-		{
+		foreach (var mod in Configs.Keys) {
 			try {
+				// ModConfig are already sorted by internal name due to AutoloadConfig logic
 				Configs[mod] = SortBeforeAfter.Sort(
 					Configs[mod],
 					c => {
@@ -316,7 +316,7 @@ public static class ConfigManager
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
-		if (Configs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is {} c)
+		if (Configs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
 			return c;
 
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
@@ -324,7 +324,7 @@ public static class ConfigManager
 
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
-		if (loadTimeConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is {} c)
+		if (loadTimeConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
 			return c;
 
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
@@ -346,7 +346,7 @@ public static class ConfigManager
 				activeConfig.OnChanged();
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				if(broadcast)
+				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);
