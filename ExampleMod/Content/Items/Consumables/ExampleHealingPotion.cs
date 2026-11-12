@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Terraria;
 using Terraria.ID;
@@ -45,20 +44,17 @@ namespace ExampleMod.Content.Items.Consumables
 		public override void ModifyTooltips(List<TooltipLine> tooltips) {
 			// Find the tooltip line that corresponds to 'Heals ... life'
 			// See https://tmodloader.github.io/tModLoader/html/class_terraria_1_1_mod_loader_1_1_tooltip_line.html for a list of vanilla tooltip line names
-			int index = tooltips.FindIndex(0, x => x.Mod == "Terraria" && x.Name == "HealLife");
+			TooltipLine line = tooltips.FirstOrDefault(x => x.Mod == "Terraria" && x.Name == "HealLife");
 
-			if (index >= 0) {
-				// Append 'Heals max/2 (max/4 when quick healing) life' to the end of the original text.
-				tooltips.Insert(index + 1, new(Mod, "RestoreLifeText", Language.GetTextValue("CommonItemTooltip.RestoresLife", RestoreLifeText.Format(Main.LocalPlayer.statLifeMax2 / 2, Main.LocalPlayer.statLifeMax2 / 4))));
+			if (line != null) {
+				// Change the text to 'Heals max/2 (max/4 when quick healing) life'
+				line.Text = Language.GetTextValue("CommonItemTooltip.RestoresLife", RestoreLifeText.Format(Main.LocalPlayer.statLifeMax2 / 2, Main.LocalPlayer.statLifeMax2 / 4));
 			}
 		}
 
 		public override void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue) {
 			// Make the item heal half the player's max health normally, or one fourth if used with quick heal
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
-			// When viewed for its tooltip, cycle the displayed value between half and one fourth of the player's max health.
-			if (tooltip)
-				healValue = player.statLifeMax2 / (Main.GameUpdateCount / 60 % 2 == 0 ? 4 : 2);
 		}
 
 		public override void ModifyPotionDelay(Player player, ref int baseDelay) {
