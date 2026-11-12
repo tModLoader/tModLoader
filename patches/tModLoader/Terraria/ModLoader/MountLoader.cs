@@ -244,10 +244,10 @@ public static class MountLoader
 	/// <summary>
 	/// See <see cref="ModMount.BreathBubblePosition(Player, ref Vector2)"/>
 	/// </summary>
-	public static void BreathBubblePosition(Mount mount, Player player, ref Vector2 mouthPos)
+	public static void BreathBubblePosition(Mount mount, Player player, ref Vector2 bubblePosition)
 	{
 		if (IsModMount(mount._data)) {
-			mount._data.ModMount.BreathBubblePosition(player, ref mouthPos);
+			mount._data.ModMount.BreathBubblePosition(player, ref bubblePosition);
 		}
 	}
 }
