@@ -165,7 +165,7 @@
  		try {
 +			ModLoader.ModLoader.EngineInit();
 +
-+			using Main main = new Main();
++			Main main = new Main();
 +
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();

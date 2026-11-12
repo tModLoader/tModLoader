@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 18
-VisualStudioVersion = 18.4.11626.88 stable
+VisualStudioVersion = 18.4.11626.88
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Terraria", "src\tModLoader\Terraria\Terraria.csproj", "{4EFE2B31-D61A-4C07-BAD2-991D3633C237}"
 EndProject
@@ -27,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.CodeFixes", "tModCodeAssist\tModCodeAssist.CodeFixes\tModCodeAssist.CodeFixes.csproj", "{E84567FB-E48C-D04A-0287-70C5A405040B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "tModCodeAssist.Tests", "tModCodeAssist\tModCodeAssist.Tests\tModCodeAssist.Tests.csproj", "{056DA6CC-A753-0D1A-777F-02C12C756543}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExampleLibraryMod", "ExampleLibraryMod\ExampleLibraryMod.csproj", "{712B4611-4BF5-FFF3-A592-5964630A3051}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -78,6 +80,10 @@ Global
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{056DA6CC-A753-0D1A-777F-02C12C756543}.Release|Any CPU.Build.0 = Release|Any CPU
+		{712B4611-4BF5-FFF3-A592-5964630A3051}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{712B4611-4BF5-FFF3-A592-5964630A3051}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{712B4611-4BF5-FFF3-A592-5964630A3051}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{712B4611-4BF5-FFF3-A592-5964630A3051}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

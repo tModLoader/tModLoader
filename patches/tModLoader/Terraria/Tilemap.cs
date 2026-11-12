@@ -28,7 +28,7 @@ public readonly struct Tilemap
 			throw new InvalidOperationException("Cannot set Tilemap tiles. Only used to init null tiles in Vanilla (which don't exist anymore)");
 		}
 	}
-	
+
 	public Tile this[Point pos] => this[pos.X, pos.Y];
 
 	public Tile this[DataStructures.Point16 pos] => this[pos.X, pos.Y];

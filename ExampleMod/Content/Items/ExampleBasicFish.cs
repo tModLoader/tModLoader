@@ -6,7 +6,8 @@ namespace ExampleMod.Content.Items
 {
 	// This is an example of a non-quest fish. See ExampleQuestFish for the quest fish example.
 	// Note that the catch conditions and logic is defined in ExampleMod/Common/Players/ExampleFishingPlayer.
-	public class ExampleBasicFish : ModItem {
+	public class ExampleBasicFish : ModItem
+	{
 		public override void SetStaticDefaults() {
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true; // All vanilla fish can be placed in a weapon rack.
 			ItemID.Sets.IsBasicFish[Type] = true; // Denotes this item as a fish for inventory sorting. Use IsQuestFish instead for quest fish.

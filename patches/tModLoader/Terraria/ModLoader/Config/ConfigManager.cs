@@ -14,6 +14,7 @@ using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.Core;
 using Terraria.ModLoader.Exceptions;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.Utilities;
 using Terraria.UI;
 
 namespace Terraria.ModLoader.Config;
@@ -89,6 +90,28 @@ public static class ConfigManager
 
 	internal static void FinishSetup()
 	{
+		// Apply custom config sorting
+		foreach (var mod in Configs.Keys) {
+			try {
+				// ModConfig are already sorted by internal name due to AutoloadConfig logic
+				Configs[mod] = SortBeforeAfter.Sort(
+					Configs[mod],
+					c => {
+						if (Attribute.GetCustomAttribute(c.GetType(), typeof(SortConfigAttribute)) is not SortConfigAttribute sortAttribute) {
+							return (null, false)!;
+						}
+
+						ModConfig otherConfig = GetConfig(c.Mod, sortAttribute.OtherConfigName);
+						return (otherConfig, sortAttribute.SortAfter);
+					}
+				);
+			}
+			catch (Exception e) {
+				e.Data["mod"] = mod.Name;
+				throw;
+			}
+		}
+
 		// Register localization for all fields and properties that should show
 		foreach (var activeConfigs in Configs) {
 			foreach (var config in activeConfigs.Value) {
@@ -293,18 +316,18 @@ public static class ConfigManager
 	internal static ModConfig GetConfig(ModNet.NetConfig netConfig) => ConfigManager.GetConfig(ModLoader.GetMod(netConfig.modname), netConfig.configname);
 	internal static ModConfig GetConfig(Mod mod, string config)
 	{
-		if (Configs.TryGetValue(mod, out List<ModConfig>? configs)) {
-			return configs.Single(x => x.Name == config);
-		}
-		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		if (Configs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
-		if (loadTimeConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
-			return configs.Single(x => x.Name == config);
-		}
-		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
+		if (loadTimeConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
@@ -323,7 +346,7 @@ public static class ConfigManager
 				activeConfig.OnChanged();
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 
-				if(broadcast)
+				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);
@@ -444,7 +467,7 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(memberInfo.Type, typeof(T), true); // on the class
-		// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
+																				// TODO: The intention was to prioritize the Type of the element in the array at this index. That was never hooked up it seems, and it might not make sense to apply this behavior to all config attributes at this time. Needs more thought, specifically about collections and which attributes to "inherit". For example, currently ListOfPair won't use Pair BackgroundColor
 	}
 
 	// Used to get an attribute for a member that is a generic collection. The member attribute has highest priority, then attribute on the generic Type.

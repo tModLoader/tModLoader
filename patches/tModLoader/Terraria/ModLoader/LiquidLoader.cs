@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
+
 public static class LiquidLoader
 {
 	private static int nextLiquid = LiquidID.Count;

@@ -1,4 +1,4 @@
-﻿namespace Terraria.UI;
+namespace Terraria.UI;
 
 partial class InGameNotificationsTracker
 {

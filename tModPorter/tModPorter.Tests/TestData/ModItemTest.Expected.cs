@@ -121,5 +121,13 @@ public class ModItemTest : ModItem
 
 #if COMPILE_ERROR
 	public override bool IsQuestFish()/* tModPorter Note: Removed. Set with ItemID.Sets.IsQuestFish instead */ { }
+
+	public override bool IsArmorSet()/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return false; }
 #endif
+
+	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
+
+	public override void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue) { }
+
+	public override void GetHealMana(Player player, bool quickHeal, bool tooltip, ref int healValue) { }
 }

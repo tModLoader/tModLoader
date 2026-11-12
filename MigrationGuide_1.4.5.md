@@ -40,6 +40,20 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 
 `Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
 
+#### Working with Main.item[]
+
+Use `WorldItem.ReplaceWith` to change the `Item` instance a `WorldItem` contains while preserving its world state (position, etc).
+
+```cs
+WorldItem worldItem = Main.item[index];
+if (worldItem.active) {
+    worldItem.ReplaceWith(replacementItem);
+    worldItem.SyncItem();
+}
+```
+
+Replacing a `Main.item` entry directly is possible, but requires setting `WorldItem.whoAmI` as well.
+
 ### Item.NewItem
 
 `Item.NewItem` has been reworked.
@@ -55,6 +69,10 @@ Hooks that deal with items in the game world will now have a `WorldItem item` pa
 `Item.RequestNewItem` has been added to make spawning world items from multiplayer clients easier. It is also safe to call in single player, but we generally recommend considering `QuickSpawnItem` first.
 
 There should be almost no reason to send `MessageID.SyncItem` packets manually, or use `noBroadcast: true` anymore
+
+### Shared Equipment Loadouts
+
+Armor, accessories and dyes can now be shared to other loadouts via favoriting, but the `Item` instances are not copied into `Player.[armor|dye]`. Use `Player.GetEffective[Armor|Dye](slot)` to find the equipment which is actually 'active'
 
 ### Projectile Draw Changes
 
@@ -331,6 +349,103 @@ SilverBarRecipeGroup = RecipeGroup.Register(
 );
 ```
 
+### Declarative Armor Set Bonuses
+
+Armor sets are now declarative, meaning that they are stored as data rather than hard-coded logic. This change helps facilitate showing the "Set Bonus (NumEquipped/NumTotal)" tooltip line and other features. The new armor set system, found in the `ArmorSetBonuses` and `ArmorSetBonus` classes, allows armor sets to be created and registered. Each armor set is an `ArmorSetBonus` object that contains the head, body, and legs armor items, code for the armor set effects, a description, and optionally an indication of a primary equipment slot. The system supports optional equipment slots and multiple options for each equipment slot.
+
+Mods will need to update their code to use the new system, `ModItem.IsArmorSet` has been removed in favor of ensuring that all armor sets are properly declared as armor sets to take advantage of the features of the new system.
+
+#### Examples
+Here are some examples of declaring armor sets:
+```cs
+// These examples show code found in SetStaticDefaults of a helmet item (ExampleHelmet):
+int body = ModContent.ItemType<ExampleBreastplate>();
+int legs = ModContent.ItemType<ExampleLeggings>();
+
+// Basic armor set. Consists of a full set of items. No substitutions. 
+AddArmorSet(Type, body, legs);
+
+// Basic armor set alternate approach. Generics can be used if all items are ModItems.
+AddArmorSet<ExampleHelmet, ExampleBreastplate, ExampleLeggings>(); 
+
+// Basic armor set with no legs. This is how the Wizard Hat set is implemented.
+AddArmorSet(Type, body, ItemID.None);
+
+// Armor set with multiple options and the same behavior. In this case, both ExampleHelmet and ExampleHood will satisfy this armor set. This is how the Necro armor set is implemented
+// For armor sets with multiple options, the CreateArmorSet method is followed by any number of Set methods to define the options, then Add must be called at the end.
+int alternateHelmet = ModContent.ItemType<ExampleHood>();
+CreateArmorSet().Set(Type, body, legs).Set(alternateHelmet, body, legs).Add();
+
+// Same as above but using generics.
+CreateArmorSet().Set<ExampleHelmet, ExampleBreastplate, ExampleLeggings>().Set<ExampleHood, ExampleBreastplate, ExampleLeggings>().Add();
+
+// Armor set with multiple options and the same behavior. In this case either complete set will satisfy and apply the armor set. Note that the items aren't interchangeable and can't be mixed and matched. This is how the Wood armor sets are implemented.
+int alternateBody = ModContent.ItemType<ExampleBreastplate_Alt>();
+int alternateLegs = ModContent.ItemType<ExampleLeggings_Alt>();
+CreateArmorSet().Set(Type, body, legs).Set(alternateHelmet, alternateBody, alternateLegs).Add();
+
+// Armor set with multiple options and the same behavior. In this case every equipment is interchangeable. For example ExampleLeggings_Alt can be used with ExampleHelmet and ExampleBreastplate. This is how the Shadow/Ancient Shadow armor sets are implemented.
+CreateArmorSet().Set([Type, alternateHelmet], [body, alternateBody], [legs, alternateLegs]).Add();
+
+// Armor sets sharing armor items except and having a primary item that changes the tooltip. 
+// The PartType parameter lets the game know that the head and legs items are part of multiple armor sets with different set bonus tooltips, so "Changes with (head/torso/leg) piece" is shown instead of the the set bonus tooltip. This is how the Beetle armor set is implemented.
+// Customizing localization and the identifier is explained in the next section.
+AddArmorSet(Type, body, legs, this.GetLocalization("SetBonus_Melee"), "ExampleMod/ExampleArmor_Melee", PrimaryPart: ArmorSetBonus.PartType.Body);
+AddArmorSet(Type, alternateBody, legs, this.GetLocalization("SetBonus_Ranged"), "ExampleMod/ExampleArmor_Ranged", PrimaryPart: ArmorSetBonus.PartType.Body);
+```
+
+The examples above all used `ModItem` helper methods that automate registering a localization key, assigning the armor set effect to `ModItem.UpdateArmorSet`, and assigning a default identifier string. These can all be customized by providing values for the optional parameters of the methods. The set bonus text can be customized by passing in a `LocalizedText`. The code that executes can be customized as well by passing in a delegate. The identifier can also be passed in, which is useful if you need to differentiate between multiple set bonuses that use some of the same items. The `ArmorSetBonuses.Add` and `ArmorSetBonuses.Create` methods could be used instead of the `ModItem.AddArmorSet` and `ModItem.CreateArmorSet` helper methods as well, such as if used in `GlobalItem`.
+
+```cs
+// Customize the set bonus tooltip. We can pass in any LocalizedText using any localization key rather than the automatically derived "Mods.{ModName}.Items.{ItemName}.SetBonus" key.
+// In this example, we are using the automatic key but populating it with a value. This helps keep the set bonus effect in line with the tooltip as a mod is updated.
+LocalizedText SetBonusText = this.GetLocalization("SetBonus").WithFormatArgs(AdditiveGenericDamageBonus);
+AddArmorSet(Type, body, legs, SetBonusText);
+
+// The SetBonus_Melee and SetBonus_Ranged examples above show using a custom key and a custom identifier.
+
+// And of course, we can use a specific localization key not derived from the item's localization prefix, either by using Language.GetText or Mod.GetLocalization, which can be useful for organization.
+AddArmorSet(Type, body, legs, Mod.GetLocalization("CommonSetBonuses.Example"));
+
+// Finally, we can customize the code that runs for each armor set. By default, the UpdateArmorSet method is called. We could check the data on the ArmorSetBonus passed into the method to implement custom code for alternate armor sets, but another option is to pass in a ArmorSetBonus.ArmorSetEffect delegate directly. Here is a full example of that:
+
+public static readonly int AdditiveMeleeDamageBonus = 15;
+public static readonly int AdditiveRangedDamageBonus = 25;
+
+public override void SetStaticDefaults() {
+	int body = ModContent.ItemType<ExampleBreastplate>();
+	int alternateBody = ModContent.ItemType<ExampleBreastplate_Alt>();
+	int legs = ModContent.ItemType<ExampleLeggings>();
+
+	var SetBonusTextMelee = this.GetLocalization("SetBonus_Melee").WithFormatArgs(AdditiveMeleeDamageBonus);
+	ArmorSetBonuses.Add(Type, body, legs, "ExampleMod/ExampleArmor_Melee", SetBonusTextMelee, UpdateArmorSetMelee, ArmorSetBonus.PartType.Body);
+	var SetBonusTextRanged = this.GetLocalization("SetBonus_Ranged").WithFormatArgs(AdditiveRangedDamageBonus);
+	ArmorSetBonuses.Add(Type, alternateBody, legs, "ExampleMod/ExampleArmor_Ranged", SetBonusTextRanged, UpdateArmorSetRanged, ArmorSetBonus.PartType.Body);
+}
+
+private void UpdateArmorSetMelee(Player player) {
+	player.GetDamage(DamageClass.Melee) += AdditiveMeleeDamageBonus / 100f;
+}
+private void UpdateArmorSetRanged(Player player) {
+	player.GetDamage(DamageClass.Ranged) += AdditiveRangedDamageBonus / 100f;
+}
+```
+
+#### Modifying Existing Armor Sets
+
+Previously, mods used `IsArmorSet` and `UpdateArmorSet` to apply additional changes to vanilla armor sets. Now that `IsArmorSet` is gone, mods will instead check the `ArmorSetBonus.Identifier` directly in `UpdateArmorSet`: `if (armorSetBonus?.Identifier == "MagicHat") { ... }`.
+
+`(Mod|Global)Item.ModifyArmorSets` has been added, this is the intended location of modifying `ArmorSetBonus` data (Contained in `ArmorSetBonuses.All`). For example, `armorSetBonus.Effect += MagicHatAdditionalEffects` could be used as an alternative to `GlobalItem.UpdateArmorSet`. This is also where `ArmorSetBonus.Description` should be modified. Previously, modders would adjust `Player.setBonus` directly, but that has been removed. We recommend adjusting `ArmorSetBonus.Description` in the manner shown in ArmorSetTweaks.cs for compatibility. This approach should allow multiple mods to modify the armor set description without conflicting.
+
+ArmorSetTweaks.cs shows off modifying existing armor sets and ExampleRobe.cs shows off adding additional variants (different armor items) to existing armor sets.
+
+#### Porting Notes
+* 🤖: `ModItem.UpdateArmorSet` and `GlobalItem.UpdateArmorSet` now have an `ArmorSetBonus armorSetBonus` parameter.
+* ⚙️: `ModItem.IsArmorSet` and `GlobalItem.IsArmorSet` removed. Use `AddArmorSet` as described above to replace this.
+* Using vanilla armor from existing armor sets in modded sets is now potentially confusing to the user due to how the set bonus tooltip is calculated and displayed. The game will show the armor set tooltip for an item in the inventory (not just the equipment slots), so if a modded armor set also uses that item, it might potentially show the modded armor set bonus tooltip rather than the original vanilla armor set bonus tooltip the player might be looking for. 
+* 💀: `Player.setBonus` has been removed. The set bonus tooltip is taken directly from the active `ArmorSetBonus`. This value will be populated as described previously.
+  * See "Modifying Existing Armor Sets" above for how to modify vanilla set bonus description text.
+
 ### Whips and Tag Effects
 
 #### Tag Effects
@@ -390,6 +505,12 @@ Global substitutions are text substitutions that automatically and dynamically u
 
 Global substitutions are also usable as conditions. Using substitutions as conditions allows filtering out text options that are not relevant to the current state of the world. For example, in the `"{PartyGirl} is always so loud"` example, the corresponding `LocalizedText` will automatically detect that there is no Party Girl in the world and `LocalizedText.ConditionsMet` will be `false`. Helper methods like `Lang.CreateDialogFilter` will automatically filter out all text that doesn't satisfy their conditions, making chat dialogue code much simpler. Substitutions with a `?` at the start (`{?GlobalSubstitutionKeyHere}`) can be used to filter out text options that satisfy the conditions without affecting the text itself. This is usually used for substitutions that return a `bool`, like `{?Day}`. `{?!Day}` checks that it is night time.
 
+When updating existing code:
+
+* `Lang.CreateDialogFilter(prefix)` now checks `LocalizedText.ConditionsMet`. Pass `checkConditions: false` to retain the old prefix-only filtering or make use of conditions to greatly simplify your logic.
+* `🤖: LocalizedText.CanFormatWith` is now `ConditionsMetWith`.
+* `LocalizedText.Value` and `Language.GetTextValue` resolve global substitutions automatically. Keep `FormatWith` and `GetTextValueWith` when supplying a custom substitution object.
+
 We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
 
 #### Text Variation
@@ -404,6 +525,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 
 ## Other Changes
 
+* 💀: Calls to `Collision.SwitchTiles` and (Mod|Global)Tile.SwitchTiles` involving a `Player` now use `objType == 5` instead of `1`. Update checks for `1` in `(Mod|Global)Tile.SwitchTiles` to check for `5` instead.
 * Fishing power bonus now applies to any chair, not just toilets.
 * `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
@@ -460,6 +582,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Zooming with items like Rifle Scope and Sniper Rifle, and Binoculars has changed. There is now a "Forward Zoom" toggle in the controls menu to change how zooming is triggered (Always On, Always Off, Click to Toggle, and Hold to Use). As such, `ModPlayer.ModifyZoom` has been adjusted with a new `needsMouseRight` parameter. Remove all checks for the right mouse being held down to correctly support these new control options.
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
+* `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
 
 ### Example Mod
 
@@ -596,6 +719,9 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
+* ⚙️: `Player.selectedItem` is now read-only. Use `Player.selectedItemState.Select(slot)` instead. For the local player the change is buffered until the next update, so code that switches to an item, uses it and switches back in the same tick needs reworking.
+* ⚙️: `Player.nonTorch` removed. Temporary selections such as smart cursor and auto-select are now tracked by `Player.selectedItemState`. See `Player.selectedItemState.HasActiveOverride` and `Player.selectedItemState.Hotbar`.
+* ⚙️: `UIElement.OnDraw` changed from `ElementEvent` to `DrawEvent`. Handlers now take `(UIElement affectedElement, SpriteBatch sb)`. Lambdas are updated automatically, handler methods need the `SpriteBatch` parameter added.
 
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).
@@ -615,6 +741,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
+* ⚙️: `(ModItem|GlobalItem).GetHealLife/GetHealMana` now have a `tooltip` parameter, indicating if the calculation is destined for the item tooltip. Additionally, the `quickHeal` parameter has been fixed, it previously erroneously was true only for the tooltip calculation and not for quickheal.
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
   * `GlobalNPC.EditSpawnFlags(NPC.Spawner spawner)` can be used to adjust player-level spawn flags before spawn rate, range, and tile selection. Use this when the changed flags should affect those later spawn calculations, such as biome, safe wall, or invasion state. For example, a modded safe-zone effect could set `spawner.noWorms = true` before vanilla spawn logic uses that flag.
   * `GlobalNPC.EditSpawnInfo(NPC.Spawner spawner)` can be used to adjust spawn information after the spawn tile has been selected and before `SpawnChance` and `EditSpawnPool` are evaluated. Use this for tile-level spawn context, such as water, granite, marble, spider cave, underground desert, spawn tile type, or spawn wall type. For example, a modded tile could set `spawner.nearGranite = true` so later spawn chance and spawn pool logic sees the chosen tile as granite-like.
@@ -650,6 +777,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
 * ⚙️: `ModPlayer.ModifyZoom` now has a `needsMouseRight` parameter. This is used to bypass the "Forward Zoom" toggle for effects that should always zoom regardless of the player's setting, like Binoculars. Remove all checks for the right mouse being held down to correctly support the new "Forward Zoom" control options.
 * 🤖: `(ModItem|GlobalItem).PickAmmo` now has a `ref StatModifier weaponDamage` parameter, and `damage` has been renamed to `ammoDamage`. Weapon damage is no longer included in `ammoDamage.Flat`. Use `weaponDamage` to modify it, and modify both to scale the total projectile damage.
+* 💀: `ModConfig` are no longer ordered by `DisplayName` on the config list menu, but by internal name. This change is to support the manual ordering feature and preserve consistent ordering between languages. `Config.SortConfigAttribute` mentioned below can be used to adjust the order manually to restore an intended order.
 
 ## New tModLoader features
 
@@ -662,3 +790,31 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
 * `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
 * `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   
+* `Config.SortConfigAttribute` added to sort configs in the config list menu, allowing specific ordering of `ModConfig`s.
+* New `ModMount` features:
+  * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
+  * `MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer` to allow for head items to draw on mounts even if they hide the player.
+  * `ArmorID.Head.Sets.VelociraptorMountHeadOffset` contains helmet offsets used by the Velociraptor.
+  * `ModMount.ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo)` to allow for editing the player's draw data before it is finalized.
+    * Example: setting `drawInfo.hideEntirePlayer`.
+  * `ModMount.ResetFlightTime(Player player, ref int flightTime)` to allow things to happen when flight time resets.
+  * `bool? ModMount.CanFly(Player player)` to allow change whether the mount is allowed to fly.
+    * Mounts that have `flightTimeMax > 0` can automatically fly.
+    * Return `null` for vanilla decision.
+  * `ModMount.UpdateAfterEquips(Player player)` to allows you to make things happen to the mount right after the player's equipment is run.
+    * Used by the Velociraptor to give infinite flight if the player has the Soaring Insignia equipped.
+    * Used by the Rat to climb up walls by boosting Player.spikedBoots.
+  * `Vector2 ModMount.HeadItemOffset(Player player)` to change where head items sit on the mount if the mount can wear head items.
+  * `Vector2 ModMount.HeldItemOffset(Player player, Vector2 originalPos)` to change where the held item is positioned if the mount can hold items.
+  * `Vector2 ModMount.BeardOffset(Player player)` to change where beards items are positioned if the mount can wear beards.
+  * `bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset)` to change where face accessories are positioned if the mount can face accessories.
+    * By default, it uses the same offset as HeadItemOffset
+    * Return false to prevent the HeadItemOffset from being applied.
+  * `ModMount.BreathBubblePosition(Player player, ref Vector2 mouthPos)` to adjust where air bubbles spawn while underwater.
+* `ModPlayer.ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)` to allow for modifying the player's eyelid.
+
+## New ExampleMod examples
+
+In addition to changes adapting to vanilla changes listed in the "Other Changes" section above, 1.4.5 ExampleMod also contains several new examples.
+
+* `ExampleFlyingTransformation` and `ExampleBeastTransformation` are examples of transformation mounts similar to the Pixie and Velociraptor transformations.
