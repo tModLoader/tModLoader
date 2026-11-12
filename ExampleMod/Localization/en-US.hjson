@@ -1310,6 +1310,11 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleGrassSeeds: {
+				DisplayName: Example Grass Seeds
+				Tooltip: ""
+			}
+
 			ExampleFlyingTransformationItem: {
 				DisplayName: Example Flying Transformation Charm
 				Tooltip: Transforms the user into an Example Flying Transformation

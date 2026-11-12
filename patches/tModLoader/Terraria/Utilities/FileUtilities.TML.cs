@@ -115,8 +115,8 @@ public static partial class FileUtilities
 			(path: Path.Combine(Main.SavePath, "..", Program.PreviewFolder, $"{folderName}"), "preview", 2),
 			(path: Path.Combine(Main.SavePath, "..", Program.DevFolder, $"{folderName}"), "dev", 3),
 			(path: Path.Combine(Main.SavePath, "..", Program.Legacy143Folder, $"{folderName}"), "1.4.3-Legacy", 0),
-            (path: Path.Combine(Main.SavePath, "..", Program.Legacy144Folder, $"{folderName}"), "1.4.4-Legacy", 0),
-        };
+			(path: Path.Combine(Main.SavePath, "..", Program.Legacy144Folder, $"{folderName}"), "1.4.4-Legacy", 0),
+		};
 	}
 
 	internal static bool WriteTagCompound(string path, bool isCloud, TagCompound tag)

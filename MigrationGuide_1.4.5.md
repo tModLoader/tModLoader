@@ -505,6 +505,12 @@ Global substitutions are text substitutions that automatically and dynamically u
 
 Global substitutions are also usable as conditions. Using substitutions as conditions allows filtering out text options that are not relevant to the current state of the world. For example, in the `"{PartyGirl} is always so loud"` example, the corresponding `LocalizedText` will automatically detect that there is no Party Girl in the world and `LocalizedText.ConditionsMet` will be `false`. Helper methods like `Lang.CreateDialogFilter` will automatically filter out all text that doesn't satisfy their conditions, making chat dialogue code much simpler. Substitutions with a `?` at the start (`{?GlobalSubstitutionKeyHere}`) can be used to filter out text options that satisfy the conditions without affecting the text itself. This is usually used for substitutions that return a `bool`, like `{?Day}`. `{?!Day}` checks that it is night time.
 
+When updating existing code:
+
+* `Lang.CreateDialogFilter(prefix)` now checks `LocalizedText.ConditionsMet`. Pass `checkConditions: false` to retain the old prefix-only filtering or make use of conditions to greatly simplify your logic.
+* `🤖: LocalizedText.CanFormatWith` is now `ConditionsMetWith`.
+* `LocalizedText.Value` and `Language.GetTextValue` resolve global substitutions automatically. Keep `FormatWith` and `GetTextValueWith` when supplying a custom substitution object.
+
 We highly recommend that mods utilize global substitutions to greatly streamline TownNPC chat message logic. There is more information about this feature on the [correesponding pull request](https://github.com/tModLoader/tModLoader/pull/5275) and the [localization wiki page](https://github.com/tModLoader/tModLoader/wiki/Localization).
 
 #### Text Variation
@@ -519,6 +525,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 
 ## Other Changes
 
+* 💀: Calls to `Collision.SwitchTiles` and (Mod|Global)Tile.SwitchTiles` involving a `Player` now use `objType == 5` instead of `1`. Update checks for `1` in `(Mod|Global)Tile.SwitchTiles` to check for `5` instead.
 * Fishing power bonus now applies to any chair, not just toilets.
 * `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
 * `ICameraModifier` now has a `IsAScreenShake` property to support the user's screen shake accessibility setting (`Main.UseScreenShake`). Update your `ICameraModifier` and other camera movements to support `Main.UseScreenShake`.
@@ -575,6 +582,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * Zooming with items like Rifle Scope and Sniper Rifle, and Binoculars has changed. There is now a "Forward Zoom" toggle in the controls menu to change how zooming is triggered (Always On, Always Off, Click to Toggle, and Hold to Use). As such, `ModPlayer.ModifyZoom` has been adjusted with a new `needsMouseRight` parameter. Remove all checks for the right mouse being held down to correctly support these new control options.
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
+* `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
 
 ### Example Mod
 
@@ -711,6 +719,9 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`
 * 🤖: `Player.isPettingAnimal` -> `Terraria.GameContent.PlayerPettingInfo.isPetting`. Just change `Player.isPettingAnimal` to `Player.petting.isPetting`.
+* ⚙️: `Player.selectedItem` is now read-only. Use `Player.selectedItemState.Select(slot)` instead. For the local player the change is buffered until the next update, so code that switches to an item, uses it and switches back in the same tick needs reworking.
+* ⚙️: `Player.nonTorch` removed. Temporary selections such as smart cursor and auto-select are now tracked by `Player.selectedItemState`. See `Player.selectedItemState.HasActiveOverride` and `Player.selectedItemState.Hotbar`.
+* ⚙️: `UIElement.OnDraw` changed from `ElementEvent` to `DrawEvent`. Handlers now take `(UIElement affectedElement, SpriteBatch sb)`. Lambdas are updated automatically, handler methods need the `SpriteBatch` parameter added.
 
 ### Classes
 * ⚙️: `Player.RandomTeleportationAttemptSettings` is now `Utils.RandomTeleportationAttemptSettings`. Modder will need to populate all relevant new fields (`teleporteeSize,  `teleporteeVelocity`, `teleporteeGravityDirection`).

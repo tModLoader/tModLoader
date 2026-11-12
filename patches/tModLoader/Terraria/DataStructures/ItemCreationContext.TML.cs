@@ -1,4 +1,4 @@
-﻿namespace Terraria.DataStructures;
+namespace Terraria.DataStructures;
 
 // Various additional ItemCreationContext classes for tML purposes.
 

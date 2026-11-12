@@ -6,8 +6,8 @@ namespace ExampleMod.Common.Players
 	public class ExampleLuckPlayer : ModPlayer
 	{
 		public override void ModifyLuck(ref float luck) { // ModifyLuck is what you'll normally use for any modded content that wants to modify luck.
-			// Luck in total has a vanilla soft cap of 1. You can technically go above that value, but there's no benefit to be gained with vanilla luck calculations.
-			// However, modders can use the luck value however they want, so going above 1 may be beneficial. Decimal values are still recommended, though.
+														  // Luck in total has a vanilla soft cap of 1. You can technically go above that value, but there's no benefit to be gained with vanilla luck calculations.
+														  // However, modders can use the luck value however they want, so going above 1 may be beneficial. Decimal values are still recommended, though.
 			if (Main.hardMode) { // If it is currently hardmode...
 				luck += 0.5f; // ...add 0.5 luck to the total luck count!
 			}

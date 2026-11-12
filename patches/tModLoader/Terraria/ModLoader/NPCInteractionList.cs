@@ -175,6 +175,6 @@ public class NPCInteractionList(int type)
 	/// <returns><see langword="true"/> if the button is enabled.</returns>
 	public bool IsEnabled(NPCInteraction interaction)
 	{
-		return _entries.FirstOrDefault(e  => e.NPCInteraction.Equals(interaction))?.Enabled ?? false;
+		return _entries.FirstOrDefault(e => e.NPCInteraction.Equals(interaction))?.Enabled ?? false;
 	}
 }

@@ -491,7 +491,7 @@
  	[ThreadStatic]
  	private static Dictionary<string, UnifiedRandom> _rngs;
  	public static bool allChestStackHover;
-@@ -844,44 +_,152 @@
+@@ -844,44 +_,158 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -614,6 +614,12 @@
 +	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
 +	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
++
++	/// <summary>
++	/// Contains moss tiles. Moss tiles look like <see cref="TileID.Stone"/> with moss overlaying it. They act like Stone for various operations and turn into Stone when mined. They also spread moss to nearby tiles.
++	/// <para/> Vanilla entries include <see cref="TileID.GreenMoss"/>, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss, VioletMoss, RainbowMoss, BrownMoss, RedMoss, BlueMoss, and PurpleMoss.
++	/// <para/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.tileMossBrick"/>.
++	/// </summary>
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange.
@@ -2284,7 +2290,7 @@
  		}
 +
 +		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
-+        /*if (gameMenu) {
++		/*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
 +					newMusic = 60;
@@ -5213,7 +5219,7 @@
 +
 +			if (!_achievementAdvisor.CanDrawAboveCoins) {
 +				var achievePos = new Vector2(defPos.X - 10 - 47 - 47 - 14 - 14, defPos.Y - 56 * inventoryScale * 0.5f);
-+				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos , large: false);
++				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos, large: false);
 +				UILinkPointNavigator.SetPosition(1570, achievePos + new Vector2(20f) * inventoryScale);
 +			}
 +
@@ -5600,7 +5606,7 @@
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 +
 +		foreach (var layer in interfaceLayers) {
-+			if(!layer.Draw())
++			if (!layer.Draw())
 +				break;
 +		}
  
@@ -6951,6 +6957,14 @@
  				flag3 = false;
  			}
  			else if (tileSolid[tile[x, y].type] && !tileSolidTop[tile[x, y].type]) {
+@@ -54676,6 +_,7 @@
+ 
+ 	public void RainbowBoulderMusicPlayCallback(int trackIndex, int sequentialTimesPlayed)
+ 	{
++		// TODO: Broken on tModLoader. Called immediately twice in a row as music starts so it skips the intro track.
+ 		musicFade[trackIndex] = 1f;
+ 		_finishedRainbowBoulderStart = sequentialTimesPlayed >= 1;
+ 		if (_finishedRainbowBoulderStart) {
 @@ -54691,6 +_,17 @@
  
  	protected override void Draw(GameTime gameTime)
@@ -7146,6 +7160,17 @@
  	}
  
  	private static void UpdateAtmosphereTransparencyToSkyColor(float y)
+@@ -56070,7 +_,10 @@
+ 				chatDrawPosition -= messageSize / 2f;
+ 				chatDrawPosition = chatDrawPosition.Floor();
+ 				int hoveredSnippet = 0;
++				/*
+ 				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player.chatOverhead.snippets, chatDrawPosition, player.chatOverhead.color, 0f, Vector2.Zero, Vector2.One, out hoveredSnippet);
++				*/
++				ChatManager.DrawColorCodedStringWithShadow(spriteBatch, FontAssets.MouseText.Value, player.chatOverhead.snippets, chatDrawPosition, 0f, Vector2.Zero, Vector2.One, out hoveredSnippet); // TML: Use no-color overload to fix chat tag support with team colors.
+ 			}
+ 		}
+ 	}
 @@ -56747,6 +_,10 @@
  				else
  					bgStyle = 9;
@@ -7574,7 +7599,7 @@
 +	public static int DamageVar(float dmg, int percent, float luck = 0f)
 +	{
 -		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
-+		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
  		if (luck > 0f) {
  			if (rand.NextFloat() < luck) {
 -				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);

@@ -53,7 +53,7 @@ namespace ExampleMod.Common.GlobalTiles
 			// In this example, we want to target Example Trees specifically. We don't want other modded trees such as Example Palm Tree.
 			if (treeType == TreeTypes.Custom) {
 				WorldGen.GetTreeBottom(x, y, out int baseX, out int baseY); // Finds the block that the tree is planted on.
-				// If the block the tree is planted on is an Example Block, we know we have found an Example Tree.
+																			// If the block the tree is planted on is an Example Block, we know we have found an Example Tree.
 				if (Main.tile[baseX, baseY].TileType == ModContent.TileType<ExampleBlock>() && WorldGen.genRand.NextBool(2)) {
 					Item.NewItem(WorldGen.GetItemSource_FromTreeShake(x, y), new Point(x, y).ToWorldCoordinates(), ItemID.Coconut);
 					return true;

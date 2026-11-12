@@ -1828,7 +1828,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,47 @@
+@@ -48311,24 +_,46 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1860,7 +1860,6 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
-+		ArmorPenetration = 0;
 +
 +		_nameOverride = null; // Added by TML.
  		sentry = false;

@@ -82,7 +82,7 @@ namespace ExampleMod.Common.Players
 
 			// Here we will set the catch conditions for our ExampleQuestFish
 			int exampleQuestFish = ModContent.ItemType<Content.Items.ExampleQuestFish>(); // We'll store the type as a variable, since we'll be referencing it several times
-			// First we check if today's quest matches our quest fish
+																						  // First we check if today's quest matches our quest fish
 			if (attempt.questFish == exampleQuestFish) {
 				// Our ExampleQuestFish states that it can only be caught whilst upside-down, so we'll have to check the gravity
 				// Normal gravity is positive, whilst reversed gravity is negative

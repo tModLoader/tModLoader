@@ -208,6 +208,7 @@ public static class AssemblyManager
 			m.Code = mod.assembly;
 			m.Logger = LogManager.GetLogger(m.Name);
 			m.Side = mod.properties.side;
+			m.IsLibrary = mod.properties.libraryMod;
 			m.DisplayName = mod.properties.displayName;
 			m.TModLoaderVersion = mod.properties.buildVersion;
 			m.TranslationForMods = mod.properties.translationMod ? mod.properties.RefNames(true).ToList() : null;
@@ -411,7 +412,7 @@ public static class AssemblyManager
 	/// <param name="assembly">Assembly to load type from</param>
 	/// <param name="type">Target type to get</param>
 	/// <returns></returns>
-	#nullable enable
+#nullable enable
 	private static Type? GetType(Assembly assembly, Type type) {
 		try {
 			return assembly.GetType(type.FullName, throwOnError: true, ignoreCase: false);
@@ -421,7 +422,7 @@ public static class AssemblyManager
 			throw;
 		}
 	}
-	#nullable disable
+#nullable disable
 
 	internal static Task JITModAsync(Mod mod, CancellationToken token) => JITAssembliesAsync(GetModAssemblies(mod.Name), mod.PreJITFilter, token);
 	internal static void JITMod(Mod mod) => JITAssemblies(GetModAssemblies(mod.Name), mod.PreJITFilter);

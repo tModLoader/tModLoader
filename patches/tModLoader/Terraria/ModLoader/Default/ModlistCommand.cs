@@ -16,7 +16,7 @@ internal class ModlistCommand : ModCommand
 		var mods = ModLoader.Mods.Skip(1);//ignore the built in Modloader mod
 
 		if (Main.netMode == 1) { //multiplayer client
-			//send the command to the server
+								 //send the command to the server
 			ChatHelper.SendChatMessageFromClient(new ChatMessage(input));
 
 			var client = mods.Where(m => m.Side == ModSide.Client || m.Side == ModSide.NoSync).ToArray();
