@@ -40,7 +40,7 @@ public class GlobalItemTest : GlobalItem
 	public override void OnCreated(Item item, ItemCreationContext context) { }
 
 #if COMPILE_ERROR
-	public override bool DrawHead(int head)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false */ { return true; /* Empty */ }
+	public override bool DrawHead(int head)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[head] = true if you returned false */ { return true; /* Empty */ }
 
 	public override bool DrawBody(int body)/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[body] = true if you returned false */ { return true; /* Empty */ }
 
@@ -65,4 +65,10 @@ public class GlobalItemTest : GlobalItem
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers) { }
 	public override void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo) { }
+
+#if COMPILE_ERROR
+	public override string IsArmorSet(Item head, Item body, Item legs)/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return ""; }
+#endif
+
+	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
 }

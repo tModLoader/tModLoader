@@ -358,7 +358,7 @@ public static class ModNet
 			_ => DownloadModRiskState.UnableToVerify
 		};
 
-		if (riskState == DownloadModRiskState.LowSubscriberCount || riskState == DownloadModRiskState.AvailableOnWorkshop){
+		if (riskState == DownloadModRiskState.LowSubscriberCount || riskState == DownloadModRiskState.AvailableOnWorkshop) {
 			if (!workshopMod.DevMetadata.modVersionHashes.Any(x => x.GetHash().SequenceEqual(header.hash))) {
 				// Mod doesn't match any hash on workshop. Either a dev build or custom build by host.
 				riskState = DownloadModRiskState.HashDiffersFromWorkshop;
@@ -677,7 +677,8 @@ public static class ModNet
 
 	private static string Identifier(int whoAmI)
 	{
-		if (!Main.dedServ) return "";
+		if (!Main.dedServ)
+			return "";
 
 		if (whoAmI >= 0 && whoAmI < 256) {
 			var client = Netplay.Clients[whoAmI];
@@ -692,7 +693,8 @@ public static class ModNet
 
 	private static string Identifier(RemoteAddress addr)
 	{
-		if (!Main.dedServ || addr == null) return "";
+		if (!Main.dedServ || addr == null)
+			return "";
 
 		if (Netplay.Clients.SingleOrDefault(c => c.Socket?.GetRemoteAddress() == addr) is RemoteClient client)
 			return Identifier(client.Id);

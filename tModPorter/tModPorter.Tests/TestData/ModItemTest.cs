@@ -31,6 +31,8 @@ public class ModItemTest : ModItem
 		ID.AmmoID.Sets.IsRocket[Type] = true;
 		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
 		*/
+
+		ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false;
 	}
 
 	public override bool IgnoreDamageModifiers => false;
@@ -97,4 +99,8 @@ public class ModItemTest : ModItem
 	}
 
 	public override bool IsQuestFish() { }
+
+	public override bool IsArmorSet()/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return false; }
+
+	public override void UpdateArmorSet(Player player) { }
 }

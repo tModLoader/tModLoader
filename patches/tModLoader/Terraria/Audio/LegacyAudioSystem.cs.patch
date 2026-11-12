@@ -12,6 +12,18 @@
  
  namespace Terraria.Audio;
  
+@@ -18,7 +_,11 @@
+ 	public Dictionary<int, string> TrackNamesByIndex;
+ 	public Dictionary<int, IAudioTrack> DefaultTrackByIndex;
+ 	public List<IContentSource> FileSources;
++	/// <summary>
++	/// Indexed by music ID (<see cref="MusicID"/> or <see cref="ModLoader.MusicLoader.GetMusicSlot(ModLoader.Mod, string)"/>). Indicates how many times this track has looped since it started playing. Passed into <see cref="PlayCallbacks"/>. This is reset to 0 when the track is stopped.
++	/// </summary>
+ 	public int[] TrackLoopCounts;
++	/// <inheritdoc cref="SetPlayCallback"/>
+ 	public AudioTrackPlayCallback[] PlayCallbacks;
+ 
+ 	public void LoadFromSources()
 @@ -71,17 +_,19 @@
  
  #if !SERVER
@@ -93,3 +105,16 @@
  			}
  		}
  		else {
+@@ -303,6 +_,12 @@
+ 		Engine.Update();
+ 	}
+ 
++	/// <summary>
++	/// Registers a callback for when the given music track starts playing or repeats. Can be used for advanced music control, such as implementing a intro music track that plays once before a main music track loops. OGG files support loop points, so this is useful for other audio formats that don't support loop points, such as MP3 or WAV, or for more dynamic music control.
++	/// <para/> See <see cref="Main.RainbowBoulderMusicPlayCallback"/> for an example of how to use this.
++	/// </summary>
++	/// <param name="trackIndex"></param>
++	/// <param name="callback"></param>
+ 	public void SetPlayCallback(int trackIndex, AudioTrackPlayCallback callback)
+ 	{
+ 		PlayCallbacks[trackIndex] = callback;

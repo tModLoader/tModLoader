@@ -72,16 +72,15 @@
  		};
  
  		cp4.EnterEvent += delegate {
-@@ -2014,6 +_,12 @@
+@@ -2013,6 +_,11 @@
+ 			case 7:
  				if (Main.MenuUI.CurrentState is IHaveBackButtonCommand haveBackButtonCommand)
  					haveBackButtonCommand.HandleBackButtonUsage();
- 				break;
-+			// Added by TML: [[
++				break;
++			// Case 100 added by TML
 +			case 100:
 +				SoundEngine.PlaySound(11, -1, -1, 1, 1f, 0f);
 +				Main.menuMode = UILinkPointNavigator.Shortcuts.BackButtonGoto;
-+				break;
-+			// ]]
+ 				break;
  		}
  	}
- 

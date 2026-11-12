@@ -261,9 +261,9 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModProjectile",		"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 		HookRemoved("Terraria.ModLoader.GlobalProjectile",	"OnHitPvp",					"Use OnHitPlayer and check info.PvP");
 
-		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.DrawHead[slot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false");
-		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[head] = false if you returned false");
+		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawHead",		"After registering this as EquipType.Head, use ArmorIDs.Head.Sets.HidesHead[slot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.ModItem",		"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true if you returned false");
+		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawHead",		"In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[head] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.EquipTexture",	"DrawBody",		"After registering this as EquipType.Body, use ArmorIDs.Body.Sets.HidesTopSkin[slot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.ModItem",		"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false");
 		HookRemoved("Terraria.ModLoader.GlobalItem",	"DrawBody",		"In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[body] = true if you returned false");
@@ -573,6 +573,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "UpdateArmorSet");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnSpawn");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
@@ -583,6 +584,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "OnPickup");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PreDrawInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostDrawInWorld");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "UpdateArmorSet");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer", "ModifyZoom").RenameParameter("zoom", "panFactor");
 		const string ProjectileDrawPlayerHint = "Replace 'Main.player[Projectile.owner]' with 'player'.";
 		ChangeHookSignature("Terraria.ModLoader.ModProjectile", "PreDrawExtras", ProjectileDrawPlayerHint);
@@ -603,6 +605,8 @@ public static partial class Config
 		HookRemoved("Terraria.ModLoader.ModPylon", "ValidTeleportCheck_AnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.GlobalPylon", "ValidTeleportCheck_PreAnyDanger", "Pylons no longer check danger for teleportation");
 		HookRemoved("Terraria.ModLoader.ModItem", "IsQuestFish", "Set with ItemID.Sets.IsQuestFish instead");
+		HookRemoved("Terraria.ModLoader.ModItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
+		HookRemoved("Terraria.ModLoader.GlobalItem", "IsArmorSet", "Armor sets are now declarative, use AddArmorSet");
 
 		RefactorInstanceMember("Terraria.DataStructures.PlayerDrawSet", "heldProjOverHand", Removed("Automatically applied via Projectile.drawLayer value"));
 		RefactorInstanceMember("Terraria.ModLoader.ModProjectile", "DrawHeldProjInFrontOfHeldItemAndArms", Removed("Replace with Projectile.drawLayer = ProjectileDrawLayerID.HeldProjOverHand;"));
@@ -612,6 +616,10 @@ public static partial class Config
 
 		RenameInstanceField("Terraria.ModLoader.TooltipLine", "OverrideColor", "Color");
 
+		RenameStaticField("Terraria.ID.ArmorIDs.Head.Sets", from: "DrawHead", to: "HidesHead").FollowBy(InvertAssignedBool);
+
+		RenameMethod("Terraria.Player", "ChooseAmmo", "PickAmmo_PickAmmoItem");
+		
 		RenameType(from: "Terraria.ModLoader.NPCSpawnInfo", to: "Terraria.NPC+Spawner");
 
 		RefactorStaticMember("Terraria.ID.ProjectileID.Sets", "PlayerHurtDamageIgnoresDifficultyScaling", Removed("Damage dealt to a player by their own projectile, or by another player, is never scaled by difficulty. For hostile projectiles, assign Projectile.hostileDamageScaling in SetDefaults instead"));

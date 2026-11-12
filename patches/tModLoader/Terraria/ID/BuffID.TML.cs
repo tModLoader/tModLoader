@@ -22,7 +22,7 @@ public partial class BuffID
 			Bleeding, new List<int>() { Poisoned },
 			Hemorrhage, new List<int>() { Poisoned },
 			BrokenArmor, new List<int>() { Ichor }
-		    // Ichor, new List<int>() { BetsysCurse } // 3
+			// Ichor, new List<int>() { BetsysCurse } // 3
 		);
 
 		static Sets()

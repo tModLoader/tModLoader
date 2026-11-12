@@ -224,6 +224,16 @@ public abstract class GlobalTile : GlobalBlockType
 		return true;
 	}
 
+	/// <inheritdoc cref="ModTile.PostTileFrame"/>
+	public virtual void PostTileFrame(int i, int j, int type, int up, int down, int left, int right, int upLeft, int upRight, int downLeft, int downRight)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.ModifyFrameMerge"/>
+	public virtual void ModifyFrameMerge(int i, int j, int type, ref int up, ref int down, ref int left, ref int right, ref int upLeft, ref int upRight, ref int downLeft, ref int downRight)
+	{
+	}
+
 	/// <summary>
 	/// Allows you to determine which tiles the given tile type can be considered as when looking for crafting stations.
 	/// </summary>
@@ -401,6 +411,11 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <inheritdoc cref="ModTile.OnTileConverted(int, int, int, int, int)"/>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/>
+	public virtual void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
 	}
 }

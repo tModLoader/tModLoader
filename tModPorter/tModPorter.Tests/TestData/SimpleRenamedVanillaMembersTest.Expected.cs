@@ -153,6 +153,9 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		player.oldAdjTile/* tModPorter Note: Removed. No longer used. */[0] = false;
 #endif
+#if COMPILE_ERROR
+		int nonTorch = player.nonTorch/* tModPorter Note: Removed. Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead */;
+#endif
 
 		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
@@ -230,5 +233,7 @@ public class SimpleRenamedVanillaMembersTest
 		_ = tradeOption.GivingItemType;
 
 		_ = ContentSamples.CreativeHelper.ItemGroup.PlaceableObjects;
+
+		Item ammo = player.PickAmmo_PickAmmoItem(player.HeldItem);
 	}
 }

@@ -35,6 +35,8 @@ public class ModItemTest : ModItem
 		ID.AmmoID.Sets.IsRocket[Type] = true;
 		Terraria.ID.AmmoID.Sets.IsRocket[Type] = true;
 		*/
+
+		ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true;
 	}
 
 #if COMPILE_ERROR
@@ -84,7 +86,7 @@ public class ModItemTest : ModItem
 	}
 
 #if COMPILE_ERROR
-	public override bool DrawHead()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.DrawHead[Item.headSlot] = false if you returned false */ { return true; /* Empty */ }
+	public override bool DrawHead()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Head.Sets.HidesHead[Item.headSlot] = true if you returned false */ { return true; /* Empty */ }
 
 	public override bool DrawBody()/* tModPorter Note: Removed. In SetStaticDefaults, use ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = true if you returned false */ { return true; /* Empty */ }
 
@@ -119,5 +121,9 @@ public class ModItemTest : ModItem
 
 #if COMPILE_ERROR
 	public override bool IsQuestFish()/* tModPorter Note: Removed. Set with ItemID.Sets.IsQuestFish instead */ { }
+
+	public override bool IsArmorSet()/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return false; }
 #endif
+
+	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
 }

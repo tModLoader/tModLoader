@@ -123,9 +123,9 @@ namespace ExampleMod.Content.Items.Accessories
 				DashDelay--;
 
 			if (DashTimer > 0) { // dash is active
-				// This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
-				// Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
-				// Here we take advantage of "player.eocDash" and "player.armorEffectDrawShadowEOCShield" to get the Shield of Cthulhu's afterimage effect
+								 // This is where we set the afterimage effect.  You can replace these two lines with whatever you want to happen during the dash
+								 // Some examples include:  spawning dust where the player is, adding buffs, making the player immune, etc.
+								 // Here we take advantage of "player.eocDash" and "player.armorEffectDrawShadowEOCShield" to get the Shield of Cthulhu's afterimage effect
 				Player.eocDash = DashTimer;
 				Player.armorEffectDrawShadowEOCShield = true;
 

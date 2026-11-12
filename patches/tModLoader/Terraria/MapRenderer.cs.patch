@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/MapRenderer.cs
 +++ src/tModLoader/Terraria/MapRenderer.cs
-@@ -14,13 +_,24 @@
+@@ -14,14 +_,26 @@
  {
  	public static readonly int textureMaxWidth;
  	public static readonly int textureMaxHeight;
@@ -16,15 +16,17 @@
  	private static readonly RenderTarget2D[,] mapTarget;
  	private static readonly bool[,] initMap;
  	private static readonly bool[,] mapWasContentLost;
+ 	private static readonly List<Point16>[,] changeQueues;
 +	*/
 +	public static RenderTarget2D mapSectionTexture; // TML: public
 +	private static RenderTarget2D[,] _mapTarget;
 +	public static RenderTarget2D[,] mapTarget => _mapTarget; // TML: public, not readonly, getter
 +	private static bool[,] initMap; // TML: not readonly
 +	private static bool[,] mapWasContentLost; // TML: not readonly
- 	private static readonly List<Point16>[,] changeQueues;
++	private static List<Point16>[,] changeQueues; // TML: not readonly
  	private static readonly int ChangeRefreshThreshold;
  
+ 	public static bool ChangesQueued {
 @@ -49,7 +_,10 @@
  		numTargetsX = 5;
  		numTargetsY = 2;

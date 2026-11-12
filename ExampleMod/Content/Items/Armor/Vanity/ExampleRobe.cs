@@ -1,5 +1,7 @@
 ﻿using Terraria;
+using Terraria.DataStructures;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Armor.Vanity
@@ -17,7 +19,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			// By passing this (the ModItem) into the item parameter we can reference it later in GetEquipSlot with just the item's name
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}", EquipType.Legs, this);
 
-			/* Here is example code for supporting a female-specifig legs equip texture. See SetMatch as well.
+			/* Here is example code for supporting a female-specific legs equip texture. See SetMatch as well.
 			EquipLoader.AddEquipTexture(Mod, $"{Texture}_{EquipType.Legs}_Female", EquipType.Legs, this, Name + "_Female");
 			*/
 		}
@@ -25,6 +27,12 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 		public override void SetStaticDefaults() {
 			// HidesHands defaults to true which we don't want.
 			ArmorIDs.Body.Sets.HidesHands[Item.bodySlot] = false;
+
+			/* ExampleRobe is intended to be vanity, but if it was armor like other Robes, we could do the following:
+			// Add armor sets for the Wizard and Magic Hat using the same Identifier so wearing this will apply the expected armor set bonuses.
+			AddArmorSet(ItemID.WizardHat, Type, ItemID.None, Language.GetText("ArmorSetBonus.Wizard"), "Wizard",  ArmorSetBonuses.Benefits.Wizard, ArmorSetBonus.PartType.Head);
+			AddArmorSet(ItemID.MagicHat, Type, ItemID.None, Language.GetText("ArmorSetBonus.MagicHat"), "MagicHat", ArmorSetBonuses.Benefits.MagicHat, ArmorSetBonus.PartType.Head);
+			*/
 		}
 
 		public override void SetDefaults() {
@@ -42,7 +50,7 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			// You can also cache the equip slot in a variable when you add it so this way you don't have to call GetEquipSlot
 			equipSlot = EquipLoader.GetEquipSlot(Mod, Name, EquipType.Legs);
 
-			/* Here is example code for supporting a female-specifig legs equip texture. See Load as well.
+			/* Here is example code for supporting a female-specific legs equip texture. See Load as well.
 			if (!male) {
 				equipSlot = EquipLoader.GetEquipSlot(Mod, Name + "_Female", EquipType.Legs);
 			}

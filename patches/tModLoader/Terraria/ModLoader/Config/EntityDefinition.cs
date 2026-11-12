@@ -202,7 +202,7 @@ public class PrefixDefinition : EntityDefinition
 		get {
 			if (IsUnloaded)
 				return Language.GetTextValue("Mods.ModLoader.Unloaded");
-			if(Type == 0)
+			if (Type == 0)
 				return Lang.inter[23].Value;
 			return Lang.prefix[Type].Value;
 		}

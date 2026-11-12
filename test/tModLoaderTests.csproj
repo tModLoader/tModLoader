@@ -15,8 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\src\tModLoader\Terraria\Terraria.csproj" />
-		<Reference Include="Ionic.Zip.Reduced">
-			<HintPath>..\src\tModLoader\Terraria\Libraries\Common\Ionic.Zip.Reduced.dll</HintPath>
-		</Reference>
+		<!-- Only Project and Package references are inherited from Terraria.csproj, so we must specify the raw dll references again -->
+		<Reference Include="..\src\tModLoader\Terraria\Libraries\Common\*.dll" Private="true" />
   </ItemGroup>
 </Project>

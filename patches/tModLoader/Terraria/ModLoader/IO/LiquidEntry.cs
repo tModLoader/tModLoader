@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader.IO;
