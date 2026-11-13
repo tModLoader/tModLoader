@@ -997,7 +997,7 @@
  	public int SpawnY = -1;
  	public Vector2? PotionOfReturnOriginalUsePosition;
  	public Vector2? PotionOfReturnHomePosition;
-@@ -1500,32 +_,92 @@
+@@ -1500,32 +_,87 @@
  	public int[] spI = new int[200];
  	public static readonly int DefaultTileRangeX = 5;
  	public static readonly int DefaultTileRangeY = 3;
@@ -1057,19 +1057,14 @@
 +	/// <remarks>To apply a global run speed modifier, use <see cref="moveSpeed"/>.</remarks>
  	public float runAcceleration = 0.08f;
  	public float runSlowdown = 0.2f;
-+	/// <summary> True if the player is within crafting range of a tile with water or a <see cref="TileID.Sets.CountsAsWaterForCrafting"/> tile. (adjWater stands for adjacent to water) </summary>
++	/*
  	public bool adjWaterSource;
-+	/// <summary> True if the player is within crafting range of a tile with honey or a <see cref="TileID.Sets.CountsAsHoneyForCrafting"/> tile. (adjHoney stands for adjacent to honey) </summary>
  	public bool adjHoney;
-+	/// <summary> True if the player is within crafting range of a tile with shimmer or a <see cref="TileID.Sets.CountsAsShimmerForCrafting"/> tile. (adjShimmer stands for adjacent to shimmer) </summary>
-+	public bool adjShimmer;
-+	/// <summary> True if the player is within crafting range of a tile with lava or a <see cref="TileID.Sets.CountsAsLavaForCrafting"/> tile. (adjLava stands for adjacent to lava) </summary>
  	public bool adjLava;
  	public bool oldAdjWaterSource;
  	public bool oldAdjHoney;
  	public bool oldAdjLava;
-+	public bool oldAdjShimmer;
-+
++	*/
 -	public bool[] adjTile = new bool[TileID.Count];
 +	private bool[] _adjTile = new bool[TileLoader.TileCount];
 +	/// <summary>
@@ -5320,6 +5315,15 @@
  		}
  
  		if (flag2)
+@@ -27352,7 +_,7 @@
+ 			return new NewCraftingUI.CraftStationRecipeFilter(type, baseOption);
+ 		}
+ 
+-		if (TileID.Sets.CountsAsWaterForCrafting[type]) {
++		if (TileID.Sets.CountsAsLiquidSourceForCrafting[type][LiquidID.Water]) {
+ 			int baseOption2 = 0;
+ 			MapHelper.GetTileBaseOption(myX, myY, type, Main.tile[myX, myY], ref baseOption2);
+ 			return new NewCraftingUI.WaterSourceRecipeFilter(type, baseOption2);
 @@ -27361,7 +_,7 @@
  		return null;
  	}
@@ -5502,30 +5506,47 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
-@@ -29422,6 +_,8 @@
+@@ -29416,12 +_,17 @@
+ 	public void AdjTiles()
+ 	{
+ 		Array.Clear(adjTile, 0, adjTile.Length);
++
++		/*
+ 		oldAdjWaterSource = adjWaterSource;
+ 		adjWaterSource = false;
+ 		oldAdjHoney = adjHoney;
  		adjHoney = false;
  		oldAdjLava = adjLava;
  		adjLava = false;
-+		oldAdjShimmer = adjShimmer;
-+		adjShimmer = false;
++		*/
++		Array.Clear(adjLiquid);
++
  		alchemyTable = false;
  		Rectangle tileRegion = TileReachCheckSettings.Simple.GetTileRegion(this, ateArtisanBread ? 4 : 0);
  		tileRegion = WorldUtils.ClampToWorld(tileRegion);
-@@ -29432,6 +_,14 @@
+@@ -29430,10 +_,13 @@
+ 				Tile tile = Main.tile[i, j];
+ 				if (tile.active()) {
  					SetAdjTile(tile.type);
++					/*
  					if (TileID.Sets.CountsAsWaterForCrafting[tile.type])
  						adjWaterSource = true;
-+					if (TileID.Sets.CountsAsHoneyForCrafting[tile.type])
-+						adjHoney = true;
-+					if (TileID.Sets.CountsAsLavaForCrafting[tile.type])
-+						adjLava = true;
-+					if (TileID.Sets.CountsAsShimmerForCrafting[tile.type])
-+						adjShimmer = true;
-+
-+					// TODO: Move to SetAdjTile: TileLoader.AdjTiles(this, Main.tile[j, k].type);
++					*/
  				}
  
++				/*
  				if (tile.liquid > 200 && tile.liquidType() == 0)
+ 					adjWaterSource = true;
+ 
+@@ -29442,6 +_,8 @@
+ 
+ 				if (tile.liquid > 200 && tile.liquidType() == 1)
+ 					adjLava = true;
++				*/
++				UpdateAdjLiquid(tile);
+ 			}
+ 		}
+ 	}
 @@ -29555,7 +_,7 @@
  		bool flag = false;
  		bool flag2 = false;

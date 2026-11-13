@@ -244,6 +244,8 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
   * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
   * 💀: Also add a `TileName_Highlight.png` texture as well.
   * 💀: Make sure each tile also has a map entry (`AddMapEntry`) assigned. This is what is shown on the crafting window header.
+  * 🤖: `NearWater/NearHoney/NearLava` is now `NearLiquid(LiquidID)`.
+
 
 ## New Vanilla Features
 
@@ -666,10 +668,10 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `ProjectileID.Sets.HeldProjDoesNotUsePlayerGfxOffY` removed. `AI()` should use `master.RotatedRelativePoint(master.MountedCenter + ...)` to position held projectiles.
 * 🤖: `ProjectileID.Sets.MinionTargettingFeature` -> `ProjectileID.Sets.MinionTargetingFeature`
 * 🤖: `RecipeGroupID` removed. `RecipeGroup` instances are now stored directly in `RecipeGroups`.
-* 🤖: `TileID.Sets.CountsAsWaterSource` -> `TileID.Sets.CountsAsWaterForCrafting`
-* 🤖: `TileID.Sets.CountsAsHoneySource` -> `TileID.Sets.CountsAsHoneyForCrafting`
-* 🤖: `TileID.Sets.CountsAsLavaSource` -> `TileID.Sets.CountsAsLavaForCrafting`
-* 🤖: `TileID.Sets.CountsAsShimmerSource` -> `TileID.Sets.CountsAsShimmerForCrafting`
+* 🤖: `TileID.Sets.CountsAsWaterSource` -> `TileID.Sets.CountsAsLiquidSourceForCrafting[LiquidID.Water]`
+* 🤖: `TileID.Sets.CountsAsHoneySource` -> `TileID.Sets.CountsAsLiquidSourceForCrafting[LiquidID.Lava]`
+* 🤖: `TileID.Sets.CountsAsLavaSource` -> `TileID.Sets.CountsAsLiquidSourceForCrafting[LiquidID.Honey]`
+* 🤖: `TileID.Sets.CountsAsShimmerSource` -> `TileID.Sets.CountsAsLiquidSourceForCrafting[LiquidID.Shimmer]`
 * ⚙️: `TileID.Sets.IsAMechanism` -> `TileID.Sets.Wiring.IsAMechanism`
   * 💀: The meaning of `IsAMechanism` has changed, it is now used for all wireable tiles and is how the items that place the tiles automatically get the "Wireable" tooltip. Add `TileID.Sets.Wiring.IsAMechanism[Type] = true;` to all tiles that do something when wired and add `TileID.Sets.Wiring.IgnoreWhenValidatingTraps[Type] = true;` to wireable tiles that aren't traps.
 * 🤖: `TileID.Sets.IsATrigger` -> `TileID.Sets.Wiring.IsATrigger`
