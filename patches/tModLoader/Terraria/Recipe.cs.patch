@@ -210,6 +210,23 @@
  				AddToAvailableRecipes(i);
  		}
  
+@@ -262,13 +_,13 @@
+ 		if (requiredTile >= 0 && !player.adjTile[requiredTile])
+ 			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects);
+ 
+-		if (needWater && !player.adjWaterSource)
++		if (needWater && !player.adjLiquid[LiquidID.Water])
+ 			flag &= AddMissing(Lang.inter[53].Value, missingObjects);
+ 
+-		if (needHoney && !player.adjHoney)
++		if (needHoney && !player.adjLiquid[LiquidID.Honey])
+ 			flag &= AddMissing(Lang.inter[58].Value, missingObjects);
+ 
+-		if (needLava && !player.adjLava)
++		if (needLava && !player.adjLiquid[LiquidID.Lava])
+ 			flag &= AddMissing(Lang.inter[56].Value, missingObjects);
+ 
+ 		if (needSnowBiome && !player.ZoneSnow)
 @@ -298,9 +_,35 @@
  		CollectItems(player.inventory, 58);
  		CollectItemsFromChests(player);

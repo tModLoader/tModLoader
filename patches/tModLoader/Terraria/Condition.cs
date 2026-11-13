@@ -14,10 +14,10 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 #pragma warning disable format
 	// Near Liquids
-	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWaterSource || Main.LocalPlayer.adjTile[TileID.Sinks]);
-	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
-	public static readonly Condition NearHoney =			new("Conditions.NearHoney",				() => Main.LocalPlayer.adjHoney);
-	public static readonly Condition NearShimmer =			new("Conditions.NearShimmer",			() => Main.LocalPlayer.adjShimmer);
+	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjLiquid[LiquidID.Water]);
+	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLiquid[LiquidID.Lava]);
+	public static readonly Condition NearHoney =			new("Conditions.NearHoney",				() => Main.LocalPlayer.adjLiquid[LiquidID.Honey]);
+	public static readonly Condition NearShimmer =			new("Conditions.NearShimmer",			() => Main.LocalPlayer.adjLiquid[LiquidID.Shimmer]);
 	// Time
 	public static readonly Condition TimeDay =				new("Conditions.TimeDay",				() => Main.dayTime);
 	public static readonly Condition TimeNight =			new("Conditions.TimeNight",				() => !Main.dayTime);
