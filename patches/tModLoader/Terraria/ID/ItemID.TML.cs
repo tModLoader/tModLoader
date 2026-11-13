@@ -226,5 +226,10 @@ partial class ItemID
 		/// <br/> Defaults to <see langword="null"/>.
 		/// </summary>
 		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
+
+		/// <summary>
+		/// If <see langword="true"/> for sponge item type, used for making sure that the current items is not a sponge when picking up a liquid with a bucket.
+		/// </summary>
+		public static bool[] SpongeItems = Factory.CreateBoolSet(false, 3032, 4872, 5303, 5304);
 	}
 }

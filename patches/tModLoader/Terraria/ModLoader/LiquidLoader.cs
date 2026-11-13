@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.Audio;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
@@ -74,4 +75,82 @@ public static class LiquidLoader
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
 	}
+
+	// Mainly taken from the vanilla bucket logic. TODO: Is this Player.tml.cs or LiquidLoader? How confident are we in this?
+	// This is a seperate helper method as reduces the amount of repeated code in mods
+	public static void PlaceLiquidViaBucket(Player player, Item item, int liquidType, bool isBottomless = false)
+	{
+		if (player.JustDroppedAnItem)// make sure the player hasn't just dropped an item recently
+			return;
+
+		if (player.whoAmI != Main.myPlayer) // make sure to only run on clients (we sync multiplayer data later down the line)
+			return;
+
+		// We make sure the player is in range to be able to place the liquid tile
+		if (player.noBuilding ||
+			!(player.position.X / 16f - (float)Player.tileRangeX - (float)item.tileBoost <= (float)Player.tileTargetX) ||
+			!((player.position.X + (float)player.width) / 16f + (float)Player.tileRangeX + (float)item.tileBoost - 1f >= (float)Player.tileTargetX) ||
+			!(player.position.Y / 16f - (float)Player.tileRangeY - (float)item.tileBoost <= (float)Player.tileTargetY) ||
+			!((player.position.Y + (float)player.height) / 16f + (float)Player.tileRangeY + (float)item.tileBoost - 2f >= (float)Player.tileTargetY)) {
+			return;
+		}
+
+		// We set the cursor's item to be of the bucket item. To show the player that they are able to place a liquid tile at that coordinate normally
+		if (!Main.GamepadDisableCursorItemIcon) {
+			player.cursorItemIconEnabled = true;
+			Main.ItemIconCacheUpdate(item.type);
+		}
+
+		// Make sure that the item is being used to place liquid
+		if (!player.ItemTimeIsZero || player.itemAnimation <= 0 || !player.controlUseItem) {
+			return;
+		}
+
+		// Get the tile position of the cursor
+		Tile tile = Main.tile[Player.tileTargetX, Player.tileTargetY];
+		if (tile.LiquidAmount >= 200) {
+			return;
+		}
+
+		// Do additional tile check to make sure the target tile isn't a grate
+		if (tile.HasUnactuatedTile) {
+			bool[] tileSolid = Main.tileSolid;
+
+			if (tileSolid[tile.TileType]) {
+				bool[] tileSolidTop = Main.tileSolidTop;
+
+				if (!tileSolidTop[tile.TileType] && tile.TileType != TileID.Grate) {
+					return;
+				}
+			}
+		}
+
+		// We then check if the liquid at the position is ours and if the liquid amount isn't zero
+		if (tile.LiquidAmount != 0) {
+			if (tile.LiquidType != liquidType) {
+				return;
+			}
+		}
+
+		// After all of that, we are able to place the liquid 
+
+		// In which we...
+		SoundEngine.PlaySound(SoundID.SplashWeak, player.position); //...play a sound
+		tile.LiquidType = liquidType; //...create a liquid tile...
+		tile.LiquidAmount = byte.MaxValue; //...at full liquid capacity
+
+		WorldGen.SquareTileFrame(Player.tileTargetX, Player.tileTargetY); //...frame the tile to update the liquid
+
+		if (!isBottomless) {
+			item.stack--; //...remove the item's count
+			player.PutItemInInventoryFromItemUsage(ItemID.EmptyBucket); //...create a bucket item
+		}
+		player.ApplyItemTime(item); //...do item usetime
+
+		if (Main.netMode == NetmodeID.MultiplayerClient)//...lastly, if the game is MP, then sync the liquid placement
+		{
+			NetMessage.sendWater(Player.tileTargetX, Player.tileTargetY);
+		}
+	}
+
 }
