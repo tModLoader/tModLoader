@@ -5519,7 +5519,7 @@
  		oldAdjLava = adjLava;
  		adjLava = false;
 +		*/
-+		adjLiquid.Replace(true, false);
++		Array.Clear(adjLiquid);
 +
  		alchemyTable = false;
  		Rectangle tileRegion = TileReachCheckSettings.Simple.GetTileRegion(this, ateArtisanBread ? 4 : 0);
