@@ -740,6 +740,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless otherwise indicated.
 
+* Fixed reverse `BuffID.Sets.GrantImmunityWith` inheritance for NPCs with `NPCID.Sets.ImmuneToRegularBuffs` or `NPCID.Sets.ImmuneToWhipTags`: vulnerability to all buffs in an inheritance list now grants vulnerability to the indexed buff as documented. Explicit `SpecificDebuffImmunity` overrides still take precedence.
 * ⚙️: `(ModItem|GlobalItem).OnSpawn/CanStackInWorld/Update/PostUpdate/GrabRange/GrabStyle/CanPickup/OnPickup/PreDrawInWorld/PostDrawInWorld` now has a `WorldItem` parameter. For `ModItem` code, switch from `Item` to `item` to access fields on the `WorldItem`. For `GlobalItem` code, you might need to access `item.inner` to access the underlying `Item` instance if accessing a field not exposed as a getter on `WorldItem.
 * ⚙️: `(ModItem|GlobalItem).GetHealLife/GetHealMana` now have a `tooltip` parameter, indicating if the calculation is destined for the item tooltip. Additionally, the `quickHeal` parameter has been fixed, it previously erroneously was true only for the tooltip calculation and not for quickheal.
 * 🤖: `ModNPC.SpawnChance` and `GlobalNPC.EditSpawnPool` changed and renamed the parameter from `NPCSpawnInfo spawnInfo` to `NPC.Spawner spawner`.
