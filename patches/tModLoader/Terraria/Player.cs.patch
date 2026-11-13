@@ -7754,14 +7754,14 @@
  			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
  			int num2 = 0;
  			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
-@@ -38352,10 +_,15 @@
+@@ -38352,10 +_,16 @@
  				}
  			}
  
 +			/*
  			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304))
  				return;
--
+ 
 +			*/
 +			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && !ItemID.Sets.SpongeItems[sItem.type]))
 +				return;
