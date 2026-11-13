@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Items
 		public override void AddRecipes() {
 			CreateRecipe(10)
 				.AddIngredient(ItemID.Daybloom, 1)
-				.AddCondition(new Condition("Conditions.NearExampleLiquid", () => Main.LocalPlayer.adjLiquid[ModContent.LiquidType<ExampleLiquid>()]))
+				.AddLiquidNearby<ExampleLiquid>()
 				.Register();
 		}
 

@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "支援よろしくお願いします！： ",
@@ -119,15 +119,25 @@
 		"ModsShowAllMods": "すべてのModを表示",
 		"ModsShowEnabledMods": "有効なModのみ表示",
 		"ModsShowDisabledMods": "無効なModのみ表示",
+		// "ModsShowAllLibraryTypes": "Show all mods",
+		// "ModsShowLibraryMods": "Show only library mods",
+		// "ModsShowNonLibraryMods": "Show only non-library mods",
 		"ModsXModsFilteredByEnabled": "{0}個のModが有効・無効のフィルターによって非表示になっています。",
 		"ModsXModsFilteredByModSide": "{0}個のModがModの動作環境フィルターによって非表示になっています。",
 		"ModsXModsFilteredBySearch": "{0}個のModが検索フィルターによって非表示になっています。",
+		// "ModsXModsFilteredByModLibrary": "{0} {^0:mod;mods} filtered by library mod filter.",
 		"ModsXItems": "{0} アイテム",
 		"ModsXNPCs": "{0} NPC",
 		"ModsXTiles": "{0} タイル",
 		"ModsXWalls": "{0} 壁",
 		"ModsXBuffs": "{0} バフ",
 		"ModsXMounts": "{0} マウント",
+		// "ModDownloadedFromInternet": "Downloaded From Internet",
+		// "ModDownloadedFromInternetWarning": "This mod was downloaded from the internet.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.",
+		// "ModDownloadedFromInternetTrustFile": "Trust file",
+		// "ModDownloadedFromInternetDoNotTrustFile": "Do not trust file",
+		// "ModDownloadedFromInternetTooltip": "This file was downloaded from the internet, this is extremely risky.\n{0}",
+		// "ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0} was downloaded from the internet (from {1}) and has not been trusted.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nThis mod can be trusted from the mods menu.",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "再読み込みしてワールドメニューに戻る",
@@ -834,6 +844,7 @@
 		"NearLava": "溶岩の近く",
 		"NearHoney": "ハチミツの近く",
 		"NearShimmer": "シマーの近く",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "昼間",
 		"TimeNight": "夜間",

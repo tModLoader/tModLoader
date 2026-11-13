@@ -516,9 +516,9 @@
 +		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyard);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needTorchGodsFavor, Condition.NeedTorchGodsFavor);
-+		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
-+		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
-+		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++		ReplaceCondition(ref currentRecipe.needWater, Condition.NearLiquid(LiquidID.Water));
++		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLiquid(LiquidID.Lava));
++		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearLiquid(LiquidID.Honey));
 +		ReplaceCondition(ref currentRecipe.needMechdusa, Condition.ZenithWorld);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);

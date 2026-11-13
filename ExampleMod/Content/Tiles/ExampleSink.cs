@@ -16,9 +16,7 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][LiquidID.Water] = true;
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][LiquidID.Lava] = true;
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][LiquidID.Honey] = true;
-
-			int temp = ModContent.LiquidType<ExampleLiquid>();
-			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][temp] = true;
+			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][ModContent.LiquidType<ExampleLiquid>()] = true;
 			// By using these three sets, we've registered our sink as counting as a water, lava, and honey source for crafting purposes! The future is now.
 			// Each one works individually and independently of the other two, so feel free to make your sink a source for whatever you'd like it to be!
 
@@ -36,10 +34,6 @@ namespace ExampleMod.Content.Tiles
 			AddMapEntry(new Color(100, 100, 100), Language.GetText("MapObject.Sink"));
 
 			DustType = DustID.Platinum;
-		}
-
-		public override void PostSetDefaults() {
-			
 		}
 
 		public override void NumDust(int i, int j, bool fail, ref int num) {

@@ -3,6 +3,7 @@ using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace Terraria;
 
@@ -13,11 +14,6 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public bool IsMet() => Predicate();
 
 #pragma warning disable format
-	// Near Liquids
-	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjLiquid[LiquidID.Water]);
-	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLiquid[LiquidID.Lava]);
-	public static readonly Condition NearHoney =			new("Conditions.NearHoney",				() => Main.LocalPlayer.adjLiquid[LiquidID.Honey]);
-	public static readonly Condition NearShimmer =			new("Conditions.NearShimmer",			() => Main.LocalPlayer.adjLiquid[LiquidID.Shimmer]);
 	// Time
 	public static readonly Condition TimeDay =				new("Conditions.TimeDay",				() => Main.dayTime);
 	public static readonly Condition TimeNight =			new("Conditions.TimeNight",				() => !Main.dayTime);
@@ -260,4 +256,22 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
+
+	public static Condition NearLiquid(int liquidID)
+	{
+		LocalizedText text;
+		if (liquidID == LiquidID.Water)
+			text = Language.GetText("Conditions.NearWater");
+		else if (liquidID == LiquidID.Lava)
+			text = Language.GetText("Conditions.NearLava");
+		else if (liquidID == LiquidID.Honey)
+			text = Language.GetText("Conditions.NearHoney");
+		else if (liquidID == LiquidID.Shimmer)
+			text = Language.GetText("Conditions.NearShimmer");
+		else
+			// We intentionally use localized text for this line
+			text = Language.GetText("Conditions.NearLiquid").WithFormatArgs(LiquidLoader.GetLiquid(liquidID).DisplayName);
+
+		return new Condition(text, () => Main.LocalPlayer.adjLiquid[liquidID]);
+	}
 }

@@ -844,6 +844,7 @@
 		"NearLava": "Near lava",
 		"NearHoney": "Near honey",
 		"NearShimmer": "Near shimmer",
+		"NearLiquid": "Near {0}",
 
 		"TimeDay": "During daytime",
 		"TimeNight": "At night",

@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Considerez de nous supporter financièrement: ",
@@ -844,6 +844,7 @@
 		"NearLava": "Besoins de lave",
 		"NearHoney": "Besoins de miel",
 		// "NearShimmer": "Near shimmer",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "Besoins de jour",
 		"TimeNight": "Besoin de nuit",

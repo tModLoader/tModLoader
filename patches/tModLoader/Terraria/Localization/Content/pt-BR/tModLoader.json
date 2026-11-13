@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Mostre-nos o seu apoio: ",
@@ -844,6 +844,7 @@
 		"NearLava": "Perto de lava",
 		"NearHoney": "Perto de mel",
 		"NearShimmer": "Perto de brilhante",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "Durante o dia",
 		"TimeNight": "À noite",
