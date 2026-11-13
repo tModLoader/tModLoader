@@ -6,8 +6,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 {
-	//This is an example of a bottomless liquid bucket
-	//I would advise that modders look at ExampleLiquidBucket for more explaination as well as it's PlaceLiquid method
+	// This is an example of a bottomless liquid bucket
+	// Look at ExampleLiquidBucket for more explaination as well as it's PlaceLiquid method
 	public class ExampleBottomlessBucket : ModItem
 	{
 		public override void SetStaticDefaults() {
