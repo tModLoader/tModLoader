@@ -1324,6 +1324,29 @@ Mods: {
 				// DisplayName: Example Beast Transformation Skull
 				// Tooltip: Transforms the user into an Example Beast Transformation
 			}
+
+			ExampleBottomlessBucket: {
+				// DisplayName: Example Bottomless Bucket
+				/* Tooltip:
+					'''
+					Contains an endless amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidBucket: {
+				// DisplayName: Example Liquid Bucket
+				/* Tooltip:
+					'''
+					Contains a small amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidSponge: {
+				// DisplayName: Example Liquid Sponge
+				// Tooltip: Capable of soaking up an endless amount of example liquid
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1742,6 +1765,7 @@ Mods: {
 			{0}
 			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
 			''' */
+		// Liquids.ExampleLiquid.DisplayName: Example Liquid
 	}
 }
 
