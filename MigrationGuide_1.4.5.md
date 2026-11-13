@@ -244,6 +244,8 @@ public class OpenShopOnlyAvailableDuringDay(string shopName, string customTextKe
   * 💀: Add `TileID.Sets.HasOutlines[Type] = true;` to each crafting station `ModTile`. 
   * 💀: Also add a `TileName_Highlight.png` texture as well.
   * 💀: Make sure each tile also has a map entry (`AddMapEntry`) assigned. This is what is shown on the crafting window header.
+  * 🤖: `NearWater/NearHoney/NearLava` is now `NearLiquid(LiquidID)`.
+
 
 ## New Vanilla Features
 
