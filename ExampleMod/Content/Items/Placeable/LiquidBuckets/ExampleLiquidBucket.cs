@@ -41,5 +41,12 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
 		}
+
+		public override void AddRecipes() {
+			CreateRecipe(1)
+				.AddIngredient(ItemID.EmptyBucket, 1)
+				.AddLiquidNearby<ExampleLiquid>()
+				.Register();
+		}
 	}
 }
