@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using Terraria.Audio;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
