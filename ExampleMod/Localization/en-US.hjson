@@ -741,6 +741,11 @@ Mods: {
 				Tooltip: Can grapple onto trees
 			}
 
+			ExampleSharedHookItem: {
+				DisplayName: Example Shared Hook
+				Tooltip: Shares its launch allowance with all grappling hooks
+			}
+
 			ExampleMagicMirror: {
 				DisplayName: Example Magic Mirror
 				Tooltip: ""
@@ -1332,6 +1337,7 @@ Mods: {
 			ExamplePet.DisplayName: Mods.ExampleMod.ProjectileName.ExamplePet
 			ExampleSolutionProjectile.DisplayName: Example Spray
 			ExampleHookProjectile.DisplayName: "{$ProjectileName.GemHookAmethyst}"
+			ExampleSharedHookProjectile.DisplayName: "{$ProjectileName.GemHookAmethyst}"
 			ExampleLightPetProjectile.DisplayName: Annoying Light
 			MinionBossPetProjectile.DisplayName: Minion Boss Pet
 			ExampleAdvancedAnimatedProjectile.DisplayName: Example Advanced Animated Projectile

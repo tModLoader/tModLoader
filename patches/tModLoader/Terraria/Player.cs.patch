@@ -2078,11 +2078,12 @@
  			num7 = 1;
  			num8 = 1;
  		}
-@@ -4481,10 +_,20 @@
+@@ -4481,10 +_,21 @@
  			num8 = 2;
  		}
  
-+		// TODO: Pass in the above parameters
++		ProjectileLoader.ModifyGrappleLimits(num2, this, ref num7, ref num8);
++
 +		if (ProjectileLoader.CanUseGrapple(num2, this) is bool modCanGrapple) {
 +			if (!modCanGrapple)
 +				return;
