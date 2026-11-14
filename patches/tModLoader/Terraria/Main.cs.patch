@@ -2563,7 +2563,7 @@
  					}
 -
 +				*/ 
-+				// TODO: Not really sure what these patches are trying to do.
++				// The default ModMenu.Music selects the configured title music style.
 +				else {
 +					newMusic = MenuLoader.CurrentMenu.Music;
 +				}

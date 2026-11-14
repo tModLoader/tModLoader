@@ -41,9 +41,9 @@ public abstract class ModMenu : ModType
 	public virtual Asset<Texture2D> MoonTexture => TextureAssets.Moon[Utils.Clamp(Main.moonType, 0, 8)];
 
 	/// <summary>
-	/// The music that will be played while this ModMenu is active. If not overridden, it will use the vanilla music.
+	/// The music that will be played while this ModMenu is active. If not overridden, it will use the vanilla music selected by the TitleMusic configuration setting.
 	/// </summary>
-	public virtual int Music => 50; // Default 1.4 main menu music - used a magic number since the MusicID entry doesn't exist.
+	public virtual int Music => Main.GetDefaultMenuMusic();
 
 	/// <summary>
 	/// The background style that will be used when this ModMenu is active. If not overridden, it will use the vanilla background.
