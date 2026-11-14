@@ -63,6 +63,8 @@ public static class LiquidLoader
 
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 
+		TileID.Sets.ApplyResizeTileLiquidSourceForCraftingSet();
+
 		if (!unloading) {
 			loaded = true;
 		}

@@ -1,6 +1,6 @@
 //Original translation by Al Fahrel
 //Edits and quality checks by Daria Shane
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		// "PatreonSupport": "Please show your support: ",
@@ -846,6 +846,7 @@
 		// "NearLava": "Near lava",
 		// "NearHoney": "Near honey",
 		// "NearShimmer": "Near shimmer",
+		// "NearLiquid": "Near {0}",
 
 		// "TimeDay": "During daytime",
 		// "TimeNight": "At night",

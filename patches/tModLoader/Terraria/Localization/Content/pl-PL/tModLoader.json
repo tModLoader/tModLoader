@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Wesprzyj nas: ",
@@ -844,6 +844,7 @@
 		"NearLava": "Wymaga Lawy",
 		"NearHoney": "Miód jest niezbędny",
 		"NearShimmer": "W pobliżu mieniącej się wody",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "Wymaga dnia",
 		"TimeNight": "Wymaga nocy",
