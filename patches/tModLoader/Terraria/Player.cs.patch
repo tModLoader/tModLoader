@@ -7722,70 +7722,22 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
-@@ -38331,8 +_,20 @@
+@@ -38329,6 +_,7 @@
  
+ 	public bool IsTargetTileInItemRange(Item sItem) => IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost);
+ 
++	/*
  	private void ItemCheck_UseBuckets(Item sItem)
  	{
-+		/*
  		if (((sItem.type < 205 || sItem.type > 207) && sItem.type != 1128 && sItem.type != 3031 && sItem.type != 3032 && sItem.type != 4820 && sItem.type != 4872 && sItem.type != 5302 && sItem.type != 5303 && sItem.type != 5304 && sItem.type != 5364) || noBuilding || !IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost))
- 			return;
-+		*/
-+		var allSpongeTypes = new HashSet<int>();
-+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
-+			allSpongeTypes.UnionWith(LiquidID.Sets.CanBeAbsorbedBy[i]);
-+		}
-+
-+		if (noBuilding || !IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost) ||
-+			((sItem.type < 205 || sItem.type > 207) && sItem.type != 1128 && sItem.type != 3031 && sItem.type != 3032 && sItem.type != 4820 && sItem.type != 4872 && sItem.type != 5302 && sItem.type != 5303 && sItem.type != 5304 && sItem.type != 5364
-+			&& !allSpongeTypes.Contains(sItem.type)) // tML added.
-+		)
-+			return;
- 
- 		if (!Main.GamepadDisableCursorItemIcon) {
- 			cursorItemIconEnabled = true;
-@@ -38342,7 +_,10 @@
- 		if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
- 			return;
- 
-+		/*
- 		if ((sItem.type == 205 && !Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].liquidType() == 0) || (sItem.type == 3032 && Main.tile[tileTargetX, tileTargetY].shimmer()) || (sItem.type == 4872 && Main.tile[tileTargetX, tileTargetY].lava()) || (sItem.type == 5303 && Main.tile[tileTargetX, tileTargetY].honey()) || sItem.type == 5304) {
-+		*/
-+		if ((sItem.type == 205 && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1) || LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)) {
- 			int num = Main.tile[tileTargetX, tileTargetY].liquidType();
- 			int num2 = 0;
- 			for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
-@@ -38352,10 +_,16 @@
- 				}
+@@ -38476,6 +_,7 @@
  			}
+ 		}
+ 	}
++	*/
  
-+			/*
- 			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304))
- 				return;
- 
-+			*/
-+			if (Main.tile[tileTargetX, tileTargetY].liquid <= 0 || (num2 <= 100 && !ItemID.Sets.SpongeItems[sItem.type]))
-+				return;
-+			
- 			int liquidType = Main.tile[tileTargetX, tileTargetY].liquidType();
-+			/*
- 			if (sItem.type != 3032 && sItem.type != 4872 && sItem.type != 5303 && sItem.type != 5304) {
- 				if (Main.tile[tileTargetX, tileTargetY].honey() && sItem.type == 205) {
- 					sItem.stack--;
-@@ -38373,6 +_,14 @@
- 					PutItemInInventoryFromItemUsage(206);
- 				}
- 			}
-+			*/
-+
-+			// As per the entry IF, possible values of ItemID are 205, 3032, 4872, 5303, 5304. As such, this can be simplified to checking 205.
-+			// If the bucket in question is a vanilla bucket
-+			if (sItem.type == ItemID.EmptyBucket) {
-+				sItem.stack--;
-+				PutItemInInventoryFromItemUsage(LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()]);
-+			}
- 
- 			SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
- 			ApplyItemTime(sItem);
+ 	private void ItemCheck_PlayInstruments(Item sItem)
+ 	{
 @@ -38707,7 +_,9 @@
  			}
  

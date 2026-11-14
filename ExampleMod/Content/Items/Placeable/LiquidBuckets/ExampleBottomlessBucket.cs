@@ -15,6 +15,10 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExampleLiquidSponge>();
 
+			// Unlike ExampleLiquid Bucket, we can't create this item by using an empty bucket on ExampleLiquid. This is A->B only.
+			ItemID.Sets.LiquidBucketPlaceAsID[Type] = ModContent.LiquidType<ExampleLiquid>();
+			ItemID.Sets.IsBottomlessBucket[Type] = true;
+
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 1;
 		}
 
@@ -29,10 +33,6 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			Item.rare = ItemRarityID.Lime;
 			Item.value = Item.sellPrice(0, 10);
 			Item.tileBoost += 2;
-		}
-
-		public override void HoldItem(Player player) {
-			LiquidLoader.PlaceLiquidViaBucket(player, Item, ModContent.LiquidType<ExampleLiquid>(), true);
 		}
 	}
 }

@@ -18,9 +18,13 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExampleBottomlessBucket>();
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 
-			// Here is how we make buckets create this item
-			// Using the CreateLiquidBucketItem ID Set, we are able to set which liquid creates an item as well as which item it creates
-			// NOTE: a liquid can only create 1 bucket item at a time
+			// This sets what type of liquid the bucket will create when placed.
+			ItemID.Sets.LiquidBucketPlaceAsID[Type] = ModContent.LiquidType<ExampleLiquid>();
+
+			// Here is how we make buckets create this item.
+			// Unlike Example Bottomless bucket, we have A->B and B->A transforms so we need to set both sides
+			// Using the CreateLiquidBucketItem ID Set, we are able to set what a liquid replaces the empty bucket with on interaction
+			// NOTE: a liquid can only create 1 bucket item at a time.
 			LiquidID.Sets.CreateLiquidBucketItem[ModContent.LiquidType<ExampleLiquid>()] = Type;
 
 			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
@@ -36,12 +40,6 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			Item.useAnimation = 15;
 			Item.useTime = 10;
 			Item.useStyle = ItemUseStyleID.Swing;
-		}
-
-		// We use HoldItem for bucket logic, as it's the hook ran just before the bucket logic is done.
-		// This is so no other extra item logic is run inbetween this hook and when we would normally have bucket logic called
-		public override void HoldItem(Player player) {
-			LiquidLoader.PlaceLiquidViaBucket(player, Item, ModContent.LiquidType<ExampleLiquid>());
 		}
 	}
 }

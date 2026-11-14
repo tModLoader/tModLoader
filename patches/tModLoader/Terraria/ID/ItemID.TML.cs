@@ -228,8 +228,17 @@ partial class ItemID
 		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
 
 		/// <summary>
-		/// If <see langword="true"/> for sponge item type, used for making sure that the current items is not a sponge when picking up a liquid with a bucket.
+		/// Dictactes the LiquidID that the Full Bucket ItemID will place as.
+		/// Inverse of <see cref="LiquidID.Sets.CreateLiquidBucketItem"/> AND includes bottomless buckets
 		/// </summary>
-		public static bool[] SpongeItems = Factory.CreateBoolSet(false, 3032, 4872, 5303, 5304);
+		public static int[] LiquidBucketPlaceAsID = Factory.CreateIntSet(-1, WaterBucket, LiquidID.Water, BottomlessBucket, LiquidID.Water,
+			LavaBucket, LiquidID.Lava, BottomlessLavaBucket, LiquidID.Lava, HoneyBucket, LiquidID.Honey, BottomlessHoneyBucket, LiquidID.Honey,
+			BottomlessShimmerBucket, LiquidID.Shimmer);
+
+		/// <summary>
+		/// Whether or not the item counts as a bottomless bucket for purposes of <see cref="LiquidBucketPlaceAsID"/>
+		/// </summary>
+		public static bool[] IsBottomlessBucket = Factory.CreateBoolSet(false, BottomlessBucket, BottomlessLavaBucket, BottomlessHoneyBucket, BottomlessShimmerBucket);
+
 	}
 }
