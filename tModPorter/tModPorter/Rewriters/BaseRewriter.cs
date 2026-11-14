@@ -164,6 +164,9 @@ public abstract class BaseRewriter : CSharpSyntaxRewriter
 
 		isInvoke = false;
 		op = model.GetOperation(memberRefExpr);
+		if (op?.Kind == OperationKind.None && memberRefExpr.Parent is ArgumentSyntax { Parent.Parent: InvocationExpressionSyntax { Expression: IdentifierNameSyntax { Identifier.ValueText: "nameof" } } })
+			return model.GetSymbolInfo(memberRefExpr).Symbol == null;
+
 		return IsInvalidOrObsolete(op);
 	}
 
