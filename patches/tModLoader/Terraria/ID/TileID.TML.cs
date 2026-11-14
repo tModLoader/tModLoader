@@ -84,7 +84,7 @@ partial class TileID
 
 		/// <summary>
 		/// Whether or not this tile counts as a specified liquid's source for crafting purposes.
-		/// Consists of a bool array of length Liquid Type (inner) assigned to each Tile Type (outer). Generally sparsely populated 
+		/// Consists of a bool array of length Liquid Type (inner) assigned to each Tile Type (outer).
 		/// </summary>
 		public static bool[][] CountsAsLiquidSourceForCrafting;
 
@@ -229,8 +229,9 @@ partial class TileID
 		{
 			for (int type = 0; type < TileLoader.TileCount; type++) {
 				// We intentionally do NOT use Factory.CreateBoolSet for two reasons.
-				// First, that the unqualified Factory instance here is associated with TileLoader and not LiquidLoader
-				// Second is that even if we did use a LiquidID based FactorySet instance, that didn't resize in testing.
+				// First, that the unqualified Factory instance here is associated with TileLoader and not LiquidLoader.
+				// Second is that even if we did use a LiquidID based FactorySet instance inside the CountsAs set, the inner liquid sets didn't get resized during testing.
+				// As such, due to the risk and limitations present, we instead use the classical approach of a method to resize the arrays that can be invoked in LiquidLoader.
 				CountsAsLiquidSourceForCrafting[type] = new bool[LiquidLoader.LiquidCount]; 
 
 				if (type == TileID.Sinks || type == TileID.WaterFountain) {

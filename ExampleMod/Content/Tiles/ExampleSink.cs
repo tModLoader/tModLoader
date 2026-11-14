@@ -17,11 +17,10 @@ namespace ExampleMod.Content.Tiles
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][LiquidID.Lava] = true;
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][LiquidID.Honey] = true;
 			TileID.Sets.CountsAsLiquidSourceForCrafting[Type][ModContent.LiquidType<ExampleLiquid>()] = true;
-			// By using these three sets, we've registered our sink as counting as a water, lava, and honey source for crafting purposes! The future is now.
-			// Each one works individually and independently of the other two, so feel free to make your sink a source for whatever you'd like it to be!
+			// By using these three sets, we've registered our sink as counting as a water, lava, example liquid, and honey source for crafting purposes! The future is now.
+			// Feel free to make your sink a source for whatever you'd like it to be!
 
-			// ...After 10 years in the work, modded liquid are now a flavor at your local example sink!
-			// See ExampleHairDye for recipe usage example.
+			// See ExampleHairDye for ExampleLiquid recipe usage example.
 
 			Main.tileSolid[Type] = false;
 			Main.tileLavaDeath[Type] = false;

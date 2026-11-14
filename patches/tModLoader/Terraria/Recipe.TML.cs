@@ -126,9 +126,8 @@ public partial class Recipe
 
 	#region AddLiquid
 	/// <summary>
-	/// Adds a required crafting liquid with the given liquid type to this recipe. Ex: <c>recipe.AddLiquid(LiquidID.Lava)</c>
+	/// Adds a required crafting liquid with the given liquid type to this recipe. Ex: <c>recipe.AddLiquidNearby(LiquidID.Lava)</c>
 	/// </summary>
-	/// <param name="recipe"></param>
 	/// <param name="liquidID">The liquid identifier.</param>
 	/// <exception cref="T:Terraria.ModLoader.Exceptions.RecipeException">No liquid has ID " + liquidID</exception>
 	public Recipe AddLiquidNearby(int liquidID)
@@ -146,14 +145,17 @@ public partial class Recipe
 	/// </summary>
 	/// <param name="mod">The mod.</param>
 	/// <param name="liquidName">Name of the liquid.</param>
-	/// <exception cref="T:Terraria.ModLoader.Exceptions.RecipeException">The liquid " + liquidName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla tile, try using Recipe.AddLiquid(liquidID).</exception>
+	/// <exception cref="T:Terraria.ModLoader.Exceptions.RecipeException">
+	/// The liquid " + liquidName + " does not exist in mod " + mod.Name + ". If you are trying to use a vanilla liquid, try using Recipe.AddLiquidNearby(liquidID).
+	/// </exception>
 	public Recipe AddLiquidNearby(Mod mod, string liquidName)
 	{
 		if (mod == null) {
 			mod = Mod;
 		}
 		if (!ModContent.TryFind<ModLiquid>(mod.Name, liquidName, out var liquid)) {
-			throw new RecipeException($"The liquid {liquidName} does not exist in the mod {mod.Name}.\r\nIf you are trying to use a vanilla tile, try using Recipe.AddLiquid(liquidID).");
+			throw new RecipeException($"The liquid {liquidName} does not exist in the mod {mod.Name}." +
+				$"\r\nIf you are trying to use a vanilla liquid, try using Recipe.AddLiquidNearby(liquidID).");
 		}
 		return AddLiquidNearby(liquid.Type);
 	}
