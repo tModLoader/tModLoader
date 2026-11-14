@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Muéstranos tu apoyo: ",
@@ -844,6 +844,7 @@
 		"NearLava": "Necesita lava",
 		"NearHoney": "Necesita miel",
 		"NearShimmer": "Necesita fulgor",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "Debe crearse de día",
 		"TimeNight": "Debe crearse de noche",

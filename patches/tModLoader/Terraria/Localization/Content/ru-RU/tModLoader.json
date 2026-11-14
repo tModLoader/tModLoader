@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "Пожалуйста, проявите поддержку: ",
@@ -844,6 +844,7 @@
 		"NearLava": "Нужна лава",
 		"NearHoney": "Нужен мёд",
 		"NearShimmer": "Рядом с мерцанием",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "Только днём",
 		"TimeNight": "Только ночью",

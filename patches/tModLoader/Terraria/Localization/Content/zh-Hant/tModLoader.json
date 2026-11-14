@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "歡迎表示您的支持：",
@@ -119,15 +119,25 @@
 		"ModsShowAllMods": "顯示全部模組",
 		"ModsShowEnabledMods": "只顯示已啟用的模組",
 		"ModsShowDisabledMods": "只顯示已停用的模組",
+		// "ModsShowAllLibraryTypes": "Show all mods",
+		// "ModsShowLibraryMods": "Show only library mods",
+		// "ModsShowNonLibraryMods": "Show only non-library mods",
 		"ModsXModsFilteredByEnabled": "{0}個模組 因「是否已啟用」而隱藏",
 		"ModsXModsFilteredByModSide": "{0}個模組 因「啟用規則」而隱藏",
 		"ModsXModsFilteredBySearch": "{0}個模組 因「搜尋規則」而隱藏",
+		// "ModsXModsFilteredByModLibrary": "{0} {^0:mod;mods} filtered by library mod filter.",
 		"ModsXItems": "{0}個物品",
 		"ModsXNPCs": "{0}個生物",
 		"ModsXTiles": "{0}個方塊",
 		"ModsXWalls": "{0}個牆壁",
 		"ModsXBuffs": "{0}個 Buff",
 		"ModsXMounts": "{0}個坐騎",
+		// "ModDownloadedFromInternet": "Downloaded From Internet",
+		// "ModDownloadedFromInternetWarning": "This mod was downloaded from the internet.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.",
+		// "ModDownloadedFromInternetTrustFile": "Trust file",
+		// "ModDownloadedFromInternetDoNotTrustFile": "Do not trust file",
+		// "ModDownloadedFromInternetTooltip": "This file was downloaded from the internet, this is extremely risky.\n{0}",
+		// "ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0} was downloaded from the internet (from {1}) and has not been trusted.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nThis mod can be trusted from the mods menu.",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "重新載入模組並回到地圖選擇頁面",
@@ -834,6 +844,7 @@
 		"NearLava": "需要位於岩漿附近",
 		"NearHoney": "需要位於蜂蜜附近",
 		"NearShimmer": "需要位於微光附近",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "需要在白天",
 		"TimeNight": "需要在夜晚",
