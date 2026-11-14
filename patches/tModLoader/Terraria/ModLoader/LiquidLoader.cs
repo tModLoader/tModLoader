@@ -65,6 +65,8 @@ public static class LiquidLoader
 
 		TileID.Sets.ApplyResizeTileLiquidSourceForCraftingSet();
 
+		ModLoader.BuildGlobalHook(ref HookModifyLight, globalLiquids, (GlobalLiquid g) => g.ModifyLight);
+
 		if (!unloading) {
 			loaded = true;
 		}
@@ -76,5 +78,15 @@ public static class LiquidLoader
 		liquids.Clear();
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
+	}
+
+	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
+	private static DelegateModifyLight[] HookModifyLight;
+	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
+		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+		foreach (var hook in HookModifyLight) {
+			hook(i, j, type, ref r, ref g, ref b);
+		}
 	}
 }
