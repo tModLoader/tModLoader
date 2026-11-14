@@ -22,10 +22,14 @@ public class CoinsRule : IItemDropRule
 		double scale = 1f;
 		if (withRandomBonus) {
 			scale += info.rng.Next(-20, 21) * .01f;
-			if (info.rng.Next(5) == 0) scale += info.rng.Next(5, 11) * .01f;
-			if (info.rng.Next(10) == 0) scale += info.rng.Next(10, 21) * .01f;
-			if (info.rng.Next(15) == 0) scale += info.rng.Next(15, 31) * .01f;
-			if (info.rng.Next(20) == 0) scale += info.rng.Next(20, 41) * .01f;
+			if (info.rng.Next(5) == 0)
+				scale += info.rng.Next(5, 11) * .01f;
+			if (info.rng.Next(10) == 0)
+				scale += info.rng.Next(10, 21) * .01f;
+			if (info.rng.Next(15) == 0)
+				scale += info.rng.Next(15, 31) * .01f;
+			if (info.rng.Next(20) == 0)
+				scale += info.rng.Next(20, 41) * .01f;
 		}
 
 		long money = (long)(value * scale);
@@ -46,10 +50,14 @@ public class CoinsRule : IItemDropRule
 		money /= 100;
 		int plat = (int)money;
 
-		if (copper > 0) yield return (ItemID.CopperCoin, copper);
-		if (silver > 0) yield return (ItemID.SilverCoin, silver);
-		if (gold > 0) yield return (ItemID.GoldCoin, gold);
-		if (plat > 0) yield return (ItemID.PlatinumCoin, plat);
+		if (copper > 0)
+			yield return (ItemID.CopperCoin, copper);
+		if (silver > 0)
+			yield return (ItemID.SilverCoin, silver);
+		if (gold > 0)
+			yield return (ItemID.GoldCoin, gold);
+		if (plat > 0)
+			yield return (ItemID.PlatinumCoin, plat);
 	}
 
 	public void ReportDroprates(List<DropRateInfo> drops, DropRateInfoChainFeed ratesInfo)

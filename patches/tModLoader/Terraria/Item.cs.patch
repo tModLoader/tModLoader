@@ -820,6 +820,17 @@
  	public ItemVariant Variant { get; private set; }
  
  	public bool IsACoin {
+@@ -226,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Indicates if the item is air (stack or type is 0).
++	/// <para/> This should be checked before acting on an item to ensure that the item actually exists. Some operations might leave type assigned to a valid item ID but stack at 0, so it is important to check this instead of just checking stack or type individually.
++	/// </summary>
+ 	public bool IsAir {
+ 		get {
+ 			if (type > 0)
 @@ -275,12 +_,27 @@
  		return text;
  	}
@@ -1817,7 +1828,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,47 @@
+@@ -48311,24 +_,46 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1849,7 +1860,6 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
-+		ArmorPenetration = 0;
 +
 +		_nameOverride = null; // Added by TML.
  		sentry = false;

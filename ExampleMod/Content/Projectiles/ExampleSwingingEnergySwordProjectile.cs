@@ -37,8 +37,8 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ownerHitCheck = true; // A line of sight check so the projectile can't deal damage through tiles.
 			Projectile.ownerHitCheckDistance = 300f; // The maximum range that the projectile can hit a target. 300 pixels is 18.75 tiles.
 			Projectile.usesOwnerMeleeHitCD = true; // This will make the projectile apply the standard number of immunity frames as normal melee attacks.
-			// Normally, projectiles die after they have hit all the enemies they can.
-			// But, for this case, we want the projectile to continue to live so we can have the visuals of the swing.
+												   // Normally, projectiles die after they have hit all the enemies they can.
+												   // But, for this case, we want the projectile to continue to live so we can have the visuals of the swing.
 			Projectile.stopsDealingDamageAfterPenetrateHits = true;
 
 			// We will be using custom AI for this projectile. The original Excalibur uses aiStyle 190.

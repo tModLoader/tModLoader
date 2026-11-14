@@ -1770,12 +1770,12 @@
  							return 1106;
  					}
  				}
-+				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
 +				/*
  				if (Main.rand.Next(2) == 0)
  					return Main.rand.Next(11, 15);
  				return Main.rand.Next(699, 703);
 +				*/
++				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
  			default:
  				num = Main.rand.Next(3);
  				if (WorldGen.Skyblock.lowTiles && Main.rand.Next(5) != 0)
@@ -2728,7 +2728,7 @@
  		int num = -1;
  		for (int i = 0; i < maxBuffs; i++) {
  			if (buffType[i] == type) {
-+				if (BuffLoader.ReApply(type, this, time, i)) // TODO: Adjust this for proper syncing
++				if (BuffLoader.ReApply(type, this, time, i))
 +					return;
 +
  				if (buffTime[i] >= time)

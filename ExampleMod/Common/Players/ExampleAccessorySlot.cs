@@ -71,6 +71,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool IsEnabled() {
+			// GetEffectiveArmor includes helmets shared from another loadout, even when Player.armor[0] is empty.
 			if (Player.GetEffectiveArmor(0).headSlot >= 0) // if player is wearing a helmet, because flight safety
 				return true; // Then can use Slot
 

@@ -84,6 +84,9 @@ public static partial class NPCShopDatabase
 	{
 		foreach (var shop in AllShops) {
 			shop.FinishSetup();
+
+			// NPCShopDatabase.Initialize(); seems intentionally run before SetupRecipes, where IsAMaterial is populated, so we need to fix entries here.
+			shop.RefreshItems(onlyIfVariantChanged: false);
 		}
 
 		InitShopTestSystem();
@@ -203,6 +206,7 @@ public static partial class NPCShopDatabase
 
 		var mushroomPylonCondition = new Condition("Conditions.InGlowshroom", () => Main.LocalPlayer.ZoneGlowshroom && (!Main.remixWorld || !Main.LocalPlayer.ZoneUnderworldHeight));
 
+#pragma warning disable format // All "incorrect" whitespace below this point is intentional.
 		yield return new Entry(ItemID.TeleportationPylonPurity,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, forestPylonCondition).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonSnow,          Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InSnow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonDesert,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InDesert).OrderLast();
@@ -213,7 +217,6 @@ public static partial class NPCShopDatabase
 		yield return new Entry(ItemID.TeleportationPylonHallow,        Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, Condition.InHallow).OrderLast();
 		yield return new Entry(ItemID.TeleportationPylonMushroom,      Condition.AnotherTownNPCNearby, Condition.NotInEvilBiome, mushroomPylonCondition).OrderLast();
 		// Aether Pylon is not sold, it is obtained by shimmer transmuted any other pylon.
-
 
 		foreach (ModPylon pylon in PylonLoader.modPylons) {
 			if (pylon.GetNPCShopEntry() is { } entry)
@@ -963,7 +966,6 @@ public static partial class NPCShopDatabase
 		AddEntry(ItemID.MonkAltHead,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Helmet
 		AddEntry(ItemID.MonkAltShirt,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Torso
 		AddEntry(ItemID.MonkAltPants,				50, Condition.Hardmode, Condition.DownedGolem);         // Shinobi Infiltrator's Pants
-
 		shop.Register();
 	}
 
@@ -1015,7 +1017,7 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.GolfPainting1,				scoreOver2000, Condition.MoonPhasesQuarter0)				// The Rolling Greens
 			.Add(ItemID.GolfPainting2,				scoreOver2000, Condition.MoonPhasesQuarter1)				// Study of a Ball at Rest
 			.Add(ItemID.GolfPainting3,				scoreOver2000, Condition.MoonPhasesQuarter2)				// Fore!
-			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.MoonPhasesQuarter3)				// The Duplicity of Reflections
+			.Add(ItemID.GolfPainting4,				scoreOver2000, Condition.MoonPhasesQuarter3)                // The Duplicity of Reflections
 			.Register();
 	}
 
@@ -1061,7 +1063,8 @@ public static partial class NPCShopDatabase
 			.Add(ItemID.BunnyEars,					Condition.MoonPhasesQuarter3)
 			.Add(ItemID.BunnyTail,					Condition.MoonPhasesQuarter3)
 			.Add(ItemID.Torch,						Condition.VampireSeed, Condition.NotInfectedSeed)
-			.Register();
+#pragma warning restore format
+            .Register();
 	}
 
 	private static void RegisterPrincess()

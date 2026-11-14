@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent.Liquid;
@@ -16,6 +16,11 @@ public abstract class ModLiquid : ModBlockType
 
 	/// <summary> The slope texture of this liquid. Used for rendering the liquids next to tile slopes. </summary>
 	public virtual string SlopeTexture => Texture + "_Slope";
+
+	/// <summary>
+	/// A display name for the liquid. May be used as a default impl for recipe conditions, map names and other mod features.
+	/// </summary>
+	public virtual LocalizedText DisplayName => this.GetLocalization(nameof(DisplayName), PrettyPrintName);
 
 	protected sealed override void Register()
 	{

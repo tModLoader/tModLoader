@@ -91,6 +91,15 @@
  		Invariant.Assert(option >= 0, "MapHelper.TileToLookup passed a bad option: {0}", option);
  		Invariant.Assert(option < tileOptionCounts[tileType], "MapHelper.TileToLookup passed an option for tileType {0} that does not exist: {1}", tileType, option);
  		return tileLookup[tileType] + option;
+@@ -1809,7 +_,7 @@
+ 		return oldColor;
+ 	}
+ 
+-	public static bool IsBackground(int mapType) => mapType >= skyPosition;
++	public static bool IsBackground(int mapType) => mapType >= skyPosition && mapType < modPosition;
+ 
+ 	public static MapTile CreateMapTile(int i, int j, byte Light, int backgroundOverride = 0)
+ 	{
 @@ -1828,10 +_,16 @@
  		if (baseType == 0) {
  			newColor = 0;

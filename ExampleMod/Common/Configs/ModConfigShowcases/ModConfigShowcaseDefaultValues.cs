@@ -13,6 +13,7 @@ using Terraria.ModLoader.Config;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(164, 153, 190)]
+	[SortConfig(after: true, nameof(ModConfigShowcaseLabels))]
 	public class ModConfigShowcaseDefaultValues : ModConfig
 	{
 		// There are 2 approaches to default values. One is applicable only to value types (int, bool, float, string, structs, etc) and the other to reference types (classes, collections/data structures).

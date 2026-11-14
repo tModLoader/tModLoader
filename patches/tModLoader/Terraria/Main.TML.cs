@@ -261,7 +261,8 @@ public partial class Main
 		}
 	}
 
-	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex) {
+	public static void BuilderTogglePageHandler(int startY, int activeToggles, out bool moveDownForButton, out int startIndex, out int endIndex)
+	{
 		startIndex = 0;
 		endIndex = activeToggles;
 		moveDownForButton = false;
@@ -340,6 +341,7 @@ public partial class Main
 
 	private void DrawBuilderAccToggles_Inner(Vector2 start)
 	{
+		int state = -1; // Which toggle is being hovered over
 		Player player = Main.player[myPlayer];
 		int[] builderAccStatus = player.builderAccStatus;
 		List<BuilderToggle> activeToggles = BuilderToggleLoader.ActiveBuilderTogglesList();
@@ -394,6 +396,7 @@ public partial class Main
 			if (hover) {
 				player.mouseInterface = true;
 				mouseText = true;
+				state = i;
 
 				Texture2D iconHover = ModContent.Request<Texture2D>(builderToggle.HoverTexture).Value;
 				Rectangle hoverRectangle = new Rectangle(0, 0, iconHover.Width, iconHover.Height);
@@ -428,7 +431,7 @@ public partial class Main
 			}
 
 
-			UILinkPointNavigator.SetPosition(6000 + i % 12, position + rectangle.Size() * 0.15f);
+			UILinkPointNavigator.SetPosition(6000 + i % 12, position + drawParams.Frame.Size() * 0.15f);
 
 			if (mouseText && hover && HoverItem.type <= 0) {
 				float colorByte = (float)mouseTextColor / 255f;
@@ -439,6 +442,7 @@ public partial class Main
 			}
 		}
 
+		DoStatefulTickSound(ref toggleAccMouseOver, state);
 		UILinkPointNavigator.Shortcuts.BUILDERACCCOUNT = (endIndex - startIndex);
 	}
 
@@ -541,7 +545,8 @@ public partial class Main
 	private static PosixSignalRegistration SIGTERMHandler;
 	public static void AddSignalTraps()
 	{
-		static void Handle(PosixSignalContext ctx) {
+		static void Handle(PosixSignalContext ctx)
+		{
 			ctx.Cancel = true;
 			Logging.tML.Info($"Signal {ctx.Signal}, Closing Server...");
 			Netplay.Disconnect = true;
@@ -620,7 +625,7 @@ public partial class Main
 			}
 		}
 
-		if(ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
+		if (ConfigManager.AnyModNeedsReloadCheckOnly(out List<Mod> modsWithChangedConfigs)) {
 			needsReload = true;
 			foreach (var mod in modsWithChangedConfigs) {
 				var localMod = normalModsToLoad.First(localMod => localMod.Name == mod.Name);
@@ -657,5 +662,5 @@ public partial class Main
 	/// <see langword="null"/> if referenced before FilterManager.EndCapture or if the screen was not captured this frame. <para/>
 	/// Use <see cref="ModSystem.RequiresScreenTarget"/> to force this target to be populated.
 	/// </summary>
-	[CanBeNull]	public static RenderTarget2D finalScreenTarget;
+	[CanBeNull] public static RenderTarget2D finalScreenTarget;
 }

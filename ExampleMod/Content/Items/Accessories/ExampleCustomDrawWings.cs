@@ -78,7 +78,7 @@ namespace ExampleMod.Content.Items.Accessories
 			drawInfo.DrawDataCache.Add(drawData);
 			for (int i = 0; i < 2; i++) {
 				// Draw the glow mask twice, giving it a flame flicker effect.
-				drawInfo.DrawDataCache.Add(drawData with { color = Color.White, texture = glowTexture.Value, position = drawPosition + Main.rand.NextVector2Circular(1.25f, 1.25f)});
+				drawInfo.DrawDataCache.Add(drawData with { color = Color.White, texture = glowTexture.Value, position = drawPosition + Main.rand.NextVector2Circular(1.25f, 1.25f) });
 			}
 
 			// Return false to stop drawData from being added to DrawDataCache, since we already did that above.

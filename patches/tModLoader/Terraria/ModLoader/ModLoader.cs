@@ -204,7 +204,7 @@ public static class ModLoader
 				msg += "\n" + Language.GetTextValue("tModLoader.LoadErrorContentType", contentType.FullName);
 
 			foreach (var mod in responsibleMods) {
-				foreach(string modAndDependent in CollectEnabledDependents(availableMods, mod)) {
+				foreach (string modAndDependent in CollectEnabledDependents(availableMods, mod)) {
 					ModLoader.DisableMod(modAndDependent);
 				}
 			}
@@ -226,7 +226,8 @@ public static class ModLoader
 
 	internal static void CollectEnabledDependents(LocalMod[] modFiles, string name, ISet<string> result) // Note: Recursive
 	{
-		if (!result.Add(name)) return;
+		if (!result.Add(name))
+			return;
 		var dependents = modFiles
 			.Where(m => ModLoader.IsEnabled(m.Name) &&
 					m.properties.RefNames(includeWeak: false).Any(refName => refName.Equals(name)))
@@ -330,7 +331,7 @@ public static class ModLoader
 		}
 		else {
 			string HelpLink = e.HelpLink;
-			if(HelpLink == null && e is MultipleException multipleException)
+			if (HelpLink == null && e is MultipleException multipleException)
 				HelpLink = multipleException.InnerExceptions.Where(x => x.HelpLink != null).Select(x => x.HelpLink).FirstOrDefault();
 			Interface.errorMessage.Show(msg,
 				gotoMenu: fatal ? -1 : Interface.reloadModsID,
@@ -481,7 +482,7 @@ public static class ModLoader
 			ShowWhatsNew = true;
 			// TODO: Start retrieving what's new data from github here.
 		}
-		if(BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != LastLaunchedTModLoaderAlphaSha) {
+		if (BuildInfo.IsDev && BuildInfo.stableVersion != new Version(0, 0) && BuildInfo.CommitSHA != LastLaunchedTModLoaderAlphaSha) {
 			// For official dev builds from the CI, the only difference is BuildInfo.stableVersion being set.
 			ShowWhatsNew = true;
 		}
