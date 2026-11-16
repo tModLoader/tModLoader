@@ -335,9 +335,10 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
-	/// <br/> The projectile's damage will be the sum of weapon and ammo damage. To scale the total, modify both <paramref name="weaponDamage"/> and <paramref name="ammoDamage"/>.
+	/// <para/> The projectile's damage will be the sum of weapon and ammo damage. To scale the total, modify both <paramref name="weaponDamage"/> and <paramref name="ammoDamage"/>.
 	/// <br/> <see cref="StatModifier.Flat"/> and <see cref="StatModifier.Base"/> damage bonuses from the player should be applied to one or the other, not both.
-	/// <br/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
+	/// <br/> For example, weapons shooting <see cref="ProjectileID.NanoBullet"/> multiplicatively increase both (<c>weaponDamage *= 1.25f; ammoDamage *= 1.25f</c>), while weapons shooting <see cref="ProjectileID.SandBallGun"/> and some arrow accessories add to <paramref name="ammoDamage"/>.Base (<c>ammoDamage.Base += 2</c>).
+	/// <para/> Called on local and remote clients when a player is picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using the given ammo.</param>
 	/// <param name="ammo">The ammo item being used by the given weapon.</param>
