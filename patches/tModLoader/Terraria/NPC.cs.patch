@@ -1168,23 +1168,16 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -15196,14 +_,87 @@
+@@ -15196,14 +_,80 @@
  			knockBackResist = 0.5f;
  			rarity = 1;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.
 +		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToWhipTags[type]) {
-+			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
-+			if (NPCID.Sets.ImmuneToRegularBuffs[type]) {
-+				for (int i = 0; i < buffImmune.Length; i++) {
-+					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
-+				}
-+			}
-+
-+			if (NPCID.Sets.ImmuneToWhipTags[type]) {
-+				for (int i = 0; i < buffImmune.Length; i++) {
-+					buffImmune[i] = BuffID.Sets.IsATagBuff[i];
-+				}
++			for (int i = 0; i < buffImmune.Length; i++) {
++				buffImmune[i] = BuffID.Sets.IsATagBuff[i]
++					? NPCID.Sets.ImmuneToWhipTags[type]
++					: NPCID.Sets.ImmuneToRegularBuffs[type];
 +			}
 +
 +			// If immune to most buffs...
