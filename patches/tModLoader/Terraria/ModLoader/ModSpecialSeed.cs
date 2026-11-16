@@ -19,14 +19,12 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModSpecialSeed : ModSeedType
 {
-	private ModSpecialSeedUIOption _uIOption;
-
 	/// <summary>
 	/// The underlying data used to create and manage the option button for this seed in the menu.
 	/// <br/><br/>Note that UIOption.Enabled only states if the button is enabled in the menu.
 	/// Do NOT use it to check if a seed is enabled in a world. For that, use <see cref="SeedLoader.SeedEnabled"/> instead.
 	/// </summary>
-	public AWorldGenerationOption UIOption => _uIOption;
+	public ModSpecialSeedUIOption UIOption { get; private set; }
 
 	/// <summary>
 	/// The name that references this seed in config files for dedicated servers.
@@ -56,13 +54,13 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// Whether this seed should be marked as a dependency of the Zenith (also known as Everything) seed.
 	/// </summary>
 	public bool IncludeInZenith {
-		get => WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Contains(_uIOption);
+		get => WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Contains(UIOption);
 		set {
 			if (value && !WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Contains(UIOption)) {
-				WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Add(_uIOption);
+				WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Add(UIOption);
 			}
 			if (!value && WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Contains(UIOption)) {
-				WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Remove(_uIOption);
+				WorldGenerationOptions.Get<WorldSeedOption_Everything>().Dependencies.Remove(UIOption);
 			}
 		}
 	}
@@ -98,22 +96,19 @@ public abstract class ModSpecialSeed : ModSeedType
 		SetupWorldGenerationOption();
 		SetStaticDefaults();
 		if (string.IsNullOrEmpty(ServerConfigName)) {
-			if(_uIOption.SpecialSeedNames.Length > 0) {
-				ServerConfigName = _uIOption.SpecialSeedNames[0];
-			}
-			else {
+			if(UIOption.SpecialSeedNames.Length <= 0) {
 				throw new Exception($"Special seed {FullName} did not have any SpecialSeedNames nor a dedicated ServerConfigName specified.");
 			}
+			ServerConfigName = UIOption.SpecialSeedNames[0];
 		}
-		_uIOption.CustomServerConfigName = Regex.Replace(ServerConfigName.ToLower(), "[^a-z0-9]+", "");
-		_uIOption.ToggleOnClick = ToggleOnClick;
+		UIOption.CustomServerConfigName = Regex.Replace(ServerConfigName.ToLower(), "[^a-z0-9]+", "");
 	}
 
 	internal void Unsubscribe()
 	{
-		_uIOption.OnUIButtonPress -= OnUIButtonPress;
-		_uIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
-		_uIOption.Unsubscribe();
+		UIOption.OnUIButtonPress -= OnUIButtonPress;
+		UIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
+		UIOption.Unsubscribe();
 	}
 
 	internal void FinalizeContent()
@@ -122,7 +117,7 @@ public abstract class ModSpecialSeed : ModSeedType
 		List<AWorldGenerationOption> incompatibilities = GetIncompatibilities().ToList();
 		int sharedIndex = dependencies.FindIndex((dependent) => incompatibilities.Contains(dependent));
 		if (sharedIndex != -1) {
-			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.Parent.FullName : "")}) that is both a dependency and an incompatibility.");
+			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.ModSpecialSeed.FullName : "")}) that is both a dependency and an incompatibility.");
 		}
 		Dependencies = dependencies;
 		Incompatibilities = incompatibilities;
@@ -135,9 +130,10 @@ public abstract class ModSpecialSeed : ModSeedType
 
 	private void SetupWorldGenerationOption()
 	{
-		_uIOption = new ModSpecialSeedUIOption(SpecialSeedNames(), SpecialSeedNumbers(), this, Description, DisplayName, textureAsset);
-		_uIOption.OnUIButtonPress += OnUIButtonPress;
-		_uIOption.OnAnyOptionStateChange += OnAnyOptionStateChange;
+		UIOption = new ModSpecialSeedUIOption(SpecialSeedNames(), SpecialSeedNumbers(), Description, DisplayName, textureAsset);
+		UIOption.OnUIButtonPress += OnUIButtonPress;
+		UIOption.OnAnyOptionStateChange += OnAnyOptionStateChange;
+		UIOption.ModSpecialSeed = this;
 	}
 
 	private void OnUIButtonPress(object sender, EventArgs e)
@@ -281,7 +277,7 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// This hook allows you to sort this special seed before/after other modded seeds that were placed between the same two vanilla seeds.<br/>
 	/// Example:
 	/// <para>
-	/// <c>yield return new After(ModContent.GetInstance&lt;ExampleSpecialSeed&gt;().UIOption);</c>
+	/// <c>yield return new After(ModContent.GetInstance&lt;ExampleSpecialSeed&gt;());</c>
 	/// </para>
 	/// By default, this hook returns <see langword="null"/>, which indicates that this special seed has no modded ordering constraints.
 	/// </summary>
@@ -304,6 +300,11 @@ public abstract class ModSpecialSeed : ModSeedType
 		{
 			Option = option;
 		}
+
+		public Before(ModSpecialSeed seed)
+		{
+			Option = seed.UIOption;
+		}
 	}
 
 	public sealed class After : Position
@@ -313,6 +314,11 @@ public abstract class ModSpecialSeed : ModSeedType
 		public After(AWorldGenerationOption option)
 		{
 			Option = option;
+		}
+
+		public After(ModSpecialSeed seed)
+		{
+			Option = seed.UIOption;
 		}
 	}
 	#endregion

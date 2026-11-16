@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using Terraria.GameContent;
@@ -62,5 +63,8 @@ public abstract class ModSecretSeed : ModSeedType
 		SecretSeed = new WorldGen.SecretSeed(Description, SoundID.MenuAccept, "");
 		SecretSeed.ModSecretSeed = this;
 		SetStaticDefaults();
+		if (string.IsNullOrWhiteSpace(SeedCode)) {
+			throw new NullReferenceException($"Secret seed {FullName}'s seed code cannot be null or empty.");
+		}
 	}
 }

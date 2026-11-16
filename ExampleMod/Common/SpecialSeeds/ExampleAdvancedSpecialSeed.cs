@@ -24,7 +24,7 @@ public class ExampleAdvancedSpecialSeed : ModSpecialSeed
 	}
 
 	public override IEnumerable<Position> GetModdedConstraints() {
-		yield return new After(ModContent.GetInstance<ExampleSpecialSeed>().UIOption);
+		yield return new After(ModContent.GetInstance<ExampleSpecialSeed>());
 	}
 
 	public override IEnumerable<string> SpecialSeedNames()

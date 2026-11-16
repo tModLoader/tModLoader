@@ -1,0 +1,11 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/WorldSeedOption_Everything.cs
++++ src/tModLoader/Terraria/WorldBuilding/WorldSeedOption_Everything.cs
+@@ -31,6 +_,8 @@
+ 		}
+ 	}
+ 
++	internal void ResetDependencies() => _dependencies = null; // Added by TML to remove unloaded dependencies
++
+ 	public WorldSeedOption_Everything()
+ 	{
+ 		base.SpecialSeedNames = new string[1] {

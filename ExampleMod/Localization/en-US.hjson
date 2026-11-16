@@ -1760,6 +1760,7 @@ Mods: {
 			{0}
 			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
 			'''
+		Liquids.ExampleLiquid.DisplayName: Example Liquid
 	}
 }
 

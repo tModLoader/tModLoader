@@ -10,7 +10,7 @@ using Terraria.WorldBuilding;
 
 namespace Terraria.ModLoader;
 
-internal class ModSpecialSeedUIOption : AWorldGenerationOption
+public class ModSpecialSeedUIOption : AWorldGenerationOption
 {
 	protected override string KeyName { get; } // Used by vanilla seeds to find and load localization and texture data.
 	public override string ServerConfigName => CustomServerConfigName;
@@ -19,12 +19,9 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 	public event EventHandler OnUIButtonPress;
 	public event Action<AWorldGenerationOption> OnAnyOptionStateChange;
 
-	public ModSpecialSeed Parent { get; }
+	public bool ToggleOnClick => ModSpecialSeed?.ToggleOnClick ?? true;
 
-	public ref bool ToggleOnClick => ref _toggleOnClick;
-	private bool _toggleOnClick = true;
-
-	public ModSpecialSeedUIOption(IEnumerable<string> specialSeedNames, IEnumerable<int> specialSeedNumbers, ModSpecialSeed parent, LocalizedText description, LocalizedText title, Asset<Texture2D> texture)
+	public ModSpecialSeedUIOption(IEnumerable<string> specialSeedNames, IEnumerable<int> specialSeedNumbers, LocalizedText description, LocalizedText title, Asset<Texture2D> texture)
 	{
 		SpecialSeedNames = specialSeedNames.ToArray();
 		for (int i = 0; i < SpecialSeedNames.Length; i++) {
@@ -34,7 +31,6 @@ internal class ModSpecialSeedUIOption : AWorldGenerationOption
 		Description = description;
 		Title = title;
 		Texture = texture;
-		Parent = parent;
 		OnOptionStateChanged += UpdateOptionState;
 	}
 

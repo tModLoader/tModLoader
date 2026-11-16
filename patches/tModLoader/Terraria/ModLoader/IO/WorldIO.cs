@@ -565,26 +565,20 @@ internal static class WorldIO
 		foreach (ModSeedType seed in SeedLoader.allSeeds) {
 			if (!seed.Enabled)
 				continue;
-			list.Add(new TagCompound() {
+			TagCompound tag = new TagCompound() {
 				["mod"] = seed.Mod.Name,
 				["name"] = seed.Name
-			});
-		}
-		foreach ((string mod, string name) unloadedSeed in UnloadedSeeds) {
-			list.Add(new TagCompound() {
-				["mod"] = unloadedSeed.mod,
-				["name"] = unloadedSeed.name
-			});
+			};
+			if (seed is ModSpecialSeed)
+				tag["special"] = true;
+			list.Add(tag);
 		}
 
 		return list;
 	}
 
-	private static List<(string mod, string name)> UnloadedSeeds = new List<(string mod, string name)>();
-
 	internal static void LoadModSeeds(IList<TagCompound> list)
 	{
-		UnloadedSeeds.Clear();
 		foreach (var tag in list) {
 			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSecretSeed secretSeed)) {
 				secretSeed.Enabled = true;
@@ -594,7 +588,7 @@ internal static class WorldIO
 				specialSeed.Enabled = true;
 				continue;
 			}
-			UnloadedSeeds.Add((tag.GetString("mod"), tag.GetString("name")));
+			ModContent.GetInstance<UnloadedSystem>().unloadedSeeds.Add(tag);
 		}
 	}
 
@@ -788,8 +782,10 @@ internal static class WorldIO
 			if(seed.Enabled)
 				list.Add(seed.FullName);
 		}
-		foreach ((string mod, string name) unloadedSeed in UnloadedSeeds) {
-			list.Add($"{unloadedSeed.mod}/{unloadedSeed.name}");
+		foreach (TagCompound unloadedSeed in ModContent.GetInstance<UnloadedSystem>().unloadedSeeds) {
+			if (!unloadedSeed.GetBool("special"))
+				continue;
+			list.Add($"{unloadedSeed["mod"]}/{unloadedSeed["name"]}");
 		}
 
 		return list;
