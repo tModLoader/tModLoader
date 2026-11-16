@@ -46,6 +46,7 @@ internal static class WorldIO
 			["anglerQuest"] = SaveAnglerQuest(),
 			["townManager"] = SaveTownManager(),
 			["modData"] = SaveModData(),
+			["modSeeds"] = SaveModSeeds(),
 			["alteredVanillaFields"] = SaveAlteredVanillaFields()
 		};
 
@@ -102,6 +103,7 @@ internal static class WorldIO
 			customDataFail = e;
 			throw;
 		}
+		LoadModSeeds(tag.GetList<TagCompound>("modSeeds"));
 		LoadAlteredVanillaFields(tag.GetCompound("alteredVanillaFields"));
 
 		if (Main.ActiveWorldFileData.ModSaveErrors.Any()) {
@@ -557,6 +559,39 @@ internal static class WorldIO
 		}
 	}
 
+	internal static List<TagCompound> SaveModSeeds()
+	{
+		var list = new List<TagCompound>();
+		foreach (ModSeedType seed in SeedLoader.allSeeds) {
+			if (!seed.Enabled)
+				continue;
+			TagCompound tag = new TagCompound() {
+				["mod"] = seed.Mod.Name,
+				["name"] = seed.Name
+			};
+			if (seed is ModSpecialSeed)
+				tag["special"] = true;
+			list.Add(tag);
+		}
+
+		return list;
+	}
+
+	internal static void LoadModSeeds(IList<TagCompound> list)
+	{
+		foreach (var tag in list) {
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSecretSeed secretSeed)) {
+				secretSeed.Enabled = true;
+				continue;
+			}
+			if (ModContent.TryFind(tag.GetString("mod"), tag.GetString("name"), out ModSpecialSeed specialSeed)) {
+				specialSeed.Enabled = true;
+				continue;
+			}
+			ModContent.GetInstance<UnloadedSystem>().unloadedSeeds.Add(tag);
+		}
+	}
+
 	internal static TagCompound SaveAlteredVanillaFields()
 	{
 		return new TagCompound {
@@ -573,14 +608,40 @@ internal static class WorldIO
 		Sandstorm.TimeLeft = compound.GetDouble("timeSandstorm");
 	}
 
+	public static void SendModSeeds(BinaryWriter writer)
+	{
+		if (SeedLoader.allSeeds.Count == 0) {
+			return;
+		}
+
+		BitWriter seedWriter = new BitWriter();
+		for (int i = 0; i < SeedLoader.allSeeds.Count; i++) {
+			seedWriter.WriteBit(SeedLoader.allSeeds[i].Enabled);
+		}
+		seedWriter.Flush(writer);
+	}
+
+	public static void ReceiveModSeeds(BinaryReader reader)
+	{
+		if (SeedLoader.allSeeds.Count == 0) {
+			return;
+		}
+		BitReader seedReader = new BitReader(reader);
+		for (int i = 0; i < SeedLoader.allSeeds.Count; i++) {
+			SeedLoader.allSeeds[i].Enabled = seedReader.ReadBit();
+		}
+	}
+
 	public static void SendModData(BinaryWriter writer)
 	{
+		SendModSeeds(writer);
 		foreach (var system in SystemLoader.HookNetSend.Enumerate())
 			writer.SafeWrite(w => system.NetSend(w));
 	}
 
 	public static void ReceiveModData(BinaryReader reader)
 	{
+		ReceiveModSeeds(reader);
 		foreach (var system in SystemLoader.HookNetReceive.Enumerate()) {
 			try {
 				reader.SafeRead(r => system.NetReceive(r));
@@ -672,6 +733,7 @@ internal static class WorldIO
 	{
 		return new TagCompound {
 			["modHeaders"] = SaveModHeaders(),
+			["modSpecialSeeds"] = SaveModSeedHeaders(),
 			["usedMods"] = SaveUsedMods(),
 			["usedModPack"] = SaveUsedModPack(),
 			["generatedWithMods"] = SaveGeneratedWithMods(),
@@ -713,6 +775,22 @@ internal static class WorldIO
 		return modHeaders;
 	}
 
+	private static List<string> SaveModSeedHeaders()
+	{
+		List<string> list = new List<string>();
+		foreach (ModSpecialSeed seed in SeedLoader.specialSeeds) {
+			if(seed.Enabled)
+				list.Add(seed.FullName);
+		}
+		foreach (TagCompound unloadedSeed in ModContent.GetInstance<UnloadedSystem>().unloadedSeeds) {
+			if (!unloadedSeed.GetBool("special"))
+				continue;
+			list.Add($"{unloadedSeed["mod"]}/{unloadedSeed["name"]}");
+		}
+
+		return list;
+	}
+
 	internal static void ReadWorldHeader(WorldFileData data)
 	{
 		string path = Path.ChangeExtension(data.Path, ".twld");
@@ -749,6 +827,7 @@ internal static class WorldIO
 	private static void LoadWorldHeader(WorldFileData data, TagCompound tag)
 	{
 		LoadModHeaders(data, tag);
+		LoadModSeedHeader(data, tag.GetList<string>("modSpecialSeeds").ToList());
 		LoadUsedMods(data, tag.GetList<string>("usedMods"));
 		LoadUsedModPack(data, tag.GetString("usedModPack"));
 		if (tag.ContainsKey("generatedWithMods")) // GetCompound will return an empty TagCompound instead of null. null and empty TagCompound have different meaning for this data.
@@ -774,6 +853,11 @@ internal static class WorldIO
 
 			data.ModHeaders[fullname] = (TagCompound)entry.Value;
 		}
+	}
+
+	private static void LoadModSeedHeader(WorldFileData data, List<string> list)
+	{
+		data.ModSeeds = list;
 	}
 
 	internal static void LoadUsedMods(WorldFileData data, IList<string> usedMods)

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using ReLogic.OS;
+using Terraria.GameContent;
 using Terraria.GameContent.Liquid;
 using Terraria.Initializers;
 using Terraria.Localization;
@@ -284,6 +285,7 @@ public static class ModLoader
 		Interface.loadMods.SetLoadStage("tModLoader.MSUnloading", Mods.Length);
 
 		WorldGen.clearWorld();
+		SecretSeedsTracker.ResetConfig();
 		ModContent.UnloadModContent();
 
 		Mods = new Mod[0];

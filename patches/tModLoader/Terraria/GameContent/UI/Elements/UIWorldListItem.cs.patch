@@ -22,7 +22,7 @@
  {
  	private Asset<Texture2D> _dividerTexture;
  	private Asset<Texture2D> _innerPanelTexture;
-@@ -44,6 +_,9 @@
+@@ -44,10 +_,14 @@
  		_canBePlayed = canBePlayed;
  		_hasBeenPlayedByActivePlayer = hasBeenPlayedByActivePlayer;
  		_isNewlyGenerated = isNewlyGenerated;
@@ -32,6 +32,11 @@
  		LoadTextures();
  		InitializeAppearance();
  		_worldIcon = GetIconElement();
+ 		_worldIcon.OnLeftDoubleClick += PlayGame;
++		_worldIcon.OnUpdate += UpdateIconForModSeeds;
+ 		Append(_worldIcon);
+ 		if (_data.DefeatedMoonlord) {
+ 			UIImage element = new UIImage(Main.Assets.Request<Texture2D>("Images/UI/IconCompletion")) {
 @@ -115,6 +_,8 @@
  			num += 24f;
  		}

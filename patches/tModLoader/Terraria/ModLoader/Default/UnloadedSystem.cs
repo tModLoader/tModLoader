@@ -12,6 +12,7 @@ public class UnloadedSystem : ModSystem
 	internal IList<TagCompound> unloadedBestiaryKills;
 	internal IList<TagCompound> unloadedBestiarySights;
 	internal IList<TagCompound> unloadedBestiaryChats;
+	internal IList<TagCompound> unloadedSeeds;
 
 	public override void ClearWorld()
 	{
@@ -21,6 +22,7 @@ public class UnloadedSystem : ModSystem
 		unloadedBestiaryKills = new List<TagCompound>();
 		unloadedBestiarySights = new List<TagCompound>();
 		unloadedBestiaryChats = new List<TagCompound>();
+		unloadedSeeds = new List<TagCompound>();
 
 		TileIO.ClearWorld();
 	}
@@ -38,6 +40,7 @@ public class UnloadedSystem : ModSystem
 		tag["unloadedBestiaryKills"] = unloadedBestiaryKills;
 		tag["unloadedBestiarySights"] = unloadedBestiarySights;
 		tag["unloadedBestiaryChats"] = unloadedBestiaryChats;
+		tag["unloadedSeeds"] = unloadedSeeds;
 	}
 
 	public override void LoadWorldData(TagCompound tag)
@@ -48,5 +51,6 @@ public class UnloadedSystem : ModSystem
 		WorldIO.LoadNPCBestiaryKills(tag.GetList<TagCompound>("unloadedBestiaryKills"));
 		WorldIO.LoadNPCBestiarySights(tag.GetList<TagCompound>("unloadedBestiarySights"));
 		WorldIO.LoadNPCBestiaryChats(tag.GetList<TagCompound>("unloadedBestiaryChats"));
+		WorldIO.LoadModSeeds(tag.GetList<TagCompound>("unloadedSeeds"));
 	}
 }
