@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// This example shows how to create a boomerang weapon that limits the player to one active boomerang at a time.
+	// See ExampleBoomerangProjectile for custom boomerang AI and an alternative that reuses vanilla behavior.
 	public class ExampleBoomerang : ModItem
 	{
 		public override void SetDefaults() {

@@ -6,6 +6,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
+	// This example shows how to create a gel-powered flamethrower that fires multiple shots per use animation while consuming ammo only on the first shot.
+	// It also demonstrates preventing underwater use and spawning flames near the muzzle without shooting through walls.
 	public class ExampleFlamethrower : ModItem
 	{
 		public override void SetDefaults() {

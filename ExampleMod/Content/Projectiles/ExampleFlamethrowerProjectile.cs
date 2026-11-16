@@ -8,6 +8,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
+	// This projectile demonstrates custom flame behavior and drawing based on the vanilla Flamethrower.
+	// It shows how to expand the damage hitbox over time, prevent damage through walls, and draw animated flame trails.
 	public class ExampleFlamethrowerProjectile : ModProjectile
 	{
 		private const float FlameLifetime = 72f;

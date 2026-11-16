@@ -7,6 +7,8 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Projectiles
 {
+	// This projectile recreates Wooden Boomerang behavior, demonstrating timed flight, returning to the owner, and bouncing off tiles.
+	// A commented alternative shows how to reuse vanilla boomerang AI instead.
 	public class ExampleBoomerangProjectile : ModProjectile
 	{
 		private ref float ReturnState => ref Projectile.ai[0];
