@@ -781,6 +781,10 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModPlayer.ModifyZoom` now has a `needsMouseRight` parameter. This is used to bypass the "Forward Zoom" toggle for effects that should always zoom regardless of the player's setting, like Binoculars. Remove all checks for the right mouse being held down to correctly support the new "Forward Zoom" control options.
 * 💀: `ModConfig` are no longer ordered by `DisplayName` on the config list menu, but by internal name. This change is to support the manual ordering feature and preserve consistent ordering between languages. `Config.SortConfigAttribute` mentioned below can be used to adjust the order manually to restore an intended order.
 
+## Bugfixes
+
+* On 1.4.4, NPCs with `NPCID.Sets.ImmuneToRegularBuffs` or `NPCID.Sets.ImmuneToAllBuffs` that set an explicit vulnerability (`NPCID.Sets.SpecificDebuffImmunity[Type][buffType] = false`) would not apply to other buffs that inherit from buffType. This has now been fixed.
+
 ## New tModLoader features
 
 In addition to changes to existing features and adapting to vanilla changes, 1.4.5 tModLoader also contains several new features unrelated to vanilla changes.
