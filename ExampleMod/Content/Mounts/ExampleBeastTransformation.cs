@@ -1,0 +1,505 @@
+using ExampleMod.Content.Buffs;
+using ExampleMod.Content.Dusts;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
+using Terraria.ID;
+using Terraria.ModLoader;
+
+namespace ExampleMod.Content.Mounts
+{
+	// This transformation mount behaves similarly to the Velociraptor transformation (Slasher's Mysterious Skull).
+	// Transformation mounts have the characteristic of hiding the player to make it appear like the player has transformed into something else.
+	// This mount has the following characteristics:
+	// * Hides the player.
+	// * Can fly, but only if the player has wings equipped.
+	// * Cannot dash.
+	// * Allows the use of items.
+	// * Can use grappling hooks.
+	// * Can wear most hats/helmets.
+	// * Can wear beards.
+	// * Has dynamic eyes (blinking and closing when taking damage, etc.).
+	// This mount does NOT change the player's hitbox.
+	// Most of the complexity of this mount's code comes from the ability to use items and wear some equipment.
+	public class ExampleBeastTransformation : ModMount
+	{
+		public override void SetStaticDefaults() {
+			// Sets and properties that are for transformation mounts
+			MountID.Sets.IsTransformationMount[Type] = true; // Designates this as a transformation mount.
+			MountID.Sets.PlayerIsHidden[Type] = true; // Used by other drawing things to know that this mount hides the player. Settings this does NOT actually hide the player. (See below for that)
+
+			// This mount uses special delegates for additional functionality.
+			MountData.delegations = new Mount.MountDelegatesData {
+				// Sets the position of the mouth, used for underwater bubbles and eating/drinking visuals.
+				MouthPosition = ExampleBeastTransformationMouthPosition,
+				// Sets the position of the "hand" which holds items, which is actually the mouth. Only used by a few effects, HeldItemOffset below is used for the actual offset of the item being held.
+				HandPosition = DelegateMethods.Mount.NoPosition
+			};
+
+			// Sets that are unique to this mount
+			MountID.Sets.CanUseHooks[Type] = true; // Grappling hooks can be used while using this mount.
+			MountID.Sets.DrawHeadItemOnMountThatHidesThePlayer[Type] = true; // Allows hats and helmets to be shown on the mount even though the mount hides the player.
+
+			// Misc
+			MountData.spawnDust = ModContent.DustType<Sparkle>();
+			MountData.buff = ModContent.BuffType<ExampleBeastTransformationBuff>();
+
+			// Movement
+			MountData.flightTimeMax = 0;
+			MountData.fallDamage = 0.1f;
+			MountData.runSpeed = 4.5f;
+			MountData.dashSpeed = 7.5f;
+			MountData.acceleration = 0.15f;
+			MountData.jumpHeight = 15;
+			MountData.jumpSpeed = 6.01f;
+
+			// Frame data and player offsets
+			MountData.totalFrames = 21; // The total number of frames in the sprite.
+			MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code. There are 21 frames, so fill in 0's for the offset for each frame.
+			MountData.xOffset = 4; // The offset for the hitbox.
+			MountData.yOffset = -4;
+			MountData.bodyFrame = 0; // Which body frame the player uses while mounted. Since this mount makes the player invisible, it doesn't matter here.
+
+			// Standing
+			MountData.standingFrameStart = 0; // Start on frame 0.
+			MountData.standingFrameCount = 1; // A total of 1 frame for the standing animation.
+			MountData.standingFrameDelay = 12; // The delay between frames (if there were more than one frame).
+			// Running
+			MountData.runningFrameStart = 8;
+			MountData.runningFrameCount = 7;
+			MountData.runningFrameDelay = 20;
+			// In Air (falling)
+			MountData.inAirFrameStart = 5;
+			MountData.inAirFrameCount = 2;
+			MountData.inAirFrameDelay = 6;
+			// Flying
+			MountData.flyingFrameStart = 16;
+			MountData.flyingFrameCount = 5;
+			MountData.flyingFrameDelay = 6;
+			// Idle
+			MountData.idleFrameCount = 0;
+			MountData.idleFrameDelay = 0;
+			MountData.idleFrameStart = 0;
+			MountData.idleFrameLoop = false;
+			// Swimming
+			MountData.swimFrameCount = MountData.inAirFrameCount;
+			MountData.swimFrameDelay = MountData.inAirFrameDelay;
+			MountData.swimFrameStart = MountData.inAirFrameStart;
+			if (Main.netMode != NetmodeID.Server) {
+				MountData.textureWidth = MountData.frontTexture.Width();
+				MountData.textureHeight = MountData.frontTexture.Height();
+			}
+		}
+
+		/// <summary>
+		/// Sets the position of the mouth, used for underwater bubbles and eating/drinking visuals.
+		/// </summary>
+		public static bool ExampleBeastTransformationMouthPosition(Player player, out Vector2? position) {
+			Vector2 spinningPoint = new Vector2(player.direction * 24, player.gravDir * -12f);
+			position = player.RotatedRelativePoint(player.MountedCenter, reverseRotation: false, addGfxOffY: false) + spinningPoint.RotatedBy(player.fullRotation);
+			return true;
+		}
+
+		// Adjust the breath bubble position from the mouth position.
+		public override void BreathBubblePosition(Player player, ref Vector2 bubblePosition) {
+			bubblePosition += new Vector2(-6f, -2f);
+			if (player.hasBreathingReed)
+				bubblePosition += new Vector2(-14f, -58f) * player.Directions;
+		}
+
+		// Mounts that have flightTimeMax > 0 can automatically fly.
+		// This mount can only fly if the player if the has wings.
+		public override bool? CanFly(Player player) {
+			return player.hasWings;
+		}
+
+		public override void UpdateAfterEquips(Player player) {
+			if (player.hasWings && player.empressBrooch) {
+				player.mount._flyTime = player.wingTimeMax; // Infinite flight if the Soaring Insignia is equipped.
+			}
+		}
+
+		public override void ResetFlightTime(Player player, ref int flightTime) {
+			flightTime = player.wingTimeMax; // Set the max flight time to the same as the player's.
+		}
+
+
+		public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
+			int yFrame = 0;
+			// Animate the arm
+			// ExampleBeastTransformation loads frontTexture for the body and frontTextureExtra for the arm.
+			// drawType 3 is the frontTextureExtra
+			if (drawType == 3) {
+				// Change the frame for the arm if the player is using certain types of items.
+				if (drawPlayer.itemAnimation > 0) {
+					Rectangle bodyFrame = drawPlayer.bodyFrame;
+					int bodyYFrame = bodyFrame.Y / bodyFrame.Height;
+					int useStyle = drawPlayer.lastVisualizedSelectedItem.useStyle;
+					yFrame = Utils.Clamp(bodyYFrame, 1, 4);
+					if (useStyle == ItemUseStyleID.Guitar && drawPlayer.itemAnimation > drawPlayer.itemAnimationMax / 2)
+						yFrame = 3;
+
+					if (useStyle == ItemUseStyleID.EatFood || useStyle == ItemUseStyleID.DrinkLiquid || useStyle == ItemUseStyleID.HoldUp || useStyle == ItemUseStyleID.RaiseLamp)
+						yFrame = 2;
+
+					if (useStyle == ItemUseStyleID.GolfPlay || useStyle == ItemUseStyleID.MowTheLawn)
+						yFrame = 3;
+				}
+				// Change the frame for the arm if the player is holding certain types of items.
+				else {
+					yFrame = drawPlayer.lastVisualizedSelectedItem.holdStyle switch {
+						ItemHoldStyleID.HoldFront or ItemHoldStyleID.HoldLamp => 3,
+						ItemHoldStyleID.HoldUp => 2,
+						_ => drawPlayer.mount._frame,
+					};
+				}
+			}
+			else {
+				// The body texture gets set to the mount's current frame.
+				yFrame = drawPlayer.mount._frame;
+			}
+			int totalMountFrames = drawPlayer.mount._data.totalFrames;
+			int totalMountTextureHeight = drawPlayer.mount._data.textureHeight;
+			int mountFrameHeight = totalMountTextureHeight / totalMountFrames;
+			frame.Y = mountFrameHeight * yFrame;
+			return true;
+		}
+
+		public override bool UpdateFrame(Player mountedPlayer, int state, Vector2 velocity) {
+			Mount mount = mountedPlayer.mount;
+
+			if (state != 0)
+				mount._idleTime = 0;
+
+			if (mountedPlayer.isDisplayDollOrInanimate)
+				mount._idleTime = 0;
+
+			bool allowedToFly = mountedPlayer.hasWings;
+
+			// Flying in water
+			if (state == 4) {
+				// Change it to either In the air, flying or in the air, not flying.
+				state = (allowedToFly ? 3 : 2);
+			}
+
+			bool inTheAir = state == 2 || state == 3;
+			int wingType = ((mountedPlayer.wings > 0) ? mountedPlayer.wings : mountedPlayer.wingsLogic);
+			if (inTheAir && allowedToFly && ((wingType > 0 && !ArmorIDs.Wing.Sets.AlwaysAnimated[wingType]) || mountedPlayer.ShouldDrawWingsThatAreAlwaysAnimated(ignoreMounts: true))) {
+				state = 3; // If the player has wings equipped or can fly by some other means, change the state to in the air, flying.
+			}
+			else if (state == 3) {
+				state = 2; // If the player cannot fly, change the state to in the air, not flying.
+			}
+
+			switch (state) {
+				case 0: // Idle
+					mount._frame = mount._data.standingFrameStart;
+					break;
+				case 1: // Walking/Running
+					UpdateFrame_Walking(mountedPlayer, velocity);
+					break;
+				case 2: // In the air, not flying
+					UpdateFrame_Falling(mountedPlayer, velocity);
+					break;
+				case 3: { // In the air, flying
+						mount._frameCounter += 1f;
+						int flyingFrameDelay = mount._data.flyingFrameDelay;
+						if (mount._flyTime > 0)
+							flyingFrameDelay -= 2;
+
+						if (mount._frameCounter > (float)flyingFrameDelay) {
+							mount._frameCounter -= flyingFrameDelay;
+							mount._frame++;
+						}
+
+						if (mount._frame < mount._data.flyingFrameStart || mount._frame >= mount._data.flyingFrameStart + mount._data.flyingFrameCount)
+							mount._frame = mount._data.flyingFrameStart;
+						break;
+					}
+			}
+
+			return false;
+		}
+
+		private static void UpdateFrame_Walking(Player mountedPlayer, Vector2 velocity) {
+			Mount mount = mountedPlayer.mount;
+			float absVelX = Math.Abs(velocity.X);
+
+			mount._frameCounter += absVelX;
+			if (absVelX >= 0f) {
+				if (mount._frameCounter > (float)mount._data.runningFrameDelay) {
+					mount._frameCounter -= mount._data.runningFrameDelay;
+					mount._frame++;
+				}
+
+				if (mount._frame < mount._data.runningFrameStart || mount._frame >= mount._data.runningFrameStart + mount._data.runningFrameCount)
+					mount._frame = mount._data.runningFrameStart;
+			}
+			else {
+				if (mount._frameCounter < 0f) {
+					mount._frameCounter += mount._data.runningFrameDelay;
+					mount._frame--;
+				}
+
+				if (mount._frame < mount._data.runningFrameStart || mount._frame >= mount._data.runningFrameStart + mount._data.runningFrameCount)
+					mount._frame = mount._data.runningFrameStart + mount._data.runningFrameCount - 1;
+			}
+		}
+
+		private static void UpdateFrame_Falling(Player mountedPlayer, Vector2 velocity) {
+			Mount mount = mountedPlayer.mount;
+			mount._frameCounter += 1f;
+			if (mount._frameCounter > (float)mount._data.inAirFrameDelay) {
+				mount._frameCounter -= mount._data.inAirFrameDelay;
+				mount._frame++;
+			}
+
+			if (mount._frame < mount._data.inAirFrameStart || mount._frame >= mount._data.inAirFrameStart + mount._data.inAirFrameCount)
+				mount._frame = mount._data.inAirFrameStart;
+
+			if (mountedPlayer.grappling[0] >= 0) {
+				if (velocity.Length() > 0.01f) {
+					if (mount._frame == mount._data.inAirFrameStart + mount._data.inAirFrameCount - 1)
+						mount._frameCounter = 0f;
+				}
+				else {
+					mount._frame = 7;
+				}
+			}
+			else if (velocity.Y < 0f) {
+				if (mount._frame == mount._data.inAirFrameStart + mount._data.inAirFrameCount - 1)
+					mount._frameCounter = 0f;
+			}
+			else {
+				mount._frame = 7;
+			}
+		}
+
+		// Here is where we change the player's draw info to hide the entire player.
+		// ModPlayer.ModifyDrawInfo() doesn't work because it runs too late.
+		public override void ModifyPlayerDrawInfo(ref PlayerDrawSet drawInfo) {
+			drawInfo.hideEntirePlayerExceptHelmetsAndFaceAccessories = true;
+			drawInfo.weaponDrawOrder = WeaponDrawOrder.BehindFrontArm; // Using items appears under the mount's hand.
+			drawInfo.VisualPositionOffset = new Vector2(-14f, 0f) * drawInfo.drawPlayer.Directions;
+			drawInfo.Position += drawInfo.VisualPositionOffset;
+			bool itemAnimating = drawInfo.drawPlayer.itemAnimation > 0;
+			if (drawInfo.heldItem.useStyle == ItemUseStyleID.GolfPlay && itemAnimating)
+				drawInfo.weaponDrawOrder = WeaponDrawOrder.OverFrontArm; // Golf clubs appear over the mount's hand.
+
+			drawInfo.drawPlayer.ApplyItemPositionOffsetFromMount(ref drawInfo.ItemLocation);
+
+			drawInfo.mountHandlesHeadDraw = true; // The mount changes how the player's head is drawn.
+			drawInfo.mountDrawsEyelid = true; // The mount changes how the eye lid is drawn.
+		}
+
+		// Change where the head item sits on the mount.
+		// If your mount cannot wear hats, you can remove this hook.
+		public override Vector2 HeadItemOffset(Player player) {
+			// Change these values to match the head of your mount if your mount can wear hats.
+			Vector2 offset = new Vector2(27f, -8f) * player.Directions;
+
+			// Change where the head item sits based on the frame of the mount (to say on the head during animations).
+			switch (player.mount.Frame) {
+				case 5:
+					offset += new Vector2(0f, 4f) * player.Directions;
+					break;
+				case 6:
+					offset += new Vector2(2f, 2f) * player.Directions;
+					break;
+				case 7:
+					offset += new Vector2(2f, 0f) * player.Directions;
+					break;
+				case 8:
+				case 9:
+				case 11:
+				case 12:
+				case 13:
+				case 15:
+					offset += new Vector2(4f, 4f) * player.Directions;
+					break;
+				case 10:
+				case 14:
+					offset += new Vector2(4f, 2f) * player.Directions;
+					break;
+				case 16:
+				case 17:
+				case 18:
+				case 19:
+				case 20:
+					offset += new Vector2(4f, 4f) * player.Directions;
+					break;
+			}
+
+			// Certain helmets have an additional offset to better sit on the mount's head.
+			if (player.head >= 0)
+				offset += ArmorIDs.Head.Sets.VelociraptorMountHeadOffset[player.head] * player.Directions; // Reuse the offsets created for the Velociraptor.
+
+			return offset;
+		}
+
+		// Offsets face accessory items. By default, the offsets from ModMount.HeadItemOffset will be applied.
+		// An additional offset can be applied by changing the faceOffset parameter.
+		// Returns true by default to apply the head offset. Return false to prevent that.
+		/*
+		public override bool FaceAccessoryOffset(Player player, ref Vector2 faceOffset) {
+			return true;
+		}
+		*/
+
+		// Change where the beard sits on the mount if the mount can wear beards.
+		public override Vector2 BeardOffset(Player player) {
+			Vector2 beardOffset = new Vector2(2f, 4f) * player.Directions; // Change where the beard sits on the mount. This is affected by the head offset, too.
+			if (player.mount.Frame == 6)
+				beardOffset += new Vector2(0f, 2f) * player.Directions;
+			else if (player.mount.Frame == 7)
+				beardOffset += new Vector2(-2f, 4f) * player.Directions;
+			return beardOffset;
+		}
+
+		// Offsets items that the player is holding to match up with the mount's hand.
+		public override Vector2 HeldItemOffset(Player player, Vector2 originalPos) {
+			int bodyYFrame = player.bodyFrame.Y / player.bodyFrame.Height;
+			Vector2 itemOffset = Vector2.Zero;
+			bool itemAnimating = player.itemAnimation > 0;
+			bool notAnimatingButHoldStyle = !itemAnimating && player.HeldItem.holdStyle > 0;
+			if (!itemAnimating && !notAnimatingButHoldStyle)
+				return default;
+
+			bool useStyleShoot = player.HeldItem.useStyle == ItemUseStyleID.Shoot;
+			bool useStyleEatFood = player.HeldItem.useStyle == ItemUseStyleID.EatFood;
+			bool useStyleDrinkLiquid = player.HeldItem.useStyle == ItemUseStyleID.DrinkLiquid;
+			bool usingFishingPole = player.HeldItem.fishingPole != 0;
+			bool useStyleRaiseLamp = player.HeldItem.useStyle == ItemUseStyleID.RaiseLamp;
+			bool useStyleGolfPlay = player.HeldItem.useStyle == ItemUseStyleID.GolfPlay;
+			bool heldYoyo = player.HeldItem.type > ItemID.None && ItemID.Sets.Yoyo[player.HeldItem.type];
+			bool useStyleMowTheLawn = player.HeldItem.useStyle == ItemUseStyleID.MowTheLawn;
+			bool heldNebulaBlaze = player.HeldItem.type == ItemID.NebulaBlaze;
+			bool heldKite = player.HeldItem.type > ItemID.None && ItemID.Sets.IsAKite[player.HeldItem.type];
+			bool holdStyleHoldFront = player.HeldItem.holdStyle == ItemHoldStyleID.HoldFront;
+			bool holdStyleHoldUp = player.HeldItem.holdStyle == ItemHoldStyleID.HoldUp;
+			bool holdStyleHoldGuitar = player.HeldItem.holdStyle == ItemHoldStyleID.HoldGuitar;
+
+			if (useStyleEatFood) {
+				if (itemAnimating)
+					itemOffset += new Vector2(7f, -4f) * player.Directions;
+				else
+					itemOffset += new Vector2(3f, 2f) * player.Directions;
+			}
+			else if (usingFishingPole) {
+				itemOffset += new Vector2(-2f, 0f) * player.Directions;
+			}
+			else if (useStyleDrinkLiquid) {
+				if (itemAnimating)
+					itemOffset += new Vector2(14f, -10f) * player.Directions;
+				else
+					itemOffset += new Vector2(3f, 2f) * player.Directions;
+			}
+			else if (useStyleMowTheLawn) {
+				if (itemAnimating)
+					itemOffset += new Vector2(4f, 0f) * player.Directions;
+				else
+					itemOffset += new Vector2(1f, 0f) * player.Directions;
+			}
+			else if (useStyleGolfPlay) {
+				itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (useStyleRaiseLamp) {
+				if (itemAnimating)
+					itemOffset += new Vector2(-6f, 6f) * player.Directions;
+				else
+					itemOffset += new Vector2(-10f, 10f) * player.Directions;
+			}
+			else if (heldKite) {
+				itemOffset += new Vector2(4f, -4f) * player.Directions;
+			}
+			else if (holdStyleHoldGuitar) {
+				itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (holdStyleHoldFront && !itemAnimating) {
+				itemOffset += new Vector2(1f, 4f) * player.Directions;
+			}
+			else if (holdStyleHoldUp) {
+				if (itemAnimating && player.HeldItem.type == ItemID.BreathingReed)
+					itemOffset += new Vector2(-4f, 0f).RotatedBy((originalPos - player.Center).ToRotation(), Vector2.Zero);
+				else
+					itemOffset += new Vector2(6f, 0f) * player.Directions;
+			}
+			else if (heldYoyo) {
+				switch (bodyYFrame) {
+					case 2:
+						itemOffset += new Vector2(10f, -10f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(8f, 0f) * player.Directions;
+						break;
+					case 4:
+						itemOffset += new Vector2(2f, 2f) * player.Directions;
+						break;
+				}
+			}
+			else if (heldNebulaBlaze) {
+				switch (bodyYFrame) {
+					case 2:
+						itemOffset += new Vector2(-10f, 0f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(10f, 0f) * player.Directions;
+						break;
+					case 4:
+						itemOffset += new Vector2(10f, 0f) * player.Directions;
+						break;
+				}
+			}
+			else if (useStyleShoot) {
+				itemOffset += new Vector2(4f, 0f) * player.Directions;
+			}
+			else {
+				switch (bodyYFrame) {
+					case 1:
+						itemOffset += new Vector2(1f, -1f) * player.Directions;
+						break;
+					case 2:
+						itemOffset += new Vector2(4f, 2f) * player.Directions;
+						break;
+					case 3:
+						itemOffset += new Vector2(2f, 0f) * player.Directions;
+						break;
+				}
+			}
+
+			return itemOffset;
+		}
+	}
+
+	public class ExampleBeastTransformationPlayer : ModPlayer
+	{
+		public override void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame) {
+			// Here we can modify the player's eyelids to match the color of the Example Beast Transformation.
+			if (drawInfo.drawPlayer.mount.Active && drawInfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				Color eyeLidColor = new(129, 148, 154); // Define the color of the eye lid here.
+				color = drawInfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawInfo.drawPlayer.MountedCenter.X / 16, (int)drawInfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor), drawInfo.shadow); // Set the color of the eye lid based on the lighting.
+				shader = drawInfo.drawPlayer.cMount; // Set the shader (dye).
+				position += new Vector2(-2 * drawInfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
+			}
+		}
+	}
+
+	public class ExampleBeastTransformationArmDrawLayer : PlayerDrawLayer {
+
+		public override Position GetDefaultPosition() {
+			return new AfterParent(PlayerDrawLayers.ArmOverItem);
+		}
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+			return drawInfo.drawPlayer.mount.Active && drawInfo.drawPlayer.mount.Type == ModContent.MountType<ExampleBeastTransformation>();
+		}
+		protected override void Draw(ref PlayerDrawSet drawInfo) {
+			// Draw the mount's arm over the items its holding.
+			drawInfo.drawPlayer.mount.Draw(drawInfo.DrawDataCache, 3, drawInfo.drawPlayer, drawInfo.Position, drawInfo.colorMount, drawInfo.playerEffect, drawInfo.shadow);
+		}
+	}
+}

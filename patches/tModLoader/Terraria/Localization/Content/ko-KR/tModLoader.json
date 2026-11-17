@@ -1,4 +1,4 @@
-{
+﻿{
 	"tModLoader": {
 		// Main Menu
 		"PatreonSupport": "지원해 주세요: ",
@@ -119,15 +119,25 @@
 		"ModsShowAllMods": "모든 모드 표시 중",
 		"ModsShowEnabledMods": "켜진 모드만 표시 중",
 		"ModsShowDisabledMods": "꺼진 모드만 표시 중",
+		// "ModsShowAllLibraryTypes": "Show all mods",
+		// "ModsShowLibraryMods": "Show only library mods",
+		// "ModsShowNonLibraryMods": "Show only non-library mods",
 		"ModsXModsFilteredByEnabled": "모드 {0}개가 필터에 의해 숨겨져 있습니다.",
 		"ModsXModsFilteredByModSide": "모드 {0}개가 모드 측 필터에 의해 숨겨져 있습니다.",
 		"ModsXModsFilteredBySearch": "모드 {0}개가 검색 필터에 의해 숨겨져 있습니다.",
+		// "ModsXModsFilteredByModLibrary": "{0} {^0:mod;mods} filtered by library mod filter.",
 		"ModsXItems": "아이템 {0}개",
 		"ModsXNPCs": "NPC {0}개",
 		"ModsXTiles": "타일 {0}개",
 		"ModsXWalls": "벽 {0}개",
 		"ModsXBuffs": "버프 {0}개",
 		"ModsXMounts": "탈것 {0}개",
+		// "ModDownloadedFromInternet": "Downloaded From Internet",
+		// "ModDownloadedFromInternetWarning": "This mod was downloaded from the internet.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nOnly enable this mod if you trust the person who sent you this mod.",
+		// "ModDownloadedFromInternetTrustFile": "Trust file",
+		// "ModDownloadedFromInternetDoNotTrustFile": "Do not trust file",
+		// "ModDownloadedFromInternetTooltip": "This file was downloaded from the internet, this is extremely risky.\n{0}",
+		// "ModDownloadedFromInternetLoadAttemptExceptionMessage": "{0} was downloaded from the internet (from {1}) and has not been trusted.\n\nMods may contain [c/FF0000:malicious] code, such as stealing passwords or installing viruses, especially mods not downloaded directly from Steam Workshop.\n\nThis mod can be trusted from the mods menu.",
 
 		//Dedicated server
 		"ModsReloadAndReturn": "다시 로드하고 세계 메뉴로 돌아가기",
@@ -235,7 +245,7 @@
 		"LoadErrorLikelyOutdated": "모드가 현재 tModLoader 버전에 맞게 업데이트해야 할 수도 있고, 다른 모드의 버전와 호환되지 않을 수 있습니다. '{$tModLoader.OpenWebHelp}' 버튼을 눌러 더 알아보세요.",
 		"LoadErrorDotNet45Required": "모드를 사용하려면 .NET Framework 4.5 이상이 필요합니다. 최신 .NET Framework를 다운로드해 주세요",
 		"LoadErrorDependencyMissing": "누락된 모드: {1} 모드가 {0} 필요",
-		"LoadErrorDependencySideIncompatible": "{0} (사이드: {1})은(는) {2} (side: {3}) 모드가 필요하지만, {4}에서는 로드되지 않는 모드입니다. 약한 참조로 변경하는것을 고려해주세요.",
+		"LoadErrorDependencySideIncompatible": "{0}({1} 측 모드)(은)는 {2}({3} 측 모드)(이)가 필요하지만, {4}에서는 로드되지 않는 모드입니다. 약한 참조로 변경하는 것을 고려해 주세요.",
 		"LoadErrorErrorReadingModFile": "모드 파일 {0} 읽는 중 오류",
 		"LoadErrorHashMismatchCorrupted": "해시 불일치, 데이터 블롭이 수정되었거나 손상되었습니다",
 		"LoadErrorHashMismatchCorruptedWithModName": "{0}의 무결성 확인 불가: 해시 불일치, 데이터 블롭이 수정되었거나 손상되었습니다",
@@ -834,6 +844,7 @@
 		"NearLava": "용암 근처",
 		"NearHoney": "꿀 근처",
 		"NearShimmer": "쉬머 근처",
+		// "NearLiquid": "Near {0}",
 
 		"TimeDay": "낮 동안",
 		"TimeNight": "밤 동안",
@@ -914,6 +925,7 @@
 		"SeedNotInfected": "Purify this 세계가 아닌 곳에서",
 		"SeedNotTeamBasedSpawns": "Royal with cheese 세계가 아닌 곳에서",
 		"SeedNotDualDungeons": "Double daring dangers 세계가 아닌 곳에서",
+		// "SeedFeatureMechdusa": "In a world with Mechdusa",
 
 		"Christmas": "크리스마스 도중",
 		"Halloween": "할로윈 도중",
