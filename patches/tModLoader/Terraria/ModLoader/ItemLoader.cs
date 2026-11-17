@@ -445,39 +445,39 @@ public static class ItemLoader
 		return multiplier;
 	}
 
-	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealLife = AddHook<DelegateGetHealLife>(g => g.GetHealLife);
 
 	/// <summary>
 	/// Calls ModItem.GetHealLife, then all GlobalItem.GetHealLife hooks.
 	/// </summary>
-	public static void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealLife(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealLife(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealLife.Enumerate(item)) {
-			g.GetHealLife(item, player, quickHeal, ref healValue);
+			g.GetHealLife(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 
-	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, ref int healValue);
+	private delegate void DelegateGetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue);
 	private static HookList HookGetHealMana = AddHook<DelegateGetHealMana>(g => g.GetHealMana);
 
 	/// <summary>
 	/// Calls ModItem.GetHealMana, then all GlobalItem.GetHealMana hooks.
 	/// </summary>
-	public static void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+	public static void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 		if (item.IsAir)
 			return;
 
-		item.ModItem?.GetHealMana(player, quickHeal, ref healValue);
+		item.ModItem?.GetHealMana(player, quickHeal, tooltip, ref healValue);
 
 		foreach (var g in HookGetHealMana.Enumerate(item)) {
-			g.GetHealMana(item, player, quickHeal, ref healValue);
+			g.GetHealMana(item, player, quickHeal, tooltip, ref healValue);
 		}
 	}
 
@@ -1889,32 +1889,31 @@ public static class ItemLoader
 		return retVal ?? false;
 	}
 
-    public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
-    {
-        // Notes:
-        // Glowmasks not supported yet, but might in future
-        // Front, called twice, once for each half of texture
-        // Head, can be called twice if Head.Sets.FrontToBackID used
-        // Shield, Can be called many times if parrying, but no api support for that yet
-        // Body, called 5 times for each CompositePlayerDrawContext
+	public static void ModifyEquipTextureDraw(ref PlayerDrawSet drawInfo, ref DrawData drawData, EquipType type, int slot, [CallerMemberName] string methodName = "")
+	{
+		// Notes:
+		// Glowmasks not supported yet, but might in future
+		// Front, called twice, once for each half of texture
+		// Head, can be called twice if Head.Sets.FrontToBackID used
+		// Shield, Can be called many times if parrying, but no api support for that yet
+		// Body, called 5 times for each CompositePlayerDrawContext
 
-        if (slot <= 0)
-        {
-            drawInfo.DrawDataCache.Add(drawData);
-            return;
-        }
+		if (slot <= 0) {
+			drawInfo.DrawDataCache.Add(drawData);
+			return;
+		}
 
-        // TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
-        EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
-        bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
+		// TODO: We can make a GlobalItem hook if requested, it would just need the equip type and slot passed to it rather than EquipTexture for it to work with vanilla equipment.
+		EquipTexture texture = EquipLoader.GetEquipTexture(type, slot);
+		bool? result = texture?.ModifyDraw(ref drawInfo, ref drawData, methodName);
 
-        if (result ?? true)
-            drawInfo.DrawDataCache.Add(drawData);
+		if (result ?? true)
+			drawInfo.DrawDataCache.Add(drawData);
 
-        return;
-    }
+		return;
+	}
 
-    private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
+	private delegate void DelegateUpdate(WorldItem item, ref float gravity, ref float maxFallSpeed);
 	private static HookList HookUpdate = AddHook<DelegateUpdate>(g => g.Update);
 
 	/// <summary>

@@ -45,7 +45,7 @@ namespace ExampleMod.Common.GlobalPylons
 			// you can simply use the class:
 			if (pylonType == ModContent.PylonType<ExamplePylonTileAdvanced>()) {
 				return null; // We don't want to *actually* change any functionality of the advanced pylon, so we return null.
-				// Obviously, if you wanted to actually change something about the modded pylon, you'd return something other than null here.
+							 // Obviously, if you wanted to actually change something about the modded pylon, you'd return something other than null here.
 			}
 
 			return base.PreCanPlacePylon(x, y, tileType, pylonType);

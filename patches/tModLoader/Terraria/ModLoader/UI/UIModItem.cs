@@ -30,8 +30,8 @@ internal class UIModItem : UIPanel
 	private CancellationTokenSource _ratingCts;
 	private ulong _publishId;
 	private bool? _ratedUp; // null = not rated, false = rated down
-    private bool _gotRating;
-    private float _bufferRotation;
+	private bool _gotRating;
+	private float _bufferRotation;
 
 	private UIImage _moreInfoButton;
 	private UIImage _modIcon;
@@ -42,6 +42,7 @@ internal class UIModItem : UIPanel
 	private UIText _modName;
 	private UIModStateText _uiModStateText;
 	internal UIAutoScaleTextTextPanel<string> tMLUpdateRequired;
+	internal UIAutoScaleTextTextPanel<string> trustRequired;
 	private UIImage _modReferenceIcon;
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
@@ -58,11 +59,12 @@ internal class UIModItem : UIPanel
 	private string[] _modDependencies; // Note: Recursive
 	private string _modRequiresTooltip;
 	public readonly string DisplayNameClean; // No chat tags: for search and sort functionality.
+	public readonly string DownloadOrigin;
 
 	private string ToggleModStateText {
 		get {
 			if (_mod.Enabled) {
-				if(_modDependents.Any())
+				if (_modDependents.Any())
 					return Language.GetTextValue("tModLoader.ModsDisableAndDependents", _mod.DisplayName, _modDependents.Length);
 				return Language.GetTextValue("tModLoader.ModsDisable");
 			}
@@ -87,6 +89,9 @@ internal class UIModItem : UIPanel
 		DisplayNameClean = _mod.DisplayNameClean;
 
 		WorkshopHelper.GetPublishIdLocal(_mod?.modFile, out _publishId);
+
+		_mod.modFile.VerifyOrigin();
+		DownloadOrigin = _mod.modFile.downloadOrigin;
 	}
 
 	public override void OnInitialize()
@@ -150,6 +155,19 @@ internal class UIModItem : UIPanel
 			};
 			Append(tMLUpdateRequired);
 		}
+		else if (DownloadOrigin != null) {
+			trustRequired = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModDownloadedFromInternet")).WithFadedMouseOver(Color.Red, Color.Red * 0.7f);
+			trustRequired.BackgroundColor = Color.Red * 0.7f;
+			trustRequired.Top.Pixels = 40;
+			trustRequired.Width.Pixels = 280;
+			trustRequired.Height.Pixels = 36;
+			trustRequired.Left.Pixels += _uiModStateText.Width.Pixels + _uiModStateText.Left.Pixels + PADDING;
+			trustRequired.OnLeftClick += (a, b) => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				Interface.infoMessage.Show(Language.GetTextValue("tModLoader.ModDownloadedFromInternetWarning"), Interface.modsMenuID, altButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetTrustFile"), altButtonAction: () => { FileOriginChecker.ClearDownloadFlags(_mod.modFile.path); }, okButtonText: Language.GetTextValue("tModLoader.ModDownloadedFromInternetDoNotTrustFile"));
+			};
+			Append(trustRequired);
+		}
 		else
 			Append(_uiModStateText);
 
@@ -208,9 +226,10 @@ internal class UIModItem : UIPanel
 		HashSet<string> allDependents = new();
 		GetDependents(_mod.Name, allDependents);
 		_modDependents = allDependents.ToArray();
-		if (_modDependents.Any()) {
+		if (_modDependents.Any() || _mod.properties.libraryMod) {
 			if (!string.IsNullOrWhiteSpace(_modRequiresTooltip))
 				_modRequiresTooltip += "\n\n";
+
 			string refs = string.Join("\n", _modDependents.Select(x => "- " + (Interface.modsMenu.FindUIModItem(x)?._mod.DisplayName ?? x + Language.GetTextValue("tModLoader.ModPackMissing"))));
 			_modRequiresTooltip += Language.GetTextValue("tModLoader.ModDependentsTooltip", refs);
 		}
@@ -310,11 +329,18 @@ internal class UIModItem : UIPanel
 			if (tMLUpdateRequired != null)
 				return;
 
-			// Prevent infinite recursion.
-			if (e.Target.GetType() == typeof(UIModStateText)) return;
-			// Ignore inner elements that may not react immediately.
-			if (e.Target == _rateButton) return;
+			_uiModStateText.LeftClick(e);
+			if (trustRequired != null)
+				return;
 
+			// Prevent infinite recursion.
+			if (e.Target.GetType() == typeof(UIModStateText))
+				return;
+			// Ignore inner elements that may not react immediately.
+			if (e.Target == _rateButton)
+				return;
+
+			// Only trigger if we didn't target the ModStateText, otherwise we trigger this behavior twice
 			_uiModStateText.LeftClick(e);
 		};
 
@@ -345,22 +371,21 @@ internal class UIModItem : UIPanel
 			};
 			_rateButton.OnLeftClick += Rate;
 
-            var bufferImage = new UIElement()
-            {
-                Width = { Percent = 1f },
-                Height = { Percent = 1f },
-                IgnoresMouseInteraction = true
-            };
-            bufferImage.OnDraw += DrawRatingBuffer;
-            _rateButton.Append(bufferImage);
+			var bufferImage = new UIElement() {
+				Width = { Percent = 1f },
+				Height = { Percent = 1f },
+				IgnoresMouseInteraction = true
+			};
+			bufferImage.OnDraw += DrawRatingBuffer;
+			_rateButton.Append(bufferImage);
 
 			Append(_rateButton);
 
 			_ratingCts?.Cancel(false);
 			_ratingCts?.Dispose();
 			_ratingCts = new CancellationTokenSource();
-            Task.Run(GetRating, _ratingCts.Token);
-        }
+			Task.Run(GetRating, _ratingCts.Token);
+		}
 
 		var oldModVersionData = ModOrganizer.modsThatUpdatedSinceLastLaunch.FirstOrDefault(x => x.ModName == ModName);
 		if (oldModVersionData != default) {
@@ -450,15 +475,14 @@ internal class UIModItem : UIPanel
 				UICommon.DrawHoverStringInBounds(spriteBatch, Language.GetTextValue("tModLoader.ModIsServerSide"));
 		}
 
-        if (!_gotRating)
-            _rateButton?.Frame = new Rectangle(0, 0, 36, 36);
-        else if (_rateButton?.IsMouseHovering == false)
-        {
-            if (_ratedUp == null)
-                _rateButton?.Frame = new Rectangle(0, 38, 36, 36);
-            else
-                _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
-        }
+		if (!_gotRating)
+			_rateButton?.Frame = new Rectangle(0, 0, 36, 36);
+		else if (_rateButton?.IsMouseHovering == false) {
+			if (_ratedUp == null)
+				_rateButton?.Frame = new Rectangle(0, 38, 36, 36);
+			else
+				_rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+		}
 
 		if (_moreInfoButton?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsMoreInfo");
@@ -468,21 +492,20 @@ internal class UIModItem : UIPanel
 		}
 		else if (_rateButton?.IsMouseHovering == true && _gotRating) {
 			bool ratingUp = UserInterface.ActiveInstance.MousePosition.Y < _rateButton.GetDimensions().Center().Y;
-            if (_ratedUp != true && ratingUp)
-                _tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
-            else if (_ratedUp != false && !ratingUp)
-                _tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
+			if (_ratedUp != true && ratingUp)
+				_tooltip = Language.GetTextValue("tModLoader.ModsRateUp");
+			else if (_ratedUp != false && !ratingUp)
+				_tooltip = Language.GetTextValue("tModLoader.ModsRateDown");
 
-            if (_ratedUp != null)
-            {
-                if (_ratedUp != ratingUp)
-                    _rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
-                else
-                    _rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
-            }
-            else
-                _rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
-        }
+			if (_ratedUp != null) {
+				if (_ratedUp != ratingUp)
+					_rateButton?.Frame = new Rectangle(0, 38 * 6, 36, 36);
+				else
+					_rateButton?.Frame = new Rectangle(0, 38 * (_ratedUp == true ? 4 : 5), 36, 36);
+			}
+			else
+				_rateButton?.Frame = new Rectangle(0, 38 * (ratingUp ? 3 : 2), 36, 36);
+		}
 		else if (_modName?.IsMouseHovering == true && _mod?.properties.author.Length > 0) {
 			_tooltip = Language.GetTextValue("tModLoader.ModsByline", _mod.properties.author);
 		}
@@ -501,6 +524,9 @@ internal class UIModItem : UIPanel
 		else if (tMLUpdateRequired?.IsMouseHovering == true) {
 			_tooltip = Language.GetTextValue("tModLoader.SwitchVersionInfoButton");
 		}
+		else if (trustRequired?.IsMouseHovering == true) {
+			_tooltip = Language.GetTextValue("tModLoader.ModDownloadedFromInternetTooltip", DownloadOrigin);
+		}
 		else if (_modReferenceIcon?.IsMouseHovering == true) {
 			_tooltip = _modRequiresTooltip;
 		}
@@ -516,18 +542,18 @@ internal class UIModItem : UIPanel
 
 		// Update rating buffer.
 		if (!_gotRating) {
-	        _bufferRotation -= 0.15f;
+			_bufferRotation -= 0.15f;
 		}
 	}
 
 	private void DrawRatingBuffer(UIElement element, SpriteBatch spriteBatch)
-    {
-        if (_gotRating)
-            return;
+	{
+		if (_gotRating)
+			return;
 
-        var texture = UICommon.SmallLoaderTexture.Value;
-        spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
-    }
+		var texture = UICommon.SmallLoaderTexture.Value;
+		spriteBatch.Draw(texture, element.GetDimensions().Center(), null, Color.White, _bufferRotation, texture.Size() / 2f, 1f, SpriteEffects.None, 0);
+	}
 
 	public override void MouseOver(UIMouseEvent evt)
 	{
@@ -561,12 +587,20 @@ internal class UIModItem : UIPanel
 
 		if (!_mod.Enabled) {
 			DisableDependents();
+			DisableUnusedLibraryDependenciesRecursive();
+
+			if (Interface.modsMenu.enabledFilterMode == EnabledFilter.All) { // Regenerate filters if enabled/disabled isn't active.
+				Interface.modsMenu.StoreCurrentScrollPosition();
+				Interface.modsMenu.Activate();
+			}
+
 			return;
 		}
 
 		EnableDependencies();
 	}
 
+	// Used for 'Enable All' & in EnableDependencies
 	internal void Enable()
 	{
 		if (_mod.Enabled) { return; }
@@ -574,6 +608,7 @@ internal class UIModItem : UIPanel
 		UpdateUIForEnabledChange();
 	}
 
+	// Used for 'Disable All' & in DisableDependents
 	internal void Disable()
 	{
 		if (!_mod.Enabled) { return; }
@@ -627,6 +662,32 @@ internal class UIModItem : UIPanel
 			dep.DisableDependentsRecursive();
 			dep.Disable();
 		}
+	}
+
+	private void DisableUnusedLibraryDependenciesRecursive()
+	{
+		foreach (var name in _modReferences) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null || !dep._mod.properties.libraryMod || dep.IsAnyEnabledDependents())
+				continue;
+
+			dep.DisableDependentsRecursive();
+			dep.Disable();
+		}
+	}
+
+	private bool IsAnyEnabledDependents()
+	{
+		foreach (var name in _modDependents) {
+			var dep = Interface.modsMenu.FindUIModItem(name);
+			if (dep == null)
+				continue;
+
+			if (dep._mod.Enabled)
+				return true;
+		}
+
+		return false;
 	}
 
 	internal void ShowMoreInfo(UIMouseEvent evt, UIElement listeningElement)
@@ -683,6 +744,16 @@ internal class UIModItem : UIPanel
 				return false;
 			}
 		}
+		if (Interface.modsMenu.modLibraryFilterMode != ModLibraryFilter.All) {
+			if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.LibraryOnly && !_mod.properties.libraryMod) {
+				filterResults.filteredByModLibrary++;
+				return false;
+			}
+			else if (Interface.modsMenu.modLibraryFilterMode == ModLibraryFilter.NonLibraryOnly && (_mod.properties.libraryMod && IsAnyEnabledDependents())) {
+				filterResults.filteredByModLibrary++;
+				return false;
+			}
+		}
 		switch (Interface.modsMenu.enabledFilterMode) {
 			default:
 			case EnabledFilter.All:
@@ -716,14 +787,14 @@ internal class UIModItem : UIPanel
 	}
 
 	private void Rate(UIMouseEvent evt, UIElement listeningElement)
-    {
+	{
 		bool ratingUp = evt.MousePosition.Y < listeningElement.GetDimensions().Center().Y;
 		if (!_gotRating || (ratingUp && _ratedUp == true) || (!ratingUp && _ratedUp == false))
 			return;
 
 		SoundEngine.PlaySound(LegacySoundIDs.MenuTick, -1, -1, 1);
 
-        _gotRating = false;
+		_gotRating = false;
 		_ratingCts?.Cancel(false);
 		_ratingCts?.Dispose();
 		_ratingCts = new CancellationTokenSource();
@@ -734,13 +805,13 @@ internal class UIModItem : UIPanel
 	}
 
 	private async Task GetRating()
-    {
-        _gotRating = false;
+	{
+		_gotRating = false;
 
 		var result = await SteamedWraps.GetUserRating(_publishId);
-        if (result != null) {
-            RefreshRating(result.Value);
-	        _gotRating = true;
+		if (result != null) {
+			RefreshRating(result.Value);
+			_gotRating = true;
 		}
 	}
 

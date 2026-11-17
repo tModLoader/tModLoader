@@ -475,19 +475,19 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
-	public int GetHealLife(Item item, bool quickHeal = false)
+	public int GetHealLife(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healLife;
-		ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealLife(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealLife(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public int GetHealMana(Item item, bool quickHeal = false)
+	public int GetHealMana(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healMana;
-		ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealMana(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealMana(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
@@ -504,7 +504,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
-		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
+		if (item.type == ItemID.BookStaff && altFunctionUse == 2)
 			mult = 2;
 
 		CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
@@ -725,4 +725,31 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
 	/// </summary>
 	public void SetCCed() => _customCCed = true;
+
+	#region Player.Liquid
+	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
+
+	/// <summary>
+	/// An array indexed by liquid type (<see cref="Tile.LiquidType"/>, <see cref="LiquidID"/>) indicating if the player is within crafting range of a liquid or a <see cref="TileID.Sets.CountsAsLiquidSourceForCrafting"/> tile.
+	/// </summary>
+	public bool[] adjLiquid {
+		get {
+			if (_adjLiquid.Length != LiquidLoader.LiquidCount) {
+				Array.Resize(ref _adjLiquid, LiquidLoader.LiquidCount);
+			}
+			return _adjLiquid;
+		}
+		set {
+			_adjLiquid = value;
+		}
+	}
+
+	public void UpdateAdjLiquid(Tile tile)
+	{
+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
+			adjLiquid[i] = adjLiquid[i] || (tile.liquid > 200 && tile.LiquidType == i) || (tile.HasTile && TileID.Sets.CountsAsLiquidSourceForCrafting[tile.type][i]);
+		}
+	}
+
+	#endregion
 }
