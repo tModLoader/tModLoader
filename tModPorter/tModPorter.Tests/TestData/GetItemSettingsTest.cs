@@ -18,23 +18,22 @@ public class GetItemSettingsTest
 		_ = InventoryUIToInventorySettingsShowAsNew;
 		_ = InventoryUIToInventorySettings;
 		_ = Settings.InventoryUIToInventorySettings;
-		_ = GetItemSettings.ReturnItemFromSlot;
 		_ = default(GetItemSettings);
 		_ = nameof(GetItemSettings.InventoryUIToInventorySettingsShowAsNew);
+		// Shouldn't change
+		_ = GetItemSettings.ReturnItemFromSlot;
 	}
 
 	void Constructors(Action<Item> callback) {
 		_ = new GetItemSettings(true, false, true, callback);
-		_ = new GetItemSettings(true, false, true, callback, true);
 		_ = new Settings(false, false, false, AfterSlot);
 		_ = new GetItemSettings(false, false, false, item => item.TurnToAir());
 		_ = new GetItemSettings(false, false, false, null);
-		_ = new GetItemSettings(false, false, false, default, true);
-		GetItemSettings implicitSettings = new(false, false, false, callback, true);
+		GetItemSettings implicitSettings = new(false, false, false, callback);
 		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: callback);
-		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: callback, true);
-		_ = new GetItemSettings(false, false, false, true, callback, true);
 		_ = new GetItemSettings(false, false, false, default);
+		// Shouldn't change
+		_ = new GetItemSettings(false, false, false, true, callback, true);
 		_ = new GetItemSettings(false, false, false, default, callback);
 		_ = new GetItemSettings(LongText: true, NoText: false, CanGoIntoVoidVault: true, callback, NoCoinMerge: true);
 	}

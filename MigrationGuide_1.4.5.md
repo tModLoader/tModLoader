@@ -701,7 +701,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 ### Non-Static Methods
 
-* 🤖: The `GetItemSettings` constructor has a new `NoSound` parameter before `StepAfterHandlingSlotNormally`. Existing callback and `NoCoinMerge` arguments are named to preserve their meaning.
+* 🤖: The `GetItemSettings` constructor has a new `NoSound` parameter placed before `StepAfterHandlingSlotNormally`. Existing callback argument is named to preserve behavior.
 * 🤖: `Item.BannerToItem` -> `Terraria.GameContent.BannerSystem.BannerToItem`
 * 🤖: `Item.BannerToNPC` -> `Terraria.GameContent.BannerSystem.BannerToNPC`
 * 🤖: `Item.NPCtoBanner` -> `Terraria.GameContent.BannerSystem.NPCtoBanner`

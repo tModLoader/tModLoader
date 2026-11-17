@@ -18,23 +18,22 @@ public class GetItemSettingsTest
 		_ = ReturnItemShowAsNew;
 		_ = default(GetItemSettings);
 		_ = default(GetItemSettings);
-		_ = GetItemSettings.ReturnItemFromSlot;
 		_ = default(GetItemSettings);
 		_ = nameof(GetItemSettings.ReturnItemShowAsNew);
+		// Shouldn't change
+		_ = GetItemSettings.ReturnItemFromSlot;
 	}
 
 	void Constructors(Action<Item> callback) {
 		_ = new GetItemSettings(true, false, true, StepAfterHandlingSlotNormally: callback);
-		_ = new GetItemSettings(true, false, true, StepAfterHandlingSlotNormally: callback, NoCoinMerge: true);
 		_ = new Settings(false, false, false, StepAfterHandlingSlotNormally: AfterSlot);
 		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: item => item.TurnToAir());
 		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: null);
-		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: default, NoCoinMerge: true);
-		GetItemSettings implicitSettings = new(false, false, false, StepAfterHandlingSlotNormally: callback, NoCoinMerge: true);
+		GetItemSettings implicitSettings = new(false, false, false, StepAfterHandlingSlotNormally: callback);
 		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: callback);
-		_ = new GetItemSettings(false, false, false, StepAfterHandlingSlotNormally: callback, NoCoinMerge: true);
-		_ = new GetItemSettings(false, false, false, true, callback, true);
 		_ = new GetItemSettings(false, false, false, default);
+		// Shouldn't change
+		_ = new GetItemSettings(false, false, false, true, callback, true);
 		_ = new GetItemSettings(false, false, false, default, callback);
 		_ = new GetItemSettings(LongText: true, NoText: false, CanGoIntoVoidVault: true, StepAfterHandlingSlotNormally: callback, NoCoinMerge: true);
 	}
