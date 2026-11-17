@@ -133,7 +133,7 @@ namespace ExampleMod.Content.Projectiles
 			SetVisualOffsets();
 
 			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
-			Vector2 projectileDirection = Vector2.UnitX * 12f; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			Vector2 projectileDirection = Vector2.UnitX * weapon.shootSpeed * Projectile.scale; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.
@@ -143,7 +143,8 @@ namespace ExampleMod.Content.Projectiles
 				projectileDirection.X *= -1f;
 
 			Projectile.velocity = projectileDirection;
-			Projectile.position += projectileDirection + (projectileDirection * 1.5f); // Move the projectile's location while being held by the mannequin.
+			Projectile.position += projectileDirection + (projectileDirection * 1.5f); 
+			Projectile.Center += projectileDirection * 10f; // Move the projectile's location while being held by the mannequin.
 
 			Projectile.rotation = projectileDirection.ToRotation() + MathHelper.PiOver2; // Set the projectile's rotation based on the mannequin's hand.
 			Projectile.rotation -= MathHelper.PiOver4 * Projectile.spriteDirection; // Correct the rotation of the shortsword since we set this in the AI.

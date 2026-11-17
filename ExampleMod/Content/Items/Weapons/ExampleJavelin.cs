@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Items.Weapons
 			// Common Properties
 			Item.rare = ItemRarityID.Pink;
 			Item.value = Item.sellPrice(silver: 5);
-			Item.maxStack = 999;
 
 			// Use Properties
 			Item.useStyle = ItemUseStyleID.Swing;

@@ -140,7 +140,7 @@ namespace ExampleMod.Content.Projectiles
 		// Due to how our sprite is oriented and our custom holdout distance, we need to customize the rotation and holdout distance and can't just use ProjAIStyleID.HeldProjectile for this one.
 		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
 			Projectile.spriteDirection = Projectile.direction;
-			Vector2 projectileDirection = Vector2.UnitX * ExampleHeldProjectileWeapon.HoldoutDistance;
+			Vector2 projectileDirection = Vector2.UnitX * ExampleHeldProjectileWeapon.HoldoutDistance * Projectile.scale;
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value;
@@ -149,6 +149,8 @@ namespace ExampleMod.Content.Projectiles
 			if (Projectile.direction == -1) {
 				projectileDirection.X *= -1f;
 			}
+
+			Projectile.frame = doll.CalculateFrameFromMiscCounter(framerate: 4, minFrame: 0, maxFrame: Main.projFrames[Type]); // Apply the animation of the held projectile.
 
 			Projectile.velocity = projectileDirection;
 			Projectile.position += projectileDirection; // Move the projectile's location while being held by the mannequin.
