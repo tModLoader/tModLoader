@@ -41,6 +41,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
   - RegisterSimpleConversion now registers automatic chlorophyte purification for both defense types (9/10). Other conversion usages still need review.
+  - Are BiomeConversionID.Forced{Biome} even used?
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - Vanilla Fishing drops are now declarative
   - Mods should be encouraged to use the new system, so new fishing features work.
