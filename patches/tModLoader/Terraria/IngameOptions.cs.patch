@@ -29,7 +29,7 @@
  		Vector2 vector4 = new Vector2(vector3.X + vector2.X / 4f, vector3.Y + (float)(num3 * 5 / 2));
  		Vector2 vector5 = new Vector2(0f, vector2.Y - (float)(num3 * 5)) / (num8 + 1);
  		if (flag)
-@@ -258,6 +_,24 @@
+@@ -258,6 +_,17 @@
  			}
  		}
  
@@ -40,14 +40,7 @@
 +
 +			if (flag4) {
 +				Close();
-+				IngameFancyUI.CoverNextFrame();
-+
-+				Main.playerInventory = false;
-+				Main.editChest = false;
-+				Main.npcChatText = "";
-+				Main.inFancyUI = true;
-+
-+				Main.InGameUI.SetState(Interface.modConfigList);
++				IngameFancyUI.OpenUIState(Interface.modConfigList);
 +			}
 +		}
 +
