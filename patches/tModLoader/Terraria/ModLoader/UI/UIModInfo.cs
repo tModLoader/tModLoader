@@ -43,28 +43,28 @@ internal class UIModInfo : UIState
 	public override void OnInitialize()
 	{
 		_uIElement = new UIElement {
-			Width = {Percent = 0.8f},
+			Width = { Percent = 0.8f },
 			MaxWidth = new StyleDimension(800f, 0f), //UICommon.MaxPanelWidth,
-			Top = {Pixels = 220},
-			Height = {Pixels = -220, Percent = 1f},
+			Top = { Pixels = 220 },
+			Height = { Pixels = -220, Percent = 1f },
 			HAlign = 0.5f
 		};
 
 		var uIPanel = new UIPanel {
-			Width = {Percent = 1f},
-			Height = {Pixels = -110, Percent = 1f},
+			Width = { Percent = 1f },
+			Height = { Pixels = -110, Percent = 1f },
 			BackgroundColor = UICommon.MainPanelBackground
 		};
 		_uIElement.Append(uIPanel);
 
 		_modInfo = new UIMessageBox(string.Empty) {
-			Width = {Pixels = -25, Percent = 1f},
-			Height = {Percent = 1f}
+			Width = { Pixels = -25, Percent = 1f },
+			Height = { Percent = 1f }
 		};
 		uIPanel.Append(_modInfo);
 
 		var uIScrollbar = new UIScrollbar {
-			Height = {Pixels = -12, Percent = 1f},
+			Height = { Pixels = -12, Percent = 1f },
 			VAlign = 0.5f,
 			HAlign = 1f
 		}.WithView(100f, 1000f);
@@ -73,17 +73,17 @@ internal class UIModInfo : UIState
 		_modInfo.SetScrollbar(uIScrollbar);
 		_uITextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModInfoHeader"), 0.8f, true) {
 			HAlign = 0.5f,
-			Top = {Pixels = -35},
+			Top = { Pixels = -35 },
 			BackgroundColor = UICommon.DefaultUIBlue
 		}.WithPadding(15f);
 		_uIElement.Append(_uITextPanel);
 
 		_modHomepageButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoVisitHomepage")) {
 			Width = { Pixels = -10, Percent = 0.333f },
-			Height = {Pixels = 40},
+			Height = { Pixels = 40 },
 			HAlign = 0.5f,
 			VAlign = 1f,
-			Top = {Pixels = -65}
+			Top = { Pixels = -65 }
 		}.WithFadedMouseOver();
 		_modHomepageButton.OnLeftClick += VisitModHomePage;
 
@@ -115,29 +115,29 @@ internal class UIModInfo : UIState
 		fakeExtractLocalizationButton.BackgroundColor = Color.Gray;
 
 		var backButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Back")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		backButton.OnLeftClick += BackClick;
 		_uIElement.Append(backButton);
 
 		_extractButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("tModLoader.ModInfoExtract")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
 			HAlign = 0.5f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		_extractButton.OnLeftClick += ExtractMod;
 
 		_deleteButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("UI.Delete")) {
-			Width = {Pixels = -10, Percent = 0.333f},
-			Height = {Pixels = 40},
+			Width = { Pixels = -10, Percent = 0.333f },
+			Height = { Pixels = 40 },
 			VAlign = 1f,
 			HAlign = 1f,
-			Top = {Pixels = -20}
+			Top = { Pixels = -20 }
 		}.WithFadedMouseOver();
 		_deleteButton.OnLeftClick += DeleteMod;
 
@@ -158,7 +158,7 @@ internal class UIModInfo : UIState
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		// No need for a separate UIState, the process should be quick.
 		bool success = LocalizationLoader.ExtractLocalizationFiles(_modName);
-		if(success)
+		if (success)
 			extractLocalizationButton.SetText(Language.GetTextValue("tModLoader.ModInfoExtracted"));
 	}
 
@@ -269,7 +269,7 @@ internal class UIModInfo : UIState
 		if (!_loading && _ready) {
 			_modInfo.SetText(_info);
 
-			if (!string.IsNullOrEmpty(_url)){
+			if (!string.IsNullOrEmpty(_url)) {
 				_uIElement.Append(_modHomepageButton);
 			}
 

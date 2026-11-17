@@ -174,7 +174,7 @@ public partial class PlayerDrawLayers
 
 
 	// Compare this with the vanilla layer drawing call order to make sure it's accurate when updating
-	internal static IReadOnlyList<PlayerDrawLayer> FixedVanillaLayers => new [] {
+	internal static IReadOnlyList<PlayerDrawLayer> FixedVanillaLayers => new[] {
 		JimsCloak,
 		MountBack,
 		Carpet,

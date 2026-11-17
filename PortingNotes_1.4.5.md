@@ -2,11 +2,12 @@
 
 Once all patches are fixed, these items need to be fixed or double checked:
 
+- ModdedGrass --> Player.cs else if (inventory[selectedItem].createTile == 633) needs to be determined if this should be kept or commented out
+- UIModItem Double Click logic needs verification relative to https://github.com/tModLoader/tModLoader/commit/5968e3d72650ac6ea067add1390984b5f33c0e2f
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
-- Test if https://github.com/tModLoader/tModLoader/pull/4626 is fixed in vanilla. I think you need to test with non-player chat to test properly, or maybe another player?
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
@@ -38,7 +39,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
-- Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
+  - RegisterSimpleConversion now registers automatic chlorophyte purification for both defense types (9/10). Other conversion usages still need review.
+  - Are BiomeConversionID.Forced{Biome} even used?
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - Vanilla Fishing drops are now declarative
   - Mods should be encouraged to use the new system, so new fishing features work.
@@ -78,7 +80,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - GameTipsDisplay patches need to be redone
 - Main.OpenPlayerSelectFromNet changed how our patches can be implemented for invite joining. Need to be reimplemented.
 - DrawColorCodedStringWithShadow methods no longer return Vector2 string size. Is this because of some reason? All patches in ChatManager need to be revisited.
-- Paladin shield patches might have been mixed up. Double Check.
 - New GetItemManaUsageDetails and ItemCheck_PayMana_X methods split mana costs into multiple methods. Should be able to remove a lot of Player.TML.cs patches and use them directly.
 - Vanilla now uses Player.clientCloneItem() instead of Item.Clone(). I think we can just use that instead of swapping them for CopyNetStateTo and adjust `clientCloneItem` with `NetStateVersion`, but this may need more testing.
 - Recipe Changes:
@@ -276,17 +277,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- These buffimmune change are new and likely need to be used to update TML-specific sets.
-```cs
-		if (buffImmune[20]) {
-			buffImmune[30] = true;
-			buffImmune[375] = buffImmune[30];
-		}
-
-		if (buffImmune[69])
-			buffImmune[36] = true;
 ```
 
 - Move this patch to PrepareAliases, or adjust ModCommand to use new system:

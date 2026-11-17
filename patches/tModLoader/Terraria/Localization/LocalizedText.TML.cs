@@ -66,7 +66,8 @@ public partial class LocalizedText
 	/// <param name="args">The leading substitution args</param>
 	public LocalizedText WithPartialFormatArgs(params object[] args)
 	{
-		if (string.IsNullOrEmpty(Key)) ThrowInvalidLiteralOperation();
+		if (string.IsNullOrEmpty(Key))
+			ThrowInvalidLiteralOperation();
 		return LanguageManager.Instance.BindFormatArgs(Key, [.. BoundArgs ?? [], .. args]);
 	}
 

@@ -8,6 +8,25 @@
  {
  	public const int Purity = 0;
  	public const int Corruption = 1;
+@@ -10,8 +_,18 @@
+ 	public const int Sand = 5;
+ 	public const int Snow = 6;
+ 	public const int Dirt = 7;
++	/// <summary>
++	/// The conversion that converts <see cref="TileID.Mud"/> or <see cref="TileID.JungleGrass"/> to <see cref="TileID.Chlorophyte"/>.
++	/// </summary>
+ 	public const int ChlorophyteSpread = 8;
++	/// <summary>
++	/// The conversion caused by <see cref="TileID.Chlorophyte"/> and <see cref="TileID.ChlorophyteBrick"/> tiles purifying nearby tiles. 
++	/// </summary>
+ 	public const int ChlorophyteDefenseWhenChloroSpreads = 9;
++	/// <summary>
++	/// The conversion that takes place instead of natural evil biome spreading when near <see cref="TileID.Chlorophyte"/> (<see cref="WorldGen.nearbyChlorophyte"/>) on a remix seed world (<see cref="Main.remixWorld"/>), purifying nearby tiles.
++	/// <para/> Unlike <see cref="ChlorophyteDefenseWhenChloroSpreads"/>, this does not affect <see cref="TileID.Dirt"/>, <see cref="TileID.Grass"/>, <see cref="TileID.HallowedGrass"/>, <see cref="TileID.GolfGrass"/>, or <see cref="TileID.GolfGrassHallowed"/>. This is mentioned as "defensive conversion on <see href="https://terraria.wiki.gg/wiki/Chlorophyte_Ore#Conversion">the wiki</see>.
++	/// </summary>
+ 	public const int ChlorophyteDefenseWhenEvilSpreads = 10;
+ 	public const int PurificationPowder = 11;
+ 	public const int ForcedCorruption = 12;
 @@ -24,4 +_,5 @@
  	public const int ForcedJungle = 19;
  	public const int ForcedTemple = 20;

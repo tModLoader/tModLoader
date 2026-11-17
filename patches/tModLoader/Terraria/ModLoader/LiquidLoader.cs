@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
@@ -7,6 +7,7 @@ using Terraria.ID;
 using Terraria.ModLoader.Core;
 
 namespace Terraria.ModLoader;
+
 public static class LiquidLoader
 {
 	private static int nextLiquid = LiquidID.Count;
@@ -61,6 +62,10 @@ public static class LiquidLoader
 
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 
+		TileID.Sets.ApplyResizeTileLiquidSourceForCraftingSet();
+
+		ModLoader.BuildGlobalHook(ref HookModifyLight, globalLiquids, (GlobalLiquid g) => g.ModifyLight);
+
 		if (!unloading) {
 			loaded = true;
 		}
@@ -72,5 +77,15 @@ public static class LiquidLoader
 		liquids.Clear();
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
+	}
+
+	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
+	private static DelegateModifyLight[] HookModifyLight;
+	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
+		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+		foreach (var hook in HookModifyLight) {
+			hook(i, j, type, ref r, ref g, ref b);
+		}
 	}
 }
