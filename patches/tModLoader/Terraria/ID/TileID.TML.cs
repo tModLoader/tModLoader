@@ -1,3 +1,4 @@
+using System;
 using Terraria.GameContent.Drawing;
 using Terraria.ModLoader;
 
@@ -10,7 +11,19 @@ partial class TileID
 		/// <summary> Will cause the tile to be killed when right clicked, like <see cref="TileID.Torches"/> or Water Bolt. No need to set this if using <see cref="Torches"/>. </summary>
 		public static bool[] CanDropFromRightClick = Factory.CreateBoolSet(4);
 		public static bool[] Stone = Factory.CreateBoolSet(1, 117, 25, 203);
-		public static bool[] Grass = Factory.CreateBoolSet(2, 23, 109, 199, 477, 492, 633); // Might be incorrect?
+
+		/// <summary>
+		/// Contains grasses that transform into <see cref="TileID.Dirt"/> when mined.
+		/// <para/> Vanilla entries include <see cref="TileID.Grass"/>, <see cref="CorruptGrass"/>, <see cref="HallowedGrass"/>, <see cref="CrimsonGrass"/>, <see cref="GolfGrass"/>, and <see cref="GolfGrassHallowed"/>.
+		/// <para/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.GrassSpecial"/> and <see cref="NeedsGrassFraming"/>.
+		/// </summary>
+		public static bool[] Grass = Factory.CreateBoolSet(TileID.Grass, CorruptGrass, HallowedGrass, CrimsonGrass, GolfGrass, GolfGrassHallowed); // 2, 23, 109, 199, 477, 492
+
+		/// <summary>
+		/// Grass tiles in this set will not be destroyed when newly placed solid tiles surround it.
+		/// </summary>
+		public static bool[] GrassNotKilledWhenSurrounded = Factory.CreateBoolSet(CorruptJungleGrass, CrimsonJungleGrass);
+
 		/// <summary> Tiles within this set are multi-tiles that don't have a TileObjectData. This is only used to prevent TileLoader.Drop from being called multiple times when breaking these tiles, as might be expected. Trees and Cactus are not included in this, since each of those tiles drop items. </summary>
 		public static bool[] IsMultitile = Factory.CreateBoolSet(Pots, ShadowOrbs, PlantDetritus, LifeFruit, PlanteraBulb, OasisPlants); // 165, 185, 201: Have 1x1 and multitiles in same tile, ignore.
 
@@ -69,14 +82,11 @@ partial class TileID
 		/// <summary> Whether or not this tile is a sapling, which can grow into a tree based on the soil it's placed on. Be sure to set <see cref="CommonSapling"/> with this too. </summary>
 		public static bool[] TreeSapling = Factory.CreateBoolSet(Saplings);
 
-		/// <summary> Whether or not this tile counts as a honey source for crafting purposes. </summary>
-		public static bool[] CountsAsHoneyForCrafting = Factory.CreateBoolSet();
-
-		/// <summary> Whether or not this tile counts as a lava source for crafting purposes. </summary>
-		public static bool[] CountsAsLavaForCrafting = Factory.CreateBoolSet();
-
-		/// <summary> Whether or not this tile counts as a shimmer source for crafting purposes. </summary>
-		public static bool[] CountsAsShimmerForCrafting = Factory.CreateBoolSet();
+		/// <summary>
+		/// Whether or not this tile counts as a specified liquid's source for crafting purposes.
+		/// Consists of a bool array of length Liquid Type (inner) assigned to each Tile Type (outer).
+		/// </summary>
+		public static bool[][] CountsAsLiquidSourceForCrafting;
 
 		/// <summary> Whether or not saplings count this tile as empty when trying to grow. </summary>
 		public static bool[] IgnoredByGrowingSaplings = Factory.CreateBoolSet(3, 24, 32, 61, 62, 69, 71, 73, 74, 82, 83, 84, 110, 113, 184, 201, 233, 352, 485, 529, 530, 637, 655);
@@ -207,6 +217,28 @@ partial class TileID
 		{
 			JungleBiome[type] = strength;
 			RemixJungleBiome[type] = strength;
+		}
+
+		static Sets()
+		{
+			CountsAsLiquidSourceForCrafting = Factory.CreateCustomSet<bool[]>(null, Array.Empty<object>());
+			ApplyResizeTileLiquidSourceForCraftingSet();
+		}
+
+		public static void ApplyResizeTileLiquidSourceForCraftingSet()
+		{
+			for (int type = 0; type < TileLoader.TileCount; type++) {
+				// We intentionally do NOT use Factory.CreateBoolSet for two reasons.
+				// First, that the unqualified Factory instance here is associated with TileLoader and not LiquidLoader.
+				// Second is that even if we did use a LiquidID based FactorySet instance inside the CountsAs set, the inner liquid sets didn't get resized during testing.
+				// As such, due to the risk and limitations present, we instead use the classical approach of a method to resize the arrays that can be invoked in LiquidLoader.
+				CountsAsLiquidSourceForCrafting[type] = new bool[LiquidLoader.LiquidCount]; 
+
+				if (type == TileID.Sinks || type == TileID.WaterFountain) {
+					CountsAsLiquidSourceForCrafting[type][LiquidID.Water] = true; // Vanilla CountsAsWaterForCrafting
+					continue;
+				}
+			}
 		}
 	}
 }

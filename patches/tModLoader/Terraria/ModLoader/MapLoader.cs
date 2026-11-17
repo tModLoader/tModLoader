@@ -61,7 +61,7 @@ internal static class MapLoader
 				names.Add(entry.name ?? throw new Exception($"MapEntry.name == null for Tile {TileLoader.GetTile(type)}"));
 			}
 		}
-		
+
 		foreach (ushort type in liquidEntries.Keys) {
 			MapHelper.liquidLookup[type] = (ushort)(MapHelper.modPosition + colors.Count);
 			foreach (MapEntry entry in liquidEntries[type]) {
