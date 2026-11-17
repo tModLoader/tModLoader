@@ -47,7 +47,7 @@ namespace ExampleMod.Backgrounds
 			}
 		}
 
-		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b) {
+		public override int ChooseCloseTexture(ref float scale, ref double parallax, ref float verticalParallax, ref float verticalOffset) {
 			return BackgroundTextureLoader.GetBackgroundSlot(Mod, "Assets/Textures/Backgrounds/ExampleBiomeSurfaceClose");
 		}
 	}
