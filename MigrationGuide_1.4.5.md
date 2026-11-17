@@ -636,6 +636,7 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise indicated.
 
 * 🤖: `ArmorID.Head.Sets.DrawHead` -> `ArmorID.Head.Sets.HidesHead`. Meaning and default value have inverted.
+* 💀: `BiomeConversionID.Chlorophyte` has been split into `ChlorophyteDefenseWhenChloroSpreads` and `ChlorophyteDefenseWhenEvilSpreads`. `TileLoader.RegisterSimpleConversion` will automatically register a conversion for both. More advanced biome conversion registrations might need to account for the new conversions. See the documentation for more information. `BiomeConversionID.ChlorophyteSpread` is also new and corresponds to chlorophyte itself spreading.
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
