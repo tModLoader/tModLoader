@@ -567,6 +567,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
@@ -578,6 +580,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
