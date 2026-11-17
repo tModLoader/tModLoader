@@ -1676,7 +1676,7 @@
 +			aiType = ModProjectile.AIType;
 +		}
  		int num = aiStyle;
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref num, ref aiType))
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, weapon, ref num, ref aiType))
 +			goto SkipVanillaLogic;
 +		this.type = aiType;
 +
