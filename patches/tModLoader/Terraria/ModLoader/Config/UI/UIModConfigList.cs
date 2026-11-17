@@ -235,7 +235,7 @@ internal class UIModConfigList : UIState
 		if (selectedMod == null || !ConfigManager.Configs.TryGetValue(selectedMod, out var configs))
 			return;
 
-		foreach (var config in sortedConfigs) {
+		foreach (var config in configs) {
 			var indicatorTexture = UICommon.ConfigSideIndicatorTexture;
 			// -2 to account for padding in texture to avoid texture atlas issues
 			var indicatorFrame = indicatorTexture.Frame(2, 1, config.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
