@@ -65,4 +65,14 @@ public class GlobalItemTest : GlobalItem
 	public override void OnHitNPC(Item item, Player player, NPC target, NPC.HitInfo hit, int damageDone) { }
 	public override void ModifyHitPvp(Item item, Player player, Player target, ref Player.HurtModifiers modifiers) { }
 	public override void OnHitPvp(Item item, Player player, Player target, Player.HurtInfo hurtInfo) { }
+
+#if COMPILE_ERROR
+	public override string IsArmorSet(Item head, Item body, Item legs)/* tModPorter Note: Removed. Armor sets are now declarative, use AddArmorSet */ { return ""; }
+#endif
+
+	public override void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus) { }
+
+	public override void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue) { }
+
+	public override void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue) { }
 }

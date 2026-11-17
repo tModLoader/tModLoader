@@ -15,8 +15,7 @@ namespace ExampleMod.Content.Items.Tools
 	/// </summary>
 	public class ExampleGolfClub : ModItem
 	{
-		public override void SetStaticDefaults()
-		{
+		public override void SetStaticDefaults() {
 			// Allow placement on weapon racks
 			ItemID.Sets.CanBePlacedOnWeaponRacks[Type] = true;
 
@@ -24,8 +23,7 @@ namespace ExampleMod.Content.Items.Tools
 			ItemID.Sets.IsAGolfClub[Type] = true;
 		}
 
-		public override void SetDefaults()
-		{
+		public override void SetDefaults() {
 			// DefaultToGolfClub sets various properties common to golf clubs:
 			// - width/height: item dimensions
 			// - channel: shows hand animation on hover
@@ -57,8 +55,7 @@ namespace ExampleMod.Content.Items.Tools
 		/// </list>
 		/// <br/> Note that all vanilla club upgrades share the same stats and are purely aesthetic.
 		/// </summary>
-		public override GolfHelper.ClubProperties? GetGolfClubProperties()
-		{
+		public override GolfHelper.ClubProperties? GetGolfClubProperties() {
 			// Return custom club properties, using Driver-like stats here
 			return new GolfHelper.ClubProperties(
 				minimumStrength: new Vector2(0.25f, 0.25f),
@@ -67,8 +64,7 @@ namespace ExampleMod.Content.Items.Tools
 			);
 		}
 
-		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup)
-		{
+		public override void ModifyResearchSorting(ref ContentSamples.CreativeHelper.ItemGroup itemGroup) {
 			// Place this item in the Golf group in Journey Mode's duplication menu
 			itemGroup = ContentSamples.CreativeHelper.ItemGroup.Golf;
 		}

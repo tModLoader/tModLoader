@@ -110,7 +110,7 @@ public abstract class ConfigElement : UIElement
 			// We need to check against the value in the load time config, not the value at the time of binding.
 			ModConfig loadTimeConfig = ConfigManager.GetLoadTimeConfig(modConfig.Mod, modConfig.Name);
 			OldValue = MemberInfo.GetValue(loadTimeConfig);
-		 }
+		}
 	}
 
 	protected virtual void SetObject(object value)

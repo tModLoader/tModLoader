@@ -97,7 +97,7 @@ class UIBestiaryBar : UIElement
 			sb.Draw(TextureAssets.MagicPixel.Value, outlineArea, barData.DrawColor * 0.3f);
 			sb.Draw(TextureAssets.MagicPixel.Value, drawArea, barData.DrawColor);
 
-			if(!drawHover && outlineArea.Contains(new Point(Main.mouseX, Main.mouseY))) {
+			if (!drawHover && outlineArea.Contains(new Point(Main.mouseX, Main.mouseY))) {
 				drawHover = true;
 				hoverData = barData;
 			}
@@ -116,7 +116,7 @@ class UIBestiaryBar : UIElement
 			hoverData = bottomData;
 		}
 
-		if(drawHover && hoverData != null) {
+		if (drawHover && hoverData != null) {
 			Main.instance.MouseText(hoverData.Tooltop, 0, 0);
 		}
 	}

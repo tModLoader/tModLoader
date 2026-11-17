@@ -19,7 +19,7 @@ namespace ExampleMod.Common.Players
 		// These 3 fields relate to the Example Dodge. Example Dodge is modeled after the dodge ability of the Hallowed armor set bonus.
 		// exampleDodge indicates if the player actively has the ability to dodge the next attack. This is set by ExampleDodgeBuff, which in this example is applied by the HitModifiersShowcase weapon. The buff is only applied if exampleDodgeCooldown is 0 and will be cleared automatically if an attack is dodged or if the player is no longer holding HitModifiersShowcase.
 		public bool exampleDodge; // TODO: Example of custom player render
-		// Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be acquired.
+								  // Used to add a delay between Example Dodge being consumed and the next time the dodge buff can be acquired.
 		public int exampleDodgeCooldown;
 		// Controls the intensity of the visual effect of the dodge.
 		public int exampleDodgeVisualCounter;
@@ -90,6 +90,7 @@ namespace ExampleMod.Common.Players
 
 		// ExampleDodgeEffects() will be called from ConsumableDodge and HandleExampleDodgeMessage to sync the effect.
 		public void ExampleDodgeEffects() {
+			// Sets the player as immune to damage for a short time. Without this, the attack that was dodged would hit the player again immediately after the dodge. Cross Necklace (longInvince) is supported here as well.
 			Player.SetImmuneTimeForAllTypes(Player.longInvince ? 120 : 80);
 
 			// Some sound and visual effects
@@ -137,7 +138,9 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override void ModifyHurt(ref Player.HurtModifiers modifiers) {
-			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && TeammateCanAbsorbDamage()) {
+			// Just like the Paladin's Shield, check the TeamDamageShare set, to exclude environmental damage such as lava
+			// Undodgeable hits (typically instant kills) are also excluded
+			if (defendedByAbsorbTeamDamageEffect && Player == Main.LocalPlayer && ImmunityCooldownID.Sets.TeamDamageShare[modifiers.CooldownCounter] && modifiers.Dodgeable && TeammateCanAbsorbDamage()) {
 				modifiers.FinalDamage *= 1f - AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 			}
 		}
@@ -146,7 +149,7 @@ namespace ExampleMod.Common.Players
 			// On Hurt is used in this example to act upon another player being hurt.
 			// If the player who was hurt was defended, check if the local player should take the remaining damage for them
 			Player localPlayer = Main.LocalPlayer;
-			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
+			if (defendedByAbsorbTeamDamageEffect && Player != localPlayer && ImmunityCooldownID.Sets.TeamDamageShare[info.CooldownCounter] && info.Dodgeable && IsClosestShieldWearerInRange(localPlayer, Player.Center, Player.team)) {
 				// The intention of AbsorbTeamDamageAccessory is to transfer 30% of damage taken by teammates to the wearer.
 				// In ModifiedHurt, we reduce the damage by 30%. The resulting reduced damage is passed to OnHurt, where the player wearing AbsorbTeamDamageAccessory hurts themselves.
 				// Since OnHurt is provided with the damage already reduced by 30%, we need to reverse the math to determine how much the damage was originally reduced by
@@ -154,9 +157,10 @@ namespace ExampleMod.Common.Players
 				float percent = AbsorbTeamDamageAccessory.DamageAbsorptionMultiplier;
 				int damage = (int)(info.Damage * (percent / (1 - percent)));
 
-				// Don't bother pinging the defending player and upsetting their immunity frames if the portion of damage we're taking rounds down to 0
+				// Don't bother hurting the defending player if the portion of damage we're taking rounds down to 0
 				if (damage > 0) {
-					localPlayer.Hurt(PlayerDeathReason.ByOther(16), damage, 0);
+					// Use the Paladin's shield immunity cooldown id (no cooldown), and ensure the shared damage can't be dodged
+					localPlayer.Hurt(PlayerDeathReason.ByOther(16), damage, 0, cooldownCounter: ImmunityCooldownID.PaladinsShield, dodgeable: false);
 				}
 			}
 		}

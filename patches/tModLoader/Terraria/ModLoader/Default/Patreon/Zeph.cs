@@ -48,7 +48,7 @@ internal class Zeph_Wings : PatreonItem
 
 		ArmorIDs.Wing.Sets.Stats[Item.wingSlot] = new WingStats(150, 7f);
 	}
-	
+
 	public override void SetDefaults()
 	{
 		base.SetDefaults();

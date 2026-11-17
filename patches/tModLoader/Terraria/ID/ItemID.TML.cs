@@ -156,10 +156,12 @@ partial class ItemID
 		/// </summary>
 		/// <remarks>Coin luck application takes precedence over other actions related to shimmer.</remarks>
 		public static int[] CoinLuckValue = Factory.CreateIntSet(0,
+#pragma warning disable format
 			CopperCoin,   1,
 			SilverCoin,	  100,
 			GoldCoin,	  10000,
 			PlatinumCoin, 1000000
+#pragma warning restore format
 		);
 
 		/// <summary>
@@ -219,6 +221,12 @@ partial class ItemID
 			GolfClubTitaniumIron, GolfClubShroomitePutter, GolfClubDiamondWedge, GolfClubChlorophyteDriver
 		);
 
+		/// <summary>
+		/// Dictates which dirt tiles each grass seed item (<see cref="GrassSeeds"/>) can be planted on. Only checked for modded tiles. Used for smart cursor. 
+		/// <br/> Defaults to <see langword="null"/>.
+		/// </summary>
+		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
+	
 		/// <summary>
 		/// Contains voice accessories that can randomly generated in chests and lets slimes in Skyblock spawn carrying this item.
 		/// <para/>Additionally set <see cref="ItemID.Sets.IsAVoiceChangeItem"/> to boost the HP of slimes with this item.
