@@ -6874,7 +6874,7 @@
  					}
 +
 +					if (l >= SurfaceBackgroundID.Count) {
-+						LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(l);
++						LoaderManager.Get<SurfaceBackgroundStylesLoader>().DrawCloseBackground(num3, num4, pushBGTopHack, l);
 +					}
  				}
  			}

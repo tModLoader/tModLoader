@@ -598,6 +598,7 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
+		ChangeHookSignature("Terraria.ModLoader.ModSurfaceBackgroundStyle", "ChooseCloseTexture").RenameParameter("a", "verticalParallax").RenameParameter("b", "verticalOffset");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultDrawMapIcon", InsertArgument(oldArgCount: 6, index: 6, "out bool onScreen"));

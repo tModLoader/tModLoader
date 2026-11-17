@@ -281,7 +281,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 	}
 
-	public void DrawCloseBackground(int style)
+	public void DrawCloseBackground(float backgroundTopMagicNumber, float bgGlobalScaleMultiplier, int pushBGTopHack, int style)
 	{
 		if (!GlobalBackgroundStyleLoader.loaded || MenuLoader.loading) {
 			return;
@@ -298,17 +298,19 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		}
 
 		Main.bgScale = 1.25f;
+		Main.bgScale *= bgGlobalScaleMultiplier;
 		Main.instance.bgParallax = 0.37;
 
-		float a = 1800.0f;
-		float b = 1750.0f;
-		int textureSlot = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref a, ref b);
+		float verticalParallax = 1800.0f;
+		float verticalOffset = 1750.0f;
+
+		// Should bgGlobalScaleMultiplier be passed into ChooseCloseTexture? Is this too breaking?
+		int textureSlot = surfaceBackgroundStyle.ChooseCloseTexture(ref Main.bgScale, ref Main.instance.bgParallax, ref verticalParallax, ref verticalOffset);
 
 		if (textureSlot < 0 || textureSlot >= TextureAssets.Background.Length) {
 			return;
 		}
 
-		//Custom: bgScale, textureslot, patallaz, these 2 numbers...., Top and Start?
 		Main.instance.LoadBackground(textureSlot);
 
 		Main.bgScale *= 2f;
@@ -317,9 +319,7 @@ public class SurfaceBackgroundStylesLoader : SceneEffectLoader<ModSurfaceBackgro
 		SkyManager.Instance.DrawToDepth(Main.spriteBatch, 1f / (float)Main.instance.bgParallax);
 
 		Main.instance.bgStartX = (int)(-Math.IEEERemainder(Main.screenPosition.X * Main.instance.bgParallax, Main.bgWidthScaled) - (Main.bgWidthScaled / 2));
-		/* TODO: Main.instance.screenOff no longer exists. Adjust this logic to new logic.
-		Main.instance.bgTopY = (int)((-Main.screenPosition.Y + Main.instance.screenOff / 2f) / (Main.worldSurface * 16.0) * a + b) + (int)Main.instance.scAdj;
-		*/
+		Main.instance.bgTopY = (int)(backgroundTopMagicNumber * verticalParallax + verticalOffset) + (int)Main.instance.scAdj + pushBGTopHack;
 
 		if (Main.gameMenu) {
 			Main.instance.bgTopY = 320;

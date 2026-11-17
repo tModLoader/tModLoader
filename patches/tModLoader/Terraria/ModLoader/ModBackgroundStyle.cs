@@ -71,14 +71,14 @@ public abstract class ModSurfaceBackgroundStyle : ModBackgroundStyle
 	}
 
 	/// <summary>
-	/// Allows you to determine which texture is drawn in the closest part of the background. This also lets you modify the scale and parallax (as well as two unfortunately-unknown parameters).
+	/// Allows you to determine which texture is drawn in the closest part of the background. This also lets you modify the scale, parallax, and vertical parallax/offset.
 	/// </summary>
 	/// <param name="scale">The scale.</param>
 	/// <param name="parallax">The parallax value.</param>
-	/// <param name="a">a?</param>
-	/// <param name="b">b?</param>
+	/// <param name="verticalParallax">Vertical parallax multiplier, typically sits at 1800.</param>
+	/// <param name="verticalOffset">Vertical offset, usually near 1700, changed for various vanilla backgrounds.</param>
 	/// <returns></returns>
-	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float a, ref float b)
+	public virtual int ChooseCloseTexture(ref float scale, ref double parallax, ref float verticalParallax, ref float verticalOffset)
 	{
 		return -1;
 	}
