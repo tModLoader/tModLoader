@@ -96,36 +96,13 @@ public partial class ItemSlot
 	}
 	*/
 
-	/// <summary>
-	/// Alters the ItemSlot.DyeSwap method for modded slots;
-	/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
-	/// Here in case someone proves my statement wrong later.
-	/// </summary>
-	private static Item ModSlotDyeSwap(Item item, out bool success)
+	private static bool CanSwapDye(Player player, Item item, int slot)
 	{
-		Item item2 = item;
-		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-		int dyeSlotCount = 0;
-		var dyes = msPlayer.exDyesAccessory;
+		if (slot < player.dye.Length)
+			return player.IsItemSlotUnlockedAndUsable(slot);
 
-		for (int i = 0; i < dyeSlotCount; i++) {
-			if (dyes[i].type == 0) {
-				dyeSlotCount = i;
-				break;
-			}
-		}
-
-		if (dyeSlotCount >= msPlayer.SlotCount) {
-			success = false;
-			return item2;
-		}
-
-		item2 = dyes[dyeSlotCount].Clone();
-		dyes[dyeSlotCount] = item.Clone();
-
-		SoundEngine.PlaySound(7);
-		success = true;
-		return item2;
+		var moddedSlot = LoaderManager.Get<AccessorySlotLoader>().Get(slot - player.dye.Length, player);
+		return moddedSlot.IsEnabled() && moddedSlot.DrawDyeSlot && moddedSlot.CanAcceptItem(item, AccessorySlotType.DyeSlot);
 	}
 
 	// Copy of Acc check, but runs hooks which take the local player as a context.

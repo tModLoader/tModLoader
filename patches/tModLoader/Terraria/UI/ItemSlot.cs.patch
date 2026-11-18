@@ -834,6 +834,20 @@
  			item = GetSharedLoadoutItem(context, slot, out var _);
  
  		if (!item.IsAir) {
+@@ -2789,11 +_,11 @@
+ 
+ 		bool success;
+ 		if (inv[slot].dye > 0) {
+-			inv[slot] = DyeSwap(inv[slot], out success, out var targetSlot);
++			inv[slot] = DyeSwap(inv[slot], out success, out var targetSlot, out var moddedSlot);
+ 			if (success) {
+ 				Main.EquipPageSelected = 0;
+ 				AchievementsHelper.HandleOnEquip(player, inv[slot], 12);
+-				DisplayTransfer_TwoWay(inv, context, slot, player.dye, 12, targetSlot);
++				DisplayTransfer_TwoWay(inv, context, slot, moddedSlot ? AccessorySlotLoader.ModSlotPlayer(player).exDyesAccessory : player.dye, moddedSlot ? Context.ModdedDyeSlot : Context.EquipDye, targetSlot);
+ 			}
+ 		}
+ 		else if (Main.projHook[inv[slot].shoot]) {
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
@@ -843,14 +857,63 @@
  				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
  			}
  		}
-@@ -2987,6 +_,7 @@
+@@ -2987,30 +_,44 @@
  		return true;
  	}
  
-+	//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
- 	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
+-	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
++	private static Item DyeSwap(Item item, out bool success, out int targetSlot, out bool moddedSlot)
  	{
  		targetSlot = -1;
++		moddedSlot = false;
+ 		success = false;
+ 		if (item.dye <= 0)
+ 			return item;
+ 
+ 		Player player = Main.player[Main.myPlayer];
+-		while (!player.IsItemSlotUnlockedAndUsable(dyeSwapCounter)) {
+-			dyeSwapCounter = (dyeSwapCounter + 1) % 10;
+-		}
+-
+-		for (int i = 0; i < 10; i++) {
+-			if (player.IsItemSlotUnlockedAndUsable(i) && player.dye[i].IsAir) {
++		Item[] moddedDyes = AccessorySlotLoader.ModSlotPlayer(player).exDyesAccessory;
++		int slotCount = player.dye.Length + moddedDyes.Length;
++		dyeSwapCounter %= slotCount;
++
++		for (int i = 0; i < slotCount; i++) {
++			if (!CanSwapDye(player, item, i))
++				continue;
++
++			Item dye = i < player.dye.Length ? player.dye[i] : moddedDyes[i - player.dye.Length];
++			if (dye.IsAir) {
+ 				dyeSwapCounter = i;
+ 				break;
+ 			}
+ 		}
+ 
+-		SoundEngine.PlaySound(7);
+-		SwapClearFavorite(ref item, ref player.dye[dyeSwapCounter]);
+-		targetSlot = dyeSwapCounter;
+-		dyeSwapCounter = (dyeSwapCounter + 1) % 10;
+-		success = true;
++		for (int i = 0; i < slotCount; i++) {
++			if (CanSwapDye(player, item, dyeSwapCounter)) {
++				moddedSlot = dyeSwapCounter >= player.dye.Length;
++				targetSlot = moddedSlot ? dyeSwapCounter - player.dye.Length : dyeSwapCounter;
++				SoundEngine.PlaySound(7);
++				SwapClearFavorite(ref item, ref (moddedSlot ? moddedDyes : player.dye)[targetSlot]);
++				dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
++				success = true;
++				return item;
++			}
++
++			dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
++		}
++
+ 		return item;
+ 	}
+ 
 @@ -3181,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)
