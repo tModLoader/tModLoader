@@ -235,7 +235,7 @@ public abstract class ModConfig : ILocalizedModType
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
 			Main.InGameUI.SetState(Interface.modConfig);
-			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()`
+			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()
 		}
 	}
 }
