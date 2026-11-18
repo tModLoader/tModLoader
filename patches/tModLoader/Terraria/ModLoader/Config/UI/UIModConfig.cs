@@ -60,25 +60,28 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private UIElement uiElement;
 	private UIPanel uiPanel;
-	private MarqueeTextPanel headerTextPanel;
+	private UIMarqueeTextPanel headerTextPanel;
 
-	private UIButton<LocalizedText> backButton;
-	private UIButton<LocalizedText> saveConfigButton;
-	private UIButton<LocalizedText> revertConfigButton;
-	private UIButton<LocalizedText> restoreDefaultsConfigButton;
+	private UIButton backButton;
+	private UIButton saveConfigButton;
+	private UIButton revertConfigButton;
+	private UIButton restoreDefaultsConfigButton;
 
 	private UIElement listHeaderContainer;
 	private UIList configElementList;
 	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
-	private UIPanel modNamePanel;
-	private MarqueeText modNameText;
-	private UIImage smallModIcon;
 	private UIImageFramed configSideIndicator;
+	// These 2 use the same code as UIModConfigList
+	private UIButton modNamePanel;
+	private UIImageFramed smallModIcon;
 
-	private UIButton<LocalizedText> subPageBackButton;
+	private UIButton subPageBackButton;
 	private UIPanel subPageBreadcrumbPanel;
-	private MarqueeText subPageBreadcrumbText;
+	private UIMarqueeText subPageBreadcrumbText;
+
+	private Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
+	private Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
 
 	#region UI Creation
 
@@ -112,55 +115,70 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void CreateButtons()
 	{
+		var clickableState = UIButton.State.DefaultWithHover with {
+			TooltipText = true,
+		};
+
+		var backButtonUnsavedChanges = clickableState with {
+			PanelColor = Color.Red * 0.7f,
+			HoverPanelColor = Color.Red,
+			HoverText = Language.GetText("tModLoader.ModConfigBackUnsavedChanges"),
+		};
+
+		var disabledState = UIButton.State.Default with {
+			TooltipText = true,
+			PanelColor = Color.Gray,
+		};
+
 		backButton = CreateButton("tModLoader.ModConfigBack", 0, BackClick);
-		backButton.UseAltColors = () => HasUnsavedChanges;
-		backButton.AltPanelColor = Color.Red * 0.7f;
-		backButton.AltHoverPanelColor = Color.Red;
-		backButton.AltHoverText = Language.GetText("tModLoader.ModConfigBackUnsavedChanges");
+		backButton.AddState("Default", clickableState);
+		backButton.AddState("HasUnsavedChanges", backButtonUnsavedChanges);
+		backButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
 		uiElement.Append(backButton);
 
 		saveConfigButton = CreateButton("tModLoader.ModConfigSaveConfig", 1f / 3f, SaveConfig);
-		saveConfigButton.UseAltColors = () => !HasUnsavedChanges;
-		saveConfigButton.AltHoverText = Language.GetText("tModLoader.ModConfigSaveConfigNoUnsavedChanges");
-		SetButtonAltColorsToDisabled(saveConfigButton);
+		saveConfigButton.AddState("Default", disabledState with {
+			HoverText = Language.GetText("tModLoader.ModConfigSaveConfigNoUnsavedChanges"),
+		});
+		saveConfigButton.AddState("HasUnsavedChanges", clickableState);
+		saveConfigButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
 		uiElement.Append(saveConfigButton);
 
 		revertConfigButton = CreateButton("tModLoader.ModConfigRevertChanges", 2f / 3f, RevertConfig);
-		revertConfigButton.HoverText = Language.GetText("tModLoader.ModConfigRevertChangesTooltip");
-		revertConfigButton.UseAltColors = () => !HasUnsavedChanges;
-		revertConfigButton.AltHoverText = Language.GetText("tModLoader.ModConfigRevertChangesNoUnsavedChanges");
-		SetButtonAltColorsToDisabled(revertConfigButton);
+		revertConfigButton.AddState("Default", disabledState with {
+			HoverText = Language.GetText("tModLoader.ModConfigRevertChangesNoUnsavedChanges"),
+		});
+		revertConfigButton.AddState("HasUnsavedChanges", clickableState with {
+			HoverText = Language.GetText("tModLoader.ModConfigRevertChangesTooltip"),
+		});
+		revertConfigButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
 		uiElement.Append(revertConfigButton);
 
 		restoreDefaultsConfigButton = CreateButton("tModLoader.ModConfigRestoreDefaults", 1f, RestoreDefaults);
-		restoreDefaultsConfigButton.HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsTooltip");
-		restoreDefaultsConfigButton.UseAltColors = () => HasDefaultValues;
-		restoreDefaultsConfigButton.AltHoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsAlreadyDefault");
-		SetButtonAltColorsToDisabled(restoreDefaultsConfigButton);
+		restoreDefaultsConfigButton.AddState("Default", clickableState with {
+			HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsTooltip"),
+		});
+		restoreDefaultsConfigButton.AddState("HasDefaultValues", disabledState with {
+			HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsAlreadyDefault"),
+		});
+		restoreDefaultsConfigButton.GetCurrentState = () => HasDefaultValues ? "HasDefaultValues" : "Default";
 		uiElement.Append(restoreDefaultsConfigButton);
 	}
 
-	private static UIButton<LocalizedText> CreateButton(string localizationKey, float hAlign, MouseEvent onClick)
+	private static UIButton CreateButton(string localizationKey, float hAlign, MouseEvent onClick)
 	{
-		var button = new UIButton<LocalizedText>(Language.GetText(localizationKey), 1f, false) {
-			Width = { Pixels = -10, Percent = 0.25f },
+		var button = new UIButton(Language.GetText(localizationKey), 1f, false) {
+			MinWidth = { Pixels = -10, Percent = 0.25f },
 			Height = { Pixels = 40 },
 			Top = { Pixels = -20 },
 			VAlign = 1f,
 			HAlign = hAlign,
-			TooltipText = true,
-			HoverSound = SoundID.MenuTick,
 		};
 
+		button.MaxWidth = button.MinWidth;
 		button.OnLeftClick += onClick;
-		return button;
-	}
 
-	private static void SetButtonAltColorsToDisabled(UIButton<LocalizedText> button)
-	{
-		button.AltPanelColor = Color.Gray;
-		button.AltHoverPanelColor = Color.Gray;
-		button.AltHoverBorderColor = button.BorderColor;
+		return button;
 	}
 
 	private void CreatePanelContents()
@@ -190,8 +208,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		var configSideIndicatorPanel = CreateInfoBadge();
-		configSideIndicatorPanel.Width = configSideIndicatorPanel.Height;
+		var configSideIndicatorPanel = new UIPanel {
+			Width = { Pixels = 40 },
+			Height = { Pixels = 40 },
+			VAlign = 0.5f,
+			BackgroundColor = InfoBadgeBackgroundColor,
+			BorderColor = InfoBadgeBorderColor,
+		};
 		configSideIndicatorPanel.SetPadding(0);
 		listHeaderContainer.Append(configSideIndicatorPanel);
 
@@ -208,26 +231,15 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 		};
 
-		smallModIcon = new UIImage(Asset<Texture2D>.Empty) {
-			VAlign = 0.5f,
-		};
-		// Gets appended in OnActivate
-
-		modNamePanel = CreateInfoBadge();
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Mod.PlaceholderSmallModIcon, null);
 		modNamePanel.MaxWidth.Set(330, 0);
+		modNamePanel.MinWidth.Set(0, 0);
+		modNamePanel.VAlign = 0.5f;
 		modNamePanel.Left.Pixels = 50;
-		modNamePanel.SetPadding(6);
-
-		modNameText = new MarqueeText("[Unknown Mod Name]") {
-			Width = { Percent = 1f },
-			Height = { Percent = 1f },
-			IsScrolling = false,
-		};
-
-		modNamePanel.Append(modNameText);
-
-		modNamePanel.OnMouseOver += (_, _) => modNameText.IsScrolling = true;
-		modNamePanel.OnMouseOut += (_, _) => modNameText.IsScrolling = false;
+		modNamePanel.AddState("Default", UIButton.State.Default with {
+			PanelColor = InfoBadgeBackgroundColor,
+			BorderColor = InfoBadgeBorderColor,
+		});
 
 		listHeaderContainer.Append(modNamePanel);
 
@@ -250,27 +262,25 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void CreateHeaderPanel()
 	{
-		headerTextPanel = new MarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
+		headerTextPanel = new UIMarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
 			MaxWidth = { Percent = 0.95f},
 			HAlign = 0.5f,
 			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
 			BackgroundColor = UICommon.DefaultUIBlue,
-			AlignToStartWhenNotScrolling = true,
 		}.WithPadding(15f);
 		uiElement.Append(headerTextPanel);
 	}
 
 	private void CreateSubPageUI()
 	{
-		subPageBackButton = new UIButton<LocalizedText>(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
+		subPageBackButton = new UIButton(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
 			Width = { Pixels = 100 },
 			Height = { Pixels = 40 },
 			HAlign = 1f,
 			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
-			TooltipText = true,
-			HoverSound = SoundID.MenuTick,
 		};
 
+		subPageBackButton.AddState("Default", UIButton.State.DefaultWithHover);
 		subPageBackButton.OnLeftClick += BackSubPage;
 
 		subPageBreadcrumbPanel = new UIPanel {
@@ -290,25 +300,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 		subPageBreadcrumbPanel.Append(subPagePrompt);
 
-		subPageBreadcrumbText = new MarqueeText("", 0.8f) {
+		subPageBreadcrumbText = new UIMarqueeText("", 0.8f) {
 			Width = { Percent = 1f, Pixels = -subPagePrompt.MinWidth.Pixels },
 			Height = { Percent = 1f },
 			VAlign = 0.5f,
 			HAlign = 1f,
 		};
 		subPageBreadcrumbPanel.Append(subPageBreadcrumbText);
-	}
-
-	private UIPanel CreateInfoBadge()
-	{
-		var infoBadge = new UIPanel {
-			BackgroundColor = UICommon.DefaultUIBlueMouseOver * 0.5f,
-			BorderColor = UICommon.DefaultUIBlueMouseOver,
-			Height = { Pixels = 40 },
-			VAlign = 0.5f,
-		};
-
-		return infoBadge;
 	}
 
 	#endregion
@@ -394,7 +392,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		SoundEngine.PlaySound(SoundID.MenuOpen);
 		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
-		ConfigManager.RevertConfigChanges(modConfig, pendingConfig);
+		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
 		RefreshUI();
 	}
@@ -431,7 +429,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configElementList?.Clear();
 		filterTextField?.SetText("");
 		headerTextPanel?.ResetScroll();
-		modNameText?.ResetScroll();
+		modNamePanel?.ResetScroll();
 		subPageBreadcrumbText?.ResetScroll();
 		UnblockInput(null, null);
 
@@ -529,7 +527,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			subPageBackButton.OnActivate(); // Refresh colors
 			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name)));
 			subPageBreadcrumbText.ResetScroll();
-			subPageBreadcrumbText.SetScrollDelay(60);
+			subPageBreadcrumbText.MarqueeText.SetScrollDelay(60);
 
 			configElementList.Height.Pixels -= subPageBackButton.Height.Pixels + 10;
 		}
@@ -594,43 +592,24 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		Interface.modConfigList.ModToSelectOnOpen = mod;
 
+		// From UIModConfigList
 		var configSideTexture = UICommon.ConfigSideIndicatorTexture;
-		// -2 to account for padding in texture to avoid texture atlas issues
 		var configSideFrame = configSideTexture.Frame(2, 1, pendingConfig.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 		configSideIndicator.SetImage(configSideTexture, configSideFrame);
 		configSideIndicator.Recalculate();
 
-		// Set config name, mod name and small mod icon in the display panel
-		// This is kind of a mess but is needed to make the scrolling start a second after the UI opens
 		headerTextPanel.SetText(modConfig.DisplayName);
 		headerTextPanel.Recalculate();
 		headerTextPanel.ResetScroll();
-		headerTextPanel.SetScrollDelay(60);
-		modNameText.SetText(modConfig.Mod.DisplayName);
-		modNameText.Recalculate();
-		modNameText.ResetScroll();
-		modNameText.SetScrollDelay(60);
+		headerTextPanel.MarqueeText.SetScrollDelay(60);
 
-		// Same logic used in UIConfigList
-		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
-		float iconOffset = iconTexture.Width();
-		float iconPadding = 2;
-
-		smallModIcon.Remove();
-		smallModIcon.MarginTop = -2;
-		smallModIcon.MarginLeft = -iconOffset - iconPadding;
-		smallModIcon.SetImage(iconTexture);
-
-		modNamePanel.PaddingLeft = 6;
-		modNamePanel.PaddingLeft += iconOffset + iconPadding;
-		modNamePanel.Append(smallModIcon);
-
-		// Resize the mod name panel
-		const float ExtraTextSize = 6f; // Stops the edges of the mod name text getting clipped
-		var modNameTextSize = ChatManager.GetStringSize(FontAssets.MouseText.Value, modNameText.Text, new Vector2(modNameText.MaxTextScale));
-		modNamePanel.Width.Set(modNamePanel.PaddingLeft + modNameTextSize.X + modNamePanel.PaddingRight + ExtraTextSize, 0f);
-		modNamePanel.Height.Set(modNamePanel.PaddingTop + modNameTextSize.Y + modNamePanel.PaddingBottom, 0f);
+		modNamePanel.SetText(modConfig.Mod.DisplayName);
 		modNamePanel.Recalculate();
+		modNamePanel.ResetScroll();
+		modNamePanel.MarqueeText.SetScrollDelay(60);
+
+		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
+		smallModIcon.SetImage(iconTexture, Utils.CornerRectangle(Vector2.Zero, iconTexture.Size()));
 
 		configPageStack.Clear();
 		rootConfigPage = new ConfigPage(modConfig.DisplayName);

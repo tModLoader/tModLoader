@@ -280,7 +280,7 @@ internal class UIModConfigList : UIState
 		list.Recalculate();
 	}
 
-	private static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame, float extraIconPadding = 0f)
+	public static (UIButton, UIImageFramed) CreatePanel(object text, Asset<Texture2D> iconTexture, Rectangle? iconFrame, float extraIconPadding = 0f)
 	{
 		var panel = new UIButton(text) {
 			MinWidth = { Percent = 1f },

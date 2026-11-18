@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -89,6 +90,7 @@ internal class ObjectElement : ConfigElement<object>
 			separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(TextDisplayFunction));
 			separatePageButton.HAlign = 0.5f;
 			separatePageButton.OnLeftClick += (a, c) => {
+				SoundEngine.PlaySound(SoundID.MenuOpen);
 				Interface.modConfig.PushConfigPage(separateConfigPage);
 			};
 		}
