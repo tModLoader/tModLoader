@@ -37,6 +37,10 @@ internal class UIInputTextField : UIElement
 		Main.instance.HandleIME();
 		SetIMEPanelAnchor();
 		string newString = Main.GetInputText(_currentString);
+
+		if (Main.inputTextEscape)
+			Main.inputTextEscape = false;
+
 		if (newString != _currentString) {
 			_currentString = newString;
 			OnTextChange?.Invoke(this, EventArgs.Empty);
