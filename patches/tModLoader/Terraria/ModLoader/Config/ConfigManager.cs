@@ -28,9 +28,6 @@ public static class ConfigManager
 
 	// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 	private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
-	// This copy of configs stores the default values of configs. It is used to detect if a config has default values set.
-	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
-	private static readonly IDictionary<Mod, List<ModConfig>> defaultValueConfigs = new Dictionary<Mod, List<ModConfig>>();
 
 	// This copy of configs stores the default values of configs. It is used to detect if a config has it's default values.
 	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
@@ -353,14 +350,6 @@ public static class ConfigManager
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
-	internal static ModConfig GetDefaultValueConfig(Mod mod, string config)
-	{
-		if (defaultValueConfigs.TryGetValue(mod, out List<ModConfig>? configs)) {
-			return configs.Single(x => x.Name == config);
-		}
-		throw new MissingResourceException("Missing config named " + config + " in mod " + mod.Name);
-	}
-
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -560,14 +549,6 @@ public static class ConfigManager
 			hasNextB = enumeratorB.MoveNext();
 		}
 		return !hasNextA && !hasNextB;
-	}
-
-	public static bool AreConfigsEqual(ModConfig a, ModConfig b)
-	{
-		if (a.GetType() != b.GetType())
-			return false;
-
-		return JsonConvert.SerializeObject(a, serializerSettingsCompact) == JsonConvert.SerializeObject(b, serializerSettingsCompact);
 	}
 
 	internal static string FormatTextAttribute(LocalizedText localizedText, object[]? args)
