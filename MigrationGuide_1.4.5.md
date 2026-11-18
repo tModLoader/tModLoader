@@ -527,6 +527,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 
 ## Other Changes
 
+* To match vanilla crafting, use `GetItemSettings.ReturnItemShowAsNewNoCoinMerge` when returning items to the inventory and `GetItemSettings.RefundConsumedItem` when refunding consumed ingredients.
 * 💀: Calls to `Collision.SwitchTiles` and (Mod|Global)Tile.SwitchTiles` involving a `Player` now use `objType == 5` instead of `1`. Update checks for `1` in `(Mod|Global)Tile.SwitchTiles` to check for `5` instead.
 * Fishing power bonus now applies to any chair, not just toilets.
 * `EntitySource_FishedOut` is now used for fished up items instead of just NPC spawns that result from fishing.
@@ -636,10 +637,18 @@ Several Example Mod examples have been updated to adapt to 1.4.5 changes and to 
 All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise indicated.
 
 * 🤖: `ArmorID.Head.Sets.DrawHead` -> `ArmorID.Head.Sets.HidesHead`. Meaning and default value have inverted.
+* 💀: `BiomeConversionID.Chlorophyte` has been split into `ChlorophyteDefenseWhenChloroSpreads` and `ChlorophyteDefenseWhenEvilSpreads`. `TileLoader.RegisterSimpleConversion` will automatically register a conversion for both. More advanced biome conversion registrations might need to account for the new conversions. See the documentation for more information. `BiomeConversionID.ChlorophyteSpread` is also new and corresponds to chlorophyte itself spreading.
 * ⚙️: `BuffID.Sets.BasicMountData` removed. Replace with `BuffID.Sets.MountType[Type] = ModContent.MountType<MyMount>();`.
 * 🤖: `BuffID.Sets.LongerExpertDebuff` -> `BuffID.Sets.BuffTimeIsExtendedWithGameDifficulty`
 * 💀: `Chest.maxItems` is no longer static.
 * 🤖: `Condition.ZenithWorld` might need to be replaced with the new `Condition.MechdusaSeedFeature` in code that specifically is checking for Mechadusa. They can technically differ.
+* 🤖: `GetItemSettings.InventoryEntityToPlayerInventorySettings` -> `GetItemSettings.QuickTransferFromSlot`
+* 🤖: `GetItemSettings.NPCEntityToPlayerInventorySettings` -> `GetItemSettings.GiftRecieved`
+* 🤖: `GetItemSettings.LootAllSettings` -> `GetItemSettings.LootAllFromBank`
+* 🤖: `GetItemSettings.LootAllSettingsRegularChest` -> `GetItemSettings.LootAllFromChest`
+* 🤖: `GetItemSettings.GetItemInDropItemCheck` -> `GetItemSettings.ReturnItemFromSlot`
+* 🤖: `GetItemSettings.InventoryUIToInventorySettingsShowAsNew` -> `GetItemSettings.ReturnItemShowAsNew`
+* ⚙️: `GetItemSettings.InventoryUIToInventorySettings` removed. Value references become `default(GetItemSettings)` to preserve its settings; writes and `nameof` references need manual changes. Use `GetItemSettings.ReturnItemFromSlot` to suppress pickup text instead.
 * 🤖: `GoreID.Sets.LiquidDroplet` -> `GoreID.Sets.IsDrip`
 * 🤖: `ImmunityCooldownID.Bosses` -> `ImmunityCooldownID.BossNoCheese`
 * ⚙️: `ItemID.Sets.ItemSpawnDecaySpeed` removed. No longer used.
@@ -692,6 +701,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 
 ### Non-Static Methods
 
+* 🤖: The `GetItemSettings` constructor has a new `NoSound` parameter placed before `StepAfterHandlingSlotNormally`. Existing callback argument is named to preserve behavior.
 * 🤖: `Item.BannerToItem` -> `Terraria.GameContent.BannerSystem.BannerToItem`
 * 🤖: `Item.BannerToNPC` -> `Terraria.GameContent.BannerSystem.BannerToNPC`
 * 🤖: `Item.NPCtoBanner` -> `Terraria.GameContent.BannerSystem.NPCtoBanner`
@@ -779,6 +789,7 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * 🤖: `ModCloud.Draw` now has a `List<DrawData>` parameter replacing the `SpriteBatch` parameter. Manually drawing during this hook is no longer supported due to the new horizon visuals drawing clouds using a shader, but the new parameter allows supplying additional `DrawData` if desired.
 * `ModMount.Dismount`'s `skipDust` parameter can potentially be true before the hook is called. This indicates that the player is dismounting in a location without enough room and is being forcefully teleported to a safe location. In this case, skip manual dust spawning code because the teleport effect will be displayed instead. Basically, if `skipDust` is true, skip custom despawn dust logic.
 * ⚙️: `ModPlayer.ModifyZoom` now has a `needsMouseRight` parameter. This is used to bypass the "Forward Zoom" toggle for effects that should always zoom regardless of the player's setting, like Binoculars. Remove all checks for the right mouse being held down to correctly support the new "Forward Zoom" control options.
+* 🤖: `(ModItem|GlobalItem).PickAmmo` now has a `ref StatModifier weaponDamage` parameter, and `damage` has been renamed to `ammoDamage`. Weapon damage is no longer included in `ammoDamage.Flat`. Use `weaponDamage` to modify it, and modify both to scale the total projectile damage.
 * 💀: `ModConfig` are no longer ordered by `DisplayName` on the config list menu, but by internal name. This change is to support the manual ordering feature and preserve consistent ordering between languages. `Config.SortConfigAttribute` mentioned below can be used to adjust the order manually to restore an intended order.
 
 ## Bugfixes
