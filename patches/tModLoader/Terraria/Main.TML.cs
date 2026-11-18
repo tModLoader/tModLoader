@@ -60,6 +60,16 @@ public partial class Main
 
 	private static readonly HttpClient client = new HttpClient();
 
+	internal static int GetDefaultMenuMusic()
+	{
+		var style = titleMusicStyle == TitleMusicStyle.Random ? titleMusicStyleRandom : titleMusicStyle;
+		return style switch {
+			TitleMusicStyle.Old => MusicID.TitleClassic,
+			TitleMusicStyle.Console => MusicID.TitleAlt,
+			_ => MusicID.TitleJourneysBeginningWithIntro
+		};
+	}
+
 	/// <summary>
 	/// A color that cycles through the colors like Rainbow Brick does.
 	/// </summary>
