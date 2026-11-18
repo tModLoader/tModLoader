@@ -106,6 +106,18 @@ public abstract class ModConfig : ILocalizedModType
 		return false;
 	}
 
+	public bool HasChanges(ModConfig otherConfig)
+	{
+		return !ConfigManager.AreConfigsEqual(this, otherConfig);
+	}
+
+	public bool HasDefaultValues()
+	{
+		return ConfigManager.AreConfigsEqual(this, ConfigManager.GetDefaultValuesConfig(Mod, Name));
+		// TODO: below line doesn't work with object elements (and probably nullables) very well because of how objects serialized. Needs changes to the contract resolver to be fixed.
+		// return JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact) == "{}";
+	}
+
 	/// <summary>
 	/// Attempts to save changes made to this ModConfig. This must be called on the active ModConfig instance.
 	/// <br/><br/> If <paramref name="pendingConfig"/> is provided, it will be used as the source for the changes to apply to the active config instance. If <paramref name="status"/> is provided, it will be called with text and a color to indicate the status of the operation. If <paramref name="silent"/> is false, sounds will play indicating success or failure. If <paramref name="broadcast"/> is false, the chat message informing all players when a ServerSide config is changed saying "Shared config changed: Message: {0}, Mod: {1}, Config: {2}" will not appear on clients.
