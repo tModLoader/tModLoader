@@ -606,7 +606,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.SetText(modConfig.Mod.DisplayName);
 		modNamePanel.Recalculate();
 		modNamePanel.ResetScroll();
-		modNamePanel.MarqueeText.SetScrollDelay(60);
 
 		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
 		smallModIcon.SetImage(iconTexture, Utils.CornerRectangle(Vector2.Zero, iconTexture.Size()));
