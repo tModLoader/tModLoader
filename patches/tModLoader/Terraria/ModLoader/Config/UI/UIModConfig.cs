@@ -286,7 +286,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		subPageBreadcrumbPanel = new UIPanel {
 			Height = { Pixels = 24 },
-			Width = { Percent = 1f, Pixels = -(subPageBackButton.Width.Pixels + 10) },
+			Width = { Percent = 1f, Pixels = -(subPageBackButton.MaxWidth.Pixels + 10) },
 			BackgroundColor = new Color(35, 40, 83),
 			BorderColor = UICommon.DefaultUIBlueMouseOver * 0.5f,
 		}.WithPadding(0);
