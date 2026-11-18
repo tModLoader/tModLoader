@@ -274,12 +274,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	private void CreateSubPageUI()
 	{
 		subPageBackButton = new UIButton(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
-			Width = { Pixels = 100 },
+			MinWidth = { Pixels = 100 },
 			Height = { Pixels = 40 },
 			HAlign = 1f,
 			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
 		};
 
+		subPageBackButton.MaxWidth = subPageBackButton.MinWidth;
 		subPageBackButton.AddState("Default", UIButton.State.DefaultWithHover);
 		subPageBackButton.OnLeftClick += BackSubPage;
 
@@ -300,12 +301,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 		subPageBreadcrumbPanel.Append(subPagePrompt);
 
+		float leftPadding = subPagePrompt.MinWidth.Pixels + 5;
 		subPageBreadcrumbText = new UIMarqueeText("", 0.8f) {
-			Width = { Percent = 1f, Pixels = -subPagePrompt.MinWidth.Pixels },
-			Height = { Percent = 1f },
+			MaxWidth = { Percent = 1f, Pixels = -leftPadding },
+			Left = { Pixels = leftPadding },
 			VAlign = 0.5f,
-			HAlign = 1f,
+			TextOriginX = 0f,
 		};
+
 		subPageBreadcrumbPanel.Append(subPageBreadcrumbText);
 	}
 
