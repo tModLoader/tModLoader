@@ -1603,6 +1603,8 @@ Mods: {
 				// Nothing: "{0} is set to nothing"
 				// IsSet: "{0} is set to {1}: [i:{2}]"
 				// SaveValue: "{0} is saved as {1}"
+				// HasChanges: Config has changes: {0}
+				// HasDefaultValues: Config has default values: {0}
 			}
 
 			ExampleMarqueeTextUI: {
