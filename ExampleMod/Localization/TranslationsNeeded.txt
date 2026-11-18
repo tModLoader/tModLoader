@@ -1,3 +1,6 @@
 en-US, 802/802, 100%, missing 0
 ru-RU, 6/802, 1%, missing 796
 zh-Hans, 2/802, 0%, missing 800
+en-US, 799/799, 100%, missing 0
+ru-RU, 6/799, 1%, missing 793
+zh-Hans, 2/799, 0%, missing 797

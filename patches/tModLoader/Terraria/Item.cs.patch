@@ -475,7 +475,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -135,48 +_,276 @@
+@@ -135,48 +_,279 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -748,6 +748,9 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
++	/// <summary>
++	/// If <see langword="true"/>, the item slot will appear highlighted in the inventory (unless the corresponding setting is disabled). Typically set when an item is picked up. The highlight disappears when the cursor is hovered over a highlighted item or the inventory is closed.
++	/// </summary>
  	public bool newAndShiny;
 +
 +	/// <summary>

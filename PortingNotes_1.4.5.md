@@ -35,11 +35,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
-- A lot of the GetItemSettings presets have been renamed or removed. Might be something to document.
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
+  - RegisterSimpleConversion now registers automatic chlorophyte purification for both defense types (9/10). Other conversion usages still need review.
+  - Are BiomeConversionID.Forced{Biome} even used?
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - Vanilla Fishing drops are now declarative
   - Mods should be encouraged to use the new system, so new fishing features work.
@@ -276,17 +277,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- These buffimmune change are new and likely need to be used to update TML-specific sets.
-```cs
-		if (buffImmune[20]) {
-			buffImmune[30] = true;
-			buffImmune[375] = buffImmune[30];
-		}
-
-		if (buffImmune[69])
-			buffImmune[36] = true;
 ```
 
 - Move this patch to PrepareAliases, or adjust ModCommand to use new system:
