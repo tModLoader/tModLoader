@@ -1389,7 +1389,7 @@ Mods: {
 			ExampleSentry.DisplayName: Example Sentry
 			ExampleSentryShot.DisplayName: Example Sentry Shot
 			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
-			ExampleBoomerangProjectile.DisplayName: Example Boomerang Projectile
+			ExampleBoomerangProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleBoomerang.DisplayName}"
 			ExampleFlamethrowerProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleFlamethrower.DisplayName}"
 		}
 

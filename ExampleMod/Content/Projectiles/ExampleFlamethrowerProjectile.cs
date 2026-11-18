@@ -14,11 +14,16 @@ namespace ExampleMod.Content.Projectiles
 	{
 		private const float FlameLifetime = 72f;
 
+		private ref float FlameAge => ref Projectile.localAI[0];
+
+		public override void SetStaticDefaults() {
+			Main.projFrames[Type] = 7;
+		}
+
 		public override void SetDefaults() {
 			Projectile.width = 6;
 			Projectile.height = 6;
-			Projectile.aiStyle = ProjAIStyleID.Flamethrower;
-			AIType = ProjectileID.Flames;
+			Projectile.aiStyle = -1;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.alpha = 255;
@@ -29,28 +34,28 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.ArmorPenetration = 15;
 		}
 
-		public override bool PreAI() {
-			Projectile.localAI[0] += 1f;
-			if (Projectile.localAI[0] >= FlameLifetime) {
+		public override void AI() {
+			FlameAge += 1f;
+			if (FlameAge >= FlameLifetime) {
 				Projectile.Kill();
-				return false;
+				return;
 			}
 
-			if (Projectile.localAI[0] >= 60f) {
+			if (FlameAge >= 60f) {
 				Projectile.velocity *= 0.95f;
 			}
 
-			if (!Main.dedServ && Projectile.localAI[0] < 50f && Main.rand.NextFloat() < 0.25f) {
-				float spread = Utils.Remap(Projectile.localAI[0], 0f, FlameLifetime, 0.5f, 1f);
+			if (!Main.dedServ && FlameAge < 50f && Main.rand.NextFloat() < 0.25f) {
+				float spread = Utils.Remap(FlameAge, 0f, FlameLifetime, 0.5f, 1f);
 				Vector2 position = Projectile.Center + Main.rand.NextVector2Circular(60f, 60f) * spread;
 				Dust dust = Dust.NewDustDirect(position, 4, 4, DustID.SilverFlame, Alpha: 100);
 				dust.noGravity = true;
 				dust.scale *= 2.25f;
 				dust.velocity *= 1.2f;
-				dust.velocity += Projectile.velocity * Utils.Remap(Projectile.localAI[0], 0f, 45f, 1f, 0.1f) * Utils.Remap(Projectile.localAI[0], 0f, 6f, 0.1f, 1f);
+				dust.velocity += Projectile.velocity * Utils.Remap(FlameAge, 0f, 45f, 1f, 0.1f) * Utils.Remap(FlameAge, 0f, 6f, 0.1f, 1f);
 			}
 
-			if (!Main.dedServ && Projectile.localAI[0] >= 50f && Main.rand.NextBool(2)) {
+			if (!Main.dedServ && FlameAge >= 50f && Main.rand.NextBool(2)) {
 				Vector2 velocity = (Projectile.Center - Main.player[Projectile.owner].Center).SafeNormalize(Vector2.Zero).RotatedByRandom(MathHelper.PiOver4 / 4f) * 7f;
 				Dust smoke = Dust.NewDustDirect(Projectile.Center + Main.rand.NextVector2Circular(50f, 50f) - velocity * 2f, 4, 4, DustID.Smoke, Alpha: 150, newColor: new Color(45, 46, 77));
 				smoke.noGravity = true;
@@ -58,16 +63,14 @@ namespace ExampleMod.Content.Projectiles
 				smoke.scale *= 1.1f + Main.rand.NextFloat() * 0.2f;
 				smoke.customData = -0.3f - 0.15f * Main.rand.NextFloat();
 			}
-
-			return false;
 		}
 
 		// The following hooks reproduce behavior that vanilla checks by projectile type, rather than by aiStyle.
-		public override bool? CanDamage() => Projectile.localAI[0] < 54f ? null : false;
+		public override bool? CanDamage() => FlameAge < 54f ? null : false;
 
 		public override void ModifyDamageHitbox(ref Rectangle hitbox) {
 			// Grow the damage area without increasing the small hitbox used for movement and tile collision.
-			int expansion = (int)Utils.Remap(Projectile.localAI[0], 0f, FlameLifetime, 10f, 40f);
+			int expansion = (int)Utils.Remap(FlameAge, 0f, FlameLifetime, 10f, 40f);
 			hitbox.Inflate(expansion, expansion);
 		}
 
@@ -94,8 +97,9 @@ namespace ExampleMod.Content.Projectiles
 
 		public override bool PreDraw(Player player, ref Color lightColor) {
 			Texture2D texture = TextureAssets.Projectile[Type].Value;
-			Rectangle frame = texture.Frame(1, 7, 0, 3);
-			float age = Projectile.localAI[0];
+			// Use the registered frame count to split the sprite sheet, but select the fourth frame directly.
+			Rectangle frame = texture.Frame(1, Main.projFrames[Type], 0, 3);
+			float age = FlameAge;
 			float progress = age / FlameLifetime;
 			if (progress >= 1f) {
 				return false;
