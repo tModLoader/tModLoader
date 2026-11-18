@@ -402,6 +402,21 @@
  				case 25:
  				case 27:
  				case 33:
+@@ -1191,12 +_,12 @@
+ 			if (flag) {
+ 				if (!ItemID.Sets.DualEquipArmor[checkItem.type])
+-					return !HasSameItemInSlot(checkItem, VanityArmorSlots(Main.LocalPlayer));
++					return !HasSameItemInSlot(checkItem, VanityArmorSlots(player));
+ 
+ 				return true;
+ 			}
+ 
+ 			if (!ItemID.Sets.DualEquipArmor[checkItem.type])
+-				return !HasSameItemInSlot(checkItem, ArmorSlots(Main.LocalPlayer));
++				return !HasSameItemInSlot(checkItem, ArmorSlots(player));
+ 
+ 			return true;
+ 		}
 @@ -1262,6 +_,11 @@
  				if (checkItem.type == 0 || CanEquipInArmorSlot(Main.LocalPlayer, checkItem, slot))
  					result = 1;
