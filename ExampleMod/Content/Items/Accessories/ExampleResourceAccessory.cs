@@ -15,7 +15,6 @@ namespace ExampleMod.Content.Items.Accessories
 		public override void SetDefaults() {
 			Item.width = 26;
 			Item.height = 32;
-			Item.maxStack = 1;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Red;

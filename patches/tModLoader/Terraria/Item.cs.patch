@@ -92,7 +92,7 @@
 +	/// If true, categorizes the given item as a quest fish.<br/>
 +	/// Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br/>
 +	/// If you'd like to make a quest fish, see <see cref="DefaultToQuestFish"/>.<br/>
-+	/// If you'd just like to emulate the one-per-inventory behavior of quest fish, see <see cref="uniqueStack"/>.<br/>
++	/// If you'd just like to emulate the one-per-inventory behavior of quest fish before the 1.4.5 update, see <see cref="uniqueStack"/>.<br/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool questItem;
@@ -1216,7 +1216,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -27254,6 +_,16 @@
+@@ -27254,6 +_,15 @@
  			value = 200;
  	}
  
@@ -1226,7 +1226,6 @@
 +	/// questItem = true;
 +	///	width = 26;
 +	///	height = 26;
-+	///	uniqueStack = true;
 +	///	rare = <see cref="ItemRarityID.Quest"/>;
 +	/// </code>
 +	/// </summary>
