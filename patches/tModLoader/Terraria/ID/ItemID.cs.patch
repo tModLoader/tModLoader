@@ -87,7 +87,7 @@
  		public static List<int> ItemsThatAreProcessedAfterNormalContentSample = new List<int> {
  			1533,
  			1534,
-@@ -49,28 +_,114 @@
+@@ -49,28 +_,118 @@
  			1536,
  			1537
  		};
@@ -146,6 +146,10 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] UsesBetterMeleeItemLocation = Factory.CreateBoolSet(false, 426);
++
++		/// <summary>
++		/// If <see langword="true"/> for a given item type (<see cref="Item.type"/>) and if <c><see cref="Item.useStyle"/> == <see cref="ItemUseStyleID.Swing"/></c>, then the item will use <see cref="Player.HandPosition"/> for its position when being held by a Mannequin instead of changing the position based on how far into the animation the swing is.
++		/// </summary>
  		public static bool[] UsesHandPositionForItemLocationOnDisplayDolls = Factory.CreateBoolSet(false, 65, 724, 1827, 3352);
 +
 +		/// <summary>
