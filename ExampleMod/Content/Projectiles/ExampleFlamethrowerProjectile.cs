@@ -17,6 +17,8 @@ namespace ExampleMod.Content.Projectiles
 		private ref float FlameAge => ref Projectile.localAI[0];
 
 		public override void SetStaticDefaults() {
+			// Vanilla leaves this at 1 and uses a hardcoded value when drawing.
+			// Setting this to a proper value makes sure this projectile gets accurately displayed in other mods that allow projectile spawning, for example.
 			Main.projFrames[Type] = 7;
 		}
 
