@@ -2955,6 +2955,15 @@
  		}
  
  		if (dripping)
+@@ -77601,7 +_,7 @@
+ 			Lighting.AddLight((int)(position.X + (float)(width / 2)) / 16, (int)(position.Y + 4f) / 16, 0.9f, 0.75f, 0.5f);
+ 	}
+ 
+-	private void GetHurtByOtherNPCs(bool[] acceptableNPCIDs)
++	public void GetHurtByOtherNPCs(bool[] acceptableNPCIDs)
+ 	{
+ 		if (dontTakeDamage || dontTakeDamageFromHostiles || immortal || (NPCID.Sets.CritterThatCanTurnOnPlayers[type] && aiStyle == 3))
+ 			return;
 @@ -77620,6 +_,9 @@
  			if (acceptableNPCIDs[nPC.type] && nPC.active && !nPC.friendly && nPC.damage > 0 && !NPCID.Sets.CritterThatCanTurnOnPlayers[nPC.type]) {
  				Rectangle npcRect = nPC.Hitbox;
@@ -2965,7 +2974,14 @@
  				if (hitbox.Intersects(npcRect) && (type != 453 || !NPCID.Sets.Skeletons[nPC.type]) && nPC.type != 624 && nPC.type != 690) {
  					BeHurtByOtherNPC(i, nPC);
  					break;
-@@ -77634,14 +_,33 @@
+@@ -77628,20 +_,39 @@
+ 		}
+ 	}
+ 
+-	private void BeHurtByOtherNPC(int npcIndex, NPC thatNPC)
++	public void BeHurtByOtherNPC(int npcIndex, NPC thatNPC)
+ 	{
+ 		int num = 30;
  		if (type == 548)
  			num = 20;
  
