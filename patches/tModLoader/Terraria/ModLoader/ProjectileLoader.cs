@@ -661,6 +661,21 @@ public static class ProjectileLoader
 		}
 	}
 
+	private delegate void DelegateModifyGrappleLimits(int type, Player player, ref int launchBudget, ref int replacementThreshold);
+	private static HookList HookModifyGrappleLimits = AddHook<DelegateModifyGrappleLimits>(g => g.ModifyGrappleLimits);
+
+	public static void ModifyGrappleLimits(int type, Player player, ref int launchBudget, ref int replacementThreshold)
+	{
+		GetProjectile(type)?.ModifyGrappleLimits(player, ref launchBudget, ref replacementThreshold);
+
+		foreach (var g in HookModifyGrappleLimits.Enumerate(type)) {
+			g.ModifyGrappleLimits(type, player, ref launchBudget, ref replacementThreshold);
+		}
+
+		launchBudget = Math.Max(1, launchBudget);
+		replacementThreshold = Math.Max(1, replacementThreshold);
+	}
+
 	private static HookList HookCanUseGrapple = AddHook<Func<int, Player, bool?>>(g => g.CanUseGrapple);
 
 	public static bool? CanUseGrapple(int type, Player player)
