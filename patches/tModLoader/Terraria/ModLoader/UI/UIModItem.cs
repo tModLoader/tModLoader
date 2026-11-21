@@ -18,6 +18,7 @@ using Steamworks;
 using Terraria.Social.Base;
 using Terraria.Social.Steam;
 using System.Threading;
+using Terraria.ModLoader.UI.Elements;
 
 namespace Terraria.ModLoader.UI;
 
@@ -46,9 +47,6 @@ internal class UIModItem : UIPanel
 	private UIImage _translationModIcon;
 	private UIImage _deleteModButton;
 	private UIImage _rateButton;
-	private UIAutoScaleTextTextPanel<string> _dialogYesButton;
-	private UIAutoScaleTextTextPanel<string> _dialogNoButton;
-	private UIText _dialogText;
 	private readonly LocalMod _mod;
 	private bool modFromLocalModFolder;
 
@@ -776,49 +774,14 @@ internal class UIModItem : UIPanel
 		bool shiftPressed = Main.keyState.PressingShift();
 
 		if (!shiftPressed) {
-			SoundEngine.PlaySound(10, -1, -1, 1);
-			var _deleteModDialog = new UIPanel() {
-				Width = { Percent = .30f },
-				Height = { Percent = .30f },
-				HAlign = .5f,
-				VAlign = .5f,
-				BackgroundColor = new Color(63, 82, 151),
-				BorderColor = Color.Black
-			};
-			_deleteModDialog.SetPadding(6f);
-			Interface.modsMenu.ShowConfirmDialog(_deleteModDialog);
-
-			_dialogYesButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.104")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .15f
-			}.WithFadedMouseOver();
-			_dialogYesButton.OnLeftClick += DeleteMod;
-			_deleteModDialog.Append(_dialogYesButton);
-
-			_dialogNoButton = new UIAutoScaleTextTextPanel<string>(Language.GetTextValue("LegacyMenu.105")) {
-				TextColor = Color.White,
-				Width = new StyleDimension(-10f, 1f / 3f),
-				Height = { Pixels = 40 },
-				VAlign = .85f,
-				HAlign = .85f
-			}.WithFadedMouseOver();
-			_dialogNoButton.OnLeftClick += Interface.modsMenu.CloseConfirmDialog;
-			_deleteModDialog.Append(_dialogNoButton);
-
-			_dialogText = new UIText(Language.GetTextValue("tModLoader.DeleteModConfirm")) {
-				Width = { Percent = .75f },
-				HAlign = .5f,
-				VAlign = .3f,
-				IsWrapped = true
-			};
-			_deleteModDialog.Append(_dialogText);
-
-			Interface.modsMenu.Recalculate();
+			Interface.modsMenu.ShowConfirmDialog(new UIConfirmDialog(
+                 showYesDontShowAgainButton: false,
+                 confirmText: Language.GetText("tModLoader.DeleteModConfirm"),
+                 yesAction: DeleteMod
+            ));
 		}
 		else {
+			SoundEngine.PlaySound(SoundID.MenuClose);
 			DeleteMod(evt, listeningElement);
 		}
 	}
@@ -866,7 +829,6 @@ internal class UIModItem : UIPanel
 	{
 		ModOrganizer.DeleteMod(_mod);
 
-		Interface.modsMenu.CloseConfirmDialog(evt, listeningElement);
 		Interface.modsMenu.StoreCurrentScrollPosition();
 		Interface.modsMenu.Activate();
 	}

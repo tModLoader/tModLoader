@@ -12,6 +12,7 @@ using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
 using Version = System.Version;
@@ -37,12 +38,7 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 	private UIPanel betaListPanel;
 	private UIList betaList;
 	protected UITextPanel<string> backButton;
-	// confirmation dialog
-	private UIAutoScaleTextTextPanel<LocalizedText> confirmDialogYesButton;
-	private UIAutoScaleTextTextPanel<LocalizedText> confirmDialogNoButton;
-	private UIText confirmDialogText;
-	private UIImage blockInput;
-	private UIPanel activeDialog;
+	private UIConfirmDialog confirmDialog;
 
 	public UIState PreviousUIState { get; set; }
 
@@ -281,7 +277,6 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 					SoundEngine.PlaySound(SoundID.MenuTick);
 				};
 				switchButton.OnLeftClick += (a, b) => {
-					SoundEngine.PlaySound(SoundID.MenuClose);
 					ShowConfirmationWindow((UIElement, Vector2) => {
 						Logging.tML.Info($"Switching to beta branch: {branch.Name}");
 						SteamApps.SetActiveBeta(branch.Name);
@@ -295,69 +290,22 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 	private void ShowConfirmationWindow(MouseEvent yesAction, string confirmDialogTextKey)
 	{
-		var confirmationDialog = new UIPanel() {
-			Width = { Pixels = 500 },
-			Height = { Pixels = 160 },
-			HAlign = .5f,
-			VAlign = .5f,
-			BackgroundColor = new Color(63, 82, 151),
-			BorderColor = Color.Black
-		};
-		confirmationDialog.SetPadding(6f);
-		ShowConfirmDialog(confirmationDialog);
-
-		confirmDialogYesButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.104")) {
-			TextColor = Color.White,
-			Width = new StyleDimension(-10f, 1f / 3f),
-			Height = { Pixels = 40 },
-			VAlign = .95f,
-			HAlign = .15f
-		}.WithFadedMouseOver();
-		confirmDialogYesButton.OnLeftClick += yesAction;
-		confirmDialogYesButton.OnLeftClick += CloseConfirmDialog;
-		confirmationDialog.Append(confirmDialogYesButton);
-
-		confirmDialogNoButton = new UIAutoScaleTextTextPanel<LocalizedText>(Language.GetText("LegacyMenu.105")) {
-			TextColor = Color.White,
-			Width = new StyleDimension(-10f, 1f / 3f),
-			Height = { Pixels = 40 },
-			VAlign = .95f,
-			HAlign = .85f
-		}.WithFadedMouseOver();
-		confirmDialogNoButton.OnLeftClick += CloseConfirmDialog;
-		confirmationDialog.Append(confirmDialogNoButton);
-
-		confirmDialogText = new UIText(Language.GetTextValue(confirmDialogTextKey)) {
-			Width = { Percent = .75f },
-			HAlign = .5f,
-			VAlign = .2f,
-			IsWrapped = true
-		};
-		confirmationDialog.Append(confirmDialogText);
-		Recalculate();
+		ShowConfirmDialog(new UIConfirmDialog(
+			showYesDontShowAgainButton: false,
+			Language.GetText(confirmDialogTextKey),
+			yesAction: yesAction
+        ));
 	}
 
-	internal void CloseConfirmDialog(UIMouseEvent evt, UIElement listeningElement)
+	internal void ShowConfirmDialog(UIConfirmDialog dialog)
 	{
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		blockInput?.Remove();
-		activeDialog?.Remove();
-	}
+		if (confirmDialog is not null)
+			confirmDialog.Close(playSound: false);
 
-	internal void ShowConfirmDialog(UIPanel dialog)
-	{
-		blockInput = new UIImage(TextureAssets.Extra[190]) {
-			Width = { Percent = 1 },
-			Height = { Percent = 1 },
-			Color = Color.Black * 0.5f,
-			ScaleToFit = true
-		};
-		blockInput.Width = StyleDimension.Fill;
-		blockInput.Height = StyleDimension.Fill;
-		blockInput.OnLeftMouseDown += CloseConfirmDialog;
-		Append(blockInput);
-
-		Append(activeDialog = dialog);
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		confirmDialog = dialog;
+		confirmDialog.OnClose = () => confirmDialog = null;
+		Append(confirmDialog);
 	}
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
@@ -367,8 +315,8 @@ internal class UISwitchBeta : UIState, IHaveBackButtonCommand
 
 	public void HandleBackButtonUsage()
 	{
-		if (blockInput != null && HasChild(blockInput)) {
-			CloseConfirmDialog(null, null);
+		if (confirmDialog != null) {
+			confirmDialog.Close();
 			return;
 		}
 

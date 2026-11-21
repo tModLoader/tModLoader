@@ -37,12 +37,16 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private static LocalizedText NothingText { get; set; }
 		private static LocalizedText IsSetText { get; set; }
 		private static LocalizedText SaveValueText { get; set; }
+		private static LocalizedText HasChangesText { get; set; }
+		private static LocalizedText HasDefaultValuesText { get; set; }
 		private static Asset<Texture2D> SomeBoolToggleTexture { get; set; }
 
 		private UIText itemDefinitionMessage;
 		private UICycleImage onlyChangeableDuringNightToggle;
 		private UIText onlyChangeableDuringNightMessage;
 		private UIText someNumberMessage;
+		private UIText configBHasChanges;
+		private UIText configBHasDefaultValues;
 		private UIText ConfigSaveStatusMessage;
 
 		private ModConfigShowcaseDataTypes configA;
@@ -58,6 +62,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			NothingText = mod.GetLocalization("UI.ExampleFullscreenUI.Nothing");
 			IsSetText = mod.GetLocalization("UI.ExampleFullscreenUI.IsSet");
 			SaveValueText = mod.GetLocalization("UI.ExampleFullscreenUI.SaveValue");
+			HasChangesText = mod.GetLocalization("UI.ExampleFullscreenUI.HasChanges");
+			HasDefaultValuesText = mod.GetLocalization("UI.ExampleFullscreenUI.HasDefaultValues");
 			SomeBoolToggleTexture = ModContent.Request<Texture2D>($"{GetType().Namespace.Replace('.', '/')}/SomeBoolToggle");
 			// Since ModConfig are loaded before content, it is safe to access these in Load in this instance.
 			configA = ModContent.GetInstance<ModConfigShowcaseDataTypes>();
@@ -155,6 +161,24 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			panel.Append(someNumberMessage);
 			top += 32;
 
+			configBHasChanges = new UIText(GetHasChangesText()) {
+				Top = new(top + 6, 0f),
+				TextOriginX = 0f,
+				IsWrapped = true,
+				Width = StyleDimension.Fill
+			};
+			panel.Append(configBHasChanges);
+			top += 32;
+
+			configBHasDefaultValues = new UIText(GetHasDefaultValuesText()) {
+				Top = new(top + 6, 0f),
+				TextOriginX = 0f,
+				IsWrapped = true,
+				Width = StyleDimension.Fill
+			};
+			panel.Append(configBHasDefaultValues);
+			top += 32;
+
 			var openConfigBButton = new UITextPanel<LocalizedText>(Language.GetText("tModLoader.ModsOpenConfig"), 0.7f) {
 				Top = new(top, 0f),
 				Width = new(-10f, 1 / 3f),
@@ -228,6 +252,14 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			someNumberMessage.SetText(GetSomeNumberMessageText());
 
 			itemDefinitionMessage.SetText(GetItemDefinitionMessageText());
+
+			RefreshHasChangesAndDefaultValuesText();
+		}
+
+		// This should be called whenever we modify configB_pending so the UI always stays updated
+		private void RefreshHasChangesAndDefaultValuesText() {
+			configBHasChanges.SetText(GetHasChangesText());
+			configBHasDefaultValues.SetText(GetHasDefaultValuesText());
 		}
 
 		private void RandomizeButton_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
@@ -287,8 +319,8 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 			string text = Language.GetText("tModLoader.ModConfigNotification") + message;
 			float textWidth = FontAssets.MouseText.Value.MeasureString(text).X;
 			float scale = Math.Clamp(ConfigSaveStatusMessage.GetInnerDimensions().Width / textWidth, 0.25f, 1f);
+			ConfigSaveStatusMessage.TextColor = color; // Must be before SetText
 			ConfigSaveStatusMessage.SetText(text, scale, false);
-			ConfigSaveStatusMessage.TextColor = color;
 		}
 
 		private string GetItemDefinitionMessageText() {
@@ -304,6 +336,7 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 
 		private void OnlyChangeableDuringNightToggle_OnLeftClick(UIMouseEvent evt, UIElement listeningElement) {
 			configB_pending.OnlyChangeableDuringNight = onlyChangeableDuringNightToggle.CurrentState == 1;
+			RefreshHasChangesAndDefaultValuesText();
 		}
 
 		private string GetOnlyChangeableDuringNightMessageText() {
@@ -314,6 +347,26 @@ namespace ExampleMod.Common.UI.ExampleFullscreenUI
 		private string GetSomeNumberMessageText() {
 			string configEntryLabel = Language.GetTextValue(configB.GetLocalizationKey($"{nameof(configB.SomeNumber)}.Label"));
 			return SaveValueText.Format(configEntryLabel, configB.SomeNumber);
+		}
+
+		private string GetHasChangesText() {
+			// configB_pending might not be initialized yet
+			if (configB_pending == null) {
+				return "";
+			}
+
+			bool hasChanges = configB_pending.HasChanges(configB);
+			return HasChangesText.Format(hasChanges);
+		}
+
+		private string GetHasDefaultValuesText() {
+			// configB_pending might not be initialized yet
+			if (configB_pending == null) {
+				return "";
+			}
+
+			bool hasDefaultValues = configB_pending.HasDefaultValues();
+			return HasDefaultValuesText.Format(hasDefaultValues);
 		}
 	}
 }
