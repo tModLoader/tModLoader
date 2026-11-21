@@ -39,8 +39,8 @@ public class UIButton : UIMarqueeTextPanel
 	public Func<bool> UseAlternateState;
 	public State CurrentState { get; private set; }
 
-	public State DefaultState { get; set; } = State.Default;
-	public State? AlternateState { get; set; } = null;
+	public State DefaultState = State.Default;
+	public State? AlternateState = null;
 
 	public UIButton(object text, float textScaleMax = 1, bool large = false) : base(text, textScaleMax, large)
 	{
