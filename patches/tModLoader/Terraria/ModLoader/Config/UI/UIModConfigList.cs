@@ -195,15 +195,13 @@ internal class UIModConfigList : UIState
 			var (modPanel, _) = CreatePanel(mod.DisplayName, mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon, null);
 
 			if (ConfigManager.Configs.ContainsKey(mod)) {
-				modPanel.GetCurrentState = () => selectedMod == mod ? "Selected" : "Default";
-
-				modPanel.AddState("Default", UIButton.State.DefaultWithHover with {
+				modPanel.UseAlternateState = () => selectedMod == mod;
+				modPanel.AlternateState = UIButton.State.DefaultWithHover;
+				modPanel.DefaultState = UIButton.State.DefaultWithHover with {
 					PanelColor = UICommon.MainPanelBackground,
 					HoverPanelColor = UICommon.MainPanelBackground * 1.25f,
 					ClickSound = SoundID.MenuTick,
-				});
-
-				modPanel.AddState("Selected", UIButton.State.DefaultWithHover);
+				};
 
 				modPanel.OnLeftClick += (_, _) => {
 					if (selectedMod == mod)
@@ -214,11 +212,11 @@ internal class UIModConfigList : UIState
 				};
 			}
 			else {
-				modPanel.AddState("Default", UIButton.State.Default with {
+				modPanel.DefaultState = UIButton.State.Default with {
 					PanelColor = Color.Gray,
 					HoverText = Language.GetText("tModLoader.ModConfigModLoaderButNoConfigs"),
 					TooltipText = true,
-				});
+				};
 			}
 
 			modList.Add(modPanel);
@@ -242,9 +240,9 @@ internal class UIModConfigList : UIState
 			// -2 here because the padding gap looks too large
 			var (configPanel, sideIndicator) = CreatePanel(config.DisplayName, indicatorTexture, indicatorFrame, -2f);
 
-			configPanel.AddState("Default", UIButton.State.DefaultWithHover with {
+			configPanel.DefaultState = UIButton.State.DefaultWithHover with {
 				ClickSound = SoundID.MenuOpen,
-			});
+			};
 
 			configPanel.OnLeftClick += (_, _) => {
 				Interface.modConfig.SetMod(selectedMod, config);
