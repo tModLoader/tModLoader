@@ -157,7 +157,7 @@
 +
 +		tileArea = new Rectangle(0, 0, width, height);
 +
-+		if (bufferTexture is not null && (bufferTexture.Width != width || bufferTexture.Height != height)) {
++		if (bufferTexture is not null && (bufferTexture.Width != width + 1 || bufferTexture.Height != height + 1)) {
 +			bufferTexture?.Dispose();
 +			bufferTexture = null;
 +		}
