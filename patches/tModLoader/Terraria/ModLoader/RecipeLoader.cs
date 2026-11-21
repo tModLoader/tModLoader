@@ -127,7 +127,8 @@ public static class RecipeLoader
 	}
 
 	/// <summary>
-	/// recipe.OnCraftHooks followed by Calls ItemLoader.OnCreate with a RecipeItemCreationContext
+	/// Calls recipe.OnCraftHooks followed by ItemLoader.OnCreated with a RecipeItemCreationContext.
+	/// Called on the crafting client after the craft succeeds and before the result is stacked. Rejected requests do not invoke these hooks.
 	/// </summary>
 	/// <param name="item">The item crafted.</param>
 	/// <param name="recipe">The recipe used to craft the item.</param>
@@ -136,7 +137,7 @@ public static class RecipeLoader
 	public static void OnCraft(Item item, Recipe recipe, List<Item> consumedItems, Item destinationStack)
 	{
 		recipe.OnCraftHooks?.Invoke(recipe, item, consumedItems, destinationStack);
-		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems/*, destinationStack*/));
+		item.OnCreated(new RecipeItemCreationContext(recipe, consumedItems, destinationStack));
 	}
 
 	/// <summary>
