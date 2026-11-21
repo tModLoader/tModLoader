@@ -36,37 +36,24 @@ public class UIButton : UIMarqueeTextPanel
 		};
 	}
 
-	public Func<string> GetCurrentState;
+	public Func<bool> UseAlternateState;
 	public State CurrentState { get; private set; }
 
-	private Dictionary<string, State> _states = [];
-	private string _firstState = null;
+	public State DefaultState { get; set; } = State.Default;
+	public State? AlternateState { get; set; } = null;
 
 	public UIButton(object text, float textScaleMax = 1, bool large = false) : base(text, textScaleMax, large)
 	{
-		GetCurrentState = () => _firstState;
+		UseAlternateState = () => false;
 	}
 
-	public void AddState(string name, State state)
+	public void UpdateState()
 	{
-		_firstState ??= name;
-		_states.Add(name, state);
-	}
-
-	private void UpdateState()
-	{
-		if (_states.Count <= 0)
-			throw new InvalidOperationException("No states have been added using AddState()");
-
-		var currentStateName = GetCurrentState();
-		CurrentState = _states.TryGetValue(currentStateName, out var state)
-			? state
-			: throw new InvalidOperationException($"{currentStateName} is not a valid state");
-
+		CurrentState = UseAlternateState() && AlternateState is not null ? AlternateState.Value : DefaultState;
 		SetPanelColors();
 	}
 
-	private void SetPanelColors()
+	public void SetPanelColors()
 	{
 		BackgroundColor = IsMouseHovering && CurrentState.HoverPanelColor != null
 			? CurrentState.HoverPanelColor.Value
