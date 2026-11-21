@@ -561,7 +561,12 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
   * Caveat for the Zoologist: She has two sets of happiness dialogue. A normal one and one for when she is transformed.
     * In the ModNPC, add Transformed beforehand: `Transformed.BestiaryGirl_{AffectionLevel}NPC`
 	* For vanilla NPCs talking about vanilla NPCs, use BestiaryGirlTransformed: `TownNPCMood_BeastiaryGirlTransformed.{AffectionLevel}NPC_{OtherNPCInternalName}`
-* `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) now instead of 1.
+* `Item.maxStack` now defaults to `Item.CommonMaxStack` (9999) instead of 1, this includes previously unstackable items like weapons and accessories.
+  * The only items in vanilla that still use a non-default value are resource pickups, so make sure to set these to 1 if you have any modded ones.
+  * Otherwise, remove all assignments to `Item.maxStack` (both 1 and 9999) unless you have to deviate from the default.
+* `Item.uniqueStack` is no longer used by anything in vanilla.
+  * For quest fish, if you used `Item.DefaultToQuestFish`, you don't need to change anything, else, remove it.
+  * It can still be used for its documented purpose if need be.
 * `FishingAttempt.junk` now exists.
 * Critters can now be leashed. While leashed, they are a new type of `Entity` called `LeashedCritter` rather than a `NPC`. This requires several changes to support.
   * Assign `TECritterAnchor.CritterPrototypes[Type]` in `ModNPC.SetStaticDefaults` to dictate the animation and AI to use while leashed. 
