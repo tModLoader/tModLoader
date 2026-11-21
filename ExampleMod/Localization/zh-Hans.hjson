@@ -1304,7 +1304,7 @@ Mods: {
 				// DisplayName: Example Golf Club (Driver)
 				// Tooltip: "{$CommonItemTooltip.GolfDriver}"
 			}
-
+			
 			ExampleSpecialGlideWings: {
 				// DisplayName: Example Special Glide Wings
 				// Tooltip: ""
@@ -1323,6 +1323,11 @@ Mods: {
 			ExampleBeastTransformationItem: {
 				// DisplayName: Example Beast Transformation Skull
 				// Tooltip: Transforms the user into an Example Beast Transformation
+			}
+			
+			ExampleVoiceAccessory: {
+				// DisplayName: Example Voice Accessory
+				// Tooltip: "'Boing!'"
 			}
 		}
 
