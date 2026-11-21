@@ -51,26 +51,28 @@ namespace ExampleMod.Content.Items
 			// - The player is using a resource magnet
 			// - The player is holding a class item
 			// - The player is not at maximum resource
-			bool canPickup = false;
+			bool canBePulled = false;
 			var modPlayer = player.GetModPlayer<ExampleResourcePlayer>();
 			if (modPlayer.exampleResourceMagnet) {
-				canPickup = true;
+				canBePulled = true;
 			}
 			else if (modPlayer.exampleResourceCurrent < modPlayer.exampleResourceMax2) {
-				canPickup = true;
+				canBePulled = true;
 			}
-			// If you have a custom damage class, you would do this check here
-			// else if (player.HeldItem.CountsAsClass(DamageClass.Magic)) {
-			// 	canPickup = true;
-			// }
+			// If you have a custom damage class, you would do a check like this here
+			/*
+			else if (player.HeldItem.CountsAsClass(DamageClass.Magic)) {
+				canBePulled = true;
+			}
+			*/
 			// Instead, for showcasing that it works, we check the ExampleCustomResourceWeapon directly
 			else if (player.HeldItem.type == ModContent.ItemType<ExampleCustomResourceWeapon>()) {
-				canPickup = true;
+				canBePulled = true;
 			}
 
 			// Returning true indicates that we want to skip the vanilla grab style. Since we don't do anything extra here, the grabbing is simply prevented
-			// Do note that it does not prevent pickup, only the pull effect from a short distance. If the player touches the item, it still gets picked up
-			return !canPickup;
+			// Do note that it does not prevent pickup, only the pull effect from a short distance. If the player touches the item, it still gets picked up unless ModItem.CanPickup is used to prevent that.
+			return !canBePulled;
 		}
 
 		// GrabRange can be used to implement effects similar to Heartreach potion or Celestial Magnet.
