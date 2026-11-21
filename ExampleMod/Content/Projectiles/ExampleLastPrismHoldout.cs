@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria;
 using Terraria.Audio;
 using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -230,6 +231,13 @@ namespace ExampleMod.Content.Projectiles
 			Color drawColor = ExampleLastPrism.OverrideColor;
 			Main.EntitySpriteDraw(texture, sheetInsertPosition, new Rectangle?(new Rectangle(0, spriteSheetOffset, texture.Width, frameHeight)), drawColor, Projectile.rotation, new Vector2(texture.Width / 2f, frameHeight / 2f), Projectile.scale, effects, 0f);
 			return false;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// Because we cloned the Last Prism in SetDefaults, it set the same aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+			Projectile.frame = doll.CalculateFrameFromMiscCounter(framerate: 4, minFrame: 0, maxFrame: Main.projFrames[Type]); // Apply the animation of the held projectile.
+			return true;
 		}
 	}
 }

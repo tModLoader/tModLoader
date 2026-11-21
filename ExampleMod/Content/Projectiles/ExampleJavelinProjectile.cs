@@ -3,6 +3,7 @@ using ExampleMod.Content.Items.Weapons;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -220,6 +221,41 @@ namespace ExampleMod.Content.Projectiles
 			if (Projectile.alpha < 0) {
 				Projectile.alpha = 0;
 			}
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 113 (StickProjectile)
+		// Due to our custom AI code, using ProjAIStyleID.StickProjectile for this one wouldn't display correctly.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+			DrawOriginOffsetY = -Projectile.height * 2; // This will move the projectile up in the mannequin's hand.
+
+			float additionalRotation = -MathHelper.PiOver2; // Rotate the javelin to match the Bone Javelin.
+
+			// Rotate the javelin some more for each pose of the swing animation.
+			switch (pose.Pose) {
+				case DisplayDollPoseID.Use2:
+					additionalRotation += MathHelper.PiOver4;
+					break;
+				case DisplayDollPoseID.Use3:
+					additionalRotation += MathHelper.PiOver2;
+					break;
+				case DisplayDollPoseID.Use4:
+					additionalRotation += 3 * MathHelper.PiOver4;
+					break;
+				case DisplayDollPoseID.Use5:
+					additionalRotation += MathHelper.Pi;
+					break;
+			}
+
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Make the projectile draw in behind the mannequin's hand.
+			Projectile.AI_DisplayDoll_ItemDisplay(doll, weapon, pose, additionalRotation); // Call this method to do the heavy lifting such as setting the position and rotation.
+			Projectile.alpha = 0; // The javelin normally starts invisible and fades in. 0 alpha is fully opaque.
+
+			// Optional: Fix the rotation when the mannequin is facing right.
+			// if (doll.direction == 1)
+			//	Projectile.rotation += MathHelper.PiOver2;
+
+			return false;
 		}
 	}
 }

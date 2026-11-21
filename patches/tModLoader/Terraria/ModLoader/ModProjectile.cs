@@ -482,7 +482,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <param name="aiType"> The Projectile.type of the projectile. Will be set to <see cref="AIType"/> if set. Can be changed to a supported type within the style. </param>
 	/// <param name="aiStyle"> The Projectile.aiStyle of the projectile. Can be changed to a supported style. </param>
 	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
-	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType)
 	{
 		return true;
 	}

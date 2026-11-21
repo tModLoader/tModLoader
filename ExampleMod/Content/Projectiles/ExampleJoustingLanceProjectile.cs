@@ -226,7 +226,7 @@ namespace ExampleMod.Content.Projectiles
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 19 (Spear)
 		// Due to how lances are held and how they fade in, we need to customize the forward offset and alpha to make it look right and can't just use ProjAIStyleID.Spear for this one.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
 			Projectile.direction = doll.direction;
 			Projectile.spriteDirection = -Projectile.direction;
 			Vector2 projectileDirection = Vector2.UnitX;

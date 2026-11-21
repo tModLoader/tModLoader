@@ -1666,6 +1666,15 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
+@@ -19341,7 +_,7 @@
+ 		}
+ 	}
+ 
+-	private bool AI_DisplayDoll_ItemDisplay(Player doll, Item weapon, TEDisplayDoll.DisplayDollPose pose, float rotationAddon = 0f)
++	public bool AI_DisplayDoll_ItemDisplay(Player doll, Item weapon, TEDisplayDoll.DisplayDollPose pose, float rotationAddon = 0f) // TML: Made public
+ 	{
+ 		spriteDirection = direction;
+ 		Vector2 spinningpoint = Vector2.UnitX * weapon.shootSpeed * weapon.scale;
 @@ -19381,7 +_,16 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
@@ -1676,7 +1685,7 @@
 +			aiType = ModProjectile.AIType;
 +		}
  		int num = aiStyle;
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref num, ref aiType))
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, weapon, ref num, ref aiType))
 +			goto SkipVanillaLogic;
 +		this.type = aiType;
 +
