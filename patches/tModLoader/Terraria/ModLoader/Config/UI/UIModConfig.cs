@@ -434,6 +434,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel?.ResetScroll();
 		subPageBreadcrumbText?.ResetScroll();
 		UnblockInput(null, null);
+		UpdateCount = 0;
 
 		if (scrollbar is not null)
 			scrollbar.ViewPosition = 0f;
