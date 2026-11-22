@@ -29,7 +29,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useTurn = true;
 			Item.useAnimation = 17;
 			Item.useTime = 17;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 14;
 			Item.height = 24;
