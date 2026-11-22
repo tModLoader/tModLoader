@@ -355,6 +355,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 		else {
 			if (openedFromModder) {
+				// HandleOnCloseCallback() called within because pressing escape in game calls IngameFancyUI.Close()
 				IngameFancyUI.Close();
 			}
 			else {
