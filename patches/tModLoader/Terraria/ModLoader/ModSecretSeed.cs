@@ -30,22 +30,11 @@ public abstract class ModSecretSeed : ModSeedType
 	}
 	private string _seedCode;
 
-	public bool Known {
-		get => (AutoUnlock && !SecretSeedsTracker.ProcessedConfig) || SecretSeedsTracker.SeedsForInterface.Contains(SecretSeed);
-		set {
-			if (!SecretSeedsTracker.ProcessedConfig) {
-				AutoUnlock = value;
-				return;
-			}
-			if (value && !Known) {
-				SecretSeedsTracker.SeedsForInterface.Add(SecretSeed);
-			}
-			if (!value && Known) {
-				SecretSeedsTracker.SeedsForInterface.Remove(SecretSeed);
-			}
-		}
-	}
-	internal bool AutoUnlock { get; private set; }
+	/// <summary>
+	/// Whether this seed should be automatically added to the secret seeds menu without needing to be unlocked first.
+	/// Does nothing if the secret seeds menu has already been loaded.
+	/// </summary>
+	public bool AutoUnlock { get; protected set; }
 
 	/// <summary>
 	/// The <see cref="WorldGen.SecretSeed"/> object that this ModSecretSeed controls.

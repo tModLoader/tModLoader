@@ -119,6 +119,9 @@ public abstract class ModSpecialSeed : ModSeedType
 		if (sharedIndex != -1) {
 			throw new Exception($"Seed {FullName} had a seed ({(dependencies[sharedIndex] is ModSpecialSeedUIOption specialOption ? specialOption.ModSpecialSeed.FullName : "")}) that is both a dependency and an incompatibility.");
 		}
+		if (AutoEnableWithDependencies && dependencies.Count <= 0) {
+			Logging.tML.Warn($"Seed {FullName} has AutoEnableWithDependencies enabled but does not contain any dependencies.");
+		}
 		Dependencies = dependencies;
 		Incompatibilities = incompatibilities;
 	}
@@ -171,7 +174,7 @@ public abstract class ModSpecialSeed : ModSeedType
 			ChangeIncompatibilityState();
 		}
 		UpdateDependencies(changed);
-		if (AutoEnableWithDependencies && Dependencies.All(dependent => dependent.Enabled)) {
+		if (AutoEnableWithDependencies && Dependencies.All(dependent => dependent.Enabled) && Dependencies.Count > 0) {
 			UIOption.Enabled = true;
 		}
 		UpdateIncompatibilities(changed);
