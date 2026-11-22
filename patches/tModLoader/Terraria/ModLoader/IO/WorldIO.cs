@@ -793,7 +793,7 @@ internal static class WorldIO
 
 	internal static string SaveUsedModPack()
 	{
-		return Path.GetFileNameWithoutExtension(Core.ModOrganizer.ModPackActive);
+		return Path.GetFileName(Core.ModOrganizer.ModPackActive);
 	}
 
 	internal static void LoadGeneratedWithMods(WorldFileData data, TagCompound tag)

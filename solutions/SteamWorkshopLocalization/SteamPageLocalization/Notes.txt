@@ -3,3 +3,9 @@ This folder is intended for Localizations for the Various Steam Languages for Pa
 This may be moved later; for now, provides opportunity to start collecting them.
 
 This is NOT integrated with steam, so a tModLoader dev has to manually import these in to steamworks.
+
+app_language.json - Contains workshop additional text. (Steamworks Admin->Workshop->Homepage/General). These 2 need to be manually uploaded individually
+
+storepage_language_LongDescription.txt - The full game description. Duplicated into SteamUploadStorePage/storepage_275117_language.json as app[content][about], but formatted into json string. The script will handle populating this.
+
+SteamUploadStorePage/storepage_275117_language.json - Contains all the store page text. The steam template files are not formatted, so UpdateStorePageLocalizationFiles.py takes care of formatting them and populating app[content][about] from storepage_language_LongDescription.txt, as well as duplicating output for similar dialects. Translators can update this file directly, but should likely update LongDescription.txt directly for the about since the formatting within json is hard.

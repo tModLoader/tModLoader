@@ -12,5 +12,5 @@
 -	public static bool enableDebugCommands = false;
 +	public static bool enableDebugCommands = true;
  	public static bool Shared_ReportCommandUsage = true;
+ 	public static bool Shared_RandomizeProjectileSlots = false;
  	public static int Shared_ServerPing = 0;
- 	public static double UpdateWaitInMs = 0.0;

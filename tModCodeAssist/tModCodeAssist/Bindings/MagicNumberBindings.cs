@@ -76,6 +76,8 @@ public static class MagicNumberBindings
 	private static readonly object @lock = new();
 	private static ConcurrentDictionary<Type, IdDictionary> searchCache;
 	private static ConcurrentDictionary<string, Dictionary<string, List<Binding>>> bindingsByMemberByOwningClass;
+	// Class -> (Method -> (Parameter number and even only toggle))
+	private static ConcurrentDictionary<string, Dictionary<string, FallbackBehavior>> fallbackBehaviorByMethodByOwningClass;
 
 	public static void PopulateBindings()
 	{
@@ -85,6 +87,7 @@ public static class MagicNumberBindings
 
 			searchCache = [];
 			bindingsByMemberByOwningClass = [];
+			fallbackBehaviorByMethodByOwningClass = [];
 
 			AddBinding<TileID>("Terraria.Item", "createTile", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<ItemID>("Terraria.Item", "type", (ctx) => new FieldOrPropertyBinding(ctx));
@@ -164,6 +167,19 @@ public static class MagicNumberBindings
 			AddBinding<WallID>("Terraria.ID.WallID.Sets.Conversion", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<MountID>("Terraria.ID.MountID.Sets", "*", (ctx) => new FieldOrPropertyBinding(ctx));
 			AddBinding<ProjectileDrawLayerID>("Terraria.Projectile", "drawLayer", (ctx) => new FieldOrPropertyBinding(ctx), typeof(int));
+			AddBinding<TileID>("Terraria.WorldGen", "CountTileTypesInWorld", (ctx) => new MethodParameterBinding(ctx, 0));
+
+			(string, int)[] ItemDropRuleMethods = [("FewFromOptionsNotScalingWithLuck", 2), ("FewFromOptionsNotScalingWithLuck", 2),("FewFromOptionsNotScalingWithLuckWithX", 3), ("FewFromOptions", 2), ("FewFromOptionsWithNumerator", 3), ("OneFromOptions", 1), ("Common", 0), ("BossBag", 0), ("BossBagByCondition", 1), ("ExpertGetsRerolls", 0), ("MasterModeCommonDrop", 0), ("MasterModeDropOnAllPlayers", 0), ("WithRerolls", 0), ("ByCondition", 1), ("ScalingWithOnlyBadLuck", 0), ("NotScalingWithLuck", 0), ("OneFromOptionsNotScalingWithLuck", 1), ("OneFromOptionsNotScalingWithLuckWithX", 2), ("OneFromOptionsWithNumerator", 2), ("NormalvsExpert", 0), ("NormalvsExpertNotScalingWithLuck", 0), ("NormalvsExpertOneFromOptionsNotScalingWithLuck", 2), ("NormalvsExpertOneFromOptions", 2), ("Food", 0), ("StatusImmunityItem", 0)];
+			foreach (var ItemDropRuleMethod in ItemDropRuleMethods) {
+				AddBinding<ItemID>("Terraria.GameContent.ItemDropRules.ItemDropRule", ItemDropRuleMethod.Item1, (ctx) => new MethodParameterBinding(ctx, ItemDropRuleMethod.Item2));
+			}
+			
+			// These methods should fallback or inherit the binding from the containing member.
+			AddFallbackBehavior("Terraria.ID.SetFactory", "CreateBoolSet(int[])", 0, false);
+			AddFallbackBehavior("Terraria.ID.SetFactory", "CreateBoolSet(bool, int[])", 1, false);
+			AddFallbackBehavior("Terraria.ID.SetFactory", "CreateIntSet(int[])", 0, true);
+			AddFallbackBehavior("Terraria.ID.SetFactory", "CreateIntSet(int, int[])", 1, true);
+			AddFallbackBehavior("Terraria.ID.SetFactory", "CreateFloatSet(float, float[])", 1, true);
 		}
 	}
 
@@ -284,5 +300,57 @@ public static class MagicNumberBindings
 	{
 		binding = bindings.FirstOrDefault(x => x.AppliesTo(symbol));
 		return binding is not null;
+	}
+
+	public record class FallbackBehavior(int parameterOrdinal, bool evenOnly);
+
+	private static void AddFallbackBehavior(string owningClassName, string methodName, int parameterOrdinal, bool evenOnly)
+	{
+		var fallbackBehavior = new FallbackBehavior(parameterOrdinal, evenOnly);
+
+		if (fallbackBehaviorByMethodByOwningClass.TryGetValue(owningClassName, out var methods)) {
+			methods[methodName] = fallbackBehavior;
+		}
+		else {
+			fallbackBehaviorByMethodByOwningClass[owningClassName] = new() { [methodName] = fallbackBehavior };
+		}
+	}
+
+	public static bool HasFallbackBehaviorForMethod(ISymbol symbol)
+	{
+		if (symbol is IMethodSymbol methodSymbol && fallbackBehaviorByMethodByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out var fallbackBindingsByMethod)) {
+			// This includes parameters!  They only get filtered out in TryGetFallbackBinding(s).
+			return fallbackBindingsByMethod.ContainsKey(methodSymbol.ToDisplayString(MethodNameOnlyDisplayFormat))
+				|| fallbackBindingsByMethod.ContainsKey(methodSymbol.ToDisplayString(MethodWithQualifiedParametersDisplayFormat));
+		}
+
+		return false;
+	}
+
+	public static bool TryGetFallbackBinding(IMethodSymbol methodSymbol, ISymbol symbol, out FallbackBehavior fallbackBehavior)
+	{
+		if(TryGetFallbackBindings(methodSymbol, out var potentialFallbackBehavior) && symbol is IParameterSymbol parameterSymbol && parameterSymbol.Ordinal == potentialFallbackBehavior.parameterOrdinal) {
+			fallbackBehavior = potentialFallbackBehavior;
+			return true;
+		}
+		fallbackBehavior = null;
+		return false;
+	}
+
+	public static bool TryGetFallbackBindings(ISymbol symbol, out FallbackBehavior fallbackBehavior)
+	{
+		fallbackBehavior = null;
+
+		if (symbol is IMethodSymbol methodSymbol && fallbackBehaviorByMethodByOwningClass.TryGetValue(BuildQualifiedName(symbol.ContainingType), out var bindingsByMethod)) {
+			if (bindingsByMethod.TryGetValue(methodSymbol.ToDisplayString(MethodNameOnlyDisplayFormat), out fallbackBehavior)) {
+				return true;
+			}
+
+			if (bindingsByMethod.TryGetValue(methodSymbol.ToDisplayString(MethodWithQualifiedParametersDisplayFormat), out fallbackBehavior)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

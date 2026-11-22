@@ -1,0 +1,11 @@
+{
+	"HomePage": {
+		"AreaTitle": "Elección del Desarrollador",
+		"AreaDescription": "Estos mods han sido seleccionados a mano por los desarrolladores de tModLoader, y están destinados a destacar mods de Terraria de alta calidad, pero quizás menos conocidos."
+	},
+	"General": {
+		"WorkshopTitle": "Mods de tModLoader",
+		// Max Length: 200
+		"WorkshopDescription": "Ver y descargar mods de tModLoader desde Steam Workshop. Los mods aquí solo funcionan con la rama predeterminada de tModLoader. Los de 1.3-legacy están disponibles por separado."
+	}
+}

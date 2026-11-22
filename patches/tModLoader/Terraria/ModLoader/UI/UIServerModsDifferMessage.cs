@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -202,7 +202,11 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			};
 			reason.IsWrapped = true;
 
-			var modIcon = ModLoader.GetModIcon(entry.localMod.modFile) ?? Mod.PlaceholderModIcon;
+			var modIcon = Mod.PlaceholderModIcon;
+			if (entry.localMod != null && ModLoader.GetModIcon(entry.localMod.modFile) is Asset<Texture2D> localModIcon) {
+				modIcon = localModIcon;
+			}
+
 			UIImage modIconImage = new UIImage(modIcon) {
 				Left = { Percent = 0f },
 				Top = { Percent = 0f },
@@ -218,7 +222,7 @@ internal class UIServerModsDifferMessage : UIState, IHaveBackButtonCommand
 			modList.Add(panel);
 
 			if (entry.typeOrder == 1) { // Download from server
-				// TODO: Download from Server/Workshop toggle
+										// TODO: Download from Server/Workshop toggle
 
 				// Due to issues with chat tags and wrapped text, this is a separate UIText from reason
 				UIText warning = new UIText("") {

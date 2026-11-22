@@ -5,10 +5,10 @@
  using Terraria.Chat.Commands;
  using Terraria.Localization;
 +using Terraria.ModLoader;
+ using Terraria.Testing;
  
  namespace Terraria.Chat;
- 
-@@ -40,6 +_,8 @@
+@@ -42,6 +_,8 @@
  
  	public void PrepareAliases()
  	{
@@ -17,7 +17,7 @@
  		foreach (IChatCommand value in _commands.Values) {
  			if (value is ICommandAliasProvider)
  				((ICommandAliasProvider)value).PrepareAliases(this);
-@@ -57,7 +_,7 @@
+@@ -59,7 +_,7 @@
  	private static bool ParseCommandPrefix<T>(string text, Dictionary<LocalizedText, T> commands, out string remainder, out T value)
  	{
  		foreach (KeyValuePair<LocalizedText, T> command in commands) {
@@ -26,7 +26,7 @@
  				value = command.Value;
  				return true;
  			}
-@@ -68,6 +_,17 @@
+@@ -70,6 +_,17 @@
  		return false;
  	}
  
@@ -44,7 +44,7 @@
  	public ChatMessage CreateOutgoingMessage(string text)
  	{
  		ChatMessage chatMessage = new ChatMessage(text);
-@@ -86,6 +_,11 @@
+@@ -88,6 +_,11 @@
  
  	public void ProcessIncomingMessage(ChatMessage message, int clientId)
  	{

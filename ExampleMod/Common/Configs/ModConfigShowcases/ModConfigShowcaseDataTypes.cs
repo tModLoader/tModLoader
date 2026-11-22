@@ -14,6 +14,7 @@ using Terraria.ModLoader.Config;
 namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	[BackgroundColor(144, 252, 249)]
+	[SortConfig(after: true, nameof(ExampleModConfig))]
 	public class ModConfigShowcaseDataTypes : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -59,7 +60,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			[new PrefixDefinition(PrefixID.Awkward)] = 0.8f,
 		};
 
-		// TODO: Not working at the moment.
 		// Using a custom class as a key in a Dictionary. When used as a Dictionary Key, special code must be used.
 		public Dictionary<ClassUsedAsKey, Color> CustomKey = new Dictionary<ClassUsedAsKey, Color>();
 

@@ -159,6 +159,18 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	}
 
 	/// <summary>
+	/// Allows you to modify wing gliding speeds.
+	/// <para/> Return false to prevent vanilla gliding behavior.
+	/// </summary>
+	/// <param name="player"></param>
+	/// <param name="gravityMultiplier"></param>
+	/// <param name="maxSpeedMultiplier"></param>
+	public virtual bool? WingGlidingSpeeds(Player player, ref float gravityMultiplier, ref float maxSpeedMultiplier)
+	{
+		return Item?.WingGlidingSpeeds(player, ref gravityMultiplier, ref maxSpeedMultiplier);
+	}
+
+	/// <summary>
 	/// Allows you to modify horizontal wing speeds.
 	/// </summary>
 	/// <param name="player"></param>

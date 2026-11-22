@@ -1,0 +1,17 @@
+--- src/TerrariaNetCore/Terraria/GameContent/Items/WhipTagEffect_Constellation.cs
++++ src/tModLoader/Terraria/GameContent/Items/WhipTagEffect_Constellation.cs
+@@ -2,12 +_,12 @@
+ 
+ public class WhipTagEffect_Constellation : WhipTagEffect
+ {
+-	public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	public override void OnTaggedHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		owner.TagEffectStack.TryEnableProcOnNPC(5479, npcHit);
+ 	}
+ 
+-	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, int calcDamage)
++	public override bool OnProcHit(Player owner, Projectile optionalProjectile, NPC npcHit, NPC.HitInfo hit)
+ 	{
+ 		if (optionalProjectile != null)
+ 			return optionalProjectile.type == 1034;

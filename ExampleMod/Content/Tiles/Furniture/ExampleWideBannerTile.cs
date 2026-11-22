@@ -27,7 +27,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.newTile.Origin = Point16.Zero;
 			TileObjectData.newTile.AnchorBottom = AnchorData.Empty;
 			TileObjectData.newTile.AnchorTop = new AnchorData(AnchorType.SolidTile | AnchorType.SolidSide | AnchorType.SolidBottom | AnchorType.PlanterBox, TileObjectData.newTile.Width, 0);
-			TileObjectData.newTile.DrawYOffset = -2;
+			TileObjectData.newTile.DrawYOffset = -2; // Draw this tile 2 pixels up to align visually with the bottom of the tile it is anchored to.
 
 			// This alternate allows for placing the banner on platforms, just like in vanilla.
 			TileObjectData.newAlternate.CopyFrom(TileObjectData.newTile);
@@ -36,6 +36,12 @@ namespace ExampleMod.Content.Tiles.Furniture
 			TileObjectData.addAlternate(0);
 
 			TileObjectData.addTile(Type);
+		}
+
+		public override void SetDrawPositions(int i, int j, ref int width, ref int offsetY, ref int height, ref short tileFrameX, ref short tileFrameY) {
+			// Due to MultiTileVine rendering the tile 2 pixels higher than expected for modded tiles using TileObjectData.DrawYOffset, we need to add 2 to fix the math for correct drawing
+			offsetY += 2;
+			return;
 		}
 
 		public override bool PreDraw(int i, int j, SpriteBatch spriteBatch) {

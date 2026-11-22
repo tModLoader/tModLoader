@@ -1,6 +1,6 @@
 --- src/Terraria/Terraria/Projectile.cs
 +++ src/TerrariaNetCore/Terraria/Projectile.cs
-@@ -386,6 +_,17 @@
+@@ -602,6 +_,17 @@
  		hostileDamageScaling = GameDifficultyData.HostileProjectileDamageMultiplier;
  		frame = 0;
  		frameCounter = 0;
@@ -18,7 +18,7 @@
  		if (type == 1) {
  			arrow = true;
  			width = 10;
-@@ -4811,6 +_,19 @@
+@@ -5038,6 +_,19 @@
  			penetrate = -1;
  			timeLeft = 180;
  		}
@@ -38,8 +38,8 @@
  		else if (type == 501) {
  			width = 14;
  			height = 14;
-@@ -8996,9 +_,26 @@
- 			penetrate = -1;
+@@ -9523,9 +_,26 @@
+ 			idStaticNPCHitCooldown = 10;
  		}
  		else {
 +			return false;

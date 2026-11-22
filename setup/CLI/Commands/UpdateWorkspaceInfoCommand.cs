@@ -24,7 +24,7 @@ public sealed class UpdateWorkspaceInfoCommandSettings : CommandSettings
 	[Description("The TML dev steam directory. This is derived from the Terraria steam directory if no value is supplied.")]
 	public string? TmlDevSteamDir {
 		get => tmlDevSteamDir;
-		init => tmlDevSteamDir = value != null ? PathUtils.GetCrossPlatformFullPath(value) : null;
+		init => tmlDevSteamDir = PathUtils.GetCrossPlatformFullPath(value);
 	}
 
 	[CommandOption("--no-validate")]

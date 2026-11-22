@@ -40,7 +40,7 @@ partial class UICharacterListItem
 			string[] currentModNames = ModLoader.ModLoader.Mods.Select(m => m.Name).ToArray();
 			var missingMods = data.Player.usedMods.Except(currentModNames).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
 			var newMods = currentModNames.Except(new[] { "ModLoader" }).Except(data.Player.usedMods).Select(ModOrganizer.GetDisplayNameCleanFromLocalModsOrDefaultToModName).ToList();
-			bool checkModPack = System.IO.Path.GetFileNameWithoutExtension(ModLoader.Core.ModOrganizer.ModPackActive) != data.Player.modPack;
+			bool checkModPack = System.IO.Path.GetFileName(ModOrganizer.ModPackActive) != data.Player.modPack;
 
 			if (checkModPack || missingMods.Count > 0 || newMods.Count > 0) {
 				UIImageButton modListWarning = new UIImageButton(_errorTexture) {
