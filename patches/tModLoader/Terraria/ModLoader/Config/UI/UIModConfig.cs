@@ -349,14 +349,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
 		if (Main.gameMenu) {
+			Interface.modConfigList.ModToSelectOnOpen = mod;
 			Main.menuMode = Interface.modConfigListID;
 			HandleOnCloseCallback();
 		}
 		else {
-			if (openedFromModder)
+			if (openedFromModder) {
 				IngameFancyUI.Close();
-			else
+			}
+			else {
+				Interface.modConfigList.ModToSelectOnOpen = mod;
 				Main.InGameUI.SetState(Interface.modConfigList);
+			}
 		}
 	}
 
@@ -586,8 +590,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 	public override void OnActivate()
 	{
 		ResetUI();
-
-		Interface.modConfigList.ModToSelectOnOpen = mod;
 
 		// From UIModConfigList
 		var configSideTexture = UICommon.ConfigSideIndicatorTexture;
