@@ -524,7 +524,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	}
 
 	/// <summary>
-	/// Called during <see cref="Projectile.AI_Sentries_HeavySlingReposition()"/> before the default logic to adjust how the sentries are position when carried with the Heavy Sling.
+	/// Called during <see cref="Projectile.AI_Sentries_HeavySlingReposition()"/> before the default logic to adjust how the sentries are positioned when carried with the <see cref="ItemID.HeavySling"/>.
 	/// <para/>
 	/// </summary>
 	/// <param name="offset"> The offset of the sentry relative to the player's center.

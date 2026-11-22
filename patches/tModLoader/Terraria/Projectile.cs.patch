@@ -2352,13 +2352,13 @@
  	}
  
 +	/// <summary>
-+	/// Sentries use <c>Projectile.ai[2]</c> to keep track if they can be picked up or are already picked up by a player if they have the Heavy Sling equipped.
++	/// Sentries use <c>Projectile.ai[2]</c> to keep track if they can be picked up or are already picked up by a player if they have the <see cref="ItemID.HeavySling"/> equipped.
 +	/// </summary>
 +	/// <returns><see langword="true"/> if <c>Projectile.ai[2] == 1f</c></returns>
  	public bool IsSentryBeingCarried() => ai[2] == 1f;
  
 +	/// <summary>
-+	/// States whether a sentry projectile is eligible to be picked up by a player if they have the Heavy Sling equipped.
++	/// Returns true when a sentry projectile is eligible to be picked up by a player if they have the <see cref="ItemID.HeavySling"/> equipped.
 +	/// </summary>
  	public bool CanGetPickedUpBySentryBackpack()
  	{
@@ -2368,7 +2368,7 @@
  	}
  
 +	/// <summary>
-+	/// Sets the cooldown for the player's ability to pick up a sentry to 2, preventing them from being able to pick one up.
++	/// Sets the cooldown for the player's ability to pick up a sentry to 2, preventing them from being able to pick one up if called every tick.
 +	/// <br/>Sets <see cref="Player.accSentryBackpackGrabCooldown"/> to 2.
 +	/// </summary>
  	public void SetAsSelectedSentryBackpackTarget()

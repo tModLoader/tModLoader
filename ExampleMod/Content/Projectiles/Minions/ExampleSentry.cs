@@ -16,7 +16,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 		public bool Floating => Projectile.ai[1] == 0;
 
-		// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
+		// Projectile.ai[2] is used for whether the sentry is being carried by a player with the Heavy Sling.
 
 		public bool JustSpawned {
 			get => Projectile.localAI[0] == 0;
@@ -174,7 +174,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		/// This sub-method checks if the sentry can be picked up if the player has the Heavy Sling equipped.
 		/// </summary>
 		private void AI_CheckForHeavySling() {
-			// Projectile.ai[2] is used for whether the sentries is being carried by a player with the Heavy Sling.
+			// Projectile.ai[2] is used for whether the sentry is being carried by a player with the Heavy Sling.
 			// 0 == not being carried.
 			// 1 == being carried.
 			if (Projectile.ai[2] == 0f && Projectile.CanGetPickedUpBySentryBackpack()) {
@@ -195,13 +195,15 @@ namespace ExampleMod.Content.Projectiles.Minions
 
 				Projectile.AI_Sentries_HeavySlingReposition(); // Change how the sentry gets positioned.
 			}
+			// Make sure your sentry does not do any movement before or after the `IsSentryBeingCarried()` check.
+			// If movement is intended when not carried, put an else block here for that
 		}
 
 		// This hook is called during Projectile.AI_Sentries_HeavySlingReposition() and lets us modify the position of the sentry.
 		public override bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin) {
 			Player owner = Main.player[Projectile.owner];
 			// Here are two useful bools for checking which kind of mount the player is riding.
-			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= MountID.Rudolph && MountID.Sets.IsTransformationMount[owner.mount.Type];
+			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= 0 && MountID.Sets.IsTransformationMount[owner.mount.Type];
 			// bool playerRidingMinecart = player.mount.Active && player.mount.AnyTrackRider;
 
 			// This is where we can change the offset of the sentry while the player is carrying it.
