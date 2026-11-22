@@ -230,6 +230,7 @@ partial class ItemID
 		/// <summary>
 		/// Contains voice accessories that can randomly generated in chests and lets slimes in Skyblock spawn carrying this item.
 		/// <para/>Additionally set <see cref="ItemID.Sets.IsAVoiceChangeItem"/> to boost the HP of slimes with this item.
+		/// <para/>If this list is empty, no voice change items will be generated in chests and slimes will not spawn carrying voice change items.
 		/// </summary>
 		public static List<int> VoiceChangeItemForChestLootAndSlimes = [
 			PlayerVoiceFrogItem, PlayerVoiceGoatItem, PlayerVoiceRetroItem, PlayerVoiceCatItem,
