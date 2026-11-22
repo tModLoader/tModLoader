@@ -411,6 +411,17 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		RefreshUI();
 	}
 
+	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (configPageStack.Count <= 1) {
+			return;
+		}
+
+		SoundEngine.PlaySound(SoundID.MenuClose);
+		configPageStack.Pop();
+		RefreshUI();
+	}
+
 	#endregion
 
 	#region UI Updating
@@ -451,6 +462,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configPageStack.Push(rootConfigPage);
 	}
 
+	public void OnConfigModified()
+	{
+		RefreshUI();
+	}
+
+	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
+	public void SetPendingChanges(bool changes = true)
+	{
+		if (changes)
+			OnConfigModified();
+	}
+
 	private void RefreshUI(bool delayRefresh = true)
 	{
 		if (delayRefresh) {
@@ -461,59 +484,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		refreshQueued = false;
 
 		RefreshSubPageUI();
-		CheckSaveAndRestoreConditions();
-
-		// TODO: allow filtering to look inside of subpages
-		// TODO: should a SearchFunction should be used instead to allow searching labels, tooltips, children, and "related phrases" that a modder can specify?
-		configElementList.Clear();
-		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
-			if (item.Item2 is ConfigElement configElement) {
-				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
-			}
-			return true;
-		}).Select(x => x.Item1));
-
-		configElementList.Recalculate();
-		configElementList.Width.Pixels = 0;
-		scrollbar.Remove();
-		if (scrollbar.CanScroll) {
-			configElementList.Width.Pixels -= 25;
-			uiPanel.Append(scrollbar);
-		}
-		configElementList.Recalculate();
-
+		RefreshSaveAndRestoreConditions();
+		RefreshConfigElementList();
+		RefreshScrollbar();
 		uiPanel.BackgroundColor = CurrentConfigPage.BackgroundColor;
 
 		Recalculate();
-	}
-
-	public void OnConfigModified()
-	{
-		RefreshUI();
-	}
-
-	private void CheckSaveAndRestoreConditions()
-	{
-		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
-		HasDefaultValues = pendingConfig.HasDefaultValues();
-	}
-
-	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
-	public void SetPendingChanges(bool changes = true)
-	{
-		if (changes)
-			OnConfigModified();
-	}
-
-	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
-	{
-		if (configPageStack.Count <= 1) {
-			return;
-		}
-
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		configPageStack.Pop();
-		RefreshUI();
 	}
 
 	private void RefreshSubPageUI()
@@ -536,6 +512,39 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 
 		scrollbar.Height.Pixels = configElementList.Height.Pixels;
+	}
+
+	private void RefreshSaveAndRestoreConditions()
+	{
+		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
+		HasDefaultValues = pendingConfig.HasDefaultValues();
+	}
+
+	private void RefreshConfigElementList()
+	{
+		// TODO: allow filtering to look inside of subpages
+		// TODO: should a SearchFunction should be used instead to allow searching labels, tooltips, children, and "related phrases" that a modder can specify?
+		configElementList.Clear();
+		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
+			if (item.Item2 is ConfigElement configElement) {
+				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
+			}
+			return true;
+		}).Select(x => x.Item1));
+	}
+
+	private void RefreshScrollbar()
+	{
+		configElementList.Recalculate();
+		configElementList.Width.Pixels = 0;
+		scrollbar.Remove();
+
+		if (scrollbar.CanScroll) {
+			configElementList.Width.Pixels -= 25;
+			uiPanel.Append(scrollbar);
+		}
+
+		configElementList.Recalculate();
 	}
 
 	public void PushConfigPage(ConfigPage configPage)
