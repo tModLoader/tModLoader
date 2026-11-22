@@ -2102,11 +2102,15 @@
  				for (int k = 0; k < num5; k++) {
  					Dust obj = Main.dust[WorldGen.KillTile_MakeTileDust(i, j, tileSafely)];
  					obj.velocity.Y -= 3f + (float)num4 * 1.5f;
-@@ -58918,7 +_,7 @@
+@@ -58918,7 +_,11 @@
  		velocity.Y += 0.2f;
  	}
  
 -	private void AI_Sentries_HeavySlingReposition()
++	/// <summary>
++	/// This method sets the position of the sentry to at the player's head. The sentry will be killed if the player loses their ability to carry it.
++	/// <para> The logic used here can be adjusted by overriding <see cref="ModProjectile.SentryHeavySlingReposition(ref Vector2, ref Vector2, ref int)"/>.</para>
++	/// </summary>
 +	public void AI_Sentries_HeavySlingReposition() // TML: Made public
  	{
  		Player player = Main.player[owner];
