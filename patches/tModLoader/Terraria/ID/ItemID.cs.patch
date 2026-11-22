@@ -485,7 +485,7 @@
 +
 +		/// <summary>
 +		/// Denotes this item as a voice changing accessory. Naturally spawning slimes holding this item will receive triple HP.
-+		/// <para/>To let your voice changing item generate in chest loot and lets slimes in Skyblock spawn carrying this item, additionally set <see cref="ItemID.Sets.VoiceChangeItemForChestLootAndSlimes"/>.
++		/// <para/>To let your voice changing item generate in chest loot and lets slimes in Skyblock spawn carrying this item, additionally add it to <see cref="ItemID.Sets.VoiceChangeItemForChestLootAndSlimes"/>.
 +		/// </summary>
  		public static bool[] IsAVoiceChangeItem = Factory.CreateBoolSet(5507, 5502, 5485, 5484, 5506, 5503, 5534, 5499, 5500, 5505, 5501, 5504, 5508, 5509, 215);
 +
