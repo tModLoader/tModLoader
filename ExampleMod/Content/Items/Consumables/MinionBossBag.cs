@@ -21,7 +21,6 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.width = 24;
 			Item.height = 24;

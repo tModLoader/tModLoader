@@ -26,7 +26,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useTime = 15;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 1);

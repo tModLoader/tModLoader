@@ -12,7 +12,6 @@ namespace ExampleMod.Content.Items.Weapons
 			// Common Properties
 			Item.rare = ItemRarityID.Pink;
 			Item.value = Item.sellPrice(silver: 5);
-			Item.maxStack = 999;
 
 			// Use Properties
 			Item.useStyle = ItemUseStyleID.Swing;
@@ -22,7 +21,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.autoReuse = true;
 			Item.consumable = true;
 
-			// Weapon Properties			
+			// Weapon Properties
 			Item.damage = 33;
 			Item.knockBack = 5f;
 			Item.noUseGraphic = true; // The item should not be visible when used

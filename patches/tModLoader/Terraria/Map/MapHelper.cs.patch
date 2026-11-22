@@ -87,7 +87,7 @@
  	public static int TileToLookup(int tileType, int option)
  	{
 -		Invariant.Assert(tileType >= 0 && tileType <= TileID.Count, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
-+		Invariant.Assert(tileType >= 0 && tileType <= tileLookup.Length, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
++		Invariant.Assert(tileType >= 0 && tileType < tileLookup.Length, "MapHelper.TileToLookup passed a bad tileType: {0}", tileType);
  		Invariant.Assert(option >= 0, "MapHelper.TileToLookup passed a bad option: {0}", option);
  		Invariant.Assert(option < tileOptionCounts[tileType], "MapHelper.TileToLookup passed an option for tileType {0} that does not exist: {1}", tileType, option);
  		return tileLookup[tileType] + option;
