@@ -94,7 +94,8 @@ namespace ExampleMod.Content.Items.Armor
 		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
 		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
 		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
-			SoundEngine.PlaySound(SoundID.Item103, soundPosition);
+			// SoundID.Frog is actually SoundType.Ambient, so we need to change it to play at the correct SoundType.Sound master volume.
+			SoundEngine.PlaySound(SoundID.Frog with { Type = SoundType.Sound }, soundPosition);
 			return true;
 		}
 	}

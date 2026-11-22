@@ -1324,7 +1324,7 @@ Mods: {
 				DisplayName: Example Beast Transformation Skull
 				Tooltip: Transforms the user into an Example Beast Transformation
 			}
-			
+
 			ExampleVoiceAccessory: {
 				DisplayName: Example Voice Accessory
 				Tooltip: "'Boing!'"
