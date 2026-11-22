@@ -2860,6 +2860,14 @@
  		if (!WorldGen.generatingWorld)
  			DoUpdate_AutoSave();
  
+@@ -14848,6 +_,7 @@
+ 			LiquidRenderer.Instance.Update(gameTime);
+ 			UpdateAudio();
+ 			InGameNotificationsTracker.Update();
++			MenuNotificationsTracker.Update();
+ 			ItemSlot.UpdateInterface();
+ 			CraftingEffects.Update();
+ 			if (teamCooldown > 0)
 @@ -14911,6 +_,11 @@
  			if (wantsToPause3) {
  				mouseLeftRelease = false;
@@ -6332,7 +6340,7 @@
  			num112 += 20f;
  		}
  
-+		InGameNotificationsTracker.DrawInMenu(spriteBatch);
++		MenuNotificationsTracker.DrawInMenu(spriteBatch);
 +
  		spriteBatch.End();
  		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerStateForCursor, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, UIScaleMatrix);
