@@ -131,37 +131,32 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 
 		backButton = CreateButton("tModLoader.ModConfigBack", 0, BackClick);
-		backButton.AddState("Default", clickableState);
-		backButton.AddState("HasUnsavedChanges", backButtonUnsavedChanges);
-		backButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
+		backButton.DefaultState = clickableState;
+		backButton.AlternateState = backButtonUnsavedChanges;
+		backButton.UseAlternateState = () => HasUnsavedChanges;
 		uiElement.Append(backButton);
 
 		saveConfigButton = CreateButton("tModLoader.ModConfigSaveConfig", 1f / 3f, SaveConfig);
-		saveConfigButton.AddState("Default", disabledState with {
-			HoverText = Language.GetText("tModLoader.ModConfigSaveConfigNoUnsavedChanges"),
-		});
-		saveConfigButton.AddState("HasUnsavedChanges", clickableState);
-		saveConfigButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
+		saveConfigButton.DefaultState = disabledState;
+		saveConfigButton.AlternateState = clickableState;
+		saveConfigButton.UseAlternateState = () => HasUnsavedChanges;
+		saveConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigSaveConfigNoUnsavedChanges");
 		uiElement.Append(saveConfigButton);
 
 		revertConfigButton = CreateButton("tModLoader.ModConfigRevertChanges", 2f / 3f, RevertConfig);
-		revertConfigButton.AddState("Default", disabledState with {
-			HoverText = Language.GetText("tModLoader.ModConfigRevertChangesNoUnsavedChanges"),
-		});
-		revertConfigButton.AddState("HasUnsavedChanges", clickableState with {
-			HoverText = Language.GetText("tModLoader.ModConfigRevertChangesTooltip"),
-		});
-		revertConfigButton.GetCurrentState = () => HasUnsavedChanges ? "HasUnsavedChanges" : "Default";
+		revertConfigButton.DefaultState = disabledState;
+		revertConfigButton.AlternateState = clickableState;
+		revertConfigButton.UseAlternateState = () => HasUnsavedChanges;
+		revertConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigRevertChangesNoUnsavedChanges");
+		revertConfigButton.AlternateState.HoverText = Language.GetText("tModLoader.ModConfigRevertChangesTooltip");
 		uiElement.Append(revertConfigButton);
 
 		restoreDefaultsConfigButton = CreateButton("tModLoader.ModConfigRestoreDefaults", 1f, RestoreDefaults);
-		restoreDefaultsConfigButton.AddState("Default", clickableState with {
-			HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsTooltip"),
-		});
-		restoreDefaultsConfigButton.AddState("HasDefaultValues", disabledState with {
-			HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsAlreadyDefault"),
-		});
-		restoreDefaultsConfigButton.GetCurrentState = () => HasDefaultValues ? "HasDefaultValues" : "Default";
+		restoreDefaultsConfigButton.DefaultState = disabledState;
+		restoreDefaultsConfigButton.AlternateState = clickableState;
+		restoreDefaultsConfigButton.UseAlternateState = () => !HasDefaultValues;
+		restoreDefaultsConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsAlreadyDefault");
+		restoreDefaultsConfigButton.AlternateState.HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsTooltip");
 		uiElement.Append(restoreDefaultsConfigButton);
 	}
 
@@ -236,10 +231,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.MinWidth.Set(0, 0);
 		modNamePanel.VAlign = 0.5f;
 		modNamePanel.Left.Pixels = 50;
-		modNamePanel.AddState("Default", UIButton.State.Default with {
+		modNamePanel.DefaultState = UIButton.State.Default with {
 			PanelColor = InfoBadgeBackgroundColor,
 			BorderColor = InfoBadgeBorderColor,
-		});
+		};
 
 		listHeaderContainer.Append(modNamePanel);
 
@@ -281,7 +276,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		};
 
 		subPageBackButton.MaxWidth = subPageBackButton.MinWidth;
-		subPageBackButton.AddState("Default", UIButton.State.DefaultWithHover);
+		subPageBackButton.DefaultState = UIButton.State.DefaultWithHover;
 		subPageBackButton.OnLeftClick += BackSubPage;
 
 		subPageBreadcrumbPanel = new UIPanel {
