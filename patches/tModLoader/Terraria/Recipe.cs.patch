@@ -149,7 +149,7 @@
  	public Recipe()
  	{
  		for (int i = 0; i < maxRequirements; i++) {
-@@ -155,10 +_,18 @@
+@@ -155,13 +_,25 @@
  			acceptedGroups[i] = -1;
  		}
  	}
@@ -169,6 +169,13 @@
  			RequiredItemEntry requiredItemEntry = requiredItemQuickLookup[i];
  			if (requiredItemEntry.itemIdOrRecipeGroup != 0) {
  				requiredItemEntry.stack -= GetIngredientCraftingDiscount(player, requiredItemEntry);
++
++				// TML: ConsumeIngredient hook allows adjusting the amount of each ingredient consumed. See IngredientQuantityRules.Alchemy.
++				int type = requiredItemEntry.IsRecipeGroup ? requiredItemEntry.RecipeGroup.GetPlaceholderItemType() : requiredItemEntry.itemIdOrRecipeGroup;
++				RecipeLoader.ConsumeIngredient(this, type, ref requiredItemEntry.stack);
+ 				if (requiredItemEntry.stack > 0)
+ 					ingredients.Add(requiredItemEntry);
+ 
 @@ -174,6 +_,7 @@
  
  	private int GetIngredientCraftingDiscount(Player player, RequiredItemEntry req)
@@ -177,13 +184,14 @@
  		int num = 0;
  		if (alchemy && player.alchemyTable) {
  			for (int i = 0; i < req.stack; i++) {
-@@ -183,6 +_,9 @@
+@@ -183,6 +_,10 @@
  		}
  
  		return num;
 +		*/
 +
-+		return 0; // TODO, reimplement crafting discounts in terms of RequiredItemEntry
++		// Crafting ingredient discounts (like the alchemy table) are handled by ConsumeIngredient callbacks, see GetIngredientsForOneCraft.
++		return 0;
  	}
  
  	public static void UpdateRecipeList()
@@ -202,6 +210,23 @@
  				AddToAvailableRecipes(i);
  		}
  
+@@ -262,13 +_,13 @@
+ 		if (requiredTile >= 0 && !player.adjTile[requiredTile])
+ 			flag &= AddMissing(GetRequiredTileName(requiredTile), missingObjects);
+ 
+-		if (needWater && !player.adjWaterSource)
++		if (needWater && !player.adjLiquid[LiquidID.Water])
+ 			flag &= AddMissing(Lang.inter[53].Value, missingObjects);
+ 
+-		if (needHoney && !player.adjHoney)
++		if (needHoney && !player.adjLiquid[LiquidID.Honey])
+ 			flag &= AddMissing(Lang.inter[58].Value, missingObjects);
+ 
+-		if (needLava && !player.adjLava)
++		if (needLava && !player.adjLiquid[LiquidID.Lava])
+ 			flag &= AddMissing(Lang.inter[56].Value, missingObjects);
+ 
+ 		if (needSnowBiome && !player.ZoneSnow)
 @@ -298,9 +_,35 @@
  		CollectItems(player.inventory, 58);
  		CollectItemsFromChests(player);
@@ -491,9 +516,9 @@
 +		ReplaceCondition(ref currentRecipe.needGraveyardBiome, Condition.InGraveyard);
 +		ReplaceCondition(ref currentRecipe.needSnowBiome, Condition.InSnow);
 +		ReplaceCondition(ref currentRecipe.needTorchGodsFavor, Condition.NeedTorchGodsFavor);
-+		ReplaceCondition(ref currentRecipe.needWater, Condition.NearWater);
-+		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLava);
-+		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearHoney);
++		ReplaceCondition(ref currentRecipe.needWater, Condition.NearLiquid(LiquidID.Water));
++		ReplaceCondition(ref currentRecipe.needLava, Condition.NearLiquid(LiquidID.Lava));
++		ReplaceCondition(ref currentRecipe.needHoney, Condition.NearLiquid(LiquidID.Honey));
 +		ReplaceCondition(ref currentRecipe.needMechdusa, Condition.ZenithWorld);
 +
 +		ReplaceDecraftCondition(ref currentRecipe.crimson, Condition.CrimsonWorld);

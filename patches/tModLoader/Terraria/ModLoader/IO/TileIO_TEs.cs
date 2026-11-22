@@ -15,25 +15,27 @@ internal static partial class TileIO
 
 		var saveData = new TagCompound();
 
-		foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
-			var tileEntity = pair.Value;
-			var modTileEntity = tileEntity as ModTileEntity;
+		lock (TileEntity.EntityCreationLock) {
+			foreach (KeyValuePair<int, TileEntity> pair in TileEntity.ByID) {
+				var tileEntity = pair.Value;
+				var modTileEntity = tileEntity as ModTileEntity;
 
-			tileEntity.SaveData(saveData);
+				tileEntity.SaveData(saveData);
 
-			var tag = new TagCompound {
-				["mod"] = modTileEntity?.Mod.Name ?? "Terraria",
-				["name"] = modTileEntity?.Name ?? tileEntity.GetType().Name,
-				["X"] = tileEntity.Position.X,
-				["Y"] = tileEntity.Position.Y
-			};
+				var tag = new TagCompound {
+					["mod"] = modTileEntity?.Mod.Name ?? "Terraria",
+					["name"] = modTileEntity?.Name ?? tileEntity.GetType().Name,
+					["X"] = tileEntity.Position.X,
+					["Y"] = tileEntity.Position.Y
+				};
 
-			if (saveData.Count != 0) {
-				tag["data"] = saveData;
-				saveData = new TagCompound();
+				if (saveData.Count != 0) {
+					tag["data"] = saveData;
+					saveData = new TagCompound();
+				}
+
+				list.Add(tag);
 			}
-
-			list.Add(tag);
 		}
 
 		return list;

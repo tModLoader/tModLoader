@@ -49,6 +49,8 @@ public static class WallLoader
 	private static Action<int, int, int, SpriteBatch>[] HookPostDraw;
 	private static Action<int, int, int, Item>[] HookPlaceInWorld;
 	private static Action<int, int, int, int, int>[] HookOnWallConverted;
+	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
+	private static Func<int, int, int, bool?>[] HookCanShowWireStuffHere;
 
 	internal static int ReserveWallID()
 	{
@@ -122,6 +124,8 @@ public static class WallLoader
 		ModLoader.BuildGlobalHook(ref HookPostDraw, globalWalls, g => g.PostDraw);
 		ModLoader.BuildGlobalHook(ref HookPlaceInWorld, globalWalls, g => g.PlaceInWorld);
 		ModLoader.BuildGlobalHook(ref HookOnWallConverted, globalWalls, g => g.OnWallConverted);
+		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalWalls, g => g.CanDoWireStuffHere);
+		ModLoader.BuildGlobalHook(ref HookCanShowWireStuffHere, globalWalls, g => g.CanShowWireStuffHere);
 
 		if (!unloading) {
 			loaded = true;
@@ -592,6 +596,42 @@ public static class WallLoader
 
 		GetWall(fromType)?.OnWallConverted(i, j, fromType, toType, conversionType);
 		GetWall(toType)?.OnWallConverted(i, j, fromType, toType, conversionType);
+	}
+
+	public static bool? CanDoWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetWall(type)?.CanDoWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanDoWireStuffHere) {
+			bool? canDoWire = hook(i, j, type);
+			if (canDoWire.HasValue) {
+				if (!canDoWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
+	}
+
+	public static bool? CanShowWireStuffHere(int i, int j, int type)
+	{
+		bool? ret = GetWall(type)?.CanShowWireStuffHere(i, j);
+		if (ret == false)
+			return false;
+
+		foreach (var hook in HookCanShowWireStuffHere) {
+			bool? canShowWire = hook(i, j, type);
+			if (canShowWire.HasValue) {
+				if (!canShowWire.Value)
+					return false;
+
+				ret = true;
+			}
+		}
+		return ret;
 	}
 
 	internal static void FinishSetup()

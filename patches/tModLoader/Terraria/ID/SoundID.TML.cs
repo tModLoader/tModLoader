@@ -65,7 +65,7 @@ partial class SoundID
 	public static readonly SoundStyle Mech = new($"{Prefix}Mech_0") { PitchVariance = 0.2f, SoundLimitBehavior = IgnoreNew };
 
 	//public static readonly SoundStyle Zombie = new($"{Prefix}Zombie_", 3, 2);
-	
+
 	// There is a 1 in 300 chance for a duck to play an easter egg sound variant.
 	public static readonly SoundStyle Duck = new($"{Prefix}Zombie_", stackalloc (int, float)[] {
 		(10, (299f / 300f) * (1f / 2f)),
@@ -456,7 +456,7 @@ partial class SoundID
 	public static readonly SoundStyle Item189 = ItemSound(189);
 	public static readonly SoundStyle Item190 = ItemSound(190);
 	public static readonly SoundStyle Item191 = ItemSound(191);
-	public static readonly SoundStyle Item192 = ItemSound(192);
+	public static readonly SoundStyle Item192 = ItemSound(192) with { PitchVariance = 0f, UsesKiteSoundPitch = true };
 	public static readonly SoundStyle Item193 = ItemSound(193);
 	public static readonly SoundStyle Item194 = ItemSound(194);
 	public static readonly SoundStyle Item195 = ItemSound(195);
@@ -635,12 +635,13 @@ partial class SoundID
 	{
 		const BindingFlags Flags = BindingFlags.Public | BindingFlags.Static;
 
-		static void AddNumberedStyles(int type, string baseName, int start, int numStyles) {
+		static void AddNumberedStyles(int type, string baseName, int start, int numStyles)
+		{
 			var array = legacyArrayedStylesMapping[type] = new SoundStyle[start + numStyles];
 
 			for (int i = 0; i < numStyles; i++) {
 				int ii = start + i;
-				
+
 				if (typeof(SoundID).GetField($"{baseName}{ii}", Flags)?.GetValue(null) is SoundStyle soundStyle) {
 					array[ii] = soundStyle;
 				}
@@ -674,7 +675,7 @@ partial class SoundID
 
 	private static SoundStyle NPCDeathSound(ReadOnlySpan<int> soundStyles)
 		=> SoundWithDefaults(NPCDeathDefaults, new($"{Prefix}NPC_Killed_", soundStyles));
-	
+
 	private static SoundStyle ItemSound(int soundStyle)
 		=> SoundWithDefaults(ItemDefaults, new($"{Prefix}Item_{soundStyle}"));
 

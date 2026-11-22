@@ -8,12 +8,11 @@
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics.PackedVector;
  using Terraria.Audio;
-@@ -17,12 +_,16 @@
+@@ -17,12 +_,15 @@
  using Terraria.ID;
  using Terraria.Localization;
  using Terraria.Map;
 +using Terraria.ModLoader;
-+using Terraria.ModLoader.Exceptions;
 +using Terraria.ModLoader.IO;
  using Terraria.Net;
  using Terraria.Net.Sockets;

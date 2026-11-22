@@ -37,11 +37,10 @@ namespace ExampleMod.Content.Items.Ammo
 			Item.knockBack = 4f;
 			Item.consumable = true;
 			Item.DamageType = DamageClass.Ranged;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.buyPrice(copper: 50);
 			Item.ammo = AmmoID.Rocket; // The ammo type is Rocket Ammo
-			// Unlike other ammo, we don't set Item.shoot to the projectile for rocket ammo due to the logic involved.
-			// AmmoID.Sets.SpecificLauncherAmmoProjectileMatches is used to determine the projectile spawned based on the weapon.
+									   // Unlike other ammo, we don't set Item.shoot to the projectile for rocket ammo due to the logic involved.
+									   // AmmoID.Sets.SpecificLauncherAmmoProjectileMatches is used to determine the projectile spawned based on the weapon.
 		}
 
 		// Please see Content/ExampleRecipes.cs for a detailed explanation of recipe creation.

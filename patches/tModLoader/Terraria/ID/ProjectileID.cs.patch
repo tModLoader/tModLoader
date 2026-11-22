@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/ID/ProjectileID.cs
 +++ src/tModLoader/Terraria/ID/ProjectileID.cs
-@@ -1,32 +_,102 @@
+@@ -1,32 +_,108 @@
  using Microsoft.Xna.Framework;
  using ReLogic.Reflection;
  using Terraria.DataStructures;
@@ -33,6 +33,7 @@
 +		/// <para/> <see cref="ModProjectile.PreTryDespawning(ref bool)"/> can be used to adjust projectile behavior prior to the projectile being killed in this manner, such as preventing an explosive from damaging the player.
 +		/// <para/> If <see cref="DespawnItemGivesItemBack"/> is also set, this projectile will drop as an item as well.
 +		/// <para/> Entries include flares, glowsticks, sentries, golf balls, most tile affecting bombs, spiky ball, nimbus rod, and more.
++		/// <para/> Defaults to 0.
 +		/// </summary>
  		public static int[] DespawnItemIcon = Factory.CreateIntSet(0, 163, 931, 310, 1614, 1008, 5377, 1009, 5378, 1010, 5379, 1011, 5380, 50, 282, 53, 286, 473, 3002, 515, 3112, 870, 4776, 1089, 5643, 308, 1572, 377, 2366, 641, 3569, 643, 3571, 663, 3818, 665, 3819, 667, 3820, 677, 3824, 678, 3825, 679, 3826, 688, 3829, 689, 3830, 690, 3831, 691, 3832, 692, 3833, 693, 3834, 966, 5119, 1025, 5463, 238, 1244, 237, 1244, 244, 1256, 243, 1256, 155, 859, 482, 3014, 24, 161, 250, 1260, 251, 1260, 721, 3989, 739, 4242, 740, 4243, 741, 4244, 742, 4245, 743, 4246, 744, 4247, 745, 4248, 746, 4249, 747, 4250, 748, 4251, 749, 4252, 750, 4253, 751, 4254, 752, 4255, 28, 166, 37, 235, 196, 1168, 516, 3115, 519, 3196, 773, 4423, 903, 4824, 904, 4825, 905, 4826, 906, 4827, 910, 4908, 911, 4909, 1077, 5542, 1086, 5594, 1087, 5595, 29, 167, 470, 2896, 637, 3547);
 +		/// <summary>
@@ -48,6 +49,11 @@
 +		/// <br/> Defaults to <see langword="false"/>.
 +		/// </summary>
  		public static bool[] DontApplyParryDamageBuff = Factory.CreateBoolSet(false, 524, 321, 181, 566);
++		/// <summary>
++		/// The <see cref="Item.useStyle"/> value to use when determining which pose to display for this projectile (<see cref="Projectile.type"/>) on a Mannequin. This overrides the item's own <see cref="Item.useStyle"/> for pose lookup.
++		/// <para/> All vanilla entries use <see cref="ItemUseStyleID.Shoot"/> (5).
++		/// <para/> Defaults to -1, which means the item's own <see cref="Item.useStyle"/> is used.
++		/// </summary>
  		public static int[] DisplayDollDrawUseStyle = Factory.CreateIntSet(-1, 301, 5, 933, 5, 1100, 5, 6, 5, 19, 5, 33, 5, 52, 5, 106, 5, 113, 5, 182, 5, 272, 5, 320, 5, 333, 5, 383, 5, 866, 5, 867, 5, 902, 5, 1000, 5, 1052, 5, 491, 5, 273, 5, 481, 5, 636, 5, 3, 5, 21, 5, 48, 5, 54, 5, 69, 5, 70, 5, 621, 5, 93, 5, 166, 5, 304, 5, 318, 5, 330, 5, 370, 5, 371, 5, 497, 5, 510, 5, 520, 5, 599, 5, 861, 5, 868, 5, 869, 5, 936, 5, 996, 5, 1085, 5, 507, 5, 598, 5, 28, 5, 29, 5, 37, 5, 470, 5, 516, 5, 519, 5, 637, 5, 773, 5, 903, 5, 904, 5, 905, 5, 906, 5, 910, 5, 911, 5, 1077, 5, 1086, 5, 1087, 5);
  		public static bool[] BreaksFromToyBreaker = Factory.CreateBoolSet(false, 1020, 1105, 861, 155, 855, 50, 53, 515, 473, 1089, 870, 721, 739, 740, 741, 742, 743, 744, 745, 746, 747, 748, 749, 750, 751, 752, 844, 766, 767, 822, 824, 839, 840, 846, 843, 828, 829, 845, 827, 826, 768, 769, 838, 830, 850, 853, 852, 823, 771, 770);
 +

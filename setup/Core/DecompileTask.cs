@@ -133,8 +133,11 @@ namespace Terraria.ModLoader.Setup.Core
 			if (Directory.Exists(parameters.SrcDir))
 				Directory.Delete(parameters.SrcDir, true);
 
-			var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(parameters.DecryptionKey, cancellationToken);
-			var clientModule = parameters.ServerOnly ? null : ReadModule(clientModulePath, taskProgress);
+			PEFile? clientModule = null;
+			if (!parameters.ServerOnly) {
+				var clientModulePath = await terrariaDecompileExecutableProvider.RetrieveClientExecutable(parameters.DecryptionKey, cancellationToken);
+				clientModule = ReadModule(clientModulePath, taskProgress);
+			}
 
 			var serverModulePath = await terrariaDecompileExecutableProvider.RetrieveServerExecutable(taskProgress, cancellationToken);
 			var serverModule = ReadModule(serverModulePath, taskProgress);

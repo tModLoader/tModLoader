@@ -21,7 +21,6 @@ namespace ExampleMod.Content.Items
 			Item.shoot = ModContent.ProjectileType<Projectiles.ActiveSoundShowcaseProjectile>();
 			Item.width = 22;
 			Item.height = 24;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.UseSound = SoundID.Item1;
 			Item.useAnimation = 15;
 			Item.useTime = 15;

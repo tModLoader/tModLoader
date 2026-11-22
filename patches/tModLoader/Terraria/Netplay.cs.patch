@@ -25,15 +25,24 @@
  	public static void ResetSections()
  	{
  		RemoteClient[] clients = Clients;
-@@ -176,6 +_,8 @@
- 
- 	private static void OnConnectionAccepted(ISocket client)
- 	{
-+		Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress().GetFriendlyName()));
-+
- 		int num = FindNextOpenClientSlot();
+@@ -180,7 +_,7 @@
  		if (num != -1) {
  			Clients[num].Reset();
+ 			Clients[num].Socket = client;
+-			Console.WriteLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
++			Logging.ServerConsoleLine(Language.GetTextValue("Net.ClientConnecting", client.GetRemoteAddress()));
+ 			return;
+ 		}
+ 
+@@ -203,7 +_,7 @@
+ 		writer.Write((byte)2);
+ 		kickMessage.Serialize(writer);
+ 		if (Main.dedServ)
+-			Console.WriteLine(Language.GetTextValue("CLI.ClientWasBooted", client.GetRemoteAddress().ToString(), kickMessage));
++			Logging.ServerConsoleLine(Language.GetTextValue("CLI.ClientWasBooted", client.GetRemoteAddress().ToString(), kickMessage));
+ 
+ 		int num = (int)writer.BaseStream.Position;
+ 		writer.BaseStream.Position = position;
 @@ -299,8 +_,16 @@
  					if (!Clients[i].Kicked && !Clients[i].IsAnnouncementCompleted)
  						Console.WriteLine(Language.GetTextValue("Net.ClientLostConnection", Clients[i].Socket.GetRemoteAddress()));
