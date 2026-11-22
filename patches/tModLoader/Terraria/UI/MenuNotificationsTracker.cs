@@ -11,7 +11,7 @@ public class MenuNotificationsTracker
 	private static List<IInGameNotification> _notifications = new List<IInGameNotification>();
 
 	/// <summary>
-	/// Adds an menu notification to the tracker.
+	/// Adds a menu notification to the tracker.
 	/// </summary>
 	/// <param name="notification">The notification to add.</param>
 	public static void AddNotification(IInGameNotification notification)
