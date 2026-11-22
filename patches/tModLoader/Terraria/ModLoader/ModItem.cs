@@ -1626,11 +1626,12 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	public virtual void OverridePlacementTile(int i, int j, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
 	}
-	
+
 	/// <summary>
 	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when taking damage can be overridden.
 	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
 	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerHurtSound"/>.
+	/// <para> This method is not instanced.</para>
 	/// </summary>
 	/// <param name="entity"> The entity that created the sound. </param>
 	/// <param name="soundPosition"> The position that the sound should be played at.
@@ -1645,6 +1646,7 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when dying can be overridden.
 	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
 	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerDeathSound"/>.
+	/// <para> This method is not instanced.</para>
 	/// </summary>
 	/// <param name="entity"> The entity that created the sound. </param>
 	/// <returns><see langword="false"/> by default.</returns>
