@@ -29,44 +29,37 @@ namespace ExampleMod.Content.Items.Tools
 			Item.rare = ItemRarityID.Blue;
 			Item.noMelee = true;
 			Item.value = Item.buyPrice(gold: 5);
+
+			// Different from Dirt Rod, actual projectile spawned will be decided in ModifyShootStats
+			Item.shoot = ProjectileID.SandBallFalling;
 		}
 
-		// CanUseItem is a query and must not change the world. Since 1.4.5 the game calls it several
-		// times per use, twice from Player.TryingToUseItem and once from the actual use, so
-		// destroying the tile here would consume it before the item is really used.
-		// Item.shoot is set here because Player.ItemCheck_Shoot reads it before ModifyShootStats runs.
 		public override bool CanUseItem(Player player) {
+			// Check the mouse position, which is only available on the local client
 			if (player.whoAmI != Main.myPlayer) {
 				return true;
 			}
 
-			if (!TryGetTargetTile(out _, out var data)) {
-				return false;
-			}
-
-			Item.shoot = data.FallingProjectileType;
-			return true;
+			return TryGetTargetTile(out _, out _);
 		}
 
-		// ModifyShootStats runs inside Player.ItemCheck_Shoot, right before the projectile spawns,
-		// and only once per actual use. This is where the tile can safely be destroyed.
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback) {
 			// Make sure the spawn position of projectile is the same as mouse
 			position = Main.MouseWorld;
 			player.LimitPointToPlayerReachableArea(ref position);
 
-			if (player.whoAmI != Main.myPlayer || !TryGetTargetTile(out Point tilePos, out var data)) {
+			if (!TryGetTargetTile(out Point tilePos, out var data)) {
 				return;
 			}
 
 			// The tile may differ from the one seen in CanUseItem if the mouse moved since then
 			type = data.FallingProjectileType;
 
-			// Kill the tile without item dropping, so the projectile carries it instead
+			// Destroy the tile without item dropping, so the projectile carries it instead
 			WorldGen.KillTile(tilePos.X, tilePos.Y, noItem: true);
 
-			// If it is on the multiplayer client, sync the tile destruction to the server
-			if (Main.netMode == NetmodeID.MultiplayerClient) {
+			// If it is destroyed and on the multiplayer client, sync the tile destruction to the server
+			if (!Main.tile[tilePos].HasTile && Main.netMode == NetmodeID.MultiplayerClient) {
 				// 4 corresponds to the "KillTile (No Item)" message
 				NetMessage.SendData(MessageID.TileManipulation, number: 4, number2: tilePos.X, number3: tilePos.Y);
 			}
@@ -85,6 +78,11 @@ namespace ExampleMod.Content.Items.Tools
 
 			// If the tile is not sand, the item will not be used
 			if (!Main.tileSand[tile.TileType]) {
+				return false;
+			}
+
+			// If the tile cannot be destroyed, the item will not be used
+			if (!WorldGen.CanKillTile(tilePos.X, tilePos.Y)) {
 				return false;
 			}
 
