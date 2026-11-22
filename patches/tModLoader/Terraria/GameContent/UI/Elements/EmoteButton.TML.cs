@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 
 namespace Terraria.GameContent.UI.Elements;

@@ -4,9 +4,8 @@ The tags and categories on the workshop can be localized. This script (UpdateWor
 
 2. Run the script. 
 
-3. Upload each file to steam. It will take 30 minutes to be live. If any categories names were updated, make sure to publish in steam as well.
+3. Upload each file to steam. It will take 30 minutes to be live. If any category names were updated, make sure to publish in steam as well.
 
 Similar languages: 
 	latin america spanish: Updates with Spanish
-	traditional chinese: undecided
 	Portuguese: updates with Brazilian Portuguese

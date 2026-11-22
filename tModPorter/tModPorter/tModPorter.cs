@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.MSBuild;
 using UtfUnknown;
 using static tModPorter.ProgressUpdate;
@@ -116,7 +117,7 @@ public class tModPorter
 
 	private async Task<SyntaxNode?> Process(Document doc, Action<ProgressUpdate> updateProgress) {
 		try {
-			var newDoc = await RewriteOnce(doc);
+			var newDoc = await RewriteOnce(doc, verifyTextChanges: pass > 50);
 			if (newDoc != doc) {
 				await Update(newDoc, updateProgress);
 				updateProgress(new FileUpdated(doc.Name));
@@ -160,14 +161,31 @@ public class tModPorter
 		await File.WriteAllTextAsync(path, (await doc.GetTextAsync()).ToString(), encoding);
 	}
 
-	public static async Task<Document> RewriteOnce(Document doc) {
+	public static async Task<Document> RewriteOnce(Document doc, bool verifyTextChanges = false) {
 		var prevDoc = doc;
 		foreach (var rewriter in Config.CreateRewriters()) {
 			doc = await rewriter.Rewrite(doc);
-			if (doc != prevDoc) return doc;
+			if (doc == prevDoc)
+				continue;
+
+			if (verifyTextChanges && (await doc.GetTextAsync()).ContentEquals(await prevDoc.GetTextAsync()))
+				throw new Exception($"{rewriter.GetType().Name} rebuilt {await FindReconstructedLeaf(prevDoc, doc)} without changing the text");
+
+			return doc;
 		}
 
 		return doc;
+	}
+
+	private static async Task<string> FindReconstructedLeaf(Document from, Document to) {
+		var node = (await from.GetSyntaxRootAsync())!;
+		var newNode = (await to.GetSyntaxRootAsync())!;
+
+		while (Enumerable.Zip(node.ChildNodes(), newNode.ChildNodes()).FirstOrDefault(p => !p.First.IsIncrementallyIdenticalTo(p.Second)) is var pair && pair != default)
+			(node, newNode) = pair;
+
+		var line = (await from.GetTextAsync()).Lines.GetLineFromPosition(node.SpanStart);
+		return $"{node.Kind()} '{node.ToString().ReplaceLineEndings(" ")}' at {from.Name}:{line.LineNumber + 1}: {line.ToString().Trim()}";
 	}
 
 	private static bool IsUnderGit(string path) => Path.GetDirectoryName(path) is string parent && (Directory.Exists(Path.Combine(parent, ".git")) || IsUnderGit(parent));

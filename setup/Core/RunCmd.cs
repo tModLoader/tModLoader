@@ -5,6 +5,10 @@ namespace Terraria.ModLoader.Setup.Core;
 
 public static class RunCmd
 {
+	/// <summary>
+	/// Runs a process to completion. <paramref name="output"/> and <paramref name="error"/> are each invoked
+	/// once, with everything the process wrote, so a caller can assign rather than append.
+	/// </summary>
 	public static int Run(
 		string dir,
 		string cmd,
@@ -43,16 +47,23 @@ public static class RunCmd
 			w.Close();
 		}
 
+		// Reading only ends when a stream is closed, so it is done on the thread pool. Waiting here instead
+		// would block until the process finished, ignoring cancellation, and would deadlock a process which
+		// filled the error pipe while the output pipe was still open.
+		Task<string>? outputTask = output != null ? process.StandardOutput.ReadToEndAsync(cancel) : null;
+		Task<string>? errorTask = error != null ? process.StandardError.ReadToEndAsync(cancel) : null;
+
 		while (!process.HasExited) {
 			if (cancel.IsCancellationRequested) {
-				process.Kill();
+				process.Kill(entireProcessTree: true);
 				throw new OperationCanceledException(cancel);
 			}
-			process.WaitForExit(100);
 
-			output?.Invoke(process.StandardOutput.ReadToEnd());
-			error?.Invoke(process.StandardError.ReadToEnd());
+			process.WaitForExit(100);
 		}
+
+		output?.Invoke(outputTask!.Result);
+		error?.Invoke(errorTask!.Result);
 
 		return process.ExitCode;
 	}

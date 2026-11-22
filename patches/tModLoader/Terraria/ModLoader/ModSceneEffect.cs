@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// ModSceneEffect is an abstract class that your classes can derive from. It serves as a container for handling exclusive SceneEffect content such as backgrounds, music, and water styling.
 /// </summary>
+[CloneByReference]
 public abstract partial class ModSceneEffect : ModType
 {
 	public int Type { get; internal set; }
@@ -116,6 +117,7 @@ public abstract partial class ModSceneEffect : ModType
 	/// Uses to customize the draw color of the map background (<see cref="MapBackground"/>) drawn on the fullscreen map. <see cref="MapBackgroundFullbright"/> can be used for typical effects, but this method can be used if further customization is needed.
 	/// </summary>
 	/// <param name="color">White or Main.ColorOfTheSkies depending on if above ground and MapBackgroundUsesSkyColor value.</param>
-	public virtual void MapBackgroundColor(ref Color color) {
-	} 
+	public virtual void MapBackgroundColor(ref Color color)
+	{
+	}
 }

@@ -92,4 +92,9 @@ public class ModPlayerTest : ModPlayer
 
 	public override bool FreeDodge(PlayerDeathReason damageSource, int cooldownCounter) => false;
 	public override bool ConsumableDodge(PlayerDeathReason damageSource, int cooldownCounter) => false;
+
+	public override void ModifyZoom(ref float zoom)
+	{
+		zoom = 0.5f;
+	}
 }

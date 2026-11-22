@@ -12,6 +12,7 @@ namespace Terraria.ModLoader;
 /// For modifying parts of the vanilla display sets, use <see cref="ModResourceOverlay"/>.
 /// </summary>
 [Autoload(true, Side = ModSide.Client)]
+[CloneByReference]
 public abstract class ModResourceDisplaySet : ModType, IPlayerResourcesDisplaySet, IConfigKeyHolder, ILocalizedModType
 {
 	public int Type { get; internal set; }

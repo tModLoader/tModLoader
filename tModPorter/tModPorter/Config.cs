@@ -9,8 +9,10 @@ public static partial class Config
 		new HookRewriter(), // Above RenameRewriter since RenameType would cause ChangeHookSignature->RenameParameter to skip renaming the method declaration parameters. (EditSpawnPool)
 		new RenameRewriter(),
 		new MemberTypeRewriter(),
+		new EventHandlerRewriter(),
 		new MemberUseRewriter(),
 		new InvokeRewriter(),
+		new GetItemSettingsRewriter(),
 		new RecipeRewriter(),
 		new HookGenRewriter(),
 	};

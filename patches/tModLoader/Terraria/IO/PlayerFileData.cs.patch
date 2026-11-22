@@ -35,9 +35,9 @@
 +		PlayerIO.MoveToLocal(Path, playerPathFromName);
 +
  		string fileName = GetFileName(includeExtension: false);
+ 		string fileName2 = FileUtilities.GetFileName(playerPathFromName, includeExtension: false);
  		string mapPath = System.IO.Path.Combine(Main.CloudPlayerPath, fileName);
- 		foreach (string item in (from path in SocialAPI.Cloud.GetFiles().ToList()
-@@ -114,7 +_,9 @@
+@@ -115,7 +_,9 @@
  
  	private bool MapBelongsToPath(string mapPath, string filePath)
  	{
@@ -47,4 +47,4 @@
 +		&& !filePath.EndsWith(".tmap", StringComparison.CurrentCultureIgnoreCase))
  			return false;
  
- 		string value = mapPath.Replace('\\', '/');
+ 		string text = mapPath.Replace('\\', '/');

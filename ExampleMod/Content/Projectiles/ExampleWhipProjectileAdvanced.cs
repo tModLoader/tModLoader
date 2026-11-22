@@ -50,7 +50,7 @@ namespace ExampleMod.Content.Projectiles
 			Player owner = Main.player[Projectile.owner];
 			Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2; // Without PiOver2, the rotation would be off by 90 degrees counterclockwise.
 
-			Projectile.Center = Main.GetPlayerArmPosition(Projectile, owner) + Projectile.velocity * Timer;
+			Projectile.Center = owner.GetArmPosition() + Projectile.velocity * Timer;
 			// Vanilla uses Vector2.Dot(Projectile.velocity, Vector2.UnitX) here. Dot Product returns the difference between two vectors, 0 meaning they are perpendicular.
 			// However, the use of UnitX basically turns it into a more complicated way of checking if the projectile's velocity is above or equal to zero on the X axis.
 			Projectile.spriteDirection = Projectile.velocity.X >= 0f ? 1 : -1;
@@ -135,7 +135,7 @@ namespace ExampleMod.Content.Projectiles
 			// This is needed in order for OnProcHit in the WhipTagEffect to activate.
 			if (Projectile.localAI[0] == 0f) {
 				Projectile.localAI[0] = 1f;
-				Main.player[Projectile.owner].TagEffectState.TryEnableProcOnNPC(Projectile.tagEffectType, target);
+				Main.player[Projectile.owner].TagEffectStack.TryEnableProcOnNPC(Projectile.tagEffectType, target);
 			}
 		}
 
@@ -207,17 +207,17 @@ namespace ExampleMod.Content.Projectiles
 				// ExampleWhipProjectileAdvanced has 10 segments, so the following will result in 1 handle, 3 segment 1s, 3 segment 2s, 2 segment 3s, and 1 head.
 				// (Charging up ExampleWhipProjectileAdvanced will increase the number of segments.)
 				else if (i > 2 * (totalSegments / 3)) {  // At 2/3 of the way across the whip, the third segment is used.
-					// Third segment
+														 // Third segment
 					frame.Y = 58;
 					frame.Height = 16;
 				}
 				else if (i > totalSegments / 3) { // At 1/3 of the way across the whip, the second segment is used.
-					// Second Segment
+												  // Second Segment
 					frame.Y = 42;
 					frame.Height = 16;
 				}
 				else if (i != 0) {  // At the start of the whip after the handle, the first segment is used.
-					// First Segment
+									// First Segment
 					frame.Y = 26;
 					frame.Height = 16;
 				}

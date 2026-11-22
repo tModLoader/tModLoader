@@ -9,7 +9,7 @@
  {
 +	/// <summary>
 +	/// The index of this Entity within its specific array. These arrays track the entities in the world.
-+	/// <br/> Item: unused
++	/// <br/> WorldItem: <see cref="Main.item"/>
 +	/// <br/> Projectile: <see cref="Main.projectile"/>
 +	/// <br/> NPC: <see cref="Main.npc"/>
 +	/// <br/> Player: <see cref="Main.player"/>

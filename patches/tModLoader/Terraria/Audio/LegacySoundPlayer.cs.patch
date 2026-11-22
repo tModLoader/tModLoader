@@ -69,15 +69,39 @@
  	{
  		int num = Style;
  		try {
-@@ -467,6 +_,7 @@
- 							case 103:
+@@ -406,6 +_,7 @@
+ 						break;
+ 					}
+ 					case 2:
++						// SoundID.Item#
+ 						if (num == 176)
+ 							num2 *= 0.9f;
+ 						if (num == 129)
+@@ -471,6 +_,7 @@
  							case 156:
  							case 162:
+ 							case 205:
 +								// The preceding ItemX SoundStyle all need MaxInstances = 0 in SoundID.TML.cs
  								break;
  						}
  						SoundInstanceItem[num] = SoundItem[num].Value.CreateInstance();
-@@ -855,6 +_,7 @@
+@@ -509,6 +_,7 @@
+ 						soundEffectInstance = SoundInstanceItem[num];
+ 						break;
+ 					case 3:
++						// SoundID.NPCHit#
+ 						if (num >= 20 && num <= 54)
+ 							num2 *= 0.5f;
+ 						if (num == 57 && SoundInstanceNpcHit[num] != null && SoundInstanceNpcHit[num].State == SoundState.Playing)
+@@ -526,6 +_,7 @@
+ 						soundEffectInstance = SoundInstanceNpcHit[num];
+ 						break;
+ 					case 4:
++						// SoundID.NPCDeath#
+ 						if (num >= 23 && num <= 57)
+ 							num2 *= 0.5f;
+ 						if (num == 61)
+@@ -859,6 +_,7 @@
  						break;
  					default:
  						switch (type) {

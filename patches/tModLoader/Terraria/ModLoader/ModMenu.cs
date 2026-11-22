@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// A class that is used to customize aesthetic features of the main menu, such as the logo, background and music.
 /// </summary>
+[CloneByReference]
 public abstract class ModMenu : ModType
 {
 	internal static Asset<Texture2D> modLoaderLogo;

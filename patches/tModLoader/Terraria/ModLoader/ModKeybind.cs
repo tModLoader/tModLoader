@@ -26,6 +26,10 @@ public class ModKeybind // We could make this a ModType later
 		Name = name;
 		DefaultBinding = defaultBinding;
 		DisplayName = Language.GetOrRegister($"Mods.{Mod.Name}.Keybinds.{Name}.{nameof(DisplayName)}", () => Regex.Replace(Name, "([A-Z])", " $1").Trim());
+		Lang.RegisterGlobalSubstitution($"InputTrigger_{FullName}", () => {
+			string inputList = PlayerInput.GenerateInputTag_ForCurrentGamemode(tagForGameplay: true, FullName);
+			return string.IsNullOrWhiteSpace(inputList) ? Lang.menu[195].Value : inputList;
+		});
 	}
 
 	/// <summary>

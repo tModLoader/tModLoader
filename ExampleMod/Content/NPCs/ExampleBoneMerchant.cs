@@ -82,7 +82,7 @@ namespace ExampleMod.Content.NPCs
 				.With(NPCID.Sets.ShimmeredPortraitCondition, NPCID.Sets.BasicPortrait($"{Texture}_Shimmer_Portrait")) // This is the portrait to use while the Town NPC is shimmered.
 				.Default(NPCID.Sets.BasicPortrait($"{Texture}_Portrait"))); // Default portrait to use (not shimmered).
 			NPCID.Sets.NPCPortraitsCloseUpOffsets.Add(Type, new Vector2(-3f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to profile.
-			//NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
+																				   //NPCID.Sets.NPCPortraitsFullBodyRetroOffsets.Add(Type, new Vector2(0f, 0f)); // Here we can change the offsets of Town NPC when the portrait style setting is set to retro.
 		}
 
 		public override void SetDefaults() {
@@ -171,13 +171,7 @@ namespace ExampleMod.Content.NPCs
 		}
 
 		public override string GetChat() {
-			WeightedRandom<string> chat = new WeightedRandom<string>();
-
-			// These are things that the NPC has a chance of telling you when you talk to it.
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue1"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue2"));
-			chat.Add(Language.GetTextValue("Mods.ExampleMod.Dialogue.ExampleBoneMerchant.StandardDialogue3"));
-			return chat; // chat is implicitly cast to a string.
+			return Language.SelectRandom(Lang.CreateDialogFilter("Mods.ExampleMod.Dialogue.ExampleBoneMerchant")).Value;
 		}
 
 		public override void RegisterChatButtons(NPCInteractionList interactions) {

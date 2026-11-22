@@ -20,7 +20,7 @@ namespace ExampleMod.Common.GlobalNPCs
 
 		public override void ModifyNPCLoot(NPC npc, NPCLoot npcLoot) {
 			if (!NPCID.Sets.CountsAsCritter[npc.type]) { // If npc is not a critter
-				// Make it drop ExampleItem.
+														 // Make it drop ExampleItem.
 				npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<ExampleItem>(), 1));
 
 				// Drop an ExampleResearchPresent in journey mode with 2/7ths base chance, but only in journey mode

@@ -1,11 +1,12 @@
-using MonoMod.Cil;
+using System;
 using System.Collections.Generic;
+using MonoMod.Cil;
 using Terraria.GameContent.Generation;
-using Terraria.WorldBuilding;
+using Terraria.ID;
 using Terraria.IO;
 using Terraria.ModLoader;
-using Terraria.ID;
-using System;
+using Terraria.Utilities;
+using Terraria.WorldBuilding;
 
 namespace Terraria;
 
@@ -15,6 +16,9 @@ public partial class WorldGen
 	{
 		_generator?._passes.Clear();
 	}
+
+	[ThreadStatic]
+	public static UnifiedRandom _genRand;
 
 	internal static Dictionary<string, GenPass> _vanillaGenPasses = new();
 	public static IReadOnlyDictionary<string, GenPass> VanillaGenPasses => _vanillaGenPasses;
@@ -81,7 +85,7 @@ public partial class WorldGen
 	}
 
 	/// <summary>
-	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModBlockType.RandomUpdate"/> to let your infectious tiles spread around<br/>
+	/// Utility method that mimics vanilla behavior for biome spread in hardmode. Call this in <see cref="ModTileOrWall.RandomUpdate"/> to let your infectious tiles spread around<br/>
 	/// Automatically checks for the journey mode biome spread toggle, hardmode, spread speed decrease after plantera, chlorophyte protection and sunflower protection.
 	/// </summary>
 	/// <param name="x">X coordinate of the spreading tile</param>

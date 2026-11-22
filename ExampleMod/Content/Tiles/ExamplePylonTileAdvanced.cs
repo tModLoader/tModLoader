@@ -157,8 +157,8 @@ namespace ExampleMod.Content.Tiles
 			// Depending on the whether or not the pylon is active, the color of the icon will change;
 			// otherwise, it acts as normal.
 			drawColor = !entity.isActive ? Color.Gray * 0.5f : drawColor;
-			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale);
-			DefaultMapClickHandle(mouseOver, pylonInfo, ModContent.GetInstance<ExamplePylonItemAdvanced>().DisplayName.Key, ref mouseOverText);
+			bool mouseOver = DefaultDrawMapIcon(ref context, mapIcon, pylonInfo.PositionInTiles.ToVector2() + new Vector2(1, 1.5f), drawColor, deselectedScale, selectedScale, out bool onScreen);
+			DefaultMapClickHandle(mouseOver, onScreen, pylonInfo, ModContent.GetInstance<ExamplePylonItemAdvanced>().DisplayName.Key, ref mouseOverText);
 		}
 	}
 }

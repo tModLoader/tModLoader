@@ -14,14 +14,14 @@ public sealed class SetupCommandSettings : PatchCommandSettings
 	[Description("Path to the Terraria steam directory. This is usually auto-detected. The value is persisted to src/WorkspaceInfo.targets")]
 	public string? TerrariaSteamDir {
 		get => terrariaSteamDir;
-		init => terrariaSteamDir = value != null ? PathUtils.GetCrossPlatformFullPath(value) : null;
+		init => terrariaSteamDir = PathUtils.GetCrossPlatformFullPath(value);
 	}
 
 	[CommandOption("--tml-dev-steam-dir")]
 	[Description("Path to the TML dev steam directory. This is derived from the Terraria steam directory if no value is supplied. The value is persisted to src/WorkspaceInfo.targets")]
 	public string? TMLDevSteamDir {
 		get => tmlDevSteamDir;
-		init => tmlDevSteamDir = value != null ? PathUtils.GetCrossPlatformFullPath(value) : null;
+		init => tmlDevSteamDir = PathUtils.GetCrossPlatformFullPath(value);
 	}
 }
 

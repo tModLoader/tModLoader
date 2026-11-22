@@ -9,6 +9,7 @@ namespace Terraria.ModLoader;
 /// <summary>
 /// This class serves as a place for you to define a new buff and how that buff behaves.
 /// </summary>
+[CloneByReference]
 public abstract class ModBuff : ModTexturedType, ILocalizedModType
 {
 	/// <summary> The buff id of this buff. </summary>
@@ -79,6 +80,7 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows to you make special things happen when adding this buff to an NPC when the NPC already has this buff. Return true to block the vanilla re-apply code from being called; returns false by default. The vanilla re-apply code sets the buff time to the "time" argument if that argument is larger than the current buff time.
+	/// <para/> Returning <see langword="true"/> may also skip the automatic server-side <see cref="MessageID.NPCBuffs"/> message in <see cref="NPC.AddBuff"/> so consider whether changes need manual syncing in this case.
 	/// </summary>
 	public virtual bool ReApply(NPC npc, int time, int buffIndex)
 	{
@@ -87,6 +89,7 @@ public abstract class ModBuff : ModTexturedType, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the name and tooltip that displays when the mouse hovers over the buff icon, as well as the color the buff's name is drawn in.
+	/// <para/> To modify the text shown below the buff icon that usually shows the remaining time, assign a handler to <see cref="BuffID.Sets.BuffTextHandlers"/>.
 	/// </summary>
 	public virtual void ModifyBuffText(ref string buffName, ref string tip, ref int rare)
 	{

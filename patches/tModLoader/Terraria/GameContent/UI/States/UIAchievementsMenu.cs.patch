@@ -132,8 +132,9 @@
  
  	private void FilterList(UIMouseEvent evt, UIElement listeningElement)
  	{
-+		if(listeningElement is UIToggleImage)
- 		SoundEngine.PlaySound(12);
++		if (listeningElement is UIToggleImage)
+-		SoundEngine.PlaySound(12);
++			SoundEngine.PlaySound(12);
  		_achievementsList.Clear();
  		foreach (UIAchievementListItem achievementElement in _achievementElements) {
 +			if (moddedOnly && achievementElement.GetAchievement().ModAchievement == null)
