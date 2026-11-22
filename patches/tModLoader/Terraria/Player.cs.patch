@@ -295,7 +295,22 @@
  	public bool accFishingLine;
  	public bool accFishingBobber;
  	public bool accTackleBox;
-@@ -882,8 +_,20 @@
+@@ -877,13 +_,35 @@
+ 	public PlayerAmmoCyclingMode ammoCyclingMode;
+ 	public int ammoCyclingCooldown;
+ 	public int ammoCyclingOffset;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player can pick up sentries.
++	/// <para> Used by the <see cref="ItemID.HeavySling"/>.</para>
++	/// </summary>
+ 	public bool accSentryBackpack;
+ 	public bool accGolemSentryBackpack;
++
++	/// <summary>
++	/// If above 0, the player cannot pickup a sentry. When a sentry is picked up, this value will be set to 2.
++	/// <para> Use <see cref="Player.accSentryBackpack"/> for the player's ability to pick up sentries in the first place.</para>
++	/// </summary>
  	public int accSentryBackpackGrabCooldown;
  	public bool accTimerCrit;
  	public float accTimerCritCharge;

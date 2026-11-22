@@ -200,7 +200,7 @@ namespace ExampleMod.Content.Projectiles.Minions
 		}
 
 		// This hook is called during Projectile.AI_Sentries_HeavySlingReposition() and lets us modify the position of the sentry.
-		public override bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin) {
+		public override bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 origin, ref int pushFromOrigin) {
 			Player owner = Main.player[Projectile.owner];
 			// Here are two useful bools for checking which kind of mount the player is riding.
 			bool playerTransformationMount = owner.mount.Active && owner.mount.Type >= 0 && MountID.Sets.IsTransformationMount[owner.mount.Type];

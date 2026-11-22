@@ -530,7 +530,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <param name="offset"> The offset of the sentry relative to the player's center.
 	/// <para/> Defaults to <see cref="Vector2.Zero"/>
 	/// </param>
-	/// <param name="halfSize"> Used for the position for everything except for the transformation mount.
+	/// <param name="origin"> Used for the position for everything except for the transformation mount.
 	/// <para/> Defaults to <c>Projectile.Size / 2f</c>
 	/// </param>
 	/// <param name="pushFromOrigin"> Used to change the origin of sentry for how it gets rotated.
@@ -539,7 +539,7 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// <para/> Defaults to 0
 	/// </param>
 	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
-	public virtual bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 halfSize, ref int pushFromOrigin)
+	public virtual bool SentryHeavySlingReposition(ref Vector2 offset, ref Vector2 origin, ref int pushFromOrigin)
 	{
 		return true;
 	}
