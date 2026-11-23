@@ -5,11 +5,13 @@ using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Weapons
 {
-	// This example shows how to create a boomerang weapon that limits the player to one active boomerang at a time.
+	// This example shows how to create a boomerang weapon.
+	// Boomerang weapons typically limit the player to one active boomerang projectile at a time (See CanUseItem below).
 	// See ExampleBoomerangProjectile for custom boomerang AI and an alternative that reuses vanilla behavior.
 	public class ExampleBoomerang : ModItem
 	{
 		public override void SetDefaults() {
+			// These defaults match Wooden Boomerang
 			Item.width = 14;
 			Item.height = 28;
 			Item.damage = 10;
@@ -28,9 +30,12 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool CanUseItem(Player player) {
-			// Vanilla limits its basic boomerangs by projectile type. Modded boomerangs need their own check.
-			// Only allow another throw once this player's previous boomerang is no longer active.
+			// Boomerangs typically limit the player to a single boomerang projectile.
+			// This check prevents the player from throwing another boomerang until the previous boomerang returns.
 			return player.ownedProjectileCounts[Item.shoot] < 1;
+
+			// Note: Some boomerangs, such as the Light Disc, allow multiple boomerangs at once.
+			// To do this, change 1 in the check above to 5. Item.autoReuse should also be set to true in SetDefaults to match Light Disc behavior.
 		}
 
 		public override void AddRecipes() {

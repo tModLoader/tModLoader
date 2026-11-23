@@ -25,7 +25,6 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetDefaults() {
 			Projectile.width = 6;
 			Projectile.height = 6;
-			Projectile.aiStyle = -1;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Ranged;
 			Projectile.alpha = 255;
@@ -68,7 +67,9 @@ namespace ExampleMod.Content.Projectiles
 		}
 
 		// The following hooks reproduce behavior that vanilla checks by projectile type, rather than by aiStyle.
-		public override bool? CanDamage() => FlameAge < 54f ? null : false;
+		public override bool? CanDamage() {
+			return FlameAge < 54f ? null : false;
+		}
 
 		public override void ModifyDamageHitbox(ref Rectangle hitbox) {
 			// Grow the damage area without increasing the small hitbox used for movement and tile collision.

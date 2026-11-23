@@ -31,7 +31,7 @@ namespace ExampleMod.Content.Items.Weapons
 		}
 
 		public override bool CanUseItem(Player player) {
-			// Vanilla checks its flame projectile type to prevent underwater use, so our custom projectile needs this check.
+			// Vanilla flame weapons prevent use while wet, so weapon matches that check.
 			return !player.wet || player.lavaWet;
 		}
 

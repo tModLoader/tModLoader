@@ -17,7 +17,6 @@ namespace ExampleMod.Content.Projectiles
 		public override void SetDefaults() {
 			Projectile.width = 22;
 			Projectile.height = 22;
-			Projectile.aiStyle = -1;
 			Projectile.friendly = true;
 			Projectile.DamageType = DamageClass.Melee;
 			Projectile.penetrate = -1;
@@ -65,6 +64,7 @@ namespace ExampleMod.Content.Projectiles
 				Projectile.velocity.X = ApproachVelocity(Projectile.velocity.X, desiredVelocity.X, acceleration);
 				Projectile.velocity.Y = ApproachVelocity(Projectile.velocity.Y, desiredVelocity.Y, acceleration);
 
+				// Once the boomerang is close enough to the owner, despawn it.
 				if (Main.myPlayer == Projectile.owner && Projectile.Hitbox.Intersects(owner.Hitbox)) {
 					Projectile.Kill();
 				}
@@ -91,6 +91,14 @@ namespace ExampleMod.Content.Projectiles
 			return velocity;
 		}
 
+		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
+			ReturnAfterHit();
+		}
+
+		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
+			ReturnAfterHit();
+		}
+
 		private void ReturnAfterHit() {
 			if (Projectile.aiStyle == ProjAIStyleID.Boomerang) {
 				return;
@@ -102,14 +110,6 @@ namespace ExampleMod.Content.Projectiles
 			}
 			ReturnState = 1f;
 			Projectile.manualDirectionChange = true;
-		}
-
-		public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone) {
-			ReturnAfterHit();
-		}
-
-		public override void OnHitPlayer(Player target, Player.HurtInfo info) {
-			ReturnAfterHit();
 		}
 
 		public override bool OnTileCollide(Vector2 oldVelocity) {
