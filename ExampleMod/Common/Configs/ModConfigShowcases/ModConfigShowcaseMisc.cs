@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
 using Terraria.ModLoader.Config;
+using Terraria.ModLoader.Config.UI;
 
 // This file contains fake ModConfig class that showcase various attributes
 // that can be used to customize behavior config fields.
@@ -17,6 +18,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
+	/// It also showcases how to create a custom UIState for the config.
 	/// </summary>
 	[SortConfig(after: true, nameof(ModConfigShowcaseAccessibility))]
 	public class ModConfigShowcaseMisc : ModConfig
@@ -112,6 +114,10 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 				ListOfInts.AddRange(OldListOfInts);
 			}
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
+		}
+
+		public override IConfigUI CreateCustomUI() {
+			return new ExampleConfigUIState();
 		}
 	}
 }

@@ -223,10 +223,13 @@ public abstract class ModConfig : ILocalizedModType
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		Interface.modConfig.SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
+		var ui = ConfigManager.GetConfigUI(this);
+		(ui as IConfigUI).SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
-			Main.menuMode = Interface.modConfigID;
+			// Main.menuMode = Interface.modConfigID; // TODO: more elegant
+			Main.menuMode = MenuID.FancyUI;
+			Main.MenuUI.SetState(ui);
 		}
 		else {
 			IngameFancyUI.CoverNextFrame();
@@ -234,8 +237,19 @@ public abstract class ModConfig : ILocalizedModType
 			Main.editChest = false;
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
-			Main.InGameUI.SetState(Interface.modConfig);
-			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()
+			Main.InGameUI.SetState(ui);
+			// Same as IngameFancyUI.OpenUIState(ui); except no ClearChat()
 		}
+	}
+
+	/// <summary>
+	/// Called during loading to create a custom <see cref="IConfigUI"/>.
+	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want UI similar to vanilla, you can extend <see cref="UIModConfig"/>.
+	/// <br/><br/> Defaults to returning null, which uses the default config UI.
+	/// </summary>
+	/// <returns></returns>
+	public virtual IConfigUI CreateCustomUI()
+	{
+		return null;
 	}
 }

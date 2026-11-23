@@ -21,24 +21,24 @@ using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
 
-public class UIModConfig : UIState, IHaveBackButtonCommand
+public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 {
 	public int UpdateCount { get; set; }
 	// Will remove this static field in the future since statics make it difficult to have multiple instances of UIModConfig (needed for modders specifying custom config UI)
 	public static string Tooltip { get => Interface.modConfig.ConfigElementTooltip; set => Interface.modConfig.ConfigElementTooltip = value; }
 	public string ConfigElementTooltip { get; set; }
 
-	public bool HasUnsavedChanges { get; private set; }
-	public bool HasDefaultValues { get; private set; }
+	public bool HasUnsavedChanges { get; protected set; }
+	public bool HasDefaultValues { get; protected set; }
 
-	private Mod mod;
-	private ModConfig modConfig; // This is from ConfigManager.Configs
-	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
+	protected Mod mod;
+	protected ModConfig modConfig; // This is from ConfigManager.Configs
+	protected ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
 
-	private ConfigPage rootConfigPage;
-	private ConfigPage CurrentConfigPage => configPageStack.Peek();
-	private bool InSubPage => configPageStack.Count > 1;
-	private readonly Stack<ConfigPage> configPageStack = new();
+	protected ConfigPage rootConfigPage;
+	protected ConfigPage CurrentConfigPage => configPageStack.Peek();
+	protected bool InSubPage => configPageStack.Count > 1;
+	protected readonly Stack<ConfigPage> configPageStack = new();
 
 	public class ConfigPage(object name)
 	{
@@ -47,40 +47,42 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
+	// TODO: make the input blocking API public
 	private BlockInputElement blockInput;
-	private UIElement activeDialog;
+	protected UIElement activeDialog;
 
-	private bool openedFromModder = false;
-	private Action modderOnClose = null;
-	internal string scrollToOption = null;
-	internal bool centerScrolledOption = false;
+	protected bool openedFromModder = false;
+	protected Action modderOnClose = null;
+	protected internal string scrollToOption = null;
+	protected internal bool centerScrolledOption = false;
 
-	private bool refreshQueued = false;
+	protected bool refreshQueued = false;
 
-	private UIElement uiElement;
-	private UIPanel uiPanel;
-	private UIMarqueeTextPanel headerTextPanel;
+	protected UIElement uiElement;
+	protected UIPanel uiPanel;
+	protected UIMarqueeTextPanel headerTextPanel;
 
-	private UIButton backButton;
-	private UIButton saveConfigButton;
-	private UIButton revertConfigButton;
-	private UIButton restoreDefaultsConfigButton;
+	protected UIButton backButton;
+	protected UIButton saveConfigButton;
+	protected UIButton revertConfigButton;
+	protected UIButton restoreDefaultsConfigButton;
 
-	private UIElement listHeaderContainer;
-	private UIList configElementList;
-	private UIScrollbar scrollbar;
+	protected UIElement listHeaderContainer;
+	protected UIList configElementList;
+	protected UIScrollbar scrollbar;
+	// TODO: make the input fields public
 	private UIFocusInputTextField filterTextField;
-	private UIImageFramed configSideIndicator;
+	protected UIImageFramed configSideIndicator;
 	// These 2 use the same code as UIModConfigList
-	private UIButton modNamePanel;
-	private UIImageFramed smallModIcon;
+	protected UIButton modNamePanel;
+	protected UIImageFramed smallModIcon;
 
-	private UIButton subPageBackButton;
-	private UIPanel subPageBreadcrumbPanel;
-	private UIMarqueeText subPageBreadcrumbText;
+	protected UIButton subPageBackButton;
+	protected UIPanel subPageBreadcrumbPanel;
+	protected UIMarqueeText subPageBreadcrumbText;
 
-	private Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
-	private Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
+	protected Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
+	protected Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
 
 	#region UI Creation
 
@@ -559,7 +561,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		InGameNotificationsTracker.AddMenuNotification(notification);
 	}
 
-	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
+	public void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
 		this.mod = mod;
 		this.modConfig = config;

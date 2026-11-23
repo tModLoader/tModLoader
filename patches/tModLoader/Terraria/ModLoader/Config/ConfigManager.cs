@@ -33,6 +33,10 @@ public static class ConfigManager
 	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
 	private static readonly IDictionary<Mod, List<ModConfig>> defaultValuesConfigs = new Dictionary<Mod, List<ModConfig>>();
 
+	// The IConfigUI are also checked that they are a UIState when they are added.
+	// Configs without custom UI are not added.
+	private static readonly IDictionary<Mod, IDictionary<ModConfig, IConfigUI>> customConfigUIs = new Dictionary<Mod, IDictionary<ModConfig, IConfigUI>>();
+
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
@@ -89,6 +93,17 @@ public static class ConfigManager
 
 		var instanceField = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
 		instanceField?.SetValue(null, config);
+
+		var customUI = config.CreateCustomUI();
+		if (customUI is not null) {
+			if (customUI is not UIState)
+				throw new InvalidOperationException($"Cannot add custom config UI for {config.Name} in mod {config.Mod.Name} because it does not extend UIState");
+
+			if (!customConfigUIs.TryGetValue(config.Mod, out var customConfigUIList))
+				customConfigUIs[config.Mod] = customConfigUIList = new Dictionary<ModConfig, IConfigUI>();
+
+			customConfigUIList.Add(config, customUI);
+		}
 
 		config.OnLoaded();
 		config.OnChanged();
@@ -281,6 +296,7 @@ public static class ConfigManager
 		Configs.Clear();
 		loadTimeConfigs.Clear();
 		defaultValuesConfigs.Clear();
+		customConfigUIs.Clear();
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
@@ -349,6 +365,15 @@ public static class ConfigManager
 			return c;
 
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
+	}
+
+	// TODO: this should just return null if a config doesn't have custom UI... also it should return IConfigUI
+	public static UIState GetConfigUI(ModConfig config)
+	{
+		if (customConfigUIs.TryGetValue(config.Mod, out var configs) && configs.TryGetValue(config, out var customUI))
+			return (UIState)customUI;
+
+		return Interface.modConfig;
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
@@ -507,12 +532,14 @@ public static class ConfigManager
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
 	}
 
+	// TODO: remove
 	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
 	{
 		// public api for modders.
 		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 	}
 
+	// TODO: remove
 	public static void SetPendingChanges(bool changes = true)
 	{
 		// public api for modders.
