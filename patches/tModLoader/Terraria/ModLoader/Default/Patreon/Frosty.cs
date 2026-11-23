@@ -14,7 +14,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 			ArmorIDs.Head.Sets.DrawHatHair[Item.headSlot] = true;
 		}
-    }
+	}
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class Frosty_Hoodie : PatreonItem
