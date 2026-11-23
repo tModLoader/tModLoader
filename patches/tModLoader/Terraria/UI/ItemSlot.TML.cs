@@ -1,6 +1,7 @@
 using System;
 using Terraria.Audio;
 using Terraria.ModLoader;
+using static Terraria.ModLoader.BackupIO;
 
 namespace Terraria.UI;
 
@@ -97,9 +98,9 @@ public partial class ItemSlot
 	*/
 
 	// NOTE: Entirely rewritten DyeSwap for tML purposes
-	private static Item DyeSwap(Item item, out bool success, out int targetSlot, out bool moddedSlot)
+	private static Item DyeSwap(Item item, out bool success, out int targetSlot, out bool isModdedSlot)
 	{
-		moddedSlot = false;
+		isModdedSlot = false;
 
 		targetSlot = -1;
 		success = false;
@@ -113,32 +114,43 @@ public partial class ItemSlot
 
 		dyeSwapCounter %= slotCount;
 
+		// Determine if there is a first available empty dye slot
 		for (int i = 0; i < slotCount; i++) {
-			if (!CanSwapDye(player, item, i))
+			Item dye = i < player.dye.Length ? player.dye[i] : moddedDyes[i - player.dye.Length];
+			if (!CanSwapDye(player, item, i) || !dye.IsAir)
 				continue;
 
-			Item dye = i < player.dye.Length ? player.dye[i] : moddedDyes[i - player.dye.Length];
-			if (dye.IsAir) {
-				dyeSwapCounter = i;
-				break;
-			}
+			success = true;
+			PerformDyeSwap(item, moddedDyes, player, out targetSlot, out isModdedSlot);
+			return item;
 		}
 
+		// Otherwise replace it with the 'next' dye slot to replace
 		for (int i = 0; i < slotCount; i++) {
-			if (CanSwapDye(player, item, dyeSwapCounter)) {
-				moddedSlot = dyeSwapCounter >= player.dye.Length;
-				targetSlot = moddedSlot ? dyeSwapCounter - player.dye.Length : dyeSwapCounter;
-				SoundEngine.PlaySound(7);
-				SwapClearFavorite(ref item, ref (moddedSlot ? moddedDyes : player.dye)[targetSlot]);
+			if (!CanSwapDye(player, item, dyeSwapCounter)) {
 				dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
-				success = true;
-				return item;
+				continue;
 			}
-
-			dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
+			
+			success = true;
+			PerformDyeSwap(item, moddedDyes, player, out targetSlot, out isModdedSlot);
+			return item;
 		}
 
 		return item;
+	}
+
+	private static void PerformDyeSwap(Item item, Item[] moddedDyes, Player player, out int targetSlot, out bool isModdedSlot)
+	{
+		int slotCount = player.dye.Length + moddedDyes.Length;
+
+		isModdedSlot = dyeSwapCounter >= player.dye.Length;
+		targetSlot = isModdedSlot ? dyeSwapCounter - player.dye.Length : dyeSwapCounter;
+
+		SoundEngine.PlaySound(7);
+
+		SwapClearFavorite(ref item, ref (isModdedSlot ? moddedDyes : player.dye)[targetSlot]);
+		dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
 	}
 
 	private static bool CanSwapDye(Player player, Item item, int slot)
