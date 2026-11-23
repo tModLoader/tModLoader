@@ -96,6 +96,51 @@ public partial class ItemSlot
 	}
 	*/
 
+	// NOTE: Entirely rewritten DyeSwap for tML purposes
+	private static Item DyeSwap(Item item, out bool success, out int targetSlot, out bool moddedSlot)
+	{
+		moddedSlot = false;
+
+		targetSlot = -1;
+		success = false;
+		if (item.dye <= 0)
+			return item;
+
+		Player player = Main.LocalPlayer;
+
+		Item[] moddedDyes = AccessorySlotLoader.ModSlotPlayer(player).exDyesAccessory;
+		int slotCount = player.dye.Length + moddedDyes.Length;
+
+		dyeSwapCounter %= slotCount;
+
+		for (int i = 0; i < slotCount; i++) {
+			if (!CanSwapDye(player, item, i))
+				continue;
+
+			Item dye = i < player.dye.Length ? player.dye[i] : moddedDyes[i - player.dye.Length];
+			if (dye.IsAir) {
+				dyeSwapCounter = i;
+				break;
+			}
+		}
+
+		for (int i = 0; i < slotCount; i++) {
+			if (CanSwapDye(player, item, dyeSwapCounter)) {
+				moddedSlot = dyeSwapCounter >= player.dye.Length;
+				targetSlot = moddedSlot ? dyeSwapCounter - player.dye.Length : dyeSwapCounter;
+				SoundEngine.PlaySound(7);
+				SwapClearFavorite(ref item, ref (moddedSlot ? moddedDyes : player.dye)[targetSlot]);
+				dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
+				success = true;
+				return item;
+			}
+
+			dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
+		}
+
+		return item;
+	}
+
 	private static bool CanSwapDye(Player player, Item item, int slot)
 	{
 		if (slot < player.dye.Length)

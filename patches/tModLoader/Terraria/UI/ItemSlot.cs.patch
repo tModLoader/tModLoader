@@ -857,63 +857,22 @@
  				DisplayTransfer_TwoWay(inv, context, slot, player.armor, num, targetSlot2);
  			}
  		}
-@@ -2987,30 +_,44 @@
+@@ -2987,6 +_,7 @@
  		return true;
  	}
  
--	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
-+	private static Item DyeSwap(Item item, out bool success, out int targetSlot, out bool moddedSlot)
++	/*
+ 	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
  	{
  		targetSlot = -1;
-+		moddedSlot = false;
- 		success = false;
- 		if (item.dye <= 0)
- 			return item;
- 
- 		Player player = Main.player[Main.myPlayer];
--		while (!player.IsItemSlotUnlockedAndUsable(dyeSwapCounter)) {
--			dyeSwapCounter = (dyeSwapCounter + 1) % 10;
--		}
--
--		for (int i = 0; i < 10; i++) {
--			if (player.IsItemSlotUnlockedAndUsable(i) && player.dye[i].IsAir) {
-+		Item[] moddedDyes = AccessorySlotLoader.ModSlotPlayer(player).exDyesAccessory;
-+		int slotCount = player.dye.Length + moddedDyes.Length;
-+		dyeSwapCounter %= slotCount;
-+
-+		for (int i = 0; i < slotCount; i++) {
-+			if (!CanSwapDye(player, item, i))
-+				continue;
-+
-+			Item dye = i < player.dye.Length ? player.dye[i] : moddedDyes[i - player.dye.Length];
-+			if (dye.IsAir) {
- 				dyeSwapCounter = i;
- 				break;
- 			}
- 		}
- 
--		SoundEngine.PlaySound(7);
--		SwapClearFavorite(ref item, ref player.dye[dyeSwapCounter]);
--		targetSlot = dyeSwapCounter;
--		dyeSwapCounter = (dyeSwapCounter + 1) % 10;
--		success = true;
-+		for (int i = 0; i < slotCount; i++) {
-+			if (CanSwapDye(player, item, dyeSwapCounter)) {
-+				moddedSlot = dyeSwapCounter >= player.dye.Length;
-+				targetSlot = moddedSlot ? dyeSwapCounter - player.dye.Length : dyeSwapCounter;
-+				SoundEngine.PlaySound(7);
-+				SwapClearFavorite(ref item, ref (moddedSlot ? moddedDyes : player.dye)[targetSlot]);
-+				dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
-+				success = true;
-+				return item;
-+			}
-+
-+			dyeSwapCounter = (dyeSwapCounter + 1) % slotCount;
-+		}
-+
+@@ -3013,6 +_,7 @@
+ 		success = true;
  		return item;
  	}
++	*/
  
+ 	private static Item ArmorSwap(Item item, out bool success, out int targetSlot)
+ 	{
 @@ -3181,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)
