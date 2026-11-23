@@ -12,8 +12,6 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetDefaults() {
 			// These defaults match Wooden Boomerang
-			Item.width = 14;
-			Item.height = 28;
 			Item.damage = 10;
 			Item.DamageType = DamageClass.Melee;
 			Item.knockBack = 5f;

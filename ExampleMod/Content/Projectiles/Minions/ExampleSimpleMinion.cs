@@ -51,8 +51,6 @@ namespace ExampleMod.Content.Projectiles.Minions
 			Item.damage = 30;
 			Item.knockBack = 3f;
 			Item.mana = 10; // mana cost
-			Item.width = 32;
-			Item.height = 32;
 			Item.useTime = 36;
 			Item.useAnimation = 36;
 			Item.useStyle = ItemUseStyleID.Swing; // how the player's arm moves when using the item

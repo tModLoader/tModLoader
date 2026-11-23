@@ -17,8 +17,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useTime = 20;
 			Item.damage = 72;
 			Item.knockBack = 4.5f;
-			Item.width = 40;
-			Item.height = 40;
 			Item.scale = 1f;
 			Item.UseSound = SoundID.Item1;
 			Item.rare = ItemRarityID.Pink;

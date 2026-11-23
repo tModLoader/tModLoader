@@ -30,8 +30,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useAnimation = 17;
 			Item.useTime = 17;
 			Item.consumable = true;
-			Item.width = 14;
-			Item.height = 24;
 			Item.buffType = ModContent.BuffType<ExampleWeaponImbue>();
 			Item.buffTime = Item.flaskTime;
 			Item.value = Item.sellPrice(0, 0, 5);

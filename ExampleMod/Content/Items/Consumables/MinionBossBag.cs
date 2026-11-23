@@ -22,8 +22,6 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetDefaults() {
 			Item.consumable = true;
-			Item.width = 24;
-			Item.height = 24;
 			Item.rare = ItemRarityID.Purple;
 			Item.expert = true; // This makes sure that "Expert" displays in the tooltip and the item name color changes
 		}
