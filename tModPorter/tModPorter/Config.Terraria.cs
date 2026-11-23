@@ -384,6 +384,9 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Projectile", "identity", Removed("Use Projectile.key instead."));
 		RefactorStaticMember("Terraria.Projectile", "projUUID", Removed("Use Projectile.key instead."));
 
+		RefactorInstanceMember("Terraria.Item", "width", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "height", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "Size", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));

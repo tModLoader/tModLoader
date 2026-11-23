@@ -12,6 +12,7 @@ using Terraria.UI;
 namespace ExampleMod.Common.UI.ExampleInGameNotification
 {
 	// This is a custom implementation of IInGameNotification for usage with the InGameNotificationSystem class.
+	// See ExampleMod/Common/UI/ExampleMenuNotification for a menu notification example.
 	// It displays a welcome message to the player when they join a world, controlled through ExampleInGameNotificationPlayer.
 	public class ExampleJoinWorldInGameNotification : IInGameNotification
 	{

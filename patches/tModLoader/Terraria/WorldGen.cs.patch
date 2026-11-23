@@ -298,6 +298,14 @@
  		StopWaterfallAmbienceAudio();
  		Main.invasionProgress = -1;
  		Main.invasionProgressDisplayLeft = 0;
+@@ -5417,6 +_,7 @@
+ 		Netplay.Disconnect = true;
+ 		Main.netMode = 0;
+ 		InGameNotificationsTracker.Clear();
++		MenuNotificationsTracker.Clear();
+ 		SoundEngine.StopTrackedSounds();
+ 		CaptureInterface.ResetFocus();
+ 		WorldFile.SetTempToOngoing();
 @@ -5460,6 +_,8 @@
  
  	public static void playWorldCallBack(object threadContext)
