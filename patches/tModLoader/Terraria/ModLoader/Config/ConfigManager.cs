@@ -280,6 +280,7 @@ public static class ConfigManager
 		});
 		Configs.Clear();
 		loadTimeConfigs.Clear();
+		defaultValuesConfigs.Clear();
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
