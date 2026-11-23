@@ -270,6 +270,12 @@ public static partial class Config
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 
 		// 1.4.5
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryEntityToPlayerInventorySettings", to: "QuickTransferFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "NPCEntityToPlayerInventorySettings", to: "GiftRecieved");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettings", to: "LootAllFromBank");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettingsRegularChest", to: "LootAllFromChest");
+		RenameStaticField("Terraria.GetItemSettings", from: "GetItemInDropItemCheck", to: "ReturnItemFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryUIToInventorySettingsShowAsNew", to: "ReturnItemShowAsNew");
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
 		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");

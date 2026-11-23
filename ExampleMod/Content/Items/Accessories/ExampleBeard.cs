@@ -15,7 +15,6 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 1;
 			Item.color = Main.LocalPlayer.hairColor;
 			Item.value = Item.sellPrice(0, 1);
 			Item.accessory = true;

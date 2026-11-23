@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.Graphics;
 using Terraria.ID;
@@ -625,8 +626,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -636,8 +638,9 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// </summary>
 	/// <param name="item">The item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Item item, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -1442,6 +1445,29 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 	/// <br/><br/> Called during <see cref="Terraria.Graphics.Renderers.LegacyPlayerRenderer.DrawPlayerFull(Graphics.Camera, Player)"/>.
 	/// </summary>
 	public virtual void DrawPlayer(Camera camera)
+	{
+	}
+
+	/// <summary>
+	/// Allows for modification of the player's eyelid.
+	/// </summary>
+	/// <param name="drawInfo"> The player's current draw information. </param>
+	/// <param name="position"> The position that the eye will be drawn.
+	/// <para/>Defaults to <see cref="Vector2.Zero"/> which will be the player's eye position.
+	/// </param>
+	/// <param name="color"> The color of the eyelid.
+	/// <para/>If you change the color, you'll also need to apply the lighting to the color:
+	/// <code>
+	/// Color eyeLidColor = Color.White; // Define the real color of the eye lid here.
+	/// color = drawInfo.drawPlayer.GetImmuneAlpha(Lighting.GetColorClamped((int)drawInfo.drawPlayer.MountedCenter.X / 16, (int)drawInfo.drawPlayer.MountedCenter.Y / 16, eyeLidColor, drawInfo.shadow);
+	/// </code>
+	/// <para/>Defaults to <see cref="PlayerDrawSet.colorHead"/> which will be the player's skin color.
+	/// </param>
+	/// <param name="shader"> The dye shader to apply to the eye lid.
+	/// <para/>Defaults to <see cref="PlayerDrawSet.skinDyePacked"/> which will be the player's dye.
+	/// </param>
+	/// <param name="eyeFrame"> The frame show the eyelid as.</param>
+	public virtual void ModifyEyelid(PlayerDrawSet drawInfo, ref Vector2 position, ref Color color, ref int shader, ref PlayerEyeHelper.EyeFrame eyeFrame)
 	{
 	}
 }

@@ -20,7 +20,6 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = 20;
 			Item.value = 100;
 			Item.rare = ItemRarityID.Blue;
 			Item.useAnimation = 30;

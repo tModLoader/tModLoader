@@ -30,7 +30,6 @@ namespace ExampleMod.Content.Items.Consumables
 			Item.useTime = 17;
 			Item.useTurn = true;
 			Item.UseSound = SoundID.Item3;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.buyPrice(gold: 1);
@@ -50,7 +49,7 @@ namespace ExampleMod.Content.Items.Consumables
 			}
 		}
 
-		public override void GetHealLife(Player player, bool quickHeal, ref int healValue) {
+		public override void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue) {
 			// Make the item heal half the player's max health normally, or one fourth if used with quick heal
 			healValue = player.statLifeMax2 / (quickHeal ? 4 : 2);
 		}

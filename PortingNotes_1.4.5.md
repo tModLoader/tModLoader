@@ -2,6 +2,8 @@
 
 Once all patches are fixed, these items need to be fixed or double checked:
 
+- ModdedGrass --> Player.cs else if (inventory[selectedItem].createTile == 633) needs to be determined if this should be kept or commented out
+- UIModItem Double Click logic needs verification relative to https://github.com/tModLoader/tModLoader/commit/5968e3d72650ac6ea067add1390984b5f33c0e2f
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
 - NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
@@ -9,7 +11,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
 - Consider updating FlexibleTileWand.Reload
 - https://github.com/tModLoader/tModLoader/pull/1675 seemed to fix a bug that is apparently now fixed in vanilla. Patches in AWorkshopPublishInfoState deleted. Verify that existing workshop publicity still correctly updates UI without requiring a click.
-- Check for any remaining TML added ID sets that aren't in TML.cs files.
 - Recipe.requiredTile no longer supports multiple tiles. Only a single crafting station is the new approach. In theory it is possible to restore multiple required tiles, but we'd have to rule that recipes can show in the filtered crafting station UI if _any_ of their required tiles meet the filter.
 - Zone calculations seem to have been reorganized a bit. Verify functionality of hooks (TileCountsAvailable, ResetNearbyTileEffects, UpdateSceneEffect)
 - FileUtilities.Copy and Move no longer have an `overwrite` parameter.
@@ -33,12 +34,12 @@ Once all patches are fixed, these items need to be fixed or double checked:
   - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
-- A lot of the GetItemSettings presets have been renamed or removed. Might be something to document.
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
 - SystemLoader.ModifyLightingBrightness and LoaderManager.Get<WaterStylesLoader>().LightColorMultiplier might need perspectivePlayer parameter or docs to use Main.SceneMetrics.PerspectivePlayer. This is for supporting spectator mode I believe.
 - There seems to be a new `flag` we should add to TileLoader.ModifyLight. It seems to determine if paint should override the native light color from a tile.
 - BiomeConversionID.PurificationPowder (8) and Chlorophyte (9) might not match up with Terraria-added values. Need to double check where these were used against the new ID values. Chlorophyte is now either 8/9/10 and PurificationPowder is 11.
-- Lange.CreateDialogFilter now has a checkConditions parameter. It seems that there is a new system for object substitutions. We'll need to document these and make sure they work for modded substitutions. LocalizedText.CanFormatWith usages seem to be replaced with ConditionsMetWith. Some Language.GetTextValueWith usages changed to GetTextValue but still somehow support substitutions.
+  - RegisterSimpleConversion now registers automatic chlorophyte purification for both defense types (9/10). Other conversion usages still need review.
+  - Are BiomeConversionID.Forced{Biome} even used?
 - Should PlayerLoader.SyncPlayer in SyncOnePlayer be after syncing owner Projectiles?
 - Vanilla Fishing drops are now declarative
   - Mods should be encouraged to use the new system, so new fishing features work.
@@ -275,17 +276,6 @@ Longer TODOs that would clutter above
  		for (int i = 0; i < 5; i++) {
  			if (!_layerList.Contains(ItemSortingLayers.WeaponsMelee) && player.meleeDamage == list[0]) {
  				list.RemoveAt(0);
-```
-
-- These buffimmune change are new and likely need to be used to update TML-specific sets.
-```cs
-		if (buffImmune[20]) {
-			buffImmune[30] = true;
-			buffImmune[375] = buffImmune[30];
-		}
-
-		if (buffImmune[69])
-			buffImmune[36] = true;
 ```
 
 - Move this patch to PrepareAliases, or adjust ModCommand to use new system:

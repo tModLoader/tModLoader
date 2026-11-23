@@ -23,10 +23,6 @@ namespace ExampleMod.Content.Items
 			DurabilityText = this.GetLocalization("Durability");
 		}
 
-		public override void SetDefaults() {
-			Item.maxStack = Item.CommonMaxStack; // This item is stackable, otherwise the example wouldn't work
-		}
-
 		public override void SaveData(TagCompound tag) {
 			tag["durability"] = durability;
 		}

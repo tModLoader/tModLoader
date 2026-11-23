@@ -310,8 +310,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -321,8 +322,9 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 	/// </summary>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -480,19 +482,19 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using. This hook is called on the ammo.
-	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
+	/// <para/> The projectile's damage will be the sum of weapon and ammo damage. To scale the total, modify both <paramref name="weaponDamage"/> and <paramref name="ammoDamage"/>.
+	/// <br/> <see cref="StatModifier.Flat"/> and <see cref="StatModifier.Base"/> damage bonuses from the player should be applied to one or the other, not both.
+	/// <br/> For example, weapons shooting <see cref="ProjectileID.NanoBullet"/> multiplicatively increase both (<c>weaponDamage *= 1.25f; ammoDamage *= 1.25f</c>), while weapons shooting <see cref="ProjectileID.SandBallGun"/> and some arrow accessories add to <paramref name="ammoDamage"/>.Base (<c>ammoDamage.Base += 2</c>).
+	/// <para/> Called on local and remote clients when a player is picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using this ammo.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="type">The ID of the fired projectile.</param>
 	/// <param name="speed">The speed of the fired projectile.</param>
-	/// <param name="damage">
-	/// The damage modifier for the projectile.<br></br>
-	/// Total weapon damage is included as Flat damage.<br></br>
-	/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
-	/// </param>
+	/// <param name="weaponDamage">The damage modifier for the weapon, applied to <paramref name="weapon"/>'s <see cref="Item.damage"/>. See <see cref="Player.GetWeaponDamageModifier"/></param>
+	/// <param name="ammoDamage">The damage modifier for the ammo, applied to this item's <see cref="Item.damage"/>.</param>
 	/// <param name="knockback">The knockback of the fired projectile.</param>
-	public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+	public virtual void PickAmmo(Item weapon, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)
 	{
 	}
 
@@ -1606,6 +1608,22 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <para/> Registering new armor sets should be done earlier in <c>SetStaticDefaults</c>.
 	/// </summary>
 	public virtual void ModifyArmorSets()
+	{
+	}
+
+	/// <summary>
+	/// Allows customizing the tile type, tile style, and random style offset that this item will place. Used for advanced scenarios where the usual placement logic is insufficient.
+	/// <para/> This is called before the tile is placed and also for the tile placement preview, code in this hook should not have effects on the tiles in the world.
+	/// <para/> <see cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/> also exists and is recommended for affecting manual tile placement (<see cref="WorldGen.PlaceTile(int, int, int, bool, bool, int, int)"/>) instead of just placing tiles with an item.
+	/// <para/> <paramref name="previewPlaceStyle"/> and <paramref name="forcedRandom"/> only apply to tiles with TileObjectData, and <paramref name="overrideCanPlace"/> only applies to tiles without TileObjectData.
+	/// </summary>
+	/// <param name="i">The x position in tile coordinates.</param>
+	/// <param name="j">The y position in tile coordinates.</param>
+	/// <param name="tileToCreate">The tile type that will be placed</param>
+	/// <param name="previewPlaceStyle">The style of the tile to be placed</param>
+	/// <param name="forcedRandom">The random placement offset to use, if assigned</param>
+	/// <param name="overrideCanPlace">Indicates if the tile can be placed</param>
+	public virtual void OverridePlacementTile(int i, int j, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
 	}
 }

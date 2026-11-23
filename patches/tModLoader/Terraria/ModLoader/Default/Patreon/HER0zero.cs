@@ -11,7 +11,7 @@ namespace Terraria.ModLoader.Default.Patreon
     {
     }
 
-    [AutoloadEquip(EquipType.Body)]
+	[AutoloadEquip(EquipType.Body)]
 	internal class HER0zero_Body : PatreonItem
     {
 		public override bool IsVanitySet(int head, int body, int legs) {
@@ -20,12 +20,13 @@ namespace Terraria.ModLoader.Default.Patreon
 				&& legs == EquipLoader.GetEquipSlot(Mod, "HER0zero_Legs", EquipType.Legs);
 		}
 
-		public override void UpdateVanitySet(Player player) {
+		public override void UpdateVanitySet(Player player)
+		{
 			player.GetModPlayer<HER0zeroPlayer>().glowEffect = true;
 		}
 	}
 
-    [AutoloadEquip(EquipType.Legs)]
+	[AutoloadEquip(EquipType.Legs)]
 	internal class HER0zero_Legs : PatreonItem
     {
 	}
@@ -34,7 +35,8 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		public bool glowEffect = false;
 
-		public override void ResetEffects() {
+		public override void ResetEffects()
+		{
 			glowEffect = false;
 		}
 	}
@@ -43,11 +45,13 @@ namespace Terraria.ModLoader.Default.Patreon
 	{
 		private Asset<Texture2D>? textureAsset;
 
-		public override Position GetDefaultPosition() {
+		public override Position GetDefaultPosition()
+		{
 			return new BeforeParent(PlayerDrawLayers.JimsCloak); // Preferably before everything
 		}
 
-		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
+		public override bool GetDefaultVisibility(PlayerDrawSet drawInfo)
+		{
 			return drawInfo.drawPlayer.TryGetModPlayer(out HER0zeroPlayer modPlayer) && modPlayer.glowEffect;
 		}
 

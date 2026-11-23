@@ -7,7 +7,6 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleImmunityAccessory : ModItem
 	{
 		public override void SetDefaults() {
-			Item.maxStack = 1;
 			Item.value = Item.sellPrice(0, 1);
 			Item.accessory = true;
 		}

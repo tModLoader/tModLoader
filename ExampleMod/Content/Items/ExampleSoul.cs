@@ -20,7 +20,6 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.maxStack = Item.CommonMaxStack;
 			Item.value = 1000; // Makes the item worth 1 gold.
 			Item.rare = ItemRarityID.Orange;
 		}

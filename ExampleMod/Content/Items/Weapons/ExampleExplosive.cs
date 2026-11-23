@@ -15,7 +15,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 12f;
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleExplosive>();
-			Item.maxStack = Item.CommonMaxStack;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item1;
 			Item.useAnimation = 40;

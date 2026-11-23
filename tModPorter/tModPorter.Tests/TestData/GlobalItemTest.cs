@@ -54,4 +54,8 @@ public class GlobalItemTest : GlobalItem
 	public override string IsArmorSet(Item head, Item body, Item legs) { return ""; }
 
 	public override void UpdateArmorSet(Player player, string set) { }
+
+	public override void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue) { }
+
+	public override void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue) { }
 }

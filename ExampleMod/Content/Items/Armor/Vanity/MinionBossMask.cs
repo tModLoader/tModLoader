@@ -14,7 +14,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 			Item.rare = ItemRarityID.Blue;
 			Item.value = Item.sellPrice(silver: 75);
 			Item.vanity = true;
-			Item.maxStack = 1;
 		}
 	}
 }

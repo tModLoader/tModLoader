@@ -1,0 +1,13 @@
+--- src/TerrariaNetCore/Terraria/GameContent/LeashedEntity.cs
++++ src/tModLoader/Terraria/GameContent/LeashedEntity.cs
+@@ -244,7 +_,10 @@
+ 		}
+ 	}
+ 
++	/*
+ 	private static readonly SectionEntityList[,] BySection;
++	*/
++	private static SectionEntityList[,] BySection; // TML: not readonly
+ 	private static readonly List<SectionEntityList> ActiveSectionList;
+ 	private static readonly List<LeashedEntity> ByWhoAmI;
+ 	private int sectionSlot;

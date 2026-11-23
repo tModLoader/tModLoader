@@ -13,7 +13,6 @@ namespace ExampleMod.Content.Items.Accessories
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(ResourceBoost);
 
 		public override void SetDefaults() {
-			Item.maxStack = 1;
 			Item.value = Item.sellPrice(gold: 5);
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Red;

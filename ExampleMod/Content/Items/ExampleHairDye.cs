@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using ExampleMod.Content.Liquids;
+using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.GameContent.Dyes;
 using Terraria.Graphics.Shaders;
@@ -22,8 +23,15 @@ namespace ExampleMod.Content.Items
 			Item.ResearchUnlockCount = 3;
 		}
 
+		// Example Hair Dye demonstrates how to craft using ExampleSink and/or ExampleLiquid
+		public override void AddRecipes() {
+			CreateRecipe(10)
+				.AddIngredient(ItemID.Daybloom, 1)
+				.AddLiquidNearby<ExampleLiquid>()
+				.Register();
+		}
+
 		public override void SetDefaults() {
-			Item.maxStack = Item.CommonMaxStack;
 			Item.value = Item.buyPrice(gold: 5);
 			Item.rare = ItemRarityID.Green;
 			Item.UseSound = SoundID.Item3;

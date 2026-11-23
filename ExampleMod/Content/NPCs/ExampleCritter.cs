@@ -188,7 +188,7 @@ namespace ExampleMod.Content.NPCs
 		public override bool PreAI() {
 			// Kills the NPC if it hits water, honey or shimmer
 			if (NPC.wet && !Collision.LavaCollision(NPC.position, NPC.width, NPC.height)) { // NPC.lavawet not 100% accurate for the frog
-				// These 3 lines instantly kill the npc without showing damage numbers, dropping loot, or playing DeathSound. Use this for instant deaths
+																							// These 3 lines instantly kill the npc without showing damage numbers, dropping loot, or playing DeathSound. Use this for instant deaths
 				NPC.life = 0;
 				NPC.HitEffect();
 				NPC.active = false;
