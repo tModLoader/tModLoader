@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleFlamethrower : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 50;
-			Item.height = 18;
 			Item.damage = 35;
 			Item.DamageType = DamageClass.Ranged;
 			Item.knockBack = 0.3f;
