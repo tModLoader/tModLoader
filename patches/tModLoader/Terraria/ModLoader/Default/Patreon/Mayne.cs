@@ -6,20 +6,20 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-    [AutoloadEquip(EquipType.Head)]
-    internal class Mayne_Head : PatreonItem
-    {
-    }
+	[AutoloadEquip(EquipType.Head)]
+	internal class Mayne_Head : PatreonItem
+	{
+	}
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class Mayne_Body : PatreonItem
-    {
-    }
+	{
+	}
 
 	[AutoloadEquip(EquipType.Legs)]
 	internal class Mayne_Legs : PatreonItem
-    {
-    }
+	{
+	}
 
 	[AutoloadEquip(EquipType.Wings)]
 	internal class Mayne_Wings : PatreonItem

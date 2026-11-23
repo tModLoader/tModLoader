@@ -6,15 +6,16 @@ using Terraria.ID;
 
 namespace Terraria.ModLoader.Default.Patreon
 {
-    [AutoloadEquip(EquipType.Head)]
-    internal class HER0zero_Head : PatreonItem
-    {
-    }
+	[AutoloadEquip(EquipType.Head)]
+	internal class HER0zero_Head : PatreonItem
+	{
+	}
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class HER0zero_Body : PatreonItem
-    {
-		public override bool IsVanitySet(int head, int body, int legs) {
+	{
+		public override bool IsVanitySet(int head, int body, int legs)
+		{
 			return head == EquipLoader.GetEquipSlot(Mod, "HER0zero_Head", EquipType.Head)
 				&& body == EquipLoader.GetEquipSlot(Mod, "HER0zero_Body", EquipType.Body)
 				&& legs == EquipLoader.GetEquipSlot(Mod, "HER0zero_Legs", EquipType.Legs);
@@ -28,7 +29,7 @@ namespace Terraria.ModLoader.Default.Patreon
 
 	[AutoloadEquip(EquipType.Legs)]
 	internal class HER0zero_Legs : PatreonItem
-    {
+	{
 	}
 
 	internal class HER0zeroPlayer : ModPlayer

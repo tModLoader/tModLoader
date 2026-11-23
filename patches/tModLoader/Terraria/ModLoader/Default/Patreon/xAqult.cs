@@ -18,7 +18,7 @@ namespace Terraria.ModLoader.Default.Patreon
 			base.SetStaticDefaults();
 			ArmorIDs.Head.Sets.DrawFullHair[Item.headSlot] = true;
 		}
-    }
+	}
 
 	[AutoloadEquip(EquipType.Body)]
 	internal class xAqult_Body : PatreonItem
