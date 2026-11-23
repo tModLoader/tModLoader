@@ -162,8 +162,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of life being healed.</param>
-	public virtual void GetHealLife(Item item, Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealLife(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -174,8 +175,9 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	/// <param name="item">The item being used.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="quickHeal">Whether the item is being used through quick heal or not.</param>
+	/// <param name="tooltip">Whether the item is being viewed for its tooltip or not.</param>
 	/// <param name="healValue">The amount of mana being healed.</param>
-	public virtual void GetHealMana(Item item, Player player, bool quickHeal, ref int healValue)
+	public virtual void GetHealMana(Item item, Player player, bool quickHeal, bool tooltip, ref int healValue)
 	{
 	}
 
@@ -333,20 +335,20 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify various properties of the projectile created by a weapon based on the ammo it is using.
-	/// <para/> Called on local and remote clients when a player picking ammo but only on the local client when held projectiles are picking ammo.
+	/// <para/> The projectile's damage will be the sum of weapon and ammo damage. To scale the total, modify both <paramref name="weaponDamage"/> and <paramref name="ammoDamage"/>.
+	/// <br/> <see cref="StatModifier.Flat"/> and <see cref="StatModifier.Base"/> damage bonuses from the player should be applied to one or the other, not both.
+	/// <br/> For example, weapons shooting <see cref="ProjectileID.NanoBullet"/> multiplicatively increase both (<c>weaponDamage *= 1.25f; ammoDamage *= 1.25f</c>), while weapons shooting <see cref="ProjectileID.SandBallGun"/> and some arrow accessories add to <paramref name="ammoDamage"/>.Base (<c>ammoDamage.Base += 2</c>).
+	/// <para/> Called on local and remote clients when a player is picking ammo but only on the local client when held projectiles are picking ammo.
 	/// </summary>
 	/// <param name="weapon">The item that is using the given ammo.</param>
 	/// <param name="ammo">The ammo item being used by the given weapon.</param>
 	/// <param name="player">The player using the item.</param>
 	/// <param name="type">The ID of the fired projectile.</param>
 	/// <param name="speed">The speed of the fired projectile.</param>
-	/// <param name="damage">
-	/// The damage modifier for the projectile.<br></br>
-	/// Total weapon damage is included as Flat damage.<br></br>
-	/// Be careful not to apply flat or base damage bonuses which are already applied to the weapon.
-	/// </param>
+	/// <param name="weaponDamage">The damage modifier for the weapon, applied to <paramref name="weapon"/>'s <see cref="Item.damage"/>. See <see cref="Player.GetWeaponDamageModifier"/></param>
+	/// <param name="ammoDamage">The damage modifier for the ammo, applied to <paramref name="ammo"/>'s <see cref="Item.damage"/>.</param>
 	/// <param name="knockback">The knockback of the fired projectile.</param>
-	public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier damage, ref float knockback)
+	public virtual void PickAmmo(Item weapon, Item ammo, Player player, ref int type, ref float speed, ref StatModifier weaponDamage, ref StatModifier ammoDamage, ref float knockback)
 	{
 	}
 
@@ -711,30 +713,19 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 	}
 
 	/// <summary>
-	/// Allows you to determine whether the player is wearing an armor set, and return a name for this set. If there is no armor set, return the empty string. Returns the empty string by default.
-	/// <br/><br/> This return value should then be checked for in <see cref="UpdateArmorSet(Player, string)"/> to provide the actual effects of the armor set.
-	/// <para/> This method is not instanced.
-	/// <para/> Called on local, server, and remote clients.
-	/// </summary>
-	public virtual string IsArmorSet(Item head, Item body, Item legs)
-	{
-		return "";
-	}
-
-	/// <summary>
 	/// Allows you to give set bonuses to your armor set with the given name.
-	/// The set name will be the same as returned by <see cref="IsArmorSet(Item, Item, Item)"/>.
+	/// The currently active armor set is passed in as <paramref name="armorSetBonus"/>, which can be null.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
-	public virtual void UpdateArmorSet(Player player, string set)
+	public virtual void UpdateArmorSet(Player player, ArmorSetBonus armorSetBonus)
 	{
 	}
 
 	/// <summary>
 	/// Returns whether or not the head armor, body armor, and leg armor textures make up a set.
 	/// This hook is used for the <see cref="GlobalItem.PreUpdateVanitySet(Player, string)"/>, <see cref="GlobalItem.UpdateVanitySet(Player, string)"/>, and <see cref="GlobalItem.ArmorSetShadows(Player, string)"/> hooks, and will use items in the social slots if they exist.
-	/// By default this will return the same value as the <see cref="IsArmorSet(Item, Item, Item)"/> hook, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
+	/// By default this will return the <see cref="ArmorSetBonus.Identifier"/> of any complete armor set that is found using the corresponding items, so you will not have to use this hook unless you want vanity effects to be entirely separate from armor sets.
 	/// <para/> This method is not instanced.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
@@ -758,7 +749,8 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 		Item legItem = ContentSamples.ItemsByType[legsItemType];
 
-		return IsArmorSet(headItem, bodyItem, legItem);
+		ArmorSetBonus armorSetBonus = ArmorSetBonuses.GetCompleteSet(new ArmorSetBonus.QueryContext() { HeadItem = headItemType, BodyItem = bodyItemType, LegItem = legsItemType });
+		return armorSetBonus?.Identifier ?? "";
 	}
 
 	/// <summary>
@@ -1288,6 +1280,11 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 
 	/// <inheritdoc cref="ModItem.NetReceive"/>
 	public virtual void NetReceive(Item item, BinaryReader reader)
+	{
+	}
+
+	/// <inheritdoc cref="ModItem.ModifyArmorSets"/>
+	public virtual void ModifyArmorSets()
 	{
 	}
 }

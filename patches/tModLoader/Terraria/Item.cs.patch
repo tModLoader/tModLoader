@@ -92,7 +92,7 @@
 +	/// If true, categorizes the given item as a quest fish.<br/>
 +	/// Quest fish get a special tooltip, their own category in the Research Menu, and cannot be auto-moved to the Void Vault when picked up.<br/>
 +	/// If you'd like to make a quest fish, see <see cref="DefaultToQuestFish"/>.<br/>
-+	/// If you'd just like to emulate the one-per-inventory behavior of quest fish, see <see cref="uniqueStack"/>.<br/>
++	/// If you'd just like to emulate the one-per-inventory behavior of quest fish before the 1.4.5 update, see <see cref="uniqueStack"/>.<br/>
 +	/// Defaults to <see langword="false"/>.<br/>
 +	/// </summary>
  	public bool questItem;
@@ -475,7 +475,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -135,48 +_,276 @@
+@@ -135,48 +_,279 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -748,6 +748,9 @@
 +	/// <para/> Defaults to 0.
 +	/// </summary>
  	public int reuseDelay;
++	/// <summary>
++	/// If <see langword="true"/>, the item slot will appear highlighted in the inventory (unless the corresponding setting is disabled). Typically set when an item is picked up. The highlight disappears when the cursor is hovered over a highlighted item or the inventory is closed.
++	/// </summary>
  	public bool newAndShiny;
 +
 +	/// <summary>
@@ -820,6 +823,17 @@
  	public ItemVariant Variant { get; private set; }
  
  	public bool IsACoin {
+@@ -226,6 +_,10 @@
+ 		}
+ 	}
+ 
++	/// <summary>
++	/// Indicates if the item is air (stack or type is 0).
++	/// <para/> This should be checked before acting on an item to ensure that the item actually exists. Some operations might leave type assigned to a valid item ID but stack at 0, so it is important to check this instead of just checking stack or type individually.
++	/// </summary>
+ 	public bool IsAir {
+ 		get {
+ 			if (type > 0)
 @@ -275,12 +_,27 @@
  		return text;
  	}
@@ -1202,7 +1216,7 @@
  				useStyle = 5;
  				autoReuse = true;
  				useAnimation = 30;
-@@ -27254,6 +_,16 @@
+@@ -27254,6 +_,15 @@
  			value = 200;
  	}
  
@@ -1212,7 +1226,6 @@
 +	/// questItem = true;
 +	///	width = 26;
 +	///	height = 26;
-+	///	uniqueStack = true;
 +	///	rare = <see cref="ItemRarityID.Quest"/>;
 +	/// </code>
 +	/// </summary>
@@ -1817,7 +1830,7 @@
  			TurnToAir();
  	}
  
-@@ -48311,24 +_,47 @@
+@@ -48311,24 +_,46 @@
  
  	public void OnCreated(ItemCreationContext context)
  	{
@@ -1849,7 +1862,6 @@
 +		StopAnimationOnHurt = false;
 +		DamageType = DamageClass.Default;
 +		ChangePlayerDirectionOnShoot = true;
-+		ArmorPenetration = 0;
 +
 +		_nameOverride = null; // Added by TML.
  		sentry = false;

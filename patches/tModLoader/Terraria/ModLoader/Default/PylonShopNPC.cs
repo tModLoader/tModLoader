@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria.ID;
@@ -19,7 +19,7 @@ public sealed class PylonShopNPC : GlobalNPC
 
 		if (NPCShopDatabase.NoPylons.Contains(shop.FullName))
 			return;
-		
+
 		foreach (var entry in _pylonEntries) {
 			shop.Add(entry);
 		}

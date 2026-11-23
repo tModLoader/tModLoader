@@ -7,7 +7,8 @@ using Terraria.ModLoader.Config;
 // This file defines a custom data type that can be used as a key in dictionary.
 namespace ExampleMod.Common.Configs.CustomDataTypes
 {
-	public class ClassUsedAsKeyConverter : ToFromStringConverter<ClassUsedAsKey> {
+	public class ClassUsedAsKeyConverter : ToFromStringConverter<ClassUsedAsKey>
+	{
 	}
 
 	[TypeConverter("ExampleMod.Common.Configs.CustomDataTypes.ClassUsedAsKeyConverter")]
