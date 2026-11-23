@@ -6,6 +6,9 @@ using Terraria.GameInput;
 namespace Terraria.UI;
 
 // Mostly duplicated from InGameNotificationsTracker
+/// <summary>
+/// Manages menu notifications. Custom notifications can be added via <see cref="AddNotification(IInGameNotification)"/>. <see cref="InGameNotificationsTracker"/> is a similar class for in-game notifications.
+/// </summary>
 public class MenuNotificationsTracker
 {
 	private static List<IInGameNotification> _notifications = new List<IInGameNotification>();

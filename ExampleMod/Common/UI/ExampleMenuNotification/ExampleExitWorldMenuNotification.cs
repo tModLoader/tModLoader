@@ -14,7 +14,7 @@ namespace ExampleMod.Common.UI.ExampleMenuNotification
 	// This is a custom implementation of IInGameNotification for usage with the MenuNotificationSystem class.
 	// Note that IInGameNotification is used for both in-game notifications and menu notifications.
 	// See ExampleMod/Common/UI/ExampleInGameNotification for an in-game notification example.
-	// It displays a goodbye message to the player when they exit a world, controlled through a monomod detour.
+	// It displays a goodbye message to the player when they exit a world, controlled through a MonoMod detour.
 
 	// This is the detour that creates the notification.
 	// If you don't understand detours, read this on the wiki: https://github.com/tModLoader/tModLoader/wiki/Advanced-Detouring-Guide
@@ -84,7 +84,6 @@ namespace ExampleMod.Common.UI.ExampleMenuNotification
 		// This is because IInGameNotification is reused for menu notifications.
 		public void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition) {
 			// No reason to continue drawing if the notification is no longer visible.
-
 			if (Opacity <= 0f) {
 				return;
 			}
@@ -101,7 +100,7 @@ namespace ExampleMod.Common.UI.ExampleMenuNotification
 			float effectiveScale = Scale * 1.1f;
 			Vector2 size = (FontAssets.ItemStack.Value.MeasureString(title) + new Vector2(58f, 10f)) * effectiveScale;
 			// The only real difference for modders between drawing menu notifications and in-game notifications is the alignment:
-			// - In-game notificatiosn are centered.
+			// - In-game notifications are centered.
 			// - Menu notifications are right-aligned.
 			Rectangle panelSize = Utils.CornerRectangle(bottomAnchorPosition, bottomAnchorPosition - size);
 
