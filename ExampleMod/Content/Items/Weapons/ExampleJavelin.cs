@@ -21,7 +21,7 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.autoReuse = true;
 			Item.consumable = true;
 
-			// Weapon Properties			
+			// Weapon Properties
 			Item.damage = 33;
 			Item.knockBack = 5f;
 			Item.noUseGraphic = true; // The item should not be visible when used

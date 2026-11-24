@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items
 		public override string Texture => $"Terraria/Images/Projectile_{ProjectileID.JimsDrone}";
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 20;
 			Item.rare = ItemRarityID.Blue;
 			Item.useAnimation = 300;
 			Item.useTime = 300;

@@ -1014,6 +1014,7 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.DeadCellsRamRune, 8));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.ByConditionNotScalingWithLuck(new Conditions.ForTheWorthyIsUp(), ItemID.MoonLordBody, 5));
+		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.SilverBracer, 4));
 	}
 
 	private void RegisterHerbBag()

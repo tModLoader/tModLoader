@@ -11,8 +11,6 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleLamp>());
-			Item.width = 10;
-			Item.height = 24;
 			Item.value = 500;
 		}
 
