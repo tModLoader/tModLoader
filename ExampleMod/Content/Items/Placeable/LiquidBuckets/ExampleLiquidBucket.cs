@@ -27,14 +27,11 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			// NOTE: a liquid can only create 1 bucket item at a time.
 			LiquidID.Sets.CreateLiquidBucketItem[ModContent.LiquidType<ExampleLiquid>()] = Type;
 
-			CreativeItemSacrificesCatalog.Instance.SacrificeCountNeededByItemId[Type] = 5;
+			Item.ResearchUnlockCount = 5;
 		}
 
 		// The normal SetDefaults for a bucket
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 24;
-			Item.maxStack = Item.CommonMaxStack;
 			Item.useTurn = true;
 			Item.autoReuse = true;
 			Item.useAnimation = 15;
@@ -43,8 +40,8 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 		}
 
 		public override void AddRecipes() {
-			CreateRecipe(1)
-				.AddIngredient(ItemID.EmptyBucket, 1)
+			CreateRecipe()
+				.AddIngredient(ItemID.EmptyBucket)
 				.AddLiquidNearby<ExampleLiquid>()
 				.Register();
 		}
