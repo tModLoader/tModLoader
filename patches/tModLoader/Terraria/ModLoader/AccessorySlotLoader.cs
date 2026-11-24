@@ -32,6 +32,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	public const int MaxVanillaSlotCount = 2 + 5;
 
+	#region DrawingAndUICode
 	// DRAWING CODE ///////////////////////////////////////////////////////////////////
 	internal int GetAccessorySlotPerColumn()
 	{
@@ -227,18 +228,18 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			Main.inventoryBack = flag3 || accessoryConflict ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawFunctionalSlot) {
-				bool skipMouse = DrawVisibility(ref modSlotPlayer.exHideAccessory[slot], -10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+				bool skipMouse = DrawVisibility(ref modSlotPlayer.exHideAccessory[slot], ItemSlot.Context.ModdedAccessorySlot, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
 				DrawSlot(modSlotPlayer.exAccessorySlot, -10, slot, flag3, xLoc, yLoc, skipMouse);
 				Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
 			}
 
 			Main.inventoryBack = flag3 || vanityConflict ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawVanitySlot)
-				DrawSlot(modSlotPlayer.exAccessorySlot, -11, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.exAccessorySlot, ItemSlot.Context.ModdedVanityAccessorySlot, slot + modSlotPlayer.SlotCount, flag3, xLoc, yLoc);
 
 			Main.inventoryBack = flag3 ? new Color(80, 80, 80, 80) : color;
 			if (thisSlot.DrawDyeSlot)
-				DrawSlot(modSlotPlayer.exDyesAccessory, -12, slot, flag3, xLoc, yLoc);
+				DrawSlot(modSlotPlayer.exDyesAccessory, ItemSlot.Context.ModdedDyeSlot, slot, flag3, xLoc, yLoc);
 		}
 		else {
 			if (!customLoc && Main.EquipPage != 0) {
@@ -250,11 +251,12 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				return true;
 			}
 
-			bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], 10, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
-			DrawSlot(Player.armor, 10, slot, flag3, xLoc, yLoc, skipMouse);
+			bool skipMouse = DrawVisibility(ref Player.hideVisibleAccessory[slot], ItemSlot.Context.EquipAccessory, xLoc, yLoc, out var xLoc2, out var yLoc2, out var value4);
+
+			DrawSlot(Player.armor, ItemSlot.Context.EquipAccessory, slot, flag3, xLoc, yLoc, skipMouse);
 			Main.spriteBatch.Draw(value4, new Vector2(xLoc2, yLoc2), Color.White * 0.7f);
-			DrawSlot(Player.armor, 11, slot + Player.dye.Length, flag3, xLoc, yLoc);
-			DrawSlot(Player.dye, 12, slot, flag3, xLoc, yLoc);
+			DrawSlot(Player.armor, ItemSlot.Context.EquipAccessoryVanity, slot + Player.dye.Length, flag3, xLoc, yLoc);
+			DrawSlot(Player.dye, ItemSlot.Context.EquipDye, slot, flag3, xLoc, yLoc);
 		}
 
 		Main.inventoryBack = color;
@@ -348,9 +350,9 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Generates a significant amount of functionality for the slot, despite being named drawing because vanilla.
 	/// At the end, calls this.DrawRedirect to enable custom drawing
 	/// </summary>
-	private void DrawSlot(Item[] items, int context, int slot, bool flag3, int xLoc, int yLoc, bool skipCheck = false)
+	private void DrawSlot(Item[] items, int context, int slot, bool slotIsNotUsable, int xLoc, int yLoc, bool skipCheck = false)
 	{
-		bool flag = flag3 && !Main.mouseItem.IsAir;
+		bool mouseHasItemAndSlotNotUsable = slotIsNotUsable && !Main.mouseItem.IsAir;
 		int xLoc1 = xLoc - 47 * (slotDrawLoopCounter++);
 		bool isHovered = false;
 
@@ -362,18 +364,18 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 			Main.armorHide = true;
 			ItemSlot.OverrideHover(items, context, slot);
 
-			if (!flag) {
-				if (Math.Abs(context) == 12) {
+			if (!mouseHasItemAndSlotNotUsable) {
+				if (Math.Abs(context) == (int)AccessorySlotType.DyeSlot) {
 					if (Main.mouseRightRelease && Main.mouseRight)
 						ItemSlot.RightClick(items, context, slot);
 
 					ItemSlot.LeftClick(items, context, slot);
 				}
-				else if (Math.Abs(context) == 11) {
+				else if (Math.Abs(context) == (int)AccessorySlotType.VanitySlot) {
 					ItemSlot.LeftClick(items, context, slot);
 					ItemSlot.RightClick(items, context, slot);
 				}
-				else if (Math.Abs(context) == 10) {
+				else if (Math.Abs(context) == (int)AccessorySlotType.FunctionalSlot) {
 					ItemSlot.LeftClick(items, context, slot);
 				}
 			}
@@ -385,7 +387,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				OnHover(slot, context);
 
 				// Override custom hover text for this important information
-				if (Math.Abs(context) != 12 && ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot, vanitySlot: Math.Abs(context) == 11)) {
+				if (Math.Abs(context) != (int)AccessorySlotType.DyeSlot && ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot, vanitySlot: Math.Abs(context) == (int)AccessorySlotType.VanitySlot)) {
 					Main.HoverItem = new Item();
 					Main.hoverItemName = Language.GetTextValue("tModLoader.SharedAccessorySlotConflictTooltip");
 				}
@@ -420,15 +422,15 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		var thisSlot = Get(slot);
 		switch (context) {
-			case -10:
+			case ItemSlot.Context.ModdedAccessorySlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalBackgroundTexture, out var funcTexture))
 					return (funcTexture.Value, true);
 				break;
-			case -11:
+			case ItemSlot.Context.ModdedVanityAccessorySlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityBackgroundTexture, out var vanityTexture))
 					return (vanityTexture.Value, true);
 				break;
-			case -12:
+			case ItemSlot.Context.ModdedDyeSlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeBackgroundTexture, out var dyeTexture))
 					return (dyeTexture.Value, true);
 				break;
@@ -437,9 +439,9 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		if (ModSlotPlayer(Player).IsSharedSlot(thisSlot.Type)) {
 			// Shared slots retain the old background textures by default.
 			return context switch {
-				-10 => (TextureAssets.InventoryBack3.Value, true),
-				-11 => (TextureAssets.InventoryBack8.Value, true),
-				-12 => (TextureAssets.InventoryBack12.Value, true),
+				ItemSlot.Context.ModdedAccessorySlot => (TextureAssets.InventoryBack3.Value, true),
+				ItemSlot.Context.ModdedVanityAccessorySlot => (TextureAssets.InventoryBack8.Value, true),
+				ItemSlot.Context.ModdedDyeSlot => (TextureAssets.InventoryBack12.Value, true),
 				_ => throw new NotImplementedException()
 			};
 		}
@@ -451,15 +453,15 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 		var thisSlot = Get(slot);
 		Texture2D texture = null;
 		switch (context) {
-			case -10:
+			case ItemSlot.Context.ModdedAccessorySlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.FunctionalTexture, out var funcTexture))
 					texture = funcTexture.Value;
 				break;
-			case -11:
+			case ItemSlot.Context.ModdedVanityAccessorySlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.VanityTexture, out var vanityTexture))
 					texture = vanityTexture.Value;
 				break;
-			case -12:
+			case ItemSlot.Context.ModdedDyeSlot:
 				if (ModContent.RequestIfExists<Texture2D>(thisSlot.DyeTexture, out var dyeTexture))
 					texture = dyeTexture.Value;
 				break;
@@ -475,6 +477,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 		Main.spriteBatch.Draw(texture, position, rectangle, color, rotation, origin, scale, effects, layerDepth);
 	}
+	#endregion
 
 	// Functionality Related Code /////////////////////////////////////////////////////////////////////
 
@@ -573,7 +576,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 public enum AccessorySlotType
 {
-	FunctionalSlot = 10,
-	VanitySlot = 11,
-	DyeSlot = 12
+	FunctionalSlot = ItemSlot.Context.EquipAccessory,
+	VanitySlot = ItemSlot.Context.EquipAccessoryVanity,
+	DyeSlot = ItemSlot.Context.EquipDye
 }
