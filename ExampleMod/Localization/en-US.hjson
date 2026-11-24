@@ -1324,7 +1324,7 @@ Mods: {
 				DisplayName: Example Beast Transformation Skull
 				Tooltip: Transforms the user into an Example Beast Transformation
 			}
-			
+
 			ExampleBottomlessBucket: {
 				DisplayName: Example Bottomless Bucket
 				Tooltip:
@@ -1347,7 +1347,7 @@ Mods: {
 				DisplayName: Example Liquid Sponge
 				Tooltip: Capable of soaking up an endless amount of example liquid
 			}
-			
+
 			ExampleBoomerang: {
 				DisplayName: Example Boomerang
 				Tooltip: ""
