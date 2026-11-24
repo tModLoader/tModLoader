@@ -1,7 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
-using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -40,14 +39,11 @@ namespace ExampleMod.Content.Items.Accessories
 			Item.SetShopValues(ItemRarityColor.Blue1, Item.sellPrice(0, 1));
 		}
 
-		// Here is where we can define our hurt sound. This optional. If you only want a hurt sound, don't override this hook.
+		// Here is where we can define our hurt sound. This optional. If you only want a death sound, don't override this hook.
 		// Note: This hook will only run if Item.voiceSlot has been assigned with the [AutoloadEquip(EquipType.Voice)] attribute and the item is in a social accessory slot.
 		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
 		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
 			// Rarely play a different sound like the Chicken Charm.
-			if (entity is Player player)
-				Main.NewText($"player.voiceOverride {player.voiceOverride} Item.voiceSlot {Item.voiceSlot}");
-
 			if (Main.rand.NextBool(5)) {
 				SoundEngine.PlaySound(ExampleVoiceAccessoryRareHurtSound, soundPosition);
 			}

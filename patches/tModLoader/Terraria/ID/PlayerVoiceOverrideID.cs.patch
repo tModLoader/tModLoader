@@ -10,6 +10,6 @@
  	public const int Fairy = 18;
  	public const int WhoopieCushion = 19;
  	public const int Other = 20;
-+	public const int Count = 21; // Added by TML
++	public static int Count = 21; // Added by TML
 +	public static IdDictionary Search = IdDictionary.Create<PlayerVoiceOverrideID, int>();
  }
