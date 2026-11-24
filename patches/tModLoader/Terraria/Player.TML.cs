@@ -779,7 +779,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 			return;
 
 		if (
-			(sItem.type == ItemID.EmptyBucket && LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1)
+			(sItem.type == ItemID.EmptyBucket && LiquidID.Sets.FilledBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1)
 			|| LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)
 		)
 			ItemCheck_UseEmptyBucketOrSponge(sItem, countsAsSponge);
@@ -805,7 +805,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		// If it is not a sponge, then it is an empty bucket.
 		if (!countsAsSponge) {
 			sItem.stack--;
-			PutItemInInventoryFromItemUsage(LiquidID.Sets.CreateLiquidBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()]);
+			PutItemInInventoryFromItemUsage(LiquidID.Sets.FilledBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()]);
 		}
 
 		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);

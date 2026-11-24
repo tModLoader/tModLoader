@@ -22,9 +22,9 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 
 			// Here is how we make buckets create this item.
 			// Unlike Example Bottomless bucket, we have A->B and B->A transforms so we need to set both sides
-			// Using the CreateLiquidBucketItem ID Set, we are able to set what a liquid replaces the empty bucket with on interaction
+			// Using the FilledBucketItem ID Set, we are able to set what a liquid replaces the empty bucket with on interaction
 			// NOTE: a liquid can only create 1 bucket item at a time.
-			LiquidID.Sets.CreateLiquidBucketItem[ModContent.LiquidType<ExampleLiquid>()] = Type;
+			LiquidID.Sets.FilledBucketItem[ModContent.LiquidType<ExampleLiquid>()] = Type;
 
 			Item.ResearchUnlockCount = 5;
 		}

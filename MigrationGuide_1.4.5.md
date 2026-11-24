@@ -812,7 +812,8 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * `Projectile.GetDefaultDrawData` helper method for calculating the default projectile draw parameters.
 * `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
 * `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
-* `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   
+* `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierarchy changes to facilitate this.   
+  * TODO: More information needed here as liquid support is finalized.
 * `Config.SortConfigAttribute` added to sort configs in the config list menu, allowing specific ordering of `ModConfig`s.
 * New `ModMount` features:
   * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
@@ -841,3 +842,4 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 In addition to changes adapting to vanilla changes listed in the "Other Changes" section above, 1.4.5 ExampleMod also contains several new examples.
 
 * `ExampleFlyingTransformation` and `ExampleBeastTransformation` are examples of transformation mounts similar to the Pixie and Velociraptor transformations.
+* `ExampleLiquid` showcases the new `ModLiquid` feature. `ExampleLiquidBucket`, `ExampleBottomlessBucket`, and `ExampleLiquidSponge` demonstrate corresponding custom liquid tools.

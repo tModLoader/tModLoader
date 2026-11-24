@@ -229,7 +229,7 @@ partial class ItemID
 
 		/// <summary>
 		/// Dictates the LiquidID that the Full Bucket ItemID will place as.
-		/// Inverse of <see cref="LiquidID.Sets.CreateLiquidBucketItem"/> AND includes bottomless buckets
+		/// Inverse of <see cref="LiquidID.Sets.FilledBucketItem"/> AND includes bottomless buckets
 		/// </summary>
 		public static int[] LiquidPlacedByBucket = Factory.CreateIntSet(-1, WaterBucket, LiquidID.Water, BottomlessBucket, LiquidID.Water,
 			LavaBucket, LiquidID.Lava, BottomlessLavaBucket, LiquidID.Lava, HoneyBucket, LiquidID.Honey, BottomlessHoneyBucket, LiquidID.Honey,
