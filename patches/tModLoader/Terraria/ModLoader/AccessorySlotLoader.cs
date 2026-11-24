@@ -513,8 +513,10 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	/// Invokes directly ItemSlot.AccCheck &amp; ModSlot.CanAcceptItem
 	/// Note that this doesn't check for conflicts of shared slots with the items of other loadouts, that check is done in <see cref="ModAccessorySlotPlayer.DetectConflictsWithSharedSlots"/> to prevent a confusing user experience. The accessory slot acts like a disabled slot while in conflict, allowing the player to choose how to fix the issue.
 	/// </summary>
-	public bool ModSlotCheck(Item checkItem, int slot, int context) => CanAcceptItem(slot, checkItem, context) &&
-		!ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+	public bool ModSlotCheck(Item checkItem, int slot, int context)
+	{
+		return CanAcceptItem(slot, checkItem, context) && !ItemSlot.AccCheck_ForLocalPlayer(Player.armor.Concat(ModSlotPlayer(Player).exAccessorySlot).ToArray(), checkItem, slot + Player.armor.Length);
+	}
 
 	private static Item dummyAccessoryCheckItem = new Item();
 	/// <summary>
@@ -524,9 +526,11 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	{
 		if (checkItem.IsAir)
 			return false;
+
 		bool canGoInSlot = CanPlayerAcceptItem(player, slot, checkItem, context);
 		if (!canGoInSlot)
 			return true;
+
 		Item[] itemCollection = player.armor.Concat(ModSlotPlayer(player).exAccessorySlot).ToArray();
 		itemCollection[slot + player.armor.Length] = dummyAccessoryCheckItem;
 		return ItemSlot.AccCheck_ForPlayer(player, itemCollection, checkItem, slot + player.armor.Length);
