@@ -226,7 +226,20 @@ partial class ItemID
 		/// <br/> Defaults to <see langword="null"/>.
 		/// </summary>
 		public static List<int>[] GrassSeedDirtTiles = Factory.CreateCustomSet<List<int>>(null);
-	
+
+		/// <summary>
+		/// Dictates the LiquidID that the Full Bucket ItemID will place as.
+		/// Inverse of <see cref="LiquidID.Sets.FilledBucketItem"/> AND includes bottomless buckets
+		/// </summary>
+		public static int[] LiquidPlacedByBucket = Factory.CreateIntSet(-1, WaterBucket, LiquidID.Water, BottomlessBucket, LiquidID.Water,
+			LavaBucket, LiquidID.Lava, BottomlessLavaBucket, LiquidID.Lava, HoneyBucket, LiquidID.Honey, BottomlessHoneyBucket, LiquidID.Honey,
+			BottomlessShimmerBucket, LiquidID.Shimmer);
+
+		/// <summary>
+		/// Whether or not the item counts as a bottomless bucket for purposes of <see cref="LiquidPlacedByBucket"/>
+		/// </summary>
+		public static bool[] IsBottomlessBucket = Factory.CreateBoolSet(false, BottomlessBucket, BottomlessLavaBucket, BottomlessHoneyBucket, BottomlessShimmerBucket);
+
 		/// <summary>
 		/// Contains voice accessories that can randomly generated in chests and lets slimes in Skyblock spawn carrying this item.
 		/// <para/>Additionally set <see cref="ItemID.Sets.IsAVoiceChangeItem"/> to boost the HP of slimes with this item.
