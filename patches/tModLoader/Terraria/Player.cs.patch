@@ -6171,12 +6171,12 @@
  				return;
  		}
  
-+		// Run ModItem.VoiceItemHurtSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemHurtSoundOverride returning true will return.
-+		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.VoiceItemHurtSoundOverride(this, vector) ?? false)) {
++		// Run ModItem.VoiceItemHurtSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemHurtSoundOverride returning false will return.
++		if (voiceOverride >= PlayerVoiceOverrideID.Count && !ItemLoader.VoiceItemHurtSoundOverride(this, vector, voiceOverride)) {
 +			return;
 +		}
 +
-+		if (PlayerLoader.PlayerHurtSound(this, vector)) {
++		if (!PlayerLoader.PlayerHurtSound(this, vector)) {
 +			return;
 +		}
 +
@@ -6187,12 +6187,12 @@
  				return;
  		}
  
-+		// Run ModItem.VoiceItemDeathSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemDeathSoundOverride returning true will return.
-+		if (voiceOverride > PlayerVoiceOverrideID.Other && (ContentSamples.ItemsByType[voiceOverride]?.ModItem?.VoiceItemDeathSoundOverride(this) ?? false)) {
++		// Run ModItem.VoiceItemDeathSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemDeathSoundOverride returning false will return.
++		if (voiceOverride >= PlayerVoiceOverrideID.Count && !ItemLoader.VoiceItemDeathSoundOverride(this, voiceOverride)) {
 +			return;
 +		}
 +
-+		if (PlayerLoader.PlayerDeathSound(this)) {
++		if (!PlayerLoader.PlayerDeathSound(this)) {
 +			return;
 +		}
 +

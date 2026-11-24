@@ -381,4 +381,18 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <returns><see langword="true"/> if this <see cref="Item"/> can roll the given prefix (<see cref="CanRollPrefix(int)"/>) and if the applied prefix does not fail to modify any stat values.</returns>
 	public bool CanApplyPrefix(int prefix)
 		=> CanRollPrefix(prefix) && TryGetPrefixStatMultipliersForItem(prefix, out _, out _, out _, out _, out _, out _, out _, out _, out _, out _);
+
+	/// <summary>
+	/// Add the attribute <c>[AutoloadEquip(EquipType.Voice)]</c> to automatically assign <see cref="Item.voiceSlot"/>.
+	/// </summary>
+	public void DefaultToVoiceOverrideAccessory()
+	{
+		useStyle = 4;
+		UseSound = null;
+		useTurn = false;
+		useAnimation = 17;
+		useTime = 17;
+		accessory = true;
+		vanity = true;
+	}
 }

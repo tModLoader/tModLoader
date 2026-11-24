@@ -530,15 +530,15 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows for a different sound to play when the player takes damage.
-	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/> Return <see langword="false"/> to prevent other hurt sounds from playing.
 	/// <br/><br/> For voice accessories, use <seealso cref="ModItem.VoiceItemHurtSoundOverride(Entity, Vector2)"/>.
 	/// </summary>
 	/// <param name="soundPosition"> The position that the sound should be played at.
 	/// <br/> If the sound is emanating from ourselves (aka local client), play the sound "globally" for us so it doesn't pan while we are moving.</param>
-	/// <returns>Returns <see langword="false"/> by default.</returns>
+	/// <returns>Returns <see langword="true"/> by default.</returns>
 	public virtual bool PlayerHurtSound(Vector2 soundPosition)
 	{
-		return false;
+		return true;
 	}
 
 	/// <summary>
@@ -574,13 +574,13 @@ public abstract class ModPlayer : ModType<Player, ModPlayer>, IIndexed
 
 	/// <summary>
 	/// Allows for a different sound to play when the player dies.
-	/// <br/> Return <see langword="true"/> to prevent other hurt sounds from playing.
+	/// <br/> Return <see langword="false"/> to prevent other hurt sounds from playing.
 	/// <br/><br/> For voice accessories, use <seealso cref="ModItem.VoiceItemDeathSoundOverride(Entity)"/>.
 	/// </summary>
-	/// <returns>Returns <see langword="false"/> by default.</returns>
+	/// <returns>Returns <see langword="true"/> by default.</returns>
 	public virtual bool PlayerDeathSound()
 	{
-		return false;
+		return true;
 	}
 
 	/// <summary>

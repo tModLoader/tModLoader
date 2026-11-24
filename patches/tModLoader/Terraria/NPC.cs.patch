@@ -2611,7 +2611,7 @@
  					break;
  				default:
 +					// type == slime, ai[1] == the item the slime is carrying.
-+					if (ai[1] > 0 && (ContentSamples.ItemsByType[(int)ai[1]]?.ModItem?.VoiceItemHurtSoundOverride(this, position) is true)) { }
++					if (ai[1] > 0 && ai[1] < ItemLoader.ItemCount && !ItemLoader.VoiceItemHurtSoundOverride(this, position, ContentSamples.ItemsByType[(int)ai[1]].voiceSlot)) { }
 +					else
  					if (HitSound != null)
  						SoundEngine.PlaySound(HitSound, position);

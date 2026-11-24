@@ -1327,7 +1327,7 @@
  	}
  
 -	public void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID)
-+	public void DefaultToVoiceOverrideAccessory(int voiceOverrideID) // TML: sbyte -> int
++	private void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID) // TML: Made private. Public version without voiceSlot in Item.TML.cs
  	{
  		useStyle = 4;
  		UseSound = null;

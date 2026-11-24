@@ -2453,4 +2453,24 @@ public static class ItemLoader
 			g.ModifyArmorSets();
 		}
 	}
+
+	public static bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition, int voiceSlot)
+	{
+		foreach (ModItem item in items) {
+			if (item.Item.voiceSlot == voiceSlot) {
+				return item.VoiceItemHurtSoundOverride(entity, soundPosition);
+			}
+		}
+		return true;
+	}
+
+	public static bool VoiceItemDeathSoundOverride(Entity entity, int voiceSlot)
+	{
+		foreach (ModItem item in items) {
+			if (item.Item.voiceSlot == voiceSlot) {
+				return item.VoiceItemDeathSoundOverride(entity);
+			}
+		}
+		return true;
+	}
 }

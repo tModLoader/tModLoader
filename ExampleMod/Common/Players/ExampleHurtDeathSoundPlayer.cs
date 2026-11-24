@@ -1,3 +1,4 @@
+using ExampleMod.Content.Mounts;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
@@ -17,15 +18,15 @@ namespace ExampleMod.Common.Players
 			if (Player.mount.Active && Player.mount.Type == MountID.Flamingo) {
 				// If the sound is emanating from ourselves (aka local client), soundPosition will be "global" for us so it doesn't pan while we are moving.
 				SoundEngine.PlaySound(SoundID.NPCHit46, soundPosition);
-				return true; // Return true to prevent vanilla from playing other sounds.
+				return false; // Return false to prevent vanilla from playing other sounds.
 			}
 			// If the player is wearing the Moon Lord Mask in the vanity slot.
 			if (Player.armor[10].type == ItemID.BossMaskMoonlord) {
 				SoundEngine.PlaySound(SoundID.NPCHit57 with { MaxInstances = 3 }, soundPosition);
-				return true;
+				return false;
 			}
 
-			return false; // Return false to let vanilla play other sounds.
+			return true; // Return true to let vanilla play other sounds.
 		}
 
 		// Note: The hurt sound will still play in addition to the death sound.
@@ -34,15 +35,15 @@ namespace ExampleMod.Common.Players
 			// If the player is riding the Flamingo mount, change their hurt sound to the parrot hurt sound.
 			if (Player.mount.Active && Player.mount.Type == MountID.Flamingo) {
 				SoundEngine.PlaySound(SoundID.NPCDeath48, Player.position);
-				return true;
+				return false;
 			}
 			// If the player is wearing the Moon Lord Mask in the vanity slot.
 			if (Player.armor[10].type == ItemID.BossMaskMoonlord) {
 				SoundEngine.PlaySound(SoundID.NPCDeath62, Player.position);
-				return true;
+				return false;
 			}
 
-			return false;
+			return true;
 		}
 	}
 }

@@ -59,13 +59,14 @@ namespace ExampleMod.Common.Players
 			}
 		}
 
-		// The ExampleCostume item uses Item.voiceSlot and ModItem.VoiceItemHurtSoundOverride to play a custom hurt sound.
+		// The ExampleCostume item uses [AutoloadEquip(EquipType.Voice)] attribute and ModItem.VoiceItemHurtSoundOverride to play a custom hurt sound.
 		// Here is another way to change the hurt sound from the ModPlayer.
 		/*
 		public override bool PlayerHurtSound(Vector2 soundPosition) {
 			if (BlockyVanityEffects) {
 				// SoundID.Frog is actually SoundType.Ambient, so we need to change it to play at the correct SoundType.Sound master volume.
 				SoundEngine.PlaySound(SoundID.Frog with { Type = SoundType.Sound }, soundPosition);
+				return false; // Return false to prevent vanilla from playing other sounds.
 			}
 			return true;
 		}

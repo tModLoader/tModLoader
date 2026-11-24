@@ -1324,7 +1324,7 @@ Mods: {
 				DisplayName: Example Beast Transformation Skull
 				Tooltip: Transforms the user into an Example Beast Transformation
 			}
-			
+
 			ExampleBoomerang: {
 				DisplayName: Example Boomerang
 				Tooltip: ""
@@ -1338,7 +1338,7 @@ Mods: {
 					Ignores 15 points of enemy Defense
 					'''
 			}
-			
+
 			ExampleVoiceAccessory: {
 				DisplayName: Example Voice Accessory
 				Tooltip: "'Boing!'"

@@ -578,11 +578,11 @@ public static class PlayerLoader
 	public static bool PlayerHurtSound(Player player, Vector2 soundPosition)
 	{
 		foreach (var modPlayer in HookPlayerHurtSound.Enumerate(player)) {
-			if (modPlayer.PlayerHurtSound(soundPosition))
-				return true;
+			if (!modPlayer.PlayerHurtSound(soundPosition))
+				return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private delegate bool DelegatePreKill(double damage, int hitDirection, bool pvp, ref bool playSound,
@@ -613,11 +613,11 @@ public static class PlayerLoader
 	public static bool PlayerDeathSound(Player player)
 	{
 		foreach (var modPlayer in HookPlayerDeathSound.Enumerate(player)) {
-			if (modPlayer.PlayerDeathSound())
-				return true;
+			if (!modPlayer.PlayerDeathSound())
+				return false;
 		}
 
-		return false;
+		return true;
 	}
 
 	private delegate bool DelegatePreModifyLuck(ref float luck);

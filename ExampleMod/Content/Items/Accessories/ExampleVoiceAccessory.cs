@@ -1,12 +1,16 @@
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Audio;
+using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace ExampleMod.Content.Items.Accessories
 {
+	// The AutoloadEquip attribute with the equip type set to voice automatically attaches a voice slot to this item.
+	// Unlike other equip types, the voice type does not load any textures.
+	[AutoloadEquip(EquipType.Voice)]
 	public class ExampleVoiceAccessory : ModItem
 	{
 		// Here we define which sounds we want to use.
@@ -22,28 +26,28 @@ namespace ExampleMod.Content.Items.Accessories
 		}
 		public override void SetDefaults() {
 			// DefaultToVoiceOverrideAccessory sets a number of things for us such as the use style, use time, vanity, and accessory.
-			// The important thing for this is Item.voiceSlot = Type
-			Item.DefaultToVoiceOverrideAccessory(Type);
+			// Don't forget the [AutoloadEquip(EquipType.Voice)] attribute to assign the voiceSlot.
+			Item.DefaultToVoiceOverrideAccessory();
 			/*
 			Item.useStyle = ItemUseStyleID.HoldUp;
 			Item.UseSound = null;
 			Item.useTurn = false;
 			Item.useAnimation = 17;
 			Item.useTime = 17;
-			Item.width = 24;
-			Item.height = 24;
 			Item.accessory = true;
 			Item.vanity = true;
-			Item.voiceSlot = Type;
 			*/
 			Item.SetShopValues(ItemRarityColor.Blue1, Item.sellPrice(0, 1));
 		}
 
 		// Here is where we can define our hurt sound. This optional. If you only want a hurt sound, don't override this hook.
-		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
+		// Note: This hook will only run if Item.voiceSlot has been assigned with the [AutoloadEquip(EquipType.Voice)] attribute and the item is in a social accessory slot.
 		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
 		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
 			// Rarely play a different sound like the Chicken Charm.
+			if (entity is Player player)
+				Main.NewText($"player.voiceOverride {player.voiceOverride} Item.voiceSlot {Item.voiceSlot}");
+
 			if (Main.rand.NextBool(5)) {
 				SoundEngine.PlaySound(ExampleVoiceAccessoryRareHurtSound, soundPosition);
 			}
@@ -51,16 +55,16 @@ namespace ExampleMod.Content.Items.Accessories
 				SoundEngine.PlaySound(ExampleVoiceAccessoryHurtSound, soundPosition);
 			}
 
-			return true; // Return true to prevent vanilla from playing other sounds.
+			return false; // Return false to prevent vanilla from playing other sounds.
 		}
 
 		// Here is where we can define our death sound. This optional. If you only want a hurt sound, don't override this hook.
 		// Note: The hurt sound will still play in addition to the death sound.
-		// Note: This hook will only run if Item.voiceSlot matches the this item's type and the item is in a social accessory slot.
+		// Note: This hook will only run if Item.voiceSlot has been assigned with the [AutoloadEquip(EquipType.Voice)] attribute and the item is in a social accessory slot.
 		// For a more generic player death hook, use ModPlayer.PlayerDeathSound().
 		public override bool VoiceItemDeathSoundOverride(Entity entity) {
 			SoundEngine.PlaySound(ExampleVoiceAccessoryDeathSound, entity.position);
-			return true;
+			return false;
 		}
 	}
 }

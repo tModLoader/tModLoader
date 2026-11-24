@@ -20,4 +20,5 @@ public enum EquipType
 	Face,
 	Balloon,
 	Beard,
+	Voice
 }
