@@ -5506,6 +5506,15 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
+@@ -29404,6 +_,8 @@
+ 		if (tileType == 355 || tileType == 699)
+ 			alchemyTable = true;
+ 
++		TileLoader.AdjTiles(this, tileType);
++
+ 		List<int> list = Recipe.TileCountsAs[tileType];
+ 		if (list == null)
+ 			return;
 @@ -29416,12 +_,17 @@
  	public void AdjTiles()
  	{

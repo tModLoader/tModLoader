@@ -34,7 +34,6 @@ public static class TileLoader
 	//in Terraria.WorldGen.StartRoomCheck change 419 to WorldGen.houseTile.Length
 	//at end of Terraria.WorldGen.KillWall remove type too high check
 	//in Terraria.Player change adjTile and oldAdjTile size to TileLoader.TileCount()
-	//in Terraria.Player.AdjTiles change 419 to adjTile.Length
 	//in Terraria.Lighting for accOreFinder replace 419 with Main.tileValue.Length
 	//make Terraria.WorldGen public
 	//in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
@@ -1195,12 +1194,9 @@ public static class TileLoader
 
 	public static void AdjTiles(Player player, int type)
 	{
-		ModTile modTile = GetTile(type);
-		if (modTile != null) {
-			foreach (int k in modTile.AdjTiles) {
-				player.adjTile[k] = true;
-			}
-		}
+		// ModTile.AdjTiles is registered into Recipe.TileCountsAs during Recipe.SetupRecipes,
+		// so Player.SetAdjTile already handles it. Only the dynamic GlobalTile hook runs here.
+
 		foreach (var hook in HookAdjTiles) {
 			int[] adjTiles = hook(type);
 			foreach (int k in adjTiles) {

@@ -591,6 +591,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
 * `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
+* Adjacent ModTile crafting properties are now initialized in SetupRecipes() via ModTile.AdjTiles applying Recipe.AddTileCountsAs instead of populated dynamically during game time. The TileLoader.AdjTiles hook now only runs the dynamic GlobalTile hook to make fine adjustments during game time.
 
 ### Example Mod
 
