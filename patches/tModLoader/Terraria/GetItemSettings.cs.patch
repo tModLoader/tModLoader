@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GetItemSettings.cs
 +++ src/tModLoader/Terraria/GetItemSettings.cs
-@@ -1,7 +_,14 @@
+@@ -1,7 +_,17 @@
  using System;
 +using Microsoft.Xna.Framework;
  
@@ -11,6 +11,9 @@
 +/// <para/> <b>LongText:</b> <inheritdoc cref="PopupText.NewText(PopupTextContext, Item, Vector2, int, bool , bool)" path="/param[@name='longText']"/>
 +/// <br/> <b>NoText:</b> If <see langword="true"/>, no <see cref="PopupText"/> will spawn.
 +/// <br/> <b>CanGoIntoVoidVault:</b> If <see langword="true"/>, the item can be placed into the Void Vault.
++/// <br/> <b>NoSound:</b> If <see langword="true"/>, the pickup sound will not play.
++/// <br/> <b>NoCoinMerge:</b> If <see langword="true"/>, then coins stacked to 100 will not convert to the next higher coin type.
++/// <br/> <b>StepAfterHandlingSlotNormally:</b> A delegate to be called after the item is placed in a slot. A common use case is to set <see cref="Item.newAndShiny"/>.
 +/// </summary>
  public struct GetItemSettings
  {

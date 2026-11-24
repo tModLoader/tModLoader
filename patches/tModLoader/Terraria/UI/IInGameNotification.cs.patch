@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/UI/IInGameNotification.cs
 +++ src/tModLoader/Terraria/UI/IInGameNotification.cs
-@@ -5,8 +_,6 @@
+@@ -5,15 +_,18 @@
  
  public interface IInGameNotification
  {
@@ -9,7 +9,14 @@
  	bool ShouldBeRemoved { get; }
  
  	void Update();
-@@ -14,6 +_,4 @@
+ 
++	/// <summary>
++	/// Used to draw the actual notification.
++	/// <para/> Note that despite the name, this method is also used to draw menu notifications (<see cref="MenuNotificationsTracker"/>) as well.
++	/// <para/> The <paramref name="bottomAnchorPosition"/> is where the notification should be drawn. This adjusts automatically when multiple notifications are present. For in-game notifications, this is centered on the bottom of the screen. For menu notifications, this is near the bottom-right corner of the screen. The positioning logic in ExampleExitWorldMenuNotification.cs and ExampleJoinWorldInGameNotification.cs should be used as a reference for how to draw the notification using <paramref name="bottomAnchorPosition"/>.
++	/// </summary>
++	/// <param name="spriteBatch"></param>
++	/// <param name="bottomAnchorPosition"></param>
  	void DrawInGame(SpriteBatch spriteBatch, Vector2 bottomAnchorPosition);
  
  	void PushAnchor(ref Vector2 positionAnchorBottom);

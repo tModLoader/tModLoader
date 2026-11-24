@@ -27,8 +27,6 @@ namespace ExampleMod.Content.Items.Armor
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 18;
 			Item.value = Item.sellPrice(gold: 1); // How many coins the item is worth
 			Item.rare = ItemRarityID.Green; // The rarity of the item
 			Item.defense = 4; // The amount of defense the item will give when equipped
