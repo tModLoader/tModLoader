@@ -1,6 +1,5 @@
 ﻿using ExampleMod.Content.Liquids;
 using Terraria;
-using Terraria.GameContent.Creative;
 using Terraria.ID;
 using Terraria.ModLoader;
 
