@@ -15,7 +15,7 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			ItemID.Sets.ShimmerTransformToItem[Type] = ModContent.ItemType<ExampleLiquidSponge>();
 
 			// Unlike ExampleLiquid Bucket, we can't create this item by using an empty bucket on ExampleLiquid. This is A->B only.
-			ItemID.Sets.LiquidBucketPlaceAsID[Type] = ModContent.LiquidType<ExampleLiquid>();
+			ItemID.Sets.LiquidPlacedByBucket[Type] = ModContent.LiquidType<ExampleLiquid>();
 			ItemID.Sets.IsBottomlessBucket[Type] = true;
 		}
 

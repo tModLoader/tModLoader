@@ -766,7 +766,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 
 		if (
 			noBuilding || !IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost) ||
-			!(sItem.type == 205 || countsAsSponge || ItemID.Sets.LiquidBucketPlaceAsID[sItem.type] > -1) // tML added.
+			!(sItem.type == 205 || countsAsSponge || ItemID.Sets.LiquidPlacedByBucket[sItem.type] > -1) // tML added.
 		)
 			return;
 
@@ -859,7 +859,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (Main.tile[tileTargetX, tileTargetY].liquid >= 200 || (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tileSolid[Main.tile[tileTargetX, tileTargetY].type] && !Main.tileSolidTop[Main.tile[tileTargetX, tileTargetY].type] && Main.tile[tileTargetX, tileTargetY].type != 546))
 			return;
 
-		int placeLiquidID = ItemID.Sets.LiquidBucketPlaceAsID[sItem.type];
+		int placeLiquidID = ItemID.Sets.LiquidPlacedByBucket[sItem.type];
 		if (placeLiquidID == -1)
 			return;
 

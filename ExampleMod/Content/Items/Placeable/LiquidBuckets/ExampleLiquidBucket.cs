@@ -18,7 +18,7 @@ namespace ExampleMod.Content.Items.Placeable.LiquidBuckets
 			ItemID.Sets.DuplicationMenuToolsFilter[Type] = true;
 
 			// This sets what type of liquid the bucket will create when placed.
-			ItemID.Sets.LiquidBucketPlaceAsID[Type] = ModContent.LiquidType<ExampleLiquid>();
+			ItemID.Sets.LiquidPlacedByBucket[Type] = ModContent.LiquidType<ExampleLiquid>();
 
 			// Here is how we make buckets create this item.
 			// Unlike Example Bottomless bucket, we have A->B and B->A transforms so we need to set both sides
