@@ -89,6 +89,15 @@
  				return AlternateClickAction.GetSellOrTrash(item);
  		}
  		else if (ShiftInUse) {
+@@ -503,7 +_,7 @@
+ 					return shiftClickAction;
+ 			}
+ 
+-			switch (context) {
++			switch (Math.Abs(context)) {
+ 				case 0:
+ 				case 1:
+ 				case 2:
 @@ -566,6 +_,12 @@
  			return true;
  
@@ -369,7 +378,7 @@
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
 +					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
 +				case Context.ModdedDyeSlot: {
@@ -382,14 +391,13 @@
  				case 25:
  				case 27:
  				case 33:
-@@ -1130,6 +_,19 @@
+@@ -1130,6 +_,18 @@
  				case 12:
  					flag = !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || checkItem.dye <= 0;
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
-+					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
 +				case Context.ModdedDyeSlot: {
@@ -759,6 +767,15 @@
  			if (num18 != -1) {
  				float num25 = 0.7f;
  				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
+@@ -2357,7 +_,7 @@
+ 			return false;
+ 
+ 		int num = -1;
+-		switch (context) {
++		switch (Math.Abs(context)) {
+ 			case 8:
+ 			case 10:
+ 				num = 0;
 @@ -2383,6 +_,14 @@
  
  	public static Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
@@ -834,6 +851,14 @@
  			item = GetSharedLoadoutItem(context, slot, out var _);
  
  		if (!item.IsAir) {
+@@ -2709,6 +_,7 @@
+ 					break;
+ 				case 9:
+ 				case 11:
++				case Context.ModdedVanityAccessorySlot:
+ 					Main.HoverItem.social = true;
+ 					break;
+ 				case 15:
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
