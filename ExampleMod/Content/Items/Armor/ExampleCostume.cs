@@ -74,7 +74,6 @@ namespace ExampleMod.Content.Items.Armor
 			Item.value = Item.buyPrice(gold: 15);
 			Item.rare = ItemRarityID.Pink;
 			Item.hasVanityEffects = true;
-			// Item.voiceSlot = Type; 
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
