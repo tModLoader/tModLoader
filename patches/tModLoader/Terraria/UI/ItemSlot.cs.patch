@@ -89,6 +89,15 @@
  				return AlternateClickAction.GetSellOrTrash(item);
  		}
  		else if (ShiftInUse) {
+@@ -503,7 +_,7 @@
+ 					return shiftClickAction;
+ 			}
+ 
+-			switch (context) {
++			switch (Math.Abs(context)) {
+ 				case 0:
+ 				case 1:
+ 				case 2:
 @@ -566,6 +_,12 @@
  			return true;
  
@@ -842,6 +851,14 @@
  			item = GetSharedLoadoutItem(context, slot, out var _);
  
  		if (!item.IsAir) {
+@@ -2709,6 +_,7 @@
+ 					break;
+ 				case 9:
+ 				case 11:
++				case Context.ModdedVanityAccessorySlot:
+ 					Main.HoverItem.social = true;
+ 					break;
+ 				case 15:
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
