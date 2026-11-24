@@ -1325,6 +1325,29 @@ Mods: {
 				Tooltip: Transforms the user into an Example Beast Transformation
 			}
 
+			ExampleBottomlessBucket: {
+				DisplayName: Example Bottomless Bucket
+				Tooltip:
+					'''
+					Contains an endless amount of example liquid
+					Can be poured out
+					'''
+			}
+
+			ExampleLiquidBucket: {
+				DisplayName: Example Liquid Bucket
+				Tooltip:
+					'''
+					Contains a small amount of example liquid
+					Can be poured out
+					'''
+			}
+
+			ExampleLiquidSponge: {
+				DisplayName: Example Liquid Sponge
+				Tooltip: Capable of soaking up an endless amount of example liquid
+			}
+
 			ExampleBoomerang: {
 				DisplayName: Example Boomerang
 				Tooltip: ""
