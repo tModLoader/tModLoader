@@ -38,7 +38,7 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
-`Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
+`Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items and have been removed. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
 
 #### Working with Main.item[]
 
@@ -591,6 +591,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
 * `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
+* Adjacent ModTile crafting properties are now initialized in SetupRecipes() via ModTile.AdjTiles applying Recipe.AddTileCountsAs instead of populated dynamically during game time. The TileLoader.AdjTiles hook now only runs the dynamic GlobalTile hook to make fine adjustments during game time.
 
 ### Example Mod
 
@@ -730,6 +731,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 💀: `Entity.active` removed. `Player.active`, `Projectile.active`, and `WorldItem.active` have been added.
 * 🤖: `Item.netID` -> `Item.type`. `netID` has been removed.
 * ⚙️: `Item` fields moved to `WorldItem`: `beingGrabbed`, `whoAmI`. Moved to `WorldItem`, relevant hooks will provide a `WorldItem` instance to use.
+* ⚙️: `Item.width`, `Item.height`, and `Item.Size` removed. No longer used. All assignments can be removed. Other code using these should likely reference `WorldItem.width`/`WorldItem.height` or the item texture dimensions instead.
 * 🤖: `Main.HasInteractibleObjectThatIsNotATile` -> `Main.HasInteractableObjectThatIsNotATile`
 * 🤖: `Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile` -> `Main.HadAnActiveInteractableProjectile`
 * ⚙️: `NPC.netSkip` removed. No longer necessary when setting `life <= 0` and was never necessary when setting `active = false`.

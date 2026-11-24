@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Items.Weapons
 	{
 		public override void SetDefaults() {
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 40;
-			Item.height = 40;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTime = 30;
 			Item.useAnimation = 30;

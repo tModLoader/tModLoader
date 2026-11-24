@@ -23,11 +23,6 @@ namespace ExampleMod.Content.Items
 			DurabilityText = this.GetLocalization("Durability");
 		}
 
-		public override void SetDefaults() {
-			Item.width = 8;
-			Item.height = 8;
-		}
-
 		public override void SaveData(TagCompound tag) {
 			tag["durability"] = durability;
 		}

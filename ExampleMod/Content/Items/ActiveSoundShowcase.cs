@@ -19,8 +19,6 @@ namespace ExampleMod.Content.Items
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 4f;
 			Item.shoot = ModContent.ProjectileType<Projectiles.ActiveSoundShowcaseProjectile>();
-			Item.width = 22;
-			Item.height = 24;
 			Item.UseSound = SoundID.Item1;
 			Item.useAnimation = 15;
 			Item.useTime = 15;

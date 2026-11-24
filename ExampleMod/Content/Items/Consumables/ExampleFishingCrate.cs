@@ -21,8 +21,6 @@ namespace ExampleMod.Content.Items.Consumables
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleFishingCrate>());
-			Item.width = 12;
-			Item.height = 12;
 			Item.rare = ItemRarityID.Orange;
 			Item.value = Item.sellPrice(0, 2);
 		}

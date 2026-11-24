@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Mounts
 	public class ExampleFlyingTransformationItem : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 26;
-			Item.height = 28;
 			Item.useTime = 20;
 			Item.useAnimation = 20;
 			Item.useStyle = ItemUseStyleID.HoldUp; // how the player's arm moves when using the item

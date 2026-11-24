@@ -1324,7 +1324,21 @@ Mods: {
 				DisplayName: Example Beast Transformation Skull
 				Tooltip: Transforms the user into an Example Beast Transformation
 			}
+			
+			ExampleBoomerang: {
+				DisplayName: Example Boomerang
+				Tooltip: ""
+			}
 
+			ExampleFlamethrower: {
+				DisplayName: Example Flamethrower
+				Tooltip:
+					'''
+					Uses gel for ammo
+					Ignores 15 points of enemy Defense
+					'''
+			}
+			
 			ExampleVoiceAccessory: {
 				DisplayName: Example Voice Accessory
 				Tooltip: "'Boing!'"
@@ -1380,6 +1394,8 @@ Mods: {
 			ExampleSentry.DisplayName: Example Sentry
 			ExampleSentryShot.DisplayName: Example Sentry Shot
 			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
+			ExampleBoomerangProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleBoomerang.DisplayName}"
+			ExampleFlamethrowerProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleFlamethrower.DisplayName}"
 		}
 
 		Buffs: {
@@ -1599,6 +1615,7 @@ Mods: {
 		UI: {
 			ExampleResource: Example Resource: {0} / {1}
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+			MenuNotificationTitle: Goodbye from the world, you are using Example Mod!
 			ExampleCoinsUIState.Reset: Reset Coins Per Minute Counter
 
 			ExampleFullscreenUI: {
