@@ -758,6 +758,15 @@
  			if (num18 != -1) {
  				float num25 = 0.7f;
  				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
+@@ -2357,7 +_,7 @@
+ 			return false;
+ 
+ 		int num = -1;
+-		switch (context) {
++		switch (Math.Abs(context)) {
+ 			case 8:
+ 			case 10:
+ 				num = 0;
 @@ -2383,6 +_,14 @@
  
  	public static Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
