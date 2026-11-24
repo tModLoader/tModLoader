@@ -218,16 +218,16 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	internal bool SharedSlotHasLoadoutConflict(int slotType, bool vanitySlot)
+	internal bool SharedSlotHasLoadoutConflict(int slotType, AccessorySlotType context)
 	{
-		if (!IsSharedSlot(slotType))
+		if (!IsSharedSlot(slotType) || context == AccessorySlotType.DyeSlot)
 			return false;
 
 		// Handle conflicts that arise from supporting shared slots.
 		int functional = slotType % SlotCount;
 		int vanity = functional + SlotCount;
 
-		if (vanitySlot) {
+		if (context == AccessorySlotType.VanitySlot) {
 			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
 		}
 		else {
@@ -245,7 +245,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.FunctionalSlot)) {
 				Player.UpdateVisibleAccessories(GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, k, out _), exHideAccessory[k], k, true);
 			}
 		}
@@ -259,7 +259,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: true)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.VanitySlot)) {
 				var vanitySlot = k + SlotCount;
 				Item vanityItem = GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot, vanitySlot, out _);
 				if (!Player.ItemIsVisuallyIncompatible(vanityItem))
@@ -281,7 +281,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		int end = socialSlots ? SlotCount * 2 : SlotCount;
 
 		for (int i = start; i < end; i++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, vanity: socialSlots)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, socialSlots ? AccessorySlotType.VanitySlot : AccessorySlotType.FunctionalSlot)) {
 				int num = i % exDyesAccessory.Length;
 				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], GetSharedLoadoutItem(socialSlots ? Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot : Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, i, out _), GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedDyeSlot, num, out _));
 			}
@@ -296,7 +296,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.FunctionalSlot)) {
 				loader.CustomUpdateEquips(k, Player);
 			}
 		}

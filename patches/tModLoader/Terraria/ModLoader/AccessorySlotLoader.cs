@@ -178,11 +178,11 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 			// If there is a loadout conflict, force not usable but allow user to fix the issue by forcing it to show.
 			ModAccessorySlotPlayer modAccessorySlotPlayer = ModSlotPlayer(Player);
-			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, vanitySlot: false)) {
+			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, AccessorySlotType.FunctionalSlot)) {
 				loadoutConflict = true;
 				accessoryConflict = true;
 			}
-			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, vanitySlot: true)) {
+			if (modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(slot, AccessorySlotType.VanitySlot)) {
 				loadoutConflict = true;
 				vanityConflict = true;
 			}
@@ -387,7 +387,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 				OnHover(slot, context);
 
 				// Override custom hover text for this important information
-				if (Math.Abs(context) != (int)AccessorySlotType.DyeSlot && ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot, vanitySlot: Math.Abs(context) == (int)AccessorySlotType.VanitySlot)) {
+				if (Math.Abs(context) != (int)AccessorySlotType.DyeSlot && ModSlotPlayer(Player).SharedSlotHasLoadoutConflict(slot, ContextToEnum(context))) {
 					Main.HoverItem = new Item();
 					Main.hoverItemName = Language.GetTextValue("tModLoader.SharedAccessorySlotConflictTooltip");
 				}
@@ -485,17 +485,33 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 
 	/// <summary>
 	/// Checks if the ModAccessorySlot at the given index is enabled. Does not account for the functional or vanity slots individually being disabled due to conflicts arising from shared accessory slots.
+	/// Is nether ItemSlot.Context nor item aware. 
 	/// </summary>
 	public bool ModdedIsItemSlotUnlockedAndUsable(int index, Player player) => Get(index, player).IsEnabled();
 
 	/// <summary>
 	/// Like <see cref="ModdedIsItemSlotUnlockedAndUsable(int, Player)"/>, except this also checks if the functional or vanity slot specifically is disabled due to conflicts arising from switching loadouts while using shared accessory slots.
+	/// Is not item aware
 	/// </summary>
-	public bool ModdedIsSpecificItemSlotUnlockedAndUsable(int index, Player player, bool vanity)
+	public bool ModdedIsSpecificItemSlotUnlockedAndUsable(int index, Player player, AccessorySlotType context)
 	{
 		ModAccessorySlot slot = Get(index, player);
 		ModAccessorySlotPlayer modAccessorySlotPlayer = ModSlotPlayer(player);
-		return !modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(index, vanity) && slot.IsEnabled();
+
+		bool usable = slot.IsEnabled();
+		switch (context) {
+			case AccessorySlotType.DyeSlot:
+				usable &= slot.DrawDyeSlot;
+				break;
+			case AccessorySlotType.VanitySlot:
+				usable &= slot.DrawVanitySlot && !modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(index, context);
+				break;
+			case AccessorySlotType.FunctionalSlot:
+				usable &= slot.DrawFunctionalSlot && !modAccessorySlotPlayer.SharedSlotHasLoadoutConflict(index, context);
+				break;
+		}
+
+		return usable;
 	}
 
 	public void CustomUpdateEquips(int index, Player player) => Get(index, player).ApplyEquipEffects();
@@ -546,7 +562,7 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public void ModifyDefaultSwapSlot(Item item, ref int accSlotToSwapTo)
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount - 1; num >= 0; num--) {
-			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, vanity: false)) {
+			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, AccessorySlotType.FunctionalSlot) && CanAcceptItem(num, item, (int)AccessorySlotType.FunctionalSlot)) {
 				if (Get(num).ModifyDefaultSwapSlot(item, accSlotToSwapTo)) {
 					accSlotToSwapTo = num + 20;
 				}
@@ -562,7 +578,8 @@ public class AccessorySlotLoader : Loader<ModAccessorySlot>
 	public bool PreferredGolfBall(ref int projType)
 	{
 		for (int num = ModSlotPlayer(Player).SlotCount * 2 - 1; num >= 0; num--) {
-			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, vanity: num >= ModSlotPlayer(Player).SlotCount)) {
+			AccessorySlotType context = num >= ModSlotPlayer(Player).SlotCount ? AccessorySlotType.VanitySlot : AccessorySlotType.FunctionalSlot;
+			if (ModdedIsSpecificItemSlotUnlockedAndUsable(num, Player, context)) {
 				Item item2 = ModSlotPlayer(Player).exAccessorySlot[num];
 				if (!item2.IsAir && item2.shoot > 0 && ProjectileID.Sets.IsAGolfBall[item2.shoot]) {
 					projType = item2.shoot;

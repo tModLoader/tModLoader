@@ -369,7 +369,7 @@
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
 +					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
 +				case Context.ModdedDyeSlot: {
@@ -382,14 +382,13 @@
  				case 25:
  				case 27:
  				case 33:
-@@ -1130,6 +_,19 @@
+@@ -1130,6 +_,18 @@
  				case 12:
  					flag = !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || checkItem.dye <= 0;
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
-+					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
 +				case Context.ModdedDyeSlot: {
