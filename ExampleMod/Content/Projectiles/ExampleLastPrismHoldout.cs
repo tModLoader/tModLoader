@@ -235,7 +235,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// Because we cloned the Last Prism in SetDefaults, it set the same aiStyle.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType) {
 			Projectile.frame = doll.CalculateFrameFromMiscCounter(framerate: 4, minFrame: 0, maxFrame: Main.projFrames[Type]); // Apply the animation of the held projectile.
 			return true;
 		}

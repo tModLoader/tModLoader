@@ -127,13 +127,13 @@ namespace ExampleMod.Content.Projectiles
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 161 (Shortsword)
 		// Due to our custom AI code, using ProjAIStyleID.Shortsword for this one wouldn't display correctly.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType) {
 
 			// The code in this method is important to align the sprite with the hitbox how we want it to
 			SetVisualOffsets();
 
 			Projectile.spriteDirection = Projectile.direction; // Set the direction of the sprite to the direction the projectile is facing.
-			Vector2 projectileDirection = Vector2.UnitX * weapon.shootSpeed * Projectile.scale; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
+			Vector2 projectileDirection = Vector2.UnitX * item.shootSpeed * Projectile.scale; // This will move the projectile forward in the mannequin's hand because the hitbox of the projectile is the center of the sprite.
 			float armRotation = 0f;
 			if (pose.ItemAimRadians.HasValue)
 				armRotation = pose.ItemAimRadians.Value; // The rotation of the mannequin's hand.

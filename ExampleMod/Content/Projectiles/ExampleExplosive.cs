@@ -230,7 +230,7 @@ namespace ExampleMod.Content.Projectiles
 
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// We set aiStyle to Explosive to draw the projectile as if it had the vanilla explosive aiStyle.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType) {
 			aiStyle = ProjAIStyleID.Explosive;
 			return true;
 		}

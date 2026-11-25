@@ -107,7 +107,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of any item in its use animation.
-	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin and determine if the effects should run on Mannequins, too.
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>
@@ -117,7 +117,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of the item the player is currently holding.
-	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin and determine if the effects should run on Mannequins, too.
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="item"> The item. </param>

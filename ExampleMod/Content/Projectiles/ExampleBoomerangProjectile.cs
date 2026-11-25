@@ -131,9 +131,9 @@ namespace ExampleMod.Content.Projectiles
 		// This hook lets us change how the held projectile looks while a mannequin is holding it.
 		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 3 (Boomerang)
 		// Due to our custom AI code, using ProjAIStyleID.Boomerang for this one wouldn't display correctly.
-		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType) {
 			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Make the projectile draw in behind the mannequin's hand.
-			Projectile.AI_DisplayDoll_ItemDisplay(doll, weapon, pose); // Call this method set the position.
+			Projectile.AI_DisplayDoll_ItemDisplay(doll, item, pose); // Call this method set the position.
 
 			// Vanilla offsets the origin of boomerang's when they are drawn on mannequins.
 			// The following DrawOriginOffsetY, DrawOffsetX, and DrawOriginOffsetX achieves that offset without drawing the projectile manually and matches the Wooden Boomerang exactly.
