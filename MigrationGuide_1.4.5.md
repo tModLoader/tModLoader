@@ -38,7 +38,7 @@ The `Item` class has had the in-world functionality split into a new `WorldItem`
 
 Hooks that deal with items in the game world will now have a `WorldItem item` parameter as well. This will require modders to switch from `Item` to `item` in various `ModItem` classes if dealing with the fields that are now on `WorldItem`.
 
-`Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items and have been removed. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
+`Item.width` and `Item.height` no longer have any relation to the in-world hitbox of dropped items. All items now have a 16x16 hitbox in the game world. You may need to adjust custom glowmask drawing (`ModItem.PostDrawInWorld`) to account for this change if it is now incorrectly drawn by changing `Item.width/height` to `WorldItem.width/height`.
 
 #### Working with Main.item[]
 
@@ -591,7 +591,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 * An ammo cycling (given by Chaos Cylinder) feature has been added.
 * Pylons no longer require happiness to be sold
 * `LegacyAudioSystem.SetPlayCallback` can be used to run logic when a music track starts or repeats. This can be used for dynamic music selection logic. Vanilla uses this to play `RainbowBoulderStart` once before looping `RainbowBoulderLoop`. This behavior is already supported in tModLoader using loop points in .OGG files, but this new method allows the same for other audio file formats or for even more advanced music selection logic.
-* Adjacent ModTile crafting properties are now initialized in SetupRecipes() via ModTile.AdjTiles applying Recipe.AddTileCountsAs instead of populated dynamically during game time. The TileLoader.AdjTiles hook now only runs the dynamic GlobalTile hook to make fine adjustments during game time.
+* Use `SceneEffectPriority.BiomeMedium` to override Desert and Underground Desert music in the regular soundtrack. `BiomeLow` is sufficient for Desert music in the Otherworld soundtrack. See [`SceneEffectPriority`](patches/tModLoader/Terraria/ModLoader/SceneEffectPriority.cs) for other music priorities.
 
 ### Example Mod
 
@@ -731,7 +731,6 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * 💀: `Entity.active` removed. `Player.active`, `Projectile.active`, and `WorldItem.active` have been added.
 * 🤖: `Item.netID` -> `Item.type`. `netID` has been removed.
 * ⚙️: `Item` fields moved to `WorldItem`: `beingGrabbed`, `whoAmI`. Moved to `WorldItem`, relevant hooks will provide a `WorldItem` instance to use.
-* ⚙️: `Item.width`, `Item.height`, and `Item.Size` removed. No longer used. All assignments can be removed. Other code using these should likely reference `WorldItem.width`/`WorldItem.height` or the item texture dimensions instead.
 * 🤖: `Main.HasInteractibleObjectThatIsNotATile` -> `Main.HasInteractableObjectThatIsNotATile`
 * 🤖: `Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile` -> `Main.HadAnActiveInteractableProjectile`
 * ⚙️: `NPC.netSkip` removed. No longer necessary when setting `life <= 0` and was never necessary when setting `active = false`.
@@ -798,7 +797,6 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * ⚙️: `ModPlayer.ModifyZoom` now has a `needsMouseRight` parameter. This is used to bypass the "Forward Zoom" toggle for effects that should always zoom regardless of the player's setting, like Binoculars. Remove all checks for the right mouse being held down to correctly support the new "Forward Zoom" control options.
 * 🤖: `(ModItem|GlobalItem).PickAmmo` now has a `ref StatModifier weaponDamage` parameter, and `damage` has been renamed to `ammoDamage`. Weapon damage is no longer included in `ammoDamage.Flat`. Use `weaponDamage` to modify it, and modify both to scale the total projectile damage.
 * 💀: `ModConfig` are no longer ordered by `DisplayName` on the config list menu, but by internal name. This change is to support the manual ordering feature and preserve consistent ordering between languages. `Config.SortConfigAttribute` mentioned below can be used to adjust the order manually to restore an intended order.
-* 💀: `(ModItem|GlobalItem|ModPlayer).CanUseItem` will now be called in more situations, such as even if the item is not being used. Double check that your logic in `CanUseItem` methods do not have any side effects. If you used `ExampleSandRod` as a template, use the new code since it was affected by this change.
 
 ## Bugfixes
 
@@ -814,8 +812,7 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 * `Projectile.GetDefaultDrawData` helper method for calculating the default projectile draw parameters.
 * `ModSky` is an alternative to `CustomSky` that handles common boilerplate, making custom skies easier to implement and use.
 * `(Mod|Global)(Tile|Wall).(CanDoWireStuffHere|CanShowWireStuffHere)` hooks allow customizing wire interaction and visibility. One example is how wires in the Jungle Temple are hidden and can't be removed until Golem is defeated.
-* `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierarchy changes to facilitate this.   
-  * TODO: More information needed here as liquid support is finalized.
+* `(Mod|Global)Liquid` is a net new feature class added in 1.4.5 to support new use cases. This addition comes with the caveat it is runtime breaking; all mods using ModWall or ModTile must be compiled on 1.4.5 to adapt to intertwined backend class hierachy changes to facilitate this.   
 * `Config.SortConfigAttribute` added to sort configs in the config list menu, allowing specific ordering of `ModConfig`s.
 * New `ModMount` features:
   * `MountID.Sets.HoverIgnoresFatigue` to allow for infinite flight.
@@ -844,4 +841,3 @@ In addition to changes to existing features and adapting to vanilla changes, 1.4
 In addition to changes adapting to vanilla changes listed in the "Other Changes" section above, 1.4.5 ExampleMod also contains several new examples.
 
 * `ExampleFlyingTransformation` and `ExampleBeastTransformation` are examples of transformation mounts similar to the Pixie and Velociraptor transformations.
-* `ExampleLiquid` showcases the new `ModLiquid` feature. `ExampleLiquidBucket`, `ExampleBottomlessBucket`, and `ExampleLiquidSponge` demonstrate corresponding custom liquid tools.

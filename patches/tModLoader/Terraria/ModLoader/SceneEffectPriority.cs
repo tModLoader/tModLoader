@@ -1,27 +1,33 @@
 namespace Terraria.ModLoader;
 
 /// <summary>
-/// This enum dictates from low to high which SceneEffect selections take priority.
-/// Setting appropriate priority values is important so that your mod works well with other mods and vanilla selections.
+/// Orders scene effects from lowest to highest priority.
 /// </summary>
+/// <remarks>
+/// The music examples below refer to scenes in both the regular and Otherworld soundtracks unless specified.
+/// The credits and music boxes can take precedence over scene music.
+/// </remarks>
 public enum SceneEffectPriority
 {
-	/// <summary>Represents no priority</summary>
+	/// <summary>Represents no priority.</summary>
 	None,
-	/// <summary> Will override vanilla SceneEffect for Hallow, Ocean, Desert, Overworld, Night</summary>
+	/// <summary>Overrides Hallow, Ocean, and standard overworld music. Also overrides Desert music in the Otherworld soundtrack.</summary>
 	BiomeLow,
-	/// <summary> Will override vanilla SceneEffect for Meteor, Jungle, Graveyard, Snow</summary>
+	/// <summary>Overrides Meteor, Jungle, Graveyard, and Snow music. Also overrides Desert and Underground Desert music in the regular soundtrack.</summary>
 	BiomeMedium,
-	/// <summary> Will override vanilla SceneEffect for Temple, Dungeon, Mushrooms, Corruption, Crimson</summary>
+	/// <summary>Overrides Temple, Dungeon, Glowing Mushroom, Corruption, and Crimson music.</summary>
 	BiomeHigh,
-	/// <summary> Will override vanilla SceneEffect for Sandstorm, Hell, Above surface during Eclipse, Space, Shimmer</summary>
+	/// <summary>Overrides Sandstorm, Underworld, Eclipse, Space, and Aether music. Also overrides Town and Slime Rain music in the regular soundtrack.</summary>
 	Environment,
-	/// <summary> Will override vanilla SceneEffect for Pirate Invasion, Goblin Invasion, Old Ones Army, Pumpkin Moon, Frost Moon</summary>
+	/// <summary>Overrides Pirate Invasion, Goblin Army, Old One's Army, Pumpkin Moon, and Frost Moon music, as well as the Rainbow Boulder music in the regular soundtrack.</summary>
 	Event,
-	/// <summary>All other bosses and default modded boss priority</summary>
+	/// <summary>
+	/// Overrides most boss music, including the dedicated King Slime, Queen Bee, Eater of Worlds, Skeletron, mechanical boss, and Lunatic Cultist tracks in the regular soundtrack.
+	/// This is the default for modded NPC music.
+	/// </summary>
 	BossLow,
-	/// <summary>Will override vanilla SceneEffect for Martian Madness, Celestial Towers, Plantera, Mechdusa</summary>
+	/// <summary>Overrides Martian Madness, Lunar Pillars, Plantera, and Mechdusa music.</summary>
 	BossMedium,
-	/// <summary>Will override SceneEffect of Moon Lord and Torch God</summary>
+	/// <summary>Overrides Moon Lord and Torch God music.</summary>
 	BossHigh
 }
