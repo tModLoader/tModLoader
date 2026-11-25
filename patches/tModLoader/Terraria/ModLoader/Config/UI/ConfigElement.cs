@@ -117,7 +117,7 @@ public abstract class ConfigElement : UIElement
 	{
 		if (List != null) {
 			List[Index] = value;
-			Interface.modConfig.SetPendingChanges();
+			ConfigManager.CurrentConfigUI.OnConfigModified();
 			return;
 		}
 
@@ -125,7 +125,7 @@ public abstract class ConfigElement : UIElement
 			return;
 
 		MemberInfo.SetValue(Item, value);
-		Interface.modConfig.SetPendingChanges();
+		ConfigManager.CurrentConfigUI.OnConfigModified();
 	}
 
 	protected virtual object GetObject()
@@ -153,7 +153,7 @@ public abstract class ConfigElement : UIElement
 		Vector2 position = vector;
 
 		if (Flashing) {
-			float ratio = Utils.Turn01ToCyclic010(((Interface.modConfig.UpdateCount % flashRate) / (float)flashRate)) * 0.5f + 0.5f;
+			float ratio = Utils.Turn01ToCyclic010(((ConfigManager.CurrentConfigUI.UpdateCount % flashRate) / (float)flashRate)) * 0.5f + 0.5f;
 			panelColor = Color.Lerp(panelColor, Color.White, MathF.Pow(ratio, 2));
 		}
 

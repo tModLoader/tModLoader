@@ -365,7 +365,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 	}
 
-	internal void HandleOnCloseCallback()
+	public void HandleOnCloseCallback()
 	{
 		if (modderOnClose != null) {
 			modderOnClose.Invoke();
@@ -465,13 +465,6 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 	public void OnConfigModified()
 	{
 		RefreshUI();
-	}
-
-	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
-	public void SetPendingChanges(bool changes = true)
-	{
-		if (changes)
-			OnConfigModified();
 	}
 
 	private void RefreshUI(bool delayRefresh = true)
@@ -805,7 +798,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
 			else {
 				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
-				bool useNewElements = true;//(Interface.modConfig == null || Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9)) && sliderAttribute == null;
+				bool useNewElements = sliderAttribute == null;
 				if (useNewElements)
 					e = new EnumElement2();
 				else

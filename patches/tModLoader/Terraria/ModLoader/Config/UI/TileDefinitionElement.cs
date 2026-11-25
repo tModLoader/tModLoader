@@ -132,7 +132,7 @@ internal class TileDefinitionOptionElement : DefinitionOptionElement<TileDefinit
 			float adjustX = tileData.Width < tileData.Height ? (tileData.Height - tileData.Width) / (tileData.Height * 2f) : 0f;
 			float adjustY = tileData.Height < tileData.Width ? (tileData.Width - tileData.Height) / (tileData.Width * 2f) : 0f;
 
-			int frameCounter = Interface.modConfig.UpdateCount / 60;
+			int frameCounter = ConfigManager.CurrentConfigUI.UpdateCount / 60;
 			int frames = tileData.SubTiles?.Count ?? 0; // For some reason, some TOD don't have SubTiles (389)
 			int frame = frames > 0 ? frameCounter % frames : 0; // This cycles styles for tiles with declared subtiles, but actually doesn't cycle all styles, it's impossible to know how many styles a tile has.
 

@@ -86,8 +86,8 @@ internal abstract class CollectionElement : ConfigElement
 				SoundEngine.PlaySound(SoundID.Tink);
 				InitializeCollection();
 				SetupList();
-				Interface.modConfig.RecalculateChildren(); // not needed?
-				Interface.modConfig.SetPendingChanges();
+				((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren(); // not needed?
+				ConfigManager.CurrentConfigUI.OnConfigModified();
 				expanded = true;
 				pendingChanges = true;
 			};
@@ -99,8 +99,8 @@ internal abstract class CollectionElement : ConfigElement
 				SoundEngine.PlaySound(SoundID.Tink);
 				AddItem();
 				SetupList();
-				Interface.modConfig.RecalculateChildren();
-				Interface.modConfig.SetPendingChanges();
+				((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+				ConfigManager.CurrentConfigUI.OnConfigModified();
 				expanded = true;
 				pendingChanges = true;
 			};
@@ -115,8 +115,8 @@ internal abstract class CollectionElement : ConfigElement
 				else
 					ClearCollection();
 				SetupList();
-				Interface.modConfig.RecalculateChildren();
-				Interface.modConfig.SetPendingChanges();
+				((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+				ConfigManager.CurrentConfigUI.OnConfigModified();
 				pendingChanges = true;
 			};
 		}

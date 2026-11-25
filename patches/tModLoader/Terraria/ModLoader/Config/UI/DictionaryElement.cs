@@ -123,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+			ConfigManager.CurrentConfigUI.SetMessage("Error: " + e.Message, Color.Red);
 		}
 	}
 
@@ -233,7 +233,7 @@ internal class DictionaryElement : CollectionElement
 				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					ConfigManager.CurrentConfigUI.OnConfigModified();
 				};
 
 				wrapped.Item1.Append(deleteButton);

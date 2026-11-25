@@ -241,7 +241,7 @@ internal class EnumElement2 : ConfigElement
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.SetPendingChanges();
+		ConfigManager.CurrentConfigUI.OnConfigModified();
 	}
 
 	private object DefaultGetValue()

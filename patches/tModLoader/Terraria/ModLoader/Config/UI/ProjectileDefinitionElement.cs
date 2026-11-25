@@ -76,7 +76,7 @@ internal class ProjectileDefinitionOptionElement : DefinitionOptionElement<Proje
 				Main.Assets.Request<Texture2D>(TextureAssets.Projectile[type].Name, AssetRequestMode.AsyncLoad);
 			Texture2D projectileTexture = TextureAssets.Projectile[type].Value;
 
-			int frameCounter = Interface.modConfig.UpdateCount / 4;
+			int frameCounter = ConfigManager.CurrentConfigUI.UpdateCount / 4;
 			int frames = Main.projFrames[type];
 
 			if (Unloaded) {

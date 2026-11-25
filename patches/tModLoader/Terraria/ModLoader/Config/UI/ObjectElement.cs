@@ -91,7 +91,7 @@ internal class ObjectElement : ConfigElement<object>
 			separatePageButton.HAlign = 0.5f;
 			separatePageButton.OnLeftClick += (a, c) => {
 				SoundEngine.PlaySound(SoundID.MenuOpen);
-				Interface.modConfig.PushConfigPage(separateConfigPage);
+				ConfigManager.CurrentConfigUI.PushConfigPage(separateConfigPage);
 			};
 		}
 
@@ -157,8 +157,8 @@ internal class ObjectElement : ConfigElement<object>
 			//Append(expandButton);
 
 			SetupList();
-			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+			ConfigManager.CurrentConfigUI.OnConfigModified();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -177,8 +177,8 @@ internal class ObjectElement : ConfigElement<object>
 			pendingChanges = true;
 
 			SetupList();
-			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			//((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+			ConfigManager.CurrentConfigUI.OnConfigModified();
 		};
 
 		if (Value != null) {

@@ -88,7 +88,7 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 				buffTexture = TextureAssets.Buff[type].Value;
 			}
 
-			int frameCounter = Interface.modConfig.UpdateCount / 4;
+			int frameCounter = ConfigManager.CurrentConfigUI.UpdateCount / 4;
 			//int frames = Main.projFrames[type];
 			int frames = 1;
 

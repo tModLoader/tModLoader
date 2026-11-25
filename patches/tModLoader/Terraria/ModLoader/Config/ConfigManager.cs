@@ -25,7 +25,6 @@ public static class ConfigManager
 	/// The currently open <see cref="IConfigUI"/>.
 	/// <br/><br/> Is <see langword="null"/> if there is no config UI open.
 	/// </summary>
-	// TODO: maybe this should do a regular cast so it throws if accessed outside of config UI?
 	public static IConfigUI? CurrentConfigUI => (Main.gameMenu ? Main.MenuUI : Main.InGameUI).CurrentState as IConfigUI;
 
 	// These are THE active configs.
@@ -403,7 +402,7 @@ public static class ConfigManager
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
 					Main.InGameUI.SetState(null);
 					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
+					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
@@ -413,7 +412,7 @@ public static class ConfigManager
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
+					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 				}
 			}
 		}
