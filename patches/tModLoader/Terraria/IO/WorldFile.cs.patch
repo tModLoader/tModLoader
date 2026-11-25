@@ -67,7 +67,7 @@
  				}
  
 +				foreach (ModSpecialSeed specialSeed in SeedLoader.SpecialSeeds) {
-+					if (specialSeed.UIOption.AutoGenEnabled)
++					if (WorldGenerationOptions.AutoGenSeeds.Contains(specialSeed.UIOption.ServerConfigName))
 +						specialSeed.UIOption.Enabled = true;
 +				}
 +

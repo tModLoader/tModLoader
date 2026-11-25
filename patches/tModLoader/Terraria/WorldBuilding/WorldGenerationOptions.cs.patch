@@ -8,12 +8,20 @@
  
  namespace Terraria.WorldBuilding;
  
-@@ -88,6 +_,8 @@
- 			bool autoGenEnabled = Utils.Clamp(result, 0, 1) == 1;
- 			string namePiece = array[0].Trim().ToLower();
+@@ -15,6 +_,7 @@
+ 
+ 	private static List<AWorldGenerationOption> _options;
+ 	private const string _powerPermissionsLineHeader = "seed_";
++	internal static List<string> AutoGenSeeds = new List<string>(); // Added by TML
+ 
+ 	public static IEnumerable<AWorldGenerationOption> Options => _options;
+ 
+@@ -90,6 +_,8 @@
  			AWorldGenerationOption aWorldGenerationOption = _options.FirstOrDefault((AWorldGenerationOption x) => x.ServerConfigName != null && x.ServerConfigName == namePiece);
-+			if (aWorldGenerationOption == null)
-+				aWorldGenerationOption = SeedLoader.SpecialSeeds.Select(x => x.UIOption).FirstOrDefault((AWorldGenerationOption x) => x.ServerConfigName != null && x.ServerConfigName == namePiece);
  			if (aWorldGenerationOption != null)
  				aWorldGenerationOption.AutoGenEnabled = autoGenEnabled;
++			else if (autoGenEnabled)
++				AutoGenSeeds.Add(namePiece);
  		}
+ 	}
+ }
