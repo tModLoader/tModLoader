@@ -26,9 +26,10 @@ namespace ExampleMod.Content.Items.Tools
 
 		// UseStyle is called each frame that the item is being actively used.
 		public override void UseStyle(Player player, Rectangle heldItemFrame) {
-
-			if (player.isDisplayDollOrInanimate) // Don't run the magic mirror logic on mannequins.
+			// Don't run the magic mirror logic on mannequins.
+			if (player.isDisplayDollOrInanimate) {
 				return;
+			}
 
 			// Each frame, make some dust
 			if (Main.rand.NextBool()) {

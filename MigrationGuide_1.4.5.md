@@ -577,7 +577,7 @@ Japanese ("ja-JP"), Korean ("ko-KR"), and Traditional Chinese ("zh-Hant") have b
 	* Many Example Mod held projectiles were updated to showcase the new hook.
 	* As mentioned in the Projectile Draw Changes section, PreDraw/Draw/PostDraw code needs to be updated to use the new `player` parameter instead of using `Main.player[Projectile.owner]`.
 	* `Projectile.drawLayer = ProjectileDrawLayerID.HeldProj` will likely need to be added to `SetDefaults` for the projectile to draw on the correct layer.
-* Since mannequins can visually hold items, double check anything using (ModItem|GlobalItem).UseStyle/HoldStyle/HoldItem to see if logic should apply to mannequins. Use `player.isDisplayDollOrInanimate` to check for mannequins.
+* Since mannequins can visually hold items, double check anything using `(ModItem|GlobalItem).UseStyle/HoldStyle/HoldItem` to see if logic should apply to mannequins. Use `player.isDisplayDollOrInanimate` to check for mannequins.
 * `Condition.DownedEarlygameBoss` now includes King Slime and Deerclops
 * Workarounds to get the correct mouse position for projectiles that draw during other draw layers are no longer required and should be removed for correct behavior. See the ExampleInteractableProjectile.cs changes.
 * Projectile identity approach has changed
