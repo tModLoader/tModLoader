@@ -48,8 +48,6 @@ namespace ExampleMod.Content.Items.Placeable
 			// With all the setup above, placeStyle will be either 0 or 1 for the 2 ExampleTrap instances we've loaded.
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleTrap>(), placeStyle);
 
-			Item.width = 12;
-			Item.height = 12;
 			Item.value = 10000;
 			Item.mech = true; // lets you see wires while holding.
 		}

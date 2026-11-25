@@ -236,6 +236,9 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <summary>
 	/// Allows you to determine which tiles the given tile type can be considered as when looking for crafting stations.
+	/// <br/><br/> Queried every time adjacent tiles are recalculated, so it can vary at runtime. For equivalences
+	/// that are fixed, prefer <see cref="ModTile.AdjTiles"/>, which is registered into
+	/// <see cref="Recipe.TileCountsAs"/> and also applies to the crafting station filter UI.
 	/// </summary>
 	/// <param name="type"></param>
 	/// <returns></returns>
@@ -411,6 +414,11 @@ public abstract class GlobalTile : GlobalBlockType
 
 	/// <inheritdoc cref="ModTile.OnTileConverted(int, int, int, int, int)"/>
 	public virtual void OnTileConverted(int i, int j, int fromType, int toType, int conversionType)
+	{
+	}
+
+	/// <inheritdoc cref="ModTile.OverridePlacementTile(int, int, Item, ref int, ref int, ref int?, ref bool?)"/>
+	public virtual void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
 	}
 }

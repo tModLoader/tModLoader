@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.Metrics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -270,6 +270,12 @@ public static partial class Config
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 
 		// 1.4.5
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryEntityToPlayerInventorySettings", to: "QuickTransferFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "NPCEntityToPlayerInventorySettings", to: "GiftRecieved");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettings", to: "LootAllFromBank");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettingsRegularChest", to: "LootAllFromChest");
+		RenameStaticField("Terraria.GetItemSettings", from: "GetItemInDropItemCheck", to: "ReturnItemFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryUIToInventorySettingsShowAsNew", to: "ReturnItemShowAsNew");
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
 		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");
@@ -380,6 +386,9 @@ public static partial class Config
 
 		RefactorInstanceMember("Terraria.NPC", "strengthMultiplier", Removed("Use difficulty instead. It records effective difficulty, not a strength multiplier. Review old values and calculations manually."));
 		RefactorInstanceMember("Terraria.NPCSpawnParams", "strengthMultiplierOverride", Removed("Use difficultyOverride instead. It specifies effective difficulty, not a strength multiplier. Review old values and calculations manually."));
+		RefactorInstanceMember("Terraria.Item", "width", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "height", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "Size", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));

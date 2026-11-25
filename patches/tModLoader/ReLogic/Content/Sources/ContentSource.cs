@@ -9,14 +9,15 @@ public abstract class ContentSource : IContentSource
 {
 	public IContentValidator ContentValidator { get; set; }
 
-	public RejectedAssetCollection Rejections { get; } = new ();
+	public RejectedAssetCollection Rejections { get; } = new();
 
 	protected string[] assetPaths;
 	protected Dictionary<string, string> assetExtensions = new();
 
 	public abstract string FileWatcherPath { get; }
 
-	protected void SetAssetNames(IEnumerable<string> paths) {
+	protected void SetAssetNames(IEnumerable<string> paths)
+	{
 		assetPaths = paths.ToArray();
 		assetExtensions.Clear();
 
@@ -25,7 +26,7 @@ public abstract class ContentSource : IContentSource
 
 			// ReLogic sets all assets to use Path.DirectorySepChar in their paths in AssetPathHelper.
 			var name = AssetPathHelper.CleanPath(path[..^ext.Length]);
-				
+
 			if (assetExtensions.TryGetValue(name, out var ext2))
 				throw new Exception($"Multiple extensions for asset {name}, ({ext}, {ext2})");
 

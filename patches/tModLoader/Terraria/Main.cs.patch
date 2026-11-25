@@ -491,7 +491,7 @@
  	[ThreadStatic]
  	private static Dictionary<string, UnifiedRandom> _rngs;
  	public static bool allChestStackHover;
-@@ -844,44 +_,152 @@
+@@ -844,44 +_,158 @@
  	public static float ambientVolume = 1f;
  	public static float soundVolume = 1f;
  	public static ServerMode MenuServerMode = ServerMode.Lobby | ServerMode.FriendsCanJoin;
@@ -614,6 +614,12 @@
 +	/// If true, this tile is considered a typical brick for tile merging purposes. Most "terrain" tiles intended for building that aren't dirt or similar natural materials set this to true to allow seamless connections between the tiles. Most of these tiles cover the full 16x16 area unlike dirt which has rough edges.
 +	/// </summary>
  	public static bool[] tileBrick = new bool[TileID.Count];
++
++	/// <summary>
++	/// Contains moss tiles. Moss tiles look like <see cref="TileID.Stone"/> with moss overlaying it. They act like Stone for various operations and turn into Stone when mined. They also spread moss to nearby tiles.
++	/// <para/> Vanilla entries include <see cref="TileID.GreenMoss"/>, LavaMoss, KryptonMoss, XenonMoss, ArgonMoss, VioletMoss, RainbowMoss, BrownMoss, RedMoss, BlueMoss, and PurpleMoss.
++	/// <para/> Defaults to <see langword="false"/>. See also <see cref="TileID.Sets.tileMossBrick"/>.
++	/// </summary>
  	public static bool[] tileMoss = new bool[TileID.Count];
 +	/// <summary>
 +	/// If true, tiles can't be attached to this tile. Furniture tiles typically set this. A good rule of thumb is to set this to true if placing a torch on this tile would look strange.
@@ -2284,7 +2290,7 @@
  		}
 +
 +		//TODO: Re-implement game menu/menuloader audio in Other World soundtrack???
-+        /*if (gameMenu) {
++		/*if (gameMenu) {
 +			if (netMode != 2) {
 +				if (WorldGen.drunkWorldGen) {
 +					newMusic = 60;
@@ -2854,6 +2860,14 @@
  		if (!WorldGen.generatingWorld)
  			DoUpdate_AutoSave();
  
+@@ -14848,6 +_,7 @@
+ 			LiquidRenderer.Instance.Update(gameTime);
+ 			UpdateAudio();
+ 			InGameNotificationsTracker.Update();
++			MenuNotificationsTracker.Update();
+ 			ItemSlot.UpdateInterface();
+ 			CraftingEffects.Update();
+ 			if (teamCooldown > 0)
 @@ -14911,6 +_,11 @@
  			if (wantsToPause3) {
  				mouseLeftRelease = false;
@@ -3659,7 +3673,7 @@
  			}
  			else {
 -				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", item.healLife);
-+				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", player[myPlayer].GetHealLife(item));
++				toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresLife", player[myPlayer].GetHealLife(item, tooltip: true));
  			}
  
 +			toolTipNames[numLines] = "HealLife";
@@ -3668,7 +3682,7 @@
  
  		if (item.healMana > 0) {
 -			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", item.healMana);
-+			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", player[myPlayer].GetHealMana(item));
++			toolTipLine[numLines] = Language.GetTextValue("CommonItemTooltip.RestoresMana", player[myPlayer].GetHealMana(item, tooltip: true));
 +			toolTipNames[numLines] = "HealMana";
  			numLines++;
  		}
@@ -5213,7 +5227,7 @@
 +
 +			if (!_achievementAdvisor.CanDrawAboveCoins) {
 +				var achievePos = new Vector2(defPos.X - 10 - 47 - 47 - 14 - 14, defPos.Y - 56 * inventoryScale * 0.5f);
-+				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos , large: false);
++				_achievementAdvisor.DrawOneAchievement(spriteBatch, achievePos, large: false);
 +				UILinkPointNavigator.SetPosition(1570, achievePos + new Vector2(20f) * inventoryScale);
 +			}
 +
@@ -5600,7 +5614,7 @@
 +		SystemLoader.ModifyInterfaceLayers(interfaceLayers);
 +
 +		foreach (var layer in interfaceLayers) {
-+			if(!layer.Draw())
++			if (!layer.Draw())
 +				break;
 +		}
  
@@ -6322,6 +6336,15 @@
  		}
  
  		if (!WorldGen.drunkWorldGen) {
+@@ -46123,6 +_,8 @@
+ 			num112 += 20f;
+ 		}
+ 
++		MenuNotificationsTracker.DrawInMenu(spriteBatch);
++
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerStateForCursor, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, UIScaleMatrix);
+ 		WorkshopPublishingIndicator.Draw(spriteBatch);
 @@ -46154,6 +_,22 @@
  		else
  			mouseRightRelease = true;
@@ -6729,6 +6752,72 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, waterOnly);
+@@ -51343,6 +_,7 @@
+ 				if (flag)
+ 					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
++				Texture2D liquidTexture = tile[j, i].liquidType() >= LiquidID.Count ? LiquidLoader.LiquidBlockAssets[tile[j, i].liquidType()].Value : TextureAssets.Liquid[num12].Value;
+ 				if (Lighting.NotRetro && !bg) {
+ 					Microsoft.Xna.Framework.Color color2 = color;
+ 					if (num12 != 1 && ((double)(int)color2.R > (double)num6 * 0.6 || (double)(int)color2.G > (double)num6 * 0.65 || (double)(int)color2.B > (double)num6 * 0.7)) {
+@@ -51391,16 +_,16 @@
+ 							if (flag)
+ 								color3 = new Microsoft.Xna.Framework.Color(color3.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
+-							spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28, width, height), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++							spriteBatch.Draw(liquidTexture, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28, width, height), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 							if (flag)
+-								spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28 + 36, width, height), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++								spriteBatch.Draw(liquidTexture, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28 + 36, width, height), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						}
+ 					}
+ 					else {
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						if (flag) {
+ 							value.Y += 36;
+-							spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++							spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						}
+ 					}
+ 				}
+@@ -51408,10 +_,10 @@
+ 					if (value.Y < 4)
+ 						value.X += (int)(wFrame * 18f);
+ 
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag) {
+ 						value.Y += 36;
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					}
+ 				}
+ 
+@@ -51428,9 +_,9 @@
+ 					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
+ 				vector2 = new Vector2(j * 16, i * 16 + 16);
+-				spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 4, 16, 8), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 4, 16, 8), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				if (flag)
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 
+ 				float num29 = 6f;
+ 				float num30 = 0.75f;
+@@ -51447,9 +_,9 @@
+ 					float num32 = 1f - (float)m / num29;
+ 					num32 *= num30;
+ 					vector2 = new Vector2(j * 16, num31 * 16 - 2);
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 18, 16, 16), color * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 18, 16, 16), color * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag)
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				}
+ 			}
+ 		}
 @@ -51495,6 +_,7 @@
  			}
  		}
@@ -7593,7 +7682,7 @@
 +	public static int DamageVar(float dmg, int percent, float luck = 0f)
 +	{
 -		float num = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);
-+		float num = dmg * (1f + (float)rand.Next(-percent, percent+1) * 0.01f);
++		float num = dmg * (1f + (float)rand.Next(-percent, percent + 1) * 0.01f);
  		if (luck > 0f) {
  			if (rand.NextFloat() < luck) {
 -				float num2 = dmg * (1f + (float)rand.Next(-15, 16) * 0.01f);

@@ -101,7 +101,7 @@ internal static class HjsonExtensions
 						}
 
 						lastJsonType = val.JsonType;
-						
+
 						kwl = GetComments(commentedObject.Comments, key);
 
 						bool commentedOut = jObject is CommentedWscJsonObject commented && commented.CommentedOut.Contains(key);
