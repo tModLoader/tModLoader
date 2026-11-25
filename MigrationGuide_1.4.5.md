@@ -799,6 +799,8 @@ All classes are in the `Terraria.ModLoader` or `Terraria` namespaces unless othe
 * 🤖: `(ModItem|GlobalItem).PickAmmo` now has a `ref StatModifier weaponDamage` parameter, and `damage` has been renamed to `ammoDamage`. Weapon damage is no longer included in `ammoDamage.Flat`. Use `weaponDamage` to modify it, and modify both to scale the total projectile damage.
 * 💀: `ModConfig` are no longer ordered by `DisplayName` on the config list menu, but by internal name. This change is to support the manual ordering feature and preserve consistent ordering between languages. `Config.SortConfigAttribute` mentioned below can be used to adjust the order manually to restore an intended order.
 * 💀: `(ModItem|GlobalItem|ModPlayer).CanUseItem` will now be called in more situations, such as even if the item is not being used. Double check that your logic in `CanUseItem` methods do not have any side effects. If you used `ExampleSandRod` as a template, use the new code since it was affected by this change.
+* 💀: Both `icon.png` and `icon_small.png` are now required files for mods to load.
+
 
 ## Bugfixes
 
