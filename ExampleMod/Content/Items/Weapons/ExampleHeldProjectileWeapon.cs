@@ -30,8 +30,6 @@ namespace ExampleMod.Content.Items.Weapons
 			// By convention, the shootSpeed of a held projectile weapon usually corresponds to how far out the projectile is held. This will unfortunately also affect the velocity of the ammo projectiles this weapon spawns, so we won't be using shootSpeed as the holdout distance in this example.
 			Item.shootSpeed = 6f;
 			Item.knockBack = 2f;
-			Item.width = 56;
-			Item.height = 26;
 			Item.damage = 60;
 			Item.shoot = ModContent.ProjectileType<ExampleHeldProjectileWeaponProjectile>();
 			Item.useAmmo = AmmoID.Arrow;

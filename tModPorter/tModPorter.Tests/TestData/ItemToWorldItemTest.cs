@@ -1,4 +1,4 @@
-﻿using Terraria;
+using Terraria;
 using Terraria.ID;
 //using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
@@ -34,6 +34,9 @@ public class ItemToWorldItemTest
 
 				NetMessage.SendData(MessageID.SyncItem, number: item.whoAmI);
 			}
+
+			int width = item.width;
+			int height = item.height;
 		}
 	}
 }

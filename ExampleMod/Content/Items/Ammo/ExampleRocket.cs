@@ -31,8 +31,6 @@ namespace ExampleMod.Content.Items.Ammo
 		}
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 14;
 			Item.damage = 40;
 			Item.knockBack = 4f;
 			Item.consumable = true;

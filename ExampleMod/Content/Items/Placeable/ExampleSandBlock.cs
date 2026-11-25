@@ -15,8 +15,6 @@ namespace ExampleMod.Content.Items.Placeable
 
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<Tiles.ExampleSand>());
-			Item.width = 12;
-			Item.height = 12;
 			Item.ammo = AmmoID.Sand;
 			// Item.shoot and Item.damage are not used for sand ammo by convention. They would result in undesireable item tooltips.
 			// ItemID.Sets.SandgunAmmoProjectileData is used instead.

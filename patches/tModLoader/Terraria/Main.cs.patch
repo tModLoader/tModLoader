@@ -2876,6 +2876,14 @@
  		if (!WorldGen.generatingWorld)
  			DoUpdate_AutoSave();
  
+@@ -14848,6 +_,7 @@
+ 			LiquidRenderer.Instance.Update(gameTime);
+ 			UpdateAudio();
+ 			InGameNotificationsTracker.Update();
++			MenuNotificationsTracker.Update();
+ 			ItemSlot.UpdateInterface();
+ 			CraftingEffects.Update();
+ 			if (teamCooldown > 0)
 @@ -14911,6 +_,11 @@
  			if (wantsToPause3) {
  				mouseLeftRelease = false;
@@ -6344,6 +6352,15 @@
  		}
  
  		if (!WorldGen.drunkWorldGen) {
+@@ -46123,6 +_,8 @@
+ 			num112 += 20f;
+ 		}
+ 
++		MenuNotificationsTracker.DrawInMenu(spriteBatch);
++
+ 		spriteBatch.End();
+ 		spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerStateForCursor, DepthStencilState.None, RasterizerState.CullCounterClockwise, null, UIScaleMatrix);
+ 		WorkshopPublishingIndicator.Draw(spriteBatch);
 @@ -46154,6 +_,22 @@
  		else
  			mouseRightRelease = true;
@@ -6759,6 +6776,72 @@
  			TilesRenderer.DrawLiquidBehindTiles(waterStyle);
  
  		LiquidRenderer.Instance.DrawNormalLiquids(spriteBatch, drawOffset, waterStyle, Alpha, bg, waterOnly);
+@@ -51343,6 +_,7 @@
+ 				if (flag)
+ 					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
++				Texture2D liquidTexture = tile[j, i].liquidType() >= LiquidID.Count ? LiquidLoader.LiquidBlockAssets[tile[j, i].liquidType()].Value : TextureAssets.Liquid[num12].Value;
+ 				if (Lighting.NotRetro && !bg) {
+ 					Microsoft.Xna.Framework.Color color2 = color;
+ 					if (num12 != 1 && ((double)(int)color2.R > (double)num6 * 0.6 || (double)(int)color2.G > (double)num6 * 0.65 || (double)(int)color2.B > (double)num6 * 0.7)) {
+@@ -51391,16 +_,16 @@
+ 							if (flag)
+ 								color3 = new Microsoft.Xna.Framework.Color(color3.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
+-							spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28, width, height), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++							spriteBatch.Draw(liquidTexture, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28, width, height), color3, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 							if (flag)
+-								spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28 + 36, width, height), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++								spriteBatch.Draw(liquidTexture, vector2 - screenPosition + new Vector2(num27, num28) + vector, new Microsoft.Xna.Framework.Rectangle(value.X + num27, value.Y + num28 + 36, width, height), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						}
+ 					}
+ 					else {
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						if (flag) {
+ 							value.Y += 36;
+-							spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++							spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 						}
+ 					}
+ 				}
+@@ -51408,10 +_,10 @@
+ 					if (value.Y < 4)
+ 						value.X += (int)(wFrame * 18f);
+ 
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag) {
+ 						value.Y += 36;
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, value, LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					}
+ 				}
+ 
+@@ -51428,9 +_,9 @@
+ 					color = new Microsoft.Xna.Framework.Color(color.ToVector4() * LiquidRenderer.GetShimmerBaseColor(j, i));
+ 
+ 				vector2 = new Vector2(j * 16, i * 16 + 16);
+-				spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 4, 16, 8), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++				spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 4, 16, 8), color, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				if (flag)
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 40, 16, 8), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i), 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 
+ 				float num29 = 6f;
+ 				float num30 = 0.75f;
+@@ -51447,9 +_,9 @@
+ 					float num32 = 1f - (float)m / num29;
+ 					num32 *= num30;
+ 					vector2 = new Vector2(j * 16, num31 * 16 - 2);
+-					spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 18, 16, 16), color * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++					spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 18, 16, 16), color * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 					if (flag)
+-						spriteBatch.Draw(TextureAssets.Liquid[num12].Value, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
++						spriteBatch.Draw(liquidTexture, vector2 - screenPosition + vector, new Microsoft.Xna.Framework.Rectangle(0, 54, 16, 16), LiquidRenderer.GetShimmerGlitterColor(flag2, j, i) * num32, 0f, default(Vector2), 1f, SpriteEffects.None, 0f);
+ 				}
+ 			}
+ 		}
 @@ -51495,6 +_,7 @@
  			}
  		}

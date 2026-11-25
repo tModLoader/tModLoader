@@ -65,36 +65,14 @@ internal class Orian_Head : PatreonItem
 	{
 		player.GetModPlayer<OrianSetEffectPlayer>().IsActive = true;
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-
-		Item.width = 24;
-		Item.height = 24;
-	}
 }
 
 [AutoloadEquip(EquipType.Body)]
 internal class Orian_Body : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-
-		Item.width = 30;
-		Item.height = 20;
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Orian_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-
-		Item.width = 22;
-		Item.height = 18;
-	}
 }
