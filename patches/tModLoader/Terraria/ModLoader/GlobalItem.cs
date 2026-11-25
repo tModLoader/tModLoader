@@ -127,7 +127,7 @@ public abstract class GlobalItem : GlobalType<Item, GlobalItem>
 
 	/// <summary>
 	/// Allows you to make things happen when the player is holding an item (for example, torches make light and water candles increase spawn rate).
-	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin and determine if the effects should run on Mannequins, too.
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	public virtual void HoldItem(Item item, Player player)
