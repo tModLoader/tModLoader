@@ -805,7 +805,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
 			else {
 				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
-				bool useNewElements = (Interface.modConfig == null || Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9)) && sliderAttribute == null;
+				bool useNewElements = true;//(Interface.modConfig == null || Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9)) && sliderAttribute == null;
 				if (useNewElements)
 					e = new EnumElement2();
 				else
