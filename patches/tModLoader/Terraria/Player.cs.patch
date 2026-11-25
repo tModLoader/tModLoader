@@ -1563,6 +1563,23 @@
  	public Vector2 RotatedRelativePoint(Vector2 pos, bool reverseRotation = false, bool addGfxOffY = true, int pushFromOriginHack = 0)
  	{
  		float num = (reverseRotation ? (0f - fullRotation) : fullRotation);
+@@ -2660,6 +_,16 @@
+ 		return pos;
+ 	}
+ 
++	/// <summary>
++	/// This method can be used to calculate a frame for animating purposes. The animation will loop from the <c>minFrame</c> to the <c>maxFrame</c>.
++	/// <br/> Vanilla uses this method to animate projectiles held by mannequins.
++	/// <para> Here's an example that loops through all of the frames of a projectile:
++	/// <br/><c>Projectile.frame = player.CalculateFrameFromMiscCounter(framerate: 4, minFrame: 0, maxFrame: Main.projFrames[Type])</c> </para>
++	/// </summary>
++	/// <param name="framerate"> How fast the animation should play. Measured in ticks. </param>
++	/// <param name="minFrame"> The starting frame. </param>
++	/// <param name="maxFrame"> The ending frame. </param>
++	/// <returns> The chosen frame in the range. </returns>
+ 	public int CalculateFrameFromMiscCounter(int framerate, int minFrame, int maxFrame)
+ 	{
+ 		float num = 300f;
 @@ -2718,6 +_,11 @@
  		return result;
  	}
