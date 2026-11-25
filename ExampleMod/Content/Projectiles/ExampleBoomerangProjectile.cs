@@ -2,6 +2,8 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -124,6 +126,54 @@ namespace ExampleMod.Content.Projectiles
 			Projectile.velocity = -oldVelocity;
 			Projectile.netUpdate = true;
 			return false; // A tile collision starts the return flight instead of destroying the projectile.
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// The following code is adapted from vanilla's Projectile.AI_DisplayDoll for aiStyle 3 (Boomerang)
+		// Due to our custom AI code, using ProjAIStyleID.Boomerang for this one wouldn't display correctly.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType) {
+			Projectile.drawLayer = ProjectileDrawLayerID.HeldProj; // Make the projectile draw in behind the mannequin's hand.
+			Projectile.AI_DisplayDoll_ItemDisplay(doll, weapon, pose); // Call this method set the position.
+
+			// Vanilla offsets the origin of boomerang's when they are drawn on mannequins.
+			// The following DrawOriginOffsetY, DrawOffsetX, and DrawOriginOffsetX achieves that offset without drawing the projectile manually and matches the Wooden Boomerang exactly.
+			DrawOriginOffsetY -= (TextureAssets.Projectile[Type].Height() / 2) + 1;
+
+			switch (pose.Pose) {
+				case DisplayDollPoseID.Use1:
+					Projectile.velocity = Vector2.Zero; // The velocity will determine the rotation of the boomerang.
+					DrawOffsetX += -5 * doll.direction;
+					break;
+				case DisplayDollPoseID.Use2:
+					Projectile.velocity = MathHelper.PiOver4.ToRotationVector2();
+					DrawOffsetX += -7 * doll.direction;
+					DrawOriginOffsetY -= 5;
+					break;
+				case DisplayDollPoseID.Use3:
+					Projectile.velocity = MathHelper.PiOver2.ToRotationVector2();
+					DrawOriginOffsetY += 5;
+					DrawOriginOffsetX += 5 * doll.direction;
+					break;
+				case DisplayDollPoseID.Use4:
+					Projectile.velocity = (3 * MathHelper.PiOver4).ToRotationVector2();
+					DrawOffsetX += 7 * doll.direction;
+					DrawOriginOffsetY += 5;
+					break;
+				case DisplayDollPoseID.Use5:
+					Projectile.velocity = MathHelper.Pi.ToRotationVector2();
+					DrawOffsetX += 5 * doll.direction;
+					break;
+			}
+
+			float additionalRotation = 0;
+			if (doll.direction == -1) {
+				Projectile.velocity.X *= -1; // Flip the X velocity when facing left.
+				additionalRotation += MathHelper.Pi; // Rotate the boomerang 180 degrees when facing left.
+			}
+
+			Projectile.rotation = Projectile.velocity.ToRotation() + additionalRotation; // Apply the rotation from the velocity.
+
+			return false;
 		}
 	}
 }
