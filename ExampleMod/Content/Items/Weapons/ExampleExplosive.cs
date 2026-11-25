@@ -15,8 +15,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.shootSpeed = 12f;
 			Item.shoot = ModContent.ProjectileType<Projectiles.ExampleExplosive>();
-			Item.width = 8;
-			Item.height = 28;
 			Item.consumable = true;
 			Item.UseSound = SoundID.Item1;
 			Item.useAnimation = 40;

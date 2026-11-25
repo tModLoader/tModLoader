@@ -25,8 +25,6 @@ namespace ExampleMod.Content.Items.Consumables
 		}
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 26;
 			Item.useStyle = ItemUseStyleID.DrinkLiquid;
 			Item.useAnimation = 17;
 			Item.useTime = 17;

@@ -52,9 +52,6 @@ namespace ExampleMod.Content.Items
 		}
 
 		public override void SetDefaults() {
-			Item.width = 20;
-			Item.height = 20;
-			// Note that Item.width and height are the in-world hitbox dimensions and don't have to match the texture dimensions. Be mindful of this distinction when writing custom item drawing code.
 			Item.holdStyle = ItemHoldStyleID.HoldFront;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useAnimation = 60;

@@ -27,8 +27,6 @@ namespace ExampleMod.Content.Items
 
 		public override void SetDefaults() {
 			Item.maxStack = 1; // This makes sure that if multiple drop close together, they avoid merging together, thus still providing the effects individually
-			Item.height = 12;
-			Item.width = 12;
 		}
 
 		public override bool OnPickup(WorldItem item, Player player) {
