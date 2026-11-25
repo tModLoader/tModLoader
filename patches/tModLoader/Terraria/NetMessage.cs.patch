@@ -539,7 +539,7 @@
  				}
  			}
  		}
-@@ -2258,7 +_,11 @@
+@@ -2258,11 +_,35 @@
  			buffer[bufferIndex].checkBytes = false;
  			int num = 0;
  			int num2 = buffer[bufferIndex].totalData;
@@ -550,7 +550,31 @@
 +
  				while (num2 >= 2) {
  					int num3 = BitConverter.ToUInt16(buffer[bufferIndex].readBuffer, num);
++
++					// A frame contains a two-byte length and at least one message-type byte.
++					// In particular, a zero length would leave this loop at the same offset forever.
++					if (num3 < 3) {
++						if (Main.netMode == 2) {
++							Netplay.Clients[bufferIndex].SetPendingTermination($"Invalid packet length: {num3}");
++							Netplay.Clients[bufferIndex].PendingTerminationApproved = true;
++						}
++						else {
++							ModNet.Error(bufferIndex, $"Invalid packet length: {num3}");
++							Netplay.Disconnect = true;
++						}
++
++						buffer[bufferIndex].totalData = 0;
++						buffer[bufferIndex].checkBytes = false;
++						return;
++					}
++
++					/* Use the version in PR #5430 https://github.com/tModLoader/tModLoader/pull/5430 instead of vanilla per PR docs
  					if (num3 < 3)
+ 						throw new IndexOutOfRangeException("Invalid packet. Message size too small (" + num3 + ")");
++					*/
+ 
+ 					if (num2 >= num3) {
+ 						long position = buffer[bufferIndex].reader.BaseStream.Position;
 @@ -2295,6 +_,9 @@
  				}
  

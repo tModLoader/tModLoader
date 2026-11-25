@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.GameContent.UI;
@@ -475,19 +476,19 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	[Obsolete("Removed in 1.4.5. Use Player.TryDroppingSingleItem instead.")]
 	public void DropItem(IEntitySource source, Vector2 position, ref Item item) => TryDroppingSingleItem(source, item);
 
-	public int GetHealLife(Item item, bool quickHeal = false)
+	public int GetHealLife(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healLife;
-		ItemLoader.GetHealLife(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealLife(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealLife(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealLife(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
-	public int GetHealMana(Item item, bool quickHeal = false)
+	public int GetHealMana(Item item, bool quickHeal = false, bool tooltip = false)
 	{
 		int healValue = item.healMana;
-		ItemLoader.GetHealMana(item, this, quickHeal, ref healValue);
-		PlayerLoader.GetHealMana(this, item, quickHeal, ref healValue);
+		ItemLoader.GetHealMana(item, this, quickHeal, tooltip, ref healValue);
+		PlayerLoader.GetHealMana(this, item, quickHeal, tooltip, ref healValue);
 		return healValue > 0 ? healValue : 0;
 	}
 
@@ -504,7 +505,7 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 		if (spaceGun && ItemID.Sets.IsSpaceGun[item.type])
 			mult = 0;
 
-		if(item.type == ItemID.BookStaff && altFunctionUse == 2)
+		if (item.type == ItemID.BookStaff && altFunctionUse == 2)
 			mult = 2;
 
 		CombinedHooks.ModifyManaCost(this, item, ref reduce, ref mult);
@@ -725,4 +726,161 @@ public partial class Player : IEntityWithInstances<ModPlayer>
 	/// Call this method to mark <seealso cref="CCed"/> as true for this game update. Use for modded crowd control effects.
 	/// </summary>
 	public void SetCCed() => _customCCed = true;
+
+	#region Player.Liquid
+	private bool[] _adjLiquid = new bool[LiquidLoader.LiquidCount]; // Added by TML.
+
+	/// <summary>
+	/// An array indexed by liquid type (<see cref="Tile.LiquidType"/>, <see cref="LiquidID"/>) indicating if the player is within crafting range of a liquid or a <see cref="TileID.Sets.CountsAsLiquidSourceForCrafting"/> tile.
+	/// </summary>
+	public bool[] adjLiquid {
+		get {
+			if (_adjLiquid.Length != LiquidLoader.LiquidCount) {
+				Array.Resize(ref _adjLiquid, LiquidLoader.LiquidCount);
+			}
+			return _adjLiquid;
+		}
+		set {
+			_adjLiquid = value;
+		}
+	}
+
+	public void UpdateAdjLiquid(Tile tile)
+	{
+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
+			adjLiquid[i] = adjLiquid[i] || (tile.liquid > 200 && tile.LiquidType == i) || (tile.HasTile && TileID.Sets.CountsAsLiquidSourceForCrafting[tile.type][i]);
+		}
+	}
+
+	/// <summary>
+	/// tML has reimplemented this method to allow for mod liquid support for sponges and buckets.
+	/// </summary>
+	/// <param name="sItem"></param>
+	public void ItemCheck_UseBuckets(Item sItem)
+	{
+		var allSpongeTypes = new HashSet<int>();
+		for (int i = 0; i < LiquidLoader.LiquidCount; i++) {
+			allSpongeTypes.UnionWith(LiquidID.Sets.CanBeAbsorbedBy[i]);
+		}
+		bool countsAsSponge = allSpongeTypes.Contains(sItem.type);
+
+		if (
+			noBuilding || !IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost) ||
+			!(sItem.type == 205 || countsAsSponge || ItemID.Sets.LiquidPlacedByBucket[sItem.type] > -1) // tML added.
+		)
+			return;
+
+		if (!Main.GamepadDisableCursorItemIcon) {
+			cursorItemIconEnabled = true;
+			Main.ItemIconCacheUpdate(sItem.type);
+		}
+
+		if (!ItemTimeIsZero || itemAnimation <= 0 || !controlUseItem)
+			return;
+
+		if (
+			(sItem.type == ItemID.EmptyBucket && LiquidID.Sets.FilledBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()] != -1)
+			|| LiquidID.Sets.CanBeAbsorbedBy[Main.tile[tileTargetX, tileTargetY].liquidType()].Contains(sItem.type)
+		)
+			ItemCheck_UseEmptyBucketOrSponge(sItem, countsAsSponge);
+		else
+			ItemCheck_UseFullBucket(sItem);
+	}
+
+	private void ItemCheck_UseEmptyBucketOrSponge(Item sItem, bool countsAsSponge)
+	{
+		int liquidType = Main.tile[tileTargetX, tileTargetY].liquidType();
+
+		int adjacentLiquidAmount = 0;
+		for (int i = tileTargetX - 1; i <= tileTargetX + 1; i++) {
+			for (int j = tileTargetY - 1; j <= tileTargetY + 1; j++) {
+				if (Main.tile[i, j].liquidType() == liquidType)
+					adjacentLiquidAmount += Main.tile[i, j].LiquidAmount;
+			}
+		}
+
+		if (Main.tile[tileTargetX, tileTargetY].LiquidAmount <= 0 || (adjacentLiquidAmount <= 100 && !countsAsSponge))
+			return;
+
+		// If it is not a sponge, then it is an empty bucket.
+		if (!countsAsSponge) {
+			sItem.stack--;
+			PutItemInInventoryFromItemUsage(LiquidID.Sets.FilledBucketItem[Main.tile[tileTargetX, tileTargetY].liquidType()]);
+		}
+
+		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+		ApplyItemTime(sItem);
+
+		int originalLiquidAmount = Main.tile[tileTargetX, tileTargetY].LiquidAmount;
+
+		Main.tile[tileTargetX, tileTargetY].liquid = 0;
+		// Vanilla resets both honey and lava to Water when the tile liquid amount is zero.
+		// We presumed that shimmer should also do the same and that it is a non-impactful vanilla bug for shimmer sponge.
+		Main.tile[tileTargetX, tileTargetY].liquidType(0);
+
+		WorldGen.SquareTileFrame(tileTargetX, tileTargetY, resetFrame: false);
+		
+		if (Main.netMode == 1)
+			NetMessage.sendWater(tileTargetX, tileTargetY);
+		else
+			Liquid.AddWater(tileTargetX, tileTargetY);
+
+		if (originalLiquidAmount >= 255)
+			return;
+
+		// Below consumes adjacent liquid so that it can 'fill' one bucket or one sponge worth of action if available.
+		for (int k = tileTargetX - 1; k <= tileTargetX + 1; k++) {
+			for (int l = tileTargetY - 1; l <= tileTargetY + 1; l++) {
+				if ((k != tileTargetX || l != tileTargetY) && Main.tile[k, l].liquid > 0 && Main.tile[k, l].liquidType() == liquidType) {
+					int adjacentLiquidAmount2 = Main.tile[k, l].LiquidAmount;
+					if (adjacentLiquidAmount2 + originalLiquidAmount > 255)
+						adjacentLiquidAmount2 = 255 - originalLiquidAmount;
+
+					originalLiquidAmount += adjacentLiquidAmount2;
+					Main.tile[k, l].LiquidAmount -= (byte)adjacentLiquidAmount2;
+
+					Main.tile[k, l].liquidType(liquidType);
+					if (Main.tile[k, l].LiquidAmount == 0) {
+						Main.tile[tileTargetX, tileTargetY].liquidType(0);
+					}
+
+					WorldGen.SquareTileFrame(k, l, resetFrame: false);
+					if (Main.netMode == 1)
+						NetMessage.sendWater(k, l);
+					else
+						Liquid.AddWater(k, l);
+				}
+			}
+		}
+	}
+
+	private void ItemCheck_UseFullBucket(Item sItem)
+	{
+		if (Main.tile[tileTargetX, tileTargetY].liquid >= 200 || (Main.tile[tileTargetX, tileTargetY].nactive() && Main.tileSolid[Main.tile[tileTargetX, tileTargetY].type] && !Main.tileSolidTop[Main.tile[tileTargetX, tileTargetY].type] && Main.tile[tileTargetX, tileTargetY].type != 546))
+			return;
+
+		int placeLiquidID = ItemID.Sets.LiquidPlacedByBucket[sItem.type];
+		if (placeLiquidID == -1)
+			return;
+
+		if (Main.tile[tileTargetX, tileTargetY].liquid != 0 && Main.tile[tileTargetX, tileTargetY].liquidType() != placeLiquidID)
+			return;
+
+		SoundEngine.PlaySound(19, (int)position.X, (int)position.Y);
+		Main.tile[tileTargetX, tileTargetY].liquidType(placeLiquidID);
+		Main.tile[tileTargetX, tileTargetY].liquid = byte.MaxValue;
+
+		WorldGen.SquareTileFrame(tileTargetX, tileTargetY);
+
+		if (!ItemID.Sets.IsBottomlessBucket[sItem.type]) {
+			sItem.stack--;
+			PutItemInInventoryFromItemUsage(205);
+		}
+
+		ApplyItemTime(sItem);
+		if (Main.netMode == 1)
+			NetMessage.sendWater(tileTargetX, tileTargetY);
+	}
+
+	#endregion
 }

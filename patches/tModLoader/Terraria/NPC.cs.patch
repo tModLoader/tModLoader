@@ -1227,23 +1227,16 @@
  		}
  		else if (type == 607) {
  			noGravity = true;
-@@ -15196,14 +_,87 @@
+@@ -15196,14 +_,80 @@
  			knockBackResist = 0.5f;
  			rarity = 1;
  		}
 +		// TML: Moved before NPCLoader.SetDefaults to allow changing. DebuffImmunitySets broken into separate sets for easier manipulation.
 +		if (NPCID.Sets.ImmuneToRegularBuffs[type] || NPCID.Sets.ImmuneToWhipTags[type]) {
-+			// Equivalent to vanilla ImmuneToAllBuffsThatAreNotWhips
-+			if (NPCID.Sets.ImmuneToRegularBuffs[type]) {
-+				for (int i = 0; i < buffImmune.Length; i++) {
-+					buffImmune[i] = !BuffID.Sets.IsATagBuff[i];
-+				}
-+			}
-+
-+			if (NPCID.Sets.ImmuneToWhipTags[type]) {
-+				for (int i = 0; i < buffImmune.Length; i++) {
-+					buffImmune[i] = BuffID.Sets.IsATagBuff[i];
-+				}
++			for (int i = 0; i < buffImmune.Length; i++) {
++				buffImmune[i] = BuffID.Sets.IsATagBuff[i]
++					? NPCID.Sets.ImmuneToWhipTags[type]
++					: NPCID.Sets.ImmuneToRegularBuffs[type];
 +			}
 +
 +			// If immune to most buffs...
@@ -1258,7 +1251,7 @@
 +			// Apply all `GrantImmunityWith` in reverse (if vulnerable to OnFire, add vulnerability to OnFire3, keep in mind this is _all_ of the vulnerabilities in `[OnFire3]` list)
 +			for (int i = 0; i < BuffID.Sets.GrantImmunityWith.Length; i++) {
 +				var buffsToInherit = BuffID.Sets.GrantImmunityWith[i];
-+				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[i]))
++				if (buffsToInherit.Count > 0 && buffsToInherit.All(x => !buffImmune[x]))
 +					buffImmune[i] = false;
 +			}
 +
@@ -1829,12 +1822,12 @@
  							return 1106;
  					}
  				}
-+				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
 +				/*
  				if (Main.rand.Next(2) == 0)
  					return Main.rand.Next(11, 15);
  				return Main.rand.Next(699, 703);
 +				*/
++				return Main.rand.Next(System.Linq.Enumerable.ToList(ItemID.Sets.OreDropsFromSlime.Keys)); // TML
  			default:
  				num = Main.rand.Next(3);
  				if (WorldGen.Skyblock.lowTiles && Main.rand.Next(5) != 0)

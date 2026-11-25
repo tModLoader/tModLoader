@@ -27,8 +27,6 @@ namespace ExampleMod.Content.Items.Accessories
 		public override LocalizedText Tooltip => base.Tooltip.WithFormatArgs(DamageAbsorptionPercent, DamageAbsorptionAbilityLifeThresholdPercent);
 
 		public override void SetDefaults() {
-			Item.width = 24;
-			Item.height = 24;
 			Item.accessory = true;
 			Item.rare = ItemRarityID.Yellow;
 			Item.defense = 6;

@@ -107,7 +107,7 @@ namespace ExampleMod.Content
 
 				// Adds pre-defined conditions. These 3 lines combine to make so that the recipe must be crafted in desert waters at night.
 				.AddCondition(Condition.InDesert)
-				.AddCondition(Condition.NearWater)
+				.AddCondition(Condition.NearLiquid(LiquidID.Water))
 				.AddCondition(Condition.TimeNight)
 				// Adds a custom condition, that the player must be at <1/2 health for the recipe to work.
 				// The key used here is defined in 'Localization/*.hjson' files.

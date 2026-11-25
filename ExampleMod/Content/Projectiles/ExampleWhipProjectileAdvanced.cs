@@ -207,17 +207,17 @@ namespace ExampleMod.Content.Projectiles
 				// ExampleWhipProjectileAdvanced has 10 segments, so the following will result in 1 handle, 3 segment 1s, 3 segment 2s, 2 segment 3s, and 1 head.
 				// (Charging up ExampleWhipProjectileAdvanced will increase the number of segments.)
 				else if (i > 2 * (totalSegments / 3)) {  // At 2/3 of the way across the whip, the third segment is used.
-					// Third segment
+														 // Third segment
 					frame.Y = 58;
 					frame.Height = 16;
 				}
 				else if (i > totalSegments / 3) { // At 1/3 of the way across the whip, the second segment is used.
-					// Second Segment
+												  // Second Segment
 					frame.Y = 42;
 					frame.Height = 16;
 				}
 				else if (i != 0) {  // At the start of the whip after the handle, the first segment is used.
-					// First Segment
+									// First Segment
 					frame.Y = 26;
 					frame.Height = 16;
 				}

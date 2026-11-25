@@ -1315,6 +1315,56 @@ Mods: {
 			ExampleDOTAccessory: {
 				DisplayName: Example Debuff Amplifier
 				Tooltip: Hits mark enemies for 5 seconds, doubling Poisoned, On Fire!, and the example poison and fire debuffs
+			ExampleGrassSeeds: {
+				DisplayName: Example Grass Seeds
+				Tooltip: ""
+			}
+
+			ExampleFlyingTransformationItem: {
+				DisplayName: Example Flying Transformation Charm
+				Tooltip: Transforms the user into an Example Flying Transformation
+			}
+
+			ExampleBeastTransformationItem: {
+				DisplayName: Example Beast Transformation Skull
+				Tooltip: Transforms the user into an Example Beast Transformation
+			}
+
+			ExampleBottomlessBucket: {
+				DisplayName: Example Bottomless Bucket
+				Tooltip:
+					'''
+					Contains an endless amount of example liquid
+					Can be poured out
+					'''
+			}
+
+			ExampleLiquidBucket: {
+				DisplayName: Example Liquid Bucket
+				Tooltip:
+					'''
+					Contains a small amount of example liquid
+					Can be poured out
+					'''
+			}
+
+			ExampleLiquidSponge: {
+				DisplayName: Example Liquid Sponge
+				Tooltip: Capable of soaking up an endless amount of example liquid
+			}
+
+			ExampleBoomerang: {
+				DisplayName: Example Boomerang
+				Tooltip: ""
+			}
+
+			ExampleFlamethrower: {
+				DisplayName: Example Flamethrower
+				Tooltip:
+					'''
+					Uses gel for ammo
+					Ignores 15 points of enemy Defense
+					'''
 			}
 		}
 
@@ -1367,6 +1417,8 @@ Mods: {
 			ExampleSentry.DisplayName: Example Sentry
 			ExampleSentryShot.DisplayName: Example Sentry Shot
 			ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
+			ExampleBoomerangProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleBoomerang.DisplayName}"
+			ExampleFlamethrowerProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleFlamethrower.DisplayName}"
 		}
 
 		Buffs: {
@@ -1473,6 +1525,14 @@ Mods: {
 			ExampleDOTAmplification: {
 				DisplayName: Example Debuff Amplification
 				Description: Certain damage-over-time debuffs deal double damage
+			ExampleFlyingTransformationBuff: {
+				DisplayName: Example Flying Transformation
+				Description: You turned into an Example Flying Transformation!
+			}
+
+			ExampleBeastTransformationBuff: {
+				DisplayName: Example Beast Transformation
+				Description: You turned into an Example Beast Transformation!
 			}
 		}
 
@@ -1591,6 +1651,7 @@ Mods: {
 		UI: {
 			ExampleResource: Example Resource: {0} / {1}
 			InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+			MenuNotificationTitle: Goodbye from the world, you are using Example Mod!
 			ExampleCoinsUIState.Reset: Reset Coins Per Minute Counter
 
 			ExampleFullscreenUI: {
@@ -1739,6 +1800,7 @@ Mods: {
 			{0}
 			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
 			'''
+		Liquids.ExampleLiquid.DisplayName: Example Liquid
 	}
 }
 

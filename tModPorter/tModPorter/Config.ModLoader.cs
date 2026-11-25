@@ -137,8 +137,10 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"Shoot");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"Shoot");
 		ChangeHookSignature("Terraria.ModLoader.ModPlayer",			"Shoot");
+		/* Updated once again in 1.4.5
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"PickAmmo");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"PickAmmo");
+		*/
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"CanConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem",		"CanConsumeAmmo");
 		ChangeHookSignature("Terraria.ModLoader.ModItem",			"OnConsumeAmmo");
@@ -567,6 +569,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.ModItem", "CanPickup");
@@ -578,6 +582,8 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanStackInWorld");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "Update");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PostUpdate");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealLife");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GetHealMana");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabRange");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "GrabStyle");
 		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "CanPickup");
@@ -594,6 +600,9 @@ public static partial class Config
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PreDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.GlobalProjectile", "PostDraw", ProjectileDrawPlayerHint);
 		ChangeHookSignature("Terraria.ModLoader.ModCloud", "Draw");
+		const string PickAmmoWeaponDamageHint = "Note: Weapon damage is no longer included in ammoDamage.Flat. Use weaponDamage instead.";
+		ChangeHookSignature("Terraria.ModLoader.ModItem", "PickAmmo", PickAmmoWeaponDamageHint).RenameParameter("damage", "ammoDamage");
+		ChangeHookSignature("Terraria.ModLoader.GlobalItem", "PickAmmo", PickAmmoWeaponDamageHint).RenameParameter("damage", "ammoDamage");
 
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModTile", "AddToArray", RewriteAddToArrayForRoomNeeds);
 		RefactorInstanceMethodCall("Terraria.ModLoader.ModPylon", "DefaultDrawMapIcon", InsertArgument(oldArgCount: 6, index: 6, "out bool onScreen"));
