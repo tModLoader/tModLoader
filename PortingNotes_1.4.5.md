@@ -30,6 +30,8 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ProjectileLoader.CanUseGrapple can be reworked. The vanilla code now consolidates "max hooks" checks, so we should be able to make the logic for most modded grappling hooks easier by supplying those parameters to the hook or using a set.
 - https://github.com/tModLoader/tModLoader/issues/4494 should be easily fixable with the new QuickGrapple code organization
 - TileLoader.HasWalkDust and WalkDust never pass in the Tile or Frame values. New vanilla logic sometimes checks frameX/Y, so hook could be updated with more parameters to facilitate.
+- Adjacent tiles are now contained in Recipe.TileCountsAs rather than hard-coded. Need to adjust TileLoader.AdjTiles hooks/docs/exampels to prioritize using Recipe.TileCountsAs
+  - Restore `TileLoader.AdjTiles(this, Main.tile[j, k].type);` patch to new Player.SetAdjTile method
 - Terraria added a CanConsumeConsumableItem stub method. Should it check item.consumable or only ItemLoader.ConsumeItem.
 - We'll need to check all bag drops and update the drop database.
 - SystemLoader.ModifyLightingBrightness might need `_negLight3` parameter.
@@ -66,7 +68,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - Patches checking ActiveWorldFileData being null and initializing it might be superfluous now. Seems like there were some vanilla changes.
 - MapRenderer class now contains what was Main.mapSectionTexture and mapTarget. Most static fields there should probably be public.
 - See updated `toolTipNames[numLines] = "UseMana";` patch. Look into IsSpaceGun and GetManaCost, might need updates. 
-- There are new music tracks and some might have been moved. Update SceneEffectPriority enum docs and double check that they are correct for both methods.
 - Need to find where ProjectileLoader.DrawHeldProjInFrontOfHeldItemAndArms (ModProjectile.DrawHeldProjInFrontOfHeldItemAndArms) should go. PlayerDrawSet removed heldProjOverHand and there are new fields as well. Seems like `SelectedDrawnProjectile.drawLayer == 8` replaced it in DrawPlayer_31_ProjectileOverArm? ProjectileDrawLayerID.HeldProjOverHand exists.
 - Item.IsTheSameAs removed
 - RefreshInfoAccsFromItemType is now being called on vanity equipment too. Does this affect any of our changes? Is any slot now being checked twice? Do we need to adjust ModAccessorySlotPlayer for the same behavior?
@@ -184,6 +185,7 @@ Once all patches are fixed, these items need to be fixed or double checked:
 # tModPorter TODOs
 
 # ExampleMod TODOs
+- Verify that ExampleZombieThief still works with changes
 
 # Terraria update requests
 
