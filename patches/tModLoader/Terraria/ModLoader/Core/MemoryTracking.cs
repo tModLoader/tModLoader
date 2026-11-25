@@ -30,7 +30,7 @@ internal static class MemoryTracking
 	internal static void InGameUpdate()
 	{
 		// Every 60 seconds, check if reach new GB RAM milestone
-		if(CheckRAMUsageTimer.Elapsed.TotalSeconds > 60) {
+		if (CheckRAMUsageTimer.Elapsed.TotalSeconds > 60) {
 			CheckRAMUsageTimer.Restart();
 
 			Process process = Process.GetCurrentProcess();
@@ -86,7 +86,7 @@ internal static class MemoryTracking
 				.Where(val => val != null)
 				.Sum(sound => (long)(sound.Duration.TotalSeconds * 44100 * 2 * 2));
 		}
-		if(ModLoader.Mods.Length > 1) {
+		if (ModLoader.Mods.Length > 1) {
 			Logging.tML.Info("Mods using the most RAM: " + string.Join(", ", modMemoryUsageEstimates.OrderByDescending(x => x.Value.total).Where(x => x.Key != "ModLoader").Take(3).Select(x => $"{x.Key} {UIMemoryBar.SizeSuffix(x.Value.total)}")));
 		}
 
@@ -96,7 +96,7 @@ internal static class MemoryTracking
 			totalRamUsage = Process.GetProcesses().Sum(x => x.WorkingSet64); // Might throw UnauthorizedAccessException on locked down Linux systems. See https://github.com/tModLoader/tModLoader/issues/3689
 			totalCommit = Process.GetProcesses().Sum(x => x.PrivateMemorySize64); // does this not account for shared?
 		}
-		catch {	}
+		catch { }
 
 		Process process = Process.GetCurrentProcess();
 		process.Refresh();

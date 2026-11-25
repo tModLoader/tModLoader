@@ -21,15 +21,17 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 	internal Item[] exDyesAccessory;
 	/// <summary> <see cref="ModAccessorySlot"/> corollary to <see cref="Player.hideVisibleAccessory"/>. </summary>
 	internal bool[] exHideAccessory;
+
 	/// <summary> All slots that can potentially show for this user. First the loaded ModAccessorySlots, followed by any unloaded slots. </summary>
 	private readonly Dictionary<string, int> slots = [];
+
 	/// <summary> Which slots are shared, indexed by ModAccessorySlot.Type </summary>
 	private bool[] sharedLoadoutSlotTypes;
-	/// <inheritdoc cref="ExEquipmentLoadout"/>
-	private ExEquipmentLoadout[] exLoadouts;
+	/// <inheritdoc cref="AlternativeEquipmentLoadout"/>
+	private AlternativeEquipmentLoadout[] alternativeLoadouts;
 
 	/// <summary> Holds items from a saved <see cref="ModAccessorySlot"/> that changed to not <see cref="ModAccessorySlot.HasEquipmentLoadoutSupport"/> ("shared") and would otherwise be lost. Will be returned to the player when entering a world. </summary>
-	private List<Item> extraItems = new();
+	private List<Item> inaccessibleItems = new();
 
 	// Setting toggle for stack or scroll accessories/npcHousing
 	internal bool scrollSlots;
@@ -67,8 +69,8 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			exDyesAccessory[i] = new Item();
 			exHideAccessory[i] = false;
 
-			exAccessorySlot[i * 2] = new Item();
-			exAccessorySlot[i * 2 + 1] = new Item();
+			exAccessorySlot[i * 2] = new Item();// Functional
+			exAccessorySlot[i * 2 + 1] = new Item(); // Vanity
 		}
 
 		foreach (var slot in Loader.list) {
@@ -80,20 +82,21 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	public override void Initialize()
 	{
-		exLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
-			.Select(loadoutIndex => new ExEquipmentLoadout(loadoutIndex, SlotCount, Player.Loadouts[loadoutIndex]))
+		alternativeLoadouts = Enumerable.Range(0, Player.Loadouts.Length)
+			.Select(loadoutIndex => new AlternativeEquipmentLoadout(loadoutIndex, SlotCount, Player.Loadouts[loadoutIndex]))
 			.ToArray();
 	}
 
 	public override void SaveData(TagCompound tag)
 	{
-		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded. Otherwise old unloaded slots just bloat the array with empty entries forever
+		// TODO, might be nice to only save acc slots which have something in them... particularly if they're unloaded.
+		// Otherwise old unloaded slots just bloat the array with empty entries forever.
 		tag["order"] = slots.Keys.ToList();
 		tag["items"] = exAccessorySlot.Select(ItemIO.Save).ToList();
 		tag["dyes"] = exDyesAccessory.Select(ItemIO.Save).ToList();
 		tag["visible"] = exHideAccessory.ToList(); // Note: "visible" is backwards, should be "hidden". True values are hidden.
 
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+		foreach (AlternativeEquipmentLoadout equipmentLoadout in alternativeLoadouts) {
 			equipmentLoadout.SaveData(tag);
 		}
 	}
@@ -113,9 +116,9 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var dyes = tag.GetList<TagCompound>("dyes").Select(ItemIO.Load).ToList();
 		var visible = tag.GetList<bool>("visible").ToList();
 
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+		foreach (AlternativeEquipmentLoadout equipmentLoadout in alternativeLoadouts) {
 			var extraItemsFromLoadout = equipmentLoadout.LoadData(tag, order, slots, sharedLoadoutSlotTypes);
-			extraItems.AddRange(extraItemsFromLoadout);
+			inaccessibleItems.AddRange(extraItemsFromLoadout);
 		}
 
 		for (int i = 0; i < order.Count; i++) {
@@ -129,19 +132,43 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
+	#region LoadoutSupport
+	// If we allow HasEquipmentLoadoutSupport to differ per-client, this might not be suitable without extra changes.
+	internal bool IsSharedSlot(int slotType)
+	{
+		return sharedLoadoutSlotTypes[slotType % SlotCount];
+	}
+
+	private void DetectConflictsWithSharedSlots() // Only called on local client.
+	{
+		// Handle conflicts that arise from supporting shared slots.
+		bool anyConflict = false;
+		for (int i = 0; i < exAccessorySlot.Length / 2; i++) {
+			if (IsSharedSlot(i)) {
+				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i], i, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
+				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i + SlotCount], i + SlotCount, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
+			}
+		}
+
+		if (anyConflict) {
+			Main.NewText(Language.GetTextValue("tModLoader.SharedAccessorySlotConflictMessage"));
+			// TODO: Main.NewText doesn't work with ModPlayer.OnEnterWorld in multiplayer since the chat is cleared during the joining process. This will need to be fixed and also affects ExampleMod usages of OnEnterWorld as well.
+		}
+	}
+
 	public override void OnEnterWorld()
 	{
 		// Need to enter world with disabled slots.
 		DetectConflictsWithSharedSlots();
 
-		if (extraItems.Count == 0)
+		if (inaccessibleItems.Count == 0)
 			return;
 
-		foreach (var item in extraItems) {
+		foreach (var item in inaccessibleItems) {
 			Player.QuickSpawnItem(null, item);
 		}
 		Main.NewText(Language.GetTextValue("tModLoader.ModAccessorySlotNoLongerSharedItemsRemoved"));
-		extraItems.Clear();
+		inaccessibleItems.Clear();
 	}
 
 	internal bool CanLoadoutShare(int context, int slot)
@@ -161,10 +188,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		sharedFromLoadout = null;
 		Item[] items = context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot ? exDyesAccessory : exAccessorySlot;
 
+		// if it is a shared slot AND item[slot] is not air, then return.
 		if (!items[slot].IsAir || !CanLoadoutShare(context, slot))
 			return items[slot];
 
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+		// else check alternative loadouts for favorited items in the same relative slot
+		foreach (AlternativeEquipmentLoadout equipmentLoadout in alternativeLoadouts) {
 			Item item = context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot ? equipmentLoadout.ExDyesAccessory[slot] : equipmentLoadout.ExAccessorySlot[slot];
 			if (!item.IsAir && item.favorited) {
 				sharedFromLoadout = equipmentLoadout.LoadoutIndex;
@@ -172,6 +201,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			}
 		}
 
+		// otherwise return the currently active slot
 		return items[slot];
 	}
 
@@ -180,7 +210,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		if (!CanLoadoutShare(context, slot))
 			return;
 
-		foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+		foreach (AlternativeEquipmentLoadout equipmentLoadout in alternativeLoadouts) {
 			if (context == Terraria.UI.ItemSlot.Context.ModdedDyeSlot)
 				equipmentLoadout.ExDyesAccessory[slot].favorited = false;
 			else
@@ -188,7 +218,25 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
-	// Updates Code:
+	internal bool SharedSlotHasLoadoutConflict(int slotType, AccessorySlotType context)
+	{
+		if (!IsSharedSlot(slotType) || context == AccessorySlotType.DyeSlot)
+			return false;
+
+		// Handle conflicts that arise from supporting shared slots.
+		int functional = slotType % SlotCount;
+		int vanity = functional + SlotCount;
+
+		if (context == AccessorySlotType.VanitySlot) {
+			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
+		}
+		else {
+			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[functional], functional, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
+		}
+	}
+	#endregion
+
+	#region GameLoopUpdates
 	/// <summary>
 	/// Updates functional slot visibility information on the player for Mod Slots, in a similar fashion to Player.UpdateVisibleAccessories()
 	/// </summary>
@@ -197,7 +245,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.FunctionalSlot)) {
 				Player.UpdateVisibleAccessories(GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, k, out _), exHideAccessory[k], k, true);
 			}
 		}
@@ -211,7 +259,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: true)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.VanitySlot)) {
 				var vanitySlot = k + SlotCount;
 				Item vanityItem = GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot, vanitySlot, out _);
 				if (!Player.ItemIsVisuallyIncompatible(vanityItem))
@@ -233,7 +281,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		int end = socialSlots ? SlotCount * 2 : SlotCount;
 
 		for (int i = start; i < end; i++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, vanity: socialSlots)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(i, Player, socialSlots ? AccessorySlotType.VanitySlot : AccessorySlotType.FunctionalSlot)) {
 				int num = i % exDyesAccessory.Length;
 				Player.UpdateItemDye(i < exDyesAccessory.Length, exHideAccessory[num], GetSharedLoadoutItem(socialSlots ? Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot : Terraria.UI.ItemSlot.Context.ModdedAccessorySlot, i, out _), GetSharedLoadoutItem(Terraria.UI.ItemSlot.Context.ModdedDyeSlot, num, out _));
 			}
@@ -248,11 +296,12 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		var loader = LoaderManager.Get<AccessorySlotLoader>();
 
 		for (int k = 0; k < SlotCount; k++) {
-			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, vanity: false)) {
+			if (loader.ModdedIsSpecificItemSlotUnlockedAndUsable(k, Player, AccessorySlotType.FunctionalSlot)) {
 				loader.CustomUpdateEquips(k, Player);
 			}
 		}
 	}
+	#endregion
 
 	// Death drops code, should run prior to dropping other items in case conditions are used based on player's current equips
 	public void DropItems(IEntitySource itemSource)
@@ -264,7 +313,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			Player.TryDroppingSingleItem(itemSource, exAccessorySlot[i + SlotCount]);
 			Player.TryDroppingSingleItem(itemSource, exDyesAccessory[i]);
 
-			foreach (ExEquipmentLoadout equipmentLoadout in exLoadouts) {
+			foreach (AlternativeEquipmentLoadout equipmentLoadout in alternativeLoadouts) {
 				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExAccessorySlot[i]);
 				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExAccessorySlot[i + SlotCount]);
 				Player.TryDroppingSingleItem(itemSource, equipmentLoadout.ExDyesAccessory[i]);
@@ -272,6 +321,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 		}
 	}
 
+	#region netcode
 	// The following netcode is adapted from ChickenBones' UtilitySlots:
 	public override void CopyClientState(ModPlayer targetCopy)
 	{
@@ -283,11 +333,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			defaultInv.exHideAccessory[i] = exHideAccessory[i];
 		}
 
-		for (int loadoutIndex = 0; loadoutIndex < exLoadouts.Length; loadoutIndex++) {
-			CopyState(exLoadouts[loadoutIndex], defaultInv.exLoadouts[loadoutIndex]);
+		for (int loadoutIndex = 0; loadoutIndex < alternativeLoadouts.Length; loadoutIndex++) {
+			CopyState(alternativeLoadouts[loadoutIndex], defaultInv.alternativeLoadouts[loadoutIndex]);
 		}
 
-		void CopyState(ExEquipmentLoadout equipmentLoadout, ExEquipmentLoadout targetEquipmentLoadout)
+		void CopyState(AlternativeEquipmentLoadout equipmentLoadout, AlternativeEquipmentLoadout targetEquipmentLoadout)
 		{
 			for (int i = 0; i < LoadedSlotCount; i++) {
 				equipmentLoadout.ExAccessorySlot[i].CopyNetStateTo(targetEquipmentLoadout.ExAccessorySlot[i]);
@@ -308,11 +358,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 			NetHandler.SendVisualState(toWho, Player.whoAmI, i, exHideAccessory[i]);
 		}
 
-		foreach (var equipmentLoadout in exLoadouts) {
+		foreach (var equipmentLoadout in alternativeLoadouts) {
 			Sync(equipmentLoadout);
 		}
 
-		void Sync(ExEquipmentLoadout loadout)
+		void Sync(AlternativeEquipmentLoadout loadout)
 		{
 			for (int slot = 0; slot < LoadedSlotCount; slot++) {
 				NetHandler.SendSlot(toWho, Player.whoAmI, slot, loadout.ExAccessorySlot[slot], (sbyte)loadout.LoadoutIndex);
@@ -336,11 +386,11 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 				NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
 		}
 
-		for (int loadoutIndex = 0; loadoutIndex < exLoadouts.Length; loadoutIndex++) {
-			SendClientChanges(exLoadouts[loadoutIndex], clientInv.exLoadouts[loadoutIndex]);
+		for (int loadoutIndex = 0; loadoutIndex < alternativeLoadouts.Length; loadoutIndex++) {
+			SendClientChanges(alternativeLoadouts[loadoutIndex], clientInv.alternativeLoadouts[loadoutIndex]);
 		}
 
-		void SendClientChanges(ExEquipmentLoadout equipmentLoadout, ExEquipmentLoadout clientEquipmentLoadout)
+		void SendClientChanges(AlternativeEquipmentLoadout equipmentLoadout, AlternativeEquipmentLoadout clientEquipmentLoadout)
 		{
 			for (int slot = 0; slot < LoadedSlotCount; slot++) {
 				if (equipmentLoadout.ExAccessorySlot[slot].IsNetStateDifferent(clientEquipmentLoadout.ExAccessorySlot[slot]))
@@ -357,72 +407,31 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 
 	public override void OnEquipmentLoadoutSwitched(int oldLoadoutIndex, int loadoutIndex)
 	{
-		exLoadouts[oldLoadoutIndex].Swap(this);
-		exLoadouts[loadoutIndex].Swap(this);
+		alternativeLoadouts[oldLoadoutIndex].Swap(this);
+		alternativeLoadouts[loadoutIndex].Swap(this);
 
-		if (Player.whoAmI == Main.myPlayer) {
-			if (Main.netMode != NetmodeID.SinglePlayer) {
-				CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
+		if (Player.whoAmI == Main.myPlayer && Main.netMode != NetmodeID.SinglePlayer) {
+			CopyClientState(Main.clientPlayer.GetModPlayer<ModAccessorySlotPlayer>());
 
-				for (int i = 0; i < LoadedSlotCount; i++) {
-					NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
-				}
+			for (int i = 0; i < LoadedSlotCount; i++) {
+				NetHandler.SendVisualState(-1, Player.whoAmI, i, exHideAccessory[i]);
 			}
 
 			DetectConflictsWithSharedSlots();
 		}
 	}
-
-	private void DetectConflictsWithSharedSlots() // Only called on local client.
-	{
-		// Handle conflicts that arise from supporting shared slots.
-		bool anyConflict = false;
-		for (int i = 0; i < exAccessorySlot.Length / 2; i++) {
-			if (IsSharedSlot(i)) {
-				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i], i, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
-				anyConflict |= Loader.IsAccessoryInConflict(Player, exAccessorySlot[i + SlotCount], i + SlotCount, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
-			}
-		}
-
-		if (anyConflict) {
-			Main.NewText(Language.GetTextValue("tModLoader.SharedAccessorySlotConflictMessage"));
-			// TODO: Main.NewText doesn't work with ModPlayer.OnEnterWorld in multiplayer since the chat is cleared during the joining process. This will need to be fixed and also affects ExampleMod usages of OnEnterWorld as well.
-		}
-	}
-
-	// If we allow HasEquipmentLoadoutSupport to differ per-client, this might not be suitable without extra changes.
-	internal bool IsSharedSlot(int slotType)
-	{
-		return sharedLoadoutSlotTypes[slotType % SlotCount];
-	}
-
-	internal bool SharedSlotHasLoadoutConflict(int slotType, bool vanitySlot)
-	{
-		if (!IsSharedSlot(slotType))
-			return false;
-
-		// Handle conflicts that arise from supporting shared slots.
-		int functional = slotType % SlotCount;
-		int vanity = functional + SlotCount;
-
-		if (vanitySlot) {
-			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[vanity], vanity, Terraria.UI.ItemSlot.Context.ModdedVanityAccessorySlot);
-		}
-		else {
-			return Loader.IsAccessoryInConflict(Player, exAccessorySlot[functional], functional, Terraria.UI.ItemSlot.Context.ModdedAccessorySlot);
-		}
-	}
+	#endregion
 
 	// Extended Loadout, contains Item instances for ModAccessorySlot for a specific loadout index.
 	/// <summary>
-	/// <see cref="ExEquipmentLoadout"/> holds loadout items for loadouts not in use. <see cref="ModAccessorySlot"/> corollary to <see cref="EquipmentLoadout"/>.
-	/// Note that when a loadout is selected, the items in <see cref="ExEquipmentLoadout"/> are swapped into <see cref="exAccessorySlot"/>, etc. and the loadout is left with empty Item instances. The active loadout items are stored on the player and the <see cref="ExEquipmentLoadout"/> is left empty, this is the same approach used for vanilla loadouts as well (<see cref="Player.Loadouts"/>).
+	/// <see cref="AlternativeEquipmentLoadout"/> holds loadout items for loadouts not in use. <see cref="ModAccessorySlot"/> corollary to <see cref="EquipmentLoadout"/>.
+	/// Note that when a loadout is selected, the items in <see cref="AlternativeEquipmentLoadout"/> are swapped into <see cref="exAccessorySlot"/>, etc. and the loadout is left with empty Item instances. The active loadout items are stored on the player and the <see cref="AlternativeEquipmentLoadout"/> is left empty, this is the same approach used for vanilla loadouts as well (<see cref="Player.Loadouts"/>).
 	/// </summary>
-	internal sealed class ExEquipmentLoadout
+	internal sealed class AlternativeEquipmentLoadout
 	{
 		private readonly string identifier;
 
-		public ExEquipmentLoadout(int loadoutIndex, int slotCount, EquipmentLoadout loadoutReference)
+		public AlternativeEquipmentLoadout(int loadoutIndex, int slotCount, EquipmentLoadout loadoutReference)
 		{
 			this.LoadoutIndex = loadoutIndex;
 			this.LoadoutReference = loadoutReference;
@@ -645,7 +654,7 @@ public sealed class ModAccessorySlotPlayer : ModPlayer
 					dPlayer.exAccessorySlot[slot] = item;
 			}
 			else {
-				ExEquipmentLoadout equipmentLoadout = dPlayer.exLoadouts[loadout];
+				AlternativeEquipmentLoadout equipmentLoadout = dPlayer.alternativeLoadouts[loadout];
 
 				if (slot < 0)
 					equipmentLoadout.ExDyesAccessory[-(slot + 1)] = item;

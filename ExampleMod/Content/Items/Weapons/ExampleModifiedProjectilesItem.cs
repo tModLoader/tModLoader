@@ -18,8 +18,6 @@ namespace ExampleMod.Content.Items.Weapons
 			Item.autoReuse = true;
 			Item.damage = 20;
 			Item.DamageType = DamageClass.Ranged;
-			Item.width = 32;
-			Item.height = 32;
 			Item.shoot = ProjectileID.PurificationPowder;
 			// This Ammo is nonspecific. I want to modify what it shoots, however.
 			Item.useAmmo = AmmoID.Bullet;

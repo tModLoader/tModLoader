@@ -34,7 +34,6 @@ public static class TileLoader
 	//in Terraria.WorldGen.StartRoomCheck change 419 to WorldGen.houseTile.Length
 	//at end of Terraria.WorldGen.KillWall remove type too high check
 	//in Terraria.Player change adjTile and oldAdjTile size to TileLoader.TileCount()
-	//in Terraria.Player.AdjTiles change 419 to adjTile.Length
 	//in Terraria.Lighting for accOreFinder replace 419 with Main.tileValue.Length
 	//make Terraria.WorldGen public
 	//in Terraria.IO.WorldFile.SaveFileFormatHeader set initial num to TileLoader.TileCount
@@ -110,6 +109,8 @@ public static class TileLoader
 	private static Action<int, int, int, int, int>[] HookOnTileConverted;
 	private static Func<int, int, int, bool?>[] HookCanDoWireStuffHere;
 	private static Func<int, int, int, bool?>[] HookCanShowWireStuffHere;
+	private delegate void DelegateOverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace);
+	private static DelegateOverridePlacementTile[] HookOverridePlacementTile;
 
 	internal static int ReserveTileID()
 	{
@@ -274,6 +275,7 @@ public static class TileLoader
 		ModLoader.BuildGlobalHook(ref HookOnTileConverted, globalTiles, g => g.OnTileConverted);
 		ModLoader.BuildGlobalHook(ref HookCanDoWireStuffHere, globalTiles, g => g.CanDoWireStuffHere);
 		ModLoader.BuildGlobalHook(ref HookCanShowWireStuffHere, globalTiles, g => g.CanShowWireStuffHere);
+		ModLoader.BuildGlobalHook(ref HookOverridePlacementTile, globalTiles, g => g.OverridePlacementTile);
 
 		if (!unloading) {
 			loaded = true;
@@ -773,8 +775,10 @@ public static class TileLoader
 			}
 			RegisterConversion(toType, BiomeConversionID.Purity, Purify);
 			RegisterConversion(toType, BiomeConversionID.PurificationPowder, Purify);
-			if (conversionType != BiomeConversionID.Hallow)
-				RegisterConversion(toType, BiomeConversionID.ChlorophyteSpread, Purify); //TODO: Not sure about this ID.
+			if (conversionType != BiomeConversionID.Hallow) {
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteDefenseWhenChloroSpreads, Purify);
+				RegisterConversion(toType, BiomeConversionID.ChlorophyteDefenseWhenEvilSpreads, Purify);
+			}
 		}
 	}
 
@@ -1190,12 +1194,9 @@ public static class TileLoader
 
 	public static void AdjTiles(Player player, int type)
 	{
-		ModTile modTile = GetTile(type);
-		if (modTile != null) {
-			foreach (int k in modTile.AdjTiles) {
-				player.adjTile[k] = true;
-			}
-		}
+		// ModTile.AdjTiles is registered into Recipe.TileCountsAs during Recipe.SetupRecipes,
+		// so Player.SetAdjTile already handles it. Only the dynamic GlobalTile hook runs here.
+
 		foreach (var hook in HookAdjTiles) {
 			int[] adjTiles = hook(type);
 			foreach (int k in adjTiles) {
@@ -1588,5 +1589,27 @@ public static class TileLoader
 			}
 		}
 		return ret;
+	}
+
+	public static void OverridePlacementTile(int i, int j, Item item, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
+	{
+		if (item != null)
+			ItemLoader.GetItem(item.type)?.OverridePlacementTile(i, j, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+
+		GetTile(tileToCreate)?.OverridePlacementTile(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+
+		foreach (var hook in HookOverridePlacementTile) {
+			hook(i, j, item, ref tileToCreate, ref previewPlaceStyle, ref forcedRandom, ref overrideCanPlace);
+		}
+	}
+
+	public static void FlowerBootsPlaceFlowers(int i, int j)
+	{
+		GetTile(Main.tile[i, j].TileType)?.FlowerBootsPlaceFlowers(i, j);
+	}
+
+	public static void SickleDropHay(int i, int j, int type, ref int hayStack)
+	{
+		GetTile(type)?.SickleDropHay(i, j, ref hayStack);
 	}
 }

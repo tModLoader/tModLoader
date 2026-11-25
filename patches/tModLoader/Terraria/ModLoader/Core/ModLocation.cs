@@ -1,4 +1,4 @@
-﻿namespace Terraria.ModLoader.Core;
+namespace Terraria.ModLoader.Core;
 
 internal enum ModLocation
 {
