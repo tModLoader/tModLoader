@@ -245,15 +245,21 @@ internal class UIModConfigList : UIState
 			};
 
 			configPanel.OnLeftClick += (_, _) => {
-				var ui = ConfigManager.GetConfigUI(config);
-				(ui as IConfigUI).SetMod(selectedMod, config);
+				var customUI = ConfigManager.GetConfigUI(config);
+				(customUI ?? Interface.modConfig).SetMod(selectedMod, config);
+
 				if (Main.gameMenu) {
-					// Main.menuMode = Interface.modConfigID; // TODO: more elegant
-					Main.menuMode = MenuID.FancyUI;
-					Main.MenuUI.SetState(ui);
+					if (customUI is not null) {
+						Main.menuMode = MenuID.FancyUI;
+						Main.MenuUI.SetState((UIState)customUI);
+					}
+					else {
+						Main.menuMode = Interface.modConfigID;
+					}
 				}
-				else
-					Main.InGameUI.SetState(ui);
+				else {
+					Main.InGameUI.SetState((UIState)customUI ?? Interface.modConfig);
+				}
 			};
 
 			sideIndicator.OnDraw += (_, _) => {

@@ -23,9 +23,7 @@ namespace Terraria.ModLoader.Config.UI;
 
 public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 {
-	public int UpdateCount { get; set; }
-	// Will remove this static field in the future since statics make it difficult to have multiple instances of UIModConfig (needed for modders specifying custom config UI)
-	public static string Tooltip { get => Interface.modConfig.ConfigElementTooltip; set => Interface.modConfig.ConfigElementTooltip = value; }
+	public int UpdateCount { get; protected set; }
 	public string ConfigElementTooltip { get; set; }
 
 	public bool HasUnsavedChanges { get; protected set; }

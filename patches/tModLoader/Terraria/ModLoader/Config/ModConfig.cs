@@ -223,13 +223,17 @@ public abstract class ModConfig : ILocalizedModType
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		var ui = ConfigManager.GetConfigUI(this);
-		(ui as IConfigUI).SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
+		var customUI = ConfigManager.GetConfigUI(this);
+		(customUI ?? Interface.modConfig).SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
-			// Main.menuMode = Interface.modConfigID; // TODO: more elegant
-			Main.menuMode = MenuID.FancyUI;
-			Main.MenuUI.SetState(ui);
+			if (customUI is not null) {
+				Main.menuMode = MenuID.FancyUI;
+				Main.MenuUI.SetState((UIState)customUI);
+			}
+			else {
+				Main.menuMode = Interface.modConfigID;
+			}
 		}
 		else {
 			IngameFancyUI.CoverNextFrame();
@@ -237,8 +241,8 @@ public abstract class ModConfig : ILocalizedModType
 			Main.editChest = false;
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
-			Main.InGameUI.SetState(ui);
-			// Same as IngameFancyUI.OpenUIState(ui); except no ClearChat()
+			Main.InGameUI.SetState((UIState)customUI ?? Interface.modConfig);
+			// Same as IngameFancyUI.OpenUIState(...); except no ClearChat()
 		}
 	}
 

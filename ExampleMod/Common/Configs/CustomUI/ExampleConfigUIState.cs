@@ -6,11 +6,9 @@ namespace ExampleMod.Common.Configs.CustomUI;
 // TODO: also demo a completely custom UI where IConfigUI is implemented
 public class ExampleConfigUIState : UIModConfig
 {
-	// TODO: actually change stuff
-
 	public override void OnActivate() {
 		base.OnActivate();
 
-		modNamePanel.DefaultState.PanelColor = Color.Red;
+		SetMessage("Hello from Example Mod!", Color.DeepPink);
 	}
 }

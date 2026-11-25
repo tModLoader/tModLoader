@@ -97,7 +97,7 @@ internal class EnumElement : RangeElement
 
 		if (IngameOptions.inBar) {
 			int index = _getIndex();
-			UIModConfig.Tooltip = index != -1 ? tooltips[index] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = index != -1 ? tooltips[index] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
 		}
 	}
 }

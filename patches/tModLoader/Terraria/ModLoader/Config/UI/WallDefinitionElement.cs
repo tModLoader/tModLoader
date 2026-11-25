@@ -78,6 +78,6 @@ internal class WallDefinitionOptionElement : DefinitionOptionElement<WallDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 	}
 }

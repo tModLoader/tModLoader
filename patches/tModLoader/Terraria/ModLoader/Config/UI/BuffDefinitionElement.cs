@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -123,6 +123,6 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 	}
 }

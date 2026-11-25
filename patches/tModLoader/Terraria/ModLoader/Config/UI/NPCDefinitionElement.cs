@@ -124,7 +124,7 @@ internal class NPCDefinitionOptionElement : DefinitionOptionElement<NPCDefinitio
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 	}
 
 	public override int CompareTo(object obj)

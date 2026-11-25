@@ -182,7 +182,7 @@ public abstract class ConfigElement : UIElement
 				tooltip += $"[c/{Color.Orange.Hex3()}:" + Language.GetTextValue("tModLoader.ModReloadRequiredMemberTooltip") + "]";
 			}
 
-			UIModConfig.Tooltip = tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = tooltip;
 		}
 	}
 

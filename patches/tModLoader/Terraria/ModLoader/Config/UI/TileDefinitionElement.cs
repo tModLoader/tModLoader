@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using System;
@@ -101,7 +101,7 @@ internal class TileDefinitionOptionElement : DefinitionOptionElement<TileDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 
 		void Draw1x1Tile(int type, Point coords, Point? offsetFromCenter = null)
 		{

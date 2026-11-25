@@ -21,6 +21,13 @@ namespace Terraria.ModLoader.Config;
 #nullable enable
 public static class ConfigManager
 {
+	/// <summary>
+	/// The currently open <see cref="IConfigUI"/>.
+	/// <br/><br/> Is <see langword="null"/> if there is no config UI open.
+	/// </summary>
+	// TODO: maybe this should do a regular cast so it throws if accessed outside of config UI?
+	public static IConfigUI? CurrentConfigUI => (Main.gameMenu ? Main.MenuUI : Main.InGameUI).CurrentState as IConfigUI;
+
 	// These are THE active configs.
 	internal static readonly IDictionary<Mod, List<ModConfig>> Configs = new Dictionary<Mod, List<ModConfig>>();
 	// Configs should never violate reload required.
@@ -367,13 +374,12 @@ public static class ConfigManager
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
-	// TODO: this should just return null if a config doesn't have custom UI... also it should return IConfigUI
-	public static UIState GetConfigUI(ModConfig config)
+	public static IConfigUI? GetConfigUI(ModConfig config)
 	{
 		if (customConfigUIs.TryGetValue(config.Mod, out var configs) && configs.TryGetValue(config, out var customUI))
-			return (UIState)customUI;
+			return customUI;
 
-		return Interface.modConfig;
+		return null;
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
@@ -530,20 +536,6 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
-	}
-
-	// TODO: remove
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
-	{
-		// public api for modders.
-		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
-	}
-
-	// TODO: remove
-	public static void SetPendingChanges(bool changes = true)
-	{
-		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
 	}
 
 	// TODO: better home?
