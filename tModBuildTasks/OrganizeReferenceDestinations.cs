@@ -77,7 +77,7 @@ public sealed class OrganizeReferenceDestinations : TaskBase
 				}
 
 				// NuGet package IDs are lowercased in folder repositories.
-				string? nugetPackageIdLower = nugetPackageId.ToLower();
+				string? nugetPackageIdLower = nugetPackageId.ToLowerInvariant();
 
 				destinationSubDirectory = Path.Combine(BaseDirectory, nugetPackageIdLower, nugetPackageVersion, directoryInPackage);
 			}
