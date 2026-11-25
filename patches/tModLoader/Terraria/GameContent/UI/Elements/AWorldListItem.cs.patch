@@ -13,7 +13,7 @@
  {
 +	// Added by TML
 +	public WorldFileData Data => _data;
-+	protected List<ModSpecialSeed> _moddedSeeds = new();
++	protected List<ModSpecialSeed> ModdedSeeds = new();
 +
  	protected WorldFileData _data;
  	protected int _glitchFrameCounter;
@@ -23,7 +23,7 @@
  			list.Add(GetSeedIcon("Skyblock", hardmodeVariants: false, evilVariants: false));
  
 +		list.RemoveAll(icon => icon == null);
-+		SeedLoader.AddModSeedIcons(_data,list,_moddedSeeds);
++		SeedLoader.AddModSeedIcons(_data,list,ModdedSeeds);
 +
  		if (list.Count > 0)
  			return list;

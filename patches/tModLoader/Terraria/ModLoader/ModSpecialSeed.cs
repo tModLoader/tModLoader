@@ -19,6 +19,8 @@ namespace Terraria.ModLoader;
 /// </summary>
 public abstract class ModSpecialSeed : ModSeedType
 {
+	private Asset<Texture2D> textureAsset;
+
 	/// <summary>
 	/// The underlying data used to create and manage the option button for this seed in the menu.
 	/// <br/><br/>Note that UIOption.Enabled only states if the button is enabled in the menu.
@@ -65,6 +67,9 @@ public abstract class ModSpecialSeed : ModSeedType
 		}
 	}
 
+	public List<AWorldGenerationOption> Dependencies { get; private set; }
+	public List<AWorldGenerationOption> Incompatibilities { get; private set; }
+
 	/// <summary>
 	/// Whether this seed should be automatically enabled when all of its dependencies are also enabled.
 	/// True for the Zenith seed.
@@ -77,12 +82,6 @@ public abstract class ModSpecialSeed : ModSeedType
 	/// <br/><br/>Defaults to true.
 	/// </summary>
 	public bool ToggleOnClick { get; protected set; } = true;
-
-	/// <summary>
-	/// Gets the icon used to represent worlds with this seed enabled.
-	/// Unlike the autoloaded texture, the texture used here needs to have the icon backdrop behind it.
-	/// </summary>
-	public abstract Asset<Texture2D> GetWorldIconTexture();
 
 	protected sealed override void Register()
 	{
@@ -104,13 +103,6 @@ public abstract class ModSpecialSeed : ModSeedType
 		UIOption.CustomServerConfigName = Regex.Replace(ServerConfigName.ToLower(), "[^a-z0-9]+", "");
 	}
 
-	internal void Unsubscribe()
-	{
-		UIOption.OnUIButtonPress -= OnUIButtonPress;
-		UIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
-		UIOption.Unsubscribe();
-	}
-
 	internal void FinalizeContent()
 	{
 		List<AWorldGenerationOption> dependencies = GetDependencies().ToList();
@@ -126,10 +118,12 @@ public abstract class ModSpecialSeed : ModSeedType
 		Incompatibilities = incompatibilities;
 	}
 
-	public List<AWorldGenerationOption> Dependencies { get; private set; }
-	public List<AWorldGenerationOption> Incompatibilities { get; private set; }
-
-	private Asset<Texture2D> textureAsset;
+	internal void Unsubscribe()
+	{
+		UIOption.OnUIButtonPress -= OnUIButtonPress;
+		UIOption.OnAnyOptionStateChange -= OnAnyOptionStateChange;
+		UIOption.Unsubscribe();
+	}
 
 	private void SetupWorldGenerationOption()
 	{
@@ -137,11 +131,6 @@ public abstract class ModSpecialSeed : ModSeedType
 		UIOption.OnUIButtonPress += OnUIButtonPress;
 		UIOption.OnAnyOptionStateChange += OnAnyOptionStateChange;
 		UIOption.ModSpecialSeed = this;
-	}
-
-	private void OnUIButtonPress(object sender, EventArgs e)
-	{
-		OnSeedButtonPress();
 	}
 
 	private void ChangeDependencyState()
@@ -164,20 +153,6 @@ public abstract class ModSpecialSeed : ModSeedType
 		foreach (AWorldGenerationOption option in Incompatibilities) {
 			option.Enabled = false;
 		}
-	}
-
-	private void OnAnyOptionStateChange(AWorldGenerationOption changed)
-	{
-		if (changed == UIOption) {
-			OnChangeOptionEnabled();
-			ChangeDependencyState();
-			ChangeIncompatibilityState();
-		}
-		UpdateDependencies(changed);
-		if (AutoEnableWithDependencies && Dependencies.All(dependent => dependent.Enabled) && Dependencies.Count > 0) {
-			UIOption.Enabled = true;
-		}
-		UpdateIncompatibilities(changed);
 	}
 
 	private void UpdateDependencies(AWorldGenerationOption changed)
@@ -203,6 +178,25 @@ public abstract class ModSpecialSeed : ModSeedType
 		}
 	}
 
+	private void OnAnyOptionStateChange(AWorldGenerationOption changed)
+	{
+		if (changed == UIOption) {
+			OnChangeOptionEnabled();
+			ChangeDependencyState();
+			ChangeIncompatibilityState();
+		}
+		UpdateDependencies(changed);
+		if (AutoEnableWithDependencies && Dependencies.All(dependent => dependent.Enabled) && Dependencies.Count > 0) {
+			UIOption.Enabled = true;
+		}
+		UpdateIncompatibilities(changed);
+	}
+
+	private void OnUIButtonPress(object sender, EventArgs e)
+	{
+		OnSeedButtonPress();
+	}
+
 	public UIElement ProvideSeedIconElement()
 	{
 		var element = UIOption.ProvideUIElement();
@@ -216,6 +210,12 @@ public abstract class ModSpecialSeed : ModSeedType
 	}
 
 	#region Hooks
+	/// <summary>
+	/// Gets the icon used to represent worlds with this seed enabled.
+	/// Unlike the autoloaded texture, the texture used here needs to have the icon backdrop behind it.
+	/// </summary>
+	public abstract Asset<Texture2D> GetWorldIconTexture();
+
 	/// <summary>
 	/// This allows changing the icon for this seed's toggle in the world creation menu.
 	/// </summary>

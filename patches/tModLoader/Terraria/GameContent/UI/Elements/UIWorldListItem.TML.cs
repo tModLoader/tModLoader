@@ -165,7 +165,7 @@ public partial class UIWorldListItem : AWorldListItem
 
 	private void UpdateIconForModSeeds(UIElement element)
 	{
-		if (_moddedSeeds.Count == 0) {
+		if (ModdedSeeds.Count == 0) {
 			return;
 		}
 		UICyclingImage worldIcon = null;
@@ -187,13 +187,13 @@ public partial class UIWorldListItem : AWorldListItem
 			currentIndex = 0;
 		}
 
-		int modSeedIndex = currentIndex - (worldIcon.TextureCount - _moddedSeeds.Count);
+		int modSeedIndex = currentIndex - (worldIcon.TextureCount - ModdedSeeds.Count);
 		if (modSeedIndex < 0) {
 			worldIcon.Frame = null;
 			return;
 		}
 		Rectangle frame = Rectangle.Empty;
-		_moddedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.IsHardMode, ref frame);
+		ModdedSeeds[modSeedIndex].ModifyWorldIconDrawParams(_data.HasCrimson, _data.IsHardMode, ref frame);
 		if (frame != Rectangle.Empty) {
 			worldIcon.Frame = frame;
 		}

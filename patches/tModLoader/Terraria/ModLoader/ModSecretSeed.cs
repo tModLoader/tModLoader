@@ -32,9 +32,17 @@ public abstract class ModSecretSeed : ModSeedType
 
 	/// <summary>
 	/// Whether this seed should be automatically added to the secret seeds menu without needing to be unlocked first.
-	/// Does nothing if the secret seeds menu has already been loaded.
+	/// Can only be set at load time.
 	/// </summary>
-	public bool AutoUnlock { get; protected set; }
+	public bool AutoUnlock {
+		get => _autoUnlock;
+		protected set {
+			if (!SeedLoader.CanChangeAutoUnlock)
+				throw new Exception($"The AutoUnlock property of {FullName} can not be changed after load time.");
+			_autoUnlock = value;
+		}
+	}
+	private bool _autoUnlock;
 
 	/// <summary>
 	/// The <see cref="WorldGen.SecretSeed"/> object that this ModSecretSeed controls.

@@ -1622,6 +1622,7 @@ Mods: {
 			InExampleBiome: In the Example biome
 			NotSellingExampleItem: When not selling Example Item
 			DownedMinionBoss: After defeating {$NPCs.MinionBossBody.DisplayName}
+			ExampleSecretWorld: In an Example Secret Seed world
 		}
 
 		DropConditions: {

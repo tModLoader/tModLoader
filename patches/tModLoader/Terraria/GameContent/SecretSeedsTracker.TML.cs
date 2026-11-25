@@ -10,9 +10,8 @@ namespace Terraria.GameContent;
 
 public static partial class SecretSeedsTracker
 {
-	public static bool ProcessedConfig => _processedConfig;
-
 	internal static List<string> UnloadedModSeeds = new List<string>();
+	public static bool ProcessedConfig => _processedConfig;
 
 	private static string ModSeedToString(ModSecretSeed seed)
 	{

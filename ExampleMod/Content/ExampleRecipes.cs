@@ -168,6 +168,13 @@ namespace ExampleMod.Content
 				.AddOnCraftCallback(ExampleRecipeCallbacks.RandomlySpawnFireworks)
 				.AddTile(TileID.HeavyWorkBench)
 				.Register();
+
+			// Some vanilla recipes are only available on certain special seeds.
+			// This logic can be recreated in mods using the custom recipe conditions demonstrated earlier, as shown by this example.
+			Recipe.Create(ItemID.GravityGlobe)
+				.AddIngredient(ModContent.ItemType<ExampleBlock>(), 5)
+				.AddCondition(ExampleConditions.ExampleSecretWorld)
+				.Register();
 		}
 
 		public override void PostAddRecipes() {

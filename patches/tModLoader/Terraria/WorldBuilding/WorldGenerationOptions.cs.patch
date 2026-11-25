@@ -13,7 +13,7 @@
  			string namePiece = array[0].Trim().ToLower();
  			AWorldGenerationOption aWorldGenerationOption = _options.FirstOrDefault((AWorldGenerationOption x) => x.ServerConfigName != null && x.ServerConfigName == namePiece);
 +			if (aWorldGenerationOption == null)
-+				aWorldGenerationOption = SeedLoader.specialSeeds.Select(x => x.UIOption).FirstOrDefault((AWorldGenerationOption x) => x.ServerConfigName != null && x.ServerConfigName == namePiece);
++				aWorldGenerationOption = SeedLoader.SpecialSeeds.Select(x => x.UIOption).FirstOrDefault((AWorldGenerationOption x) => x.ServerConfigName != null && x.ServerConfigName == namePiece);
  			if (aWorldGenerationOption != null)
  				aWorldGenerationOption.AutoGenEnabled = autoGenEnabled;
  		}

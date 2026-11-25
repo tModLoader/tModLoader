@@ -24,9 +24,7 @@ public class ExampleSecretSeed : ModSecretSeed
 		// This example uses procedural syntax to place the circles: https://github.com/tModLoader/tModLoader/wiki/World-Generation#procedural-syntax
 		for (int k = 0; k < (int)(Main.maxTilesX * Main.maxTilesY * 8E-04); k++) {
 			int x = WorldGen.genRand.Next(15, Main.maxTilesX - 15);
-
 			int y = WorldGen.genRand.Next(15, Main.maxTilesY - 15);
-
 			int radius = WorldGen.genRand.Next(5, 14);
 
 			Point point = new Point(x, y);

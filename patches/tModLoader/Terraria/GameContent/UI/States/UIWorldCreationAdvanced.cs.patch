@@ -45,7 +45,7 @@
  		_seedButtonRegion = new UIElement {
  			Width = StyleDimension.FromPercent(1f),
 -			Height = StyleDimension.FromPixels((float)Math.Ceiling((double)array.Length / (double)num) * 70f - 10f)
-+			Height = StyleDimension.FromPixels((float)Math.Ceiling((double)(array.Length+1) / (double)num) * 70f)
++			Height = StyleDimension.FromPixels((float)Math.Ceiling((double)(array.Length+1) / (double)num) * 70f) // TML: Added to array length to account for secret seed button
  		};
  
  		listArea.Add(_seedButtonRegion);
