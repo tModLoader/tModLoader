@@ -170,7 +170,17 @@
  			Lang.InitializeLegacyLocalization();
  			SocialAPI.Initialize();
  			LaunchInitializer.LoadParameters(main);
-@@ -219,7 +_,10 @@
+@@ -212,14 +_,19 @@
+ 			if (Main.dedServ)
+ 				main.DedServ();
+ #if NETCORE
+-			else
++			else {
+ 				main.Run();
++				main.Dispose();
++			}
+ #else
+ 			main.Run();
  #endif
  		}
  		catch (Exception e) {
