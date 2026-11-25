@@ -520,7 +520,7 @@ internal class UIModPackItem : UIPanel
 	private static void DeleteInstance(UIMouseEvent evt, UIElement listeningElement)
 	{
 		UIModPackItem modpack = ((UIModPackItem)listeningElement.Parent);
-		string instancePath = Path.Combine(Directory.GetCurrentDirectory(),modpack._filename);
+		string instancePath = Path.Combine(Directory.GetCurrentDirectory(), modpack._filename);
 
 		Directory.Delete(instancePath, true);
 		Interface.modPacksMenu.OnDeactivate(); // should reload

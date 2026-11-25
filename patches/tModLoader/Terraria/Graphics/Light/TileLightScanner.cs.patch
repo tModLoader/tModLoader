@@ -8,6 +8,34 @@
  
  namespace Terraria.Graphics.Light;
  
+@@ -86,10 +_,10 @@
+ 		if (tile.active())
+ 			ApplyTileLight(tile, x, y, ref localRandom, ref outputColor);
+ 
+-		ApplyLiquidLight(tile, ref outputColor);
++		ApplyLiquidLight(tile, x, y, ref outputColor);
+ 	}
+ 
+-	private void ApplyLiquidLight(Tile tile, ref Vector3 lightColor)
++	private void ApplyLiquidLight(Tile tile, int x, int y, ref Vector3 lightColor)
+ 	{
+ 		if (tile.liquid <= 0)
+ 			return;
+@@ -120,6 +_,14 @@
+ 			if (lightColor.Z < num2)
+ 				lightColor.Z = num2 * 0.9f;
+ 		}
++
++		// Added by tML
++		float r = lightColor.X, g = lightColor.Y, b = lightColor.Z;
++		LiquidLoader.ModifyLight(x, y, tile.liquidType(), ref r, ref g, ref b);
++
++		lightColor.X = lightColor.X < r ? r : lightColor.X;
++		lightColor.Y = lightColor.Y < g ? g : lightColor.Y;
++		lightColor.Z = lightColor.Z < b ? b : lightColor.Z;
+ 	}
+ 
+ 	private bool LightIsBlocked(Tile tile)
 @@ -280,9 +_,12 @@
  			num3 = (float)(int)color.B / 765f;
  		}

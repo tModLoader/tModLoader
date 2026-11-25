@@ -113,7 +113,7 @@ internal sealed class Gateway
 
 	private static string GetLocation(string data)
 	{
-		var lines = data.Split('\n').Select(l=>l.Trim()).Where(l=>l.Length>0);
+		var lines = data.Split('\n').Select(l => l.Trim()).Where(l => l.Length > 0);
 
 		foreach (string line in lines) {
 			if (line.StartsWith("HTTP/1.") || line.StartsWith("NOTIFY *"))
@@ -141,9 +141,9 @@ internal sealed class Gateway
 	private static (string serviceType, string controlURL) GetInfo(string location)
 	{
 		XDocument doc = XDocument.Load(location);
-		var services =  doc.Descendants().Where(d => d.Name.LocalName == "service");
+		var services = doc.Descendants().Where(d => d.Name.LocalName == "service");
 
-		(string serviceType, string controlURL) ret = (null,null);
+		(string serviceType, string controlURL) ret = (null, null);
 
 		foreach (XElement service in services) {
 			string serviceType = null;
@@ -154,9 +154,13 @@ internal sealed class Gateway
 					continue;
 				}
 
-				switch(ele.Name.LocalName.Trim().ToLowerInvariant()) {
-					case "servicetype": serviceType = n.Value.Trim(); break;
-					case "controlurl": controlURL = n.Value.Trim(); break;
+				switch (ele.Name.LocalName.Trim().ToLowerInvariant()) {
+					case "servicetype":
+						serviceType = n.Value.Trim();
+						break;
+					case "controlurl":
+						controlURL = n.Value.Trim();
+						break;
 				}
 			}
 
@@ -263,9 +267,9 @@ internal sealed class Gateway
 		("NewExternalPort", externalPort),
 		("NewProtocol", protocol),
 		("NewInternalClient", InternalClient),
-		("NewInternalPort", internalPort??externalPort),
+		("NewInternalPort", internalPort ?? externalPort),
 		("NewEnabled", 1),
-		("NewPortMappingDescription", description??"UwUPnP"),
+		("NewPortMappingDescription", description ?? "UwUPnP"),
 		("NewLeaseDuration", 0)
 	);
 
@@ -276,7 +280,7 @@ internal sealed class Gateway
 	);
 
 	/// <summary>2.4.14.GetGenericPortMappingEntry</summary>
-	public Dictionary<string,string> GetGenericPortMappingEntry(int portMappingIndex) => RunCommand("GetGenericPortMappingEntry",
+	public Dictionary<string, string> GetGenericPortMappingEntry(int portMappingIndex) => RunCommand("GetGenericPortMappingEntry",
 		("NewPortMappingIndex", portMappingIndex)
 	);
 }

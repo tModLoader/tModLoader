@@ -87,12 +87,12 @@ namespace Terraria.ModLoader.Setup.Core.Utilities
 				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "Library/Application Support/Steam");
 			}
 			else { // Some kind of linux?
-				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/Steam");
-				if (!Directory.Exists(path))
-					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/steam");
+				// This can be a symlink to the actual install directory which is different based on distro/install method
+				path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/steam");
 
-                if (!Directory.Exists(path))
-					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".steam/debian-installation");
+				// Most common default
+				if (!Directory.Exists(path))
+					path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".local/share/Steam");
 			}
 
 			return path != null && Directory.Exists(path);

@@ -238,6 +238,7 @@ partial class ItemDropDatabase
 		item = ItemID.GolemBossBag;
 		RegisterToItem(item, ItemDropRule.Common(ItemID.ShinyStone));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.GolemMask, 7));
+		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.MobiusStrip, 6));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.Picksaw, 3));
 		IItemDropRule itemDropRuleStynger = ItemDropRule.Common(ItemID.Stynger);
 		itemDropRuleStynger.OnSuccess(ItemDropRule.Common(ItemID.StyngerBolt, 1, 60, 180), hideLootReport: true);
@@ -249,8 +250,8 @@ partial class ItemDropDatabase
 		RegisterToItem(item, ItemDropRule.Common(ItemID.ShrimpyTruffle));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.DukeFishronMask, 7));
 		RegisterToItem(item, ItemDropRule.NotScalingWithLuck(ItemID.FishronWings, 10));
-		RegisterToItem(item, new LeadingConditionRule(new Conditions.NotRemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.BubbleGun));
-		RegisterToItem(item, new LeadingConditionRule(new Conditions.RemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.AquaScepter));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.NotRemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.Kraken, ItemID.BubbleGun));
+		RegisterToItem(item, new LeadingConditionRule(new Conditions.RemixSeed())).OnSuccess(ItemDropRule.OneFromOptions(1, ItemID.EelWhip, ItemID.FlaironFlail, ItemID.Tsunami, ItemID.RazorbladeTyphoon, ItemID.TempestStaff, ItemID.Kraken, ItemID.AquaScepter));
 		RegisterToItem(item, ItemDropRule.CoinsBasedOnNPCValue(NPCID.DukeFishron));
 	}
 
@@ -1013,6 +1014,7 @@ partial class ItemDropDatabase
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.ShadowKey, 3));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.DeadCellsRamRune, 8));
 		RegisterToItem(ItemID.LockBox, ItemDropRule.ByConditionNotScalingWithLuck(new Conditions.ForTheWorthyIsUp(), ItemID.MoonLordBody, 5));
+		RegisterToItem(ItemID.LockBox, ItemDropRule.NotScalingWithLuck(ItemID.SilverBracer, 4));
 	}
 
 	private void RegisterHerbBag()

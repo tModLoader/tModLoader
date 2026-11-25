@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/DataStructures/TileEntity.cs
 +++ src/tModLoader/Terraria/DataStructures/TileEntity.cs
-@@ -5,26 +_,38 @@
+@@ -5,26 +_,41 @@
  using Terraria.Audio;
  using Terraria.GameInput;
  using Terraria.UI;
@@ -13,6 +13,9 @@
  {
  	public static TileEntitiesManager manager;
  	public const int MaxEntitiesPerChunk = 1000;
++	/// <summary>
++	/// Used as a lock on modifications to <see cref="ByID"/> and <see cref="ByPosition"/>. Due to multithreading, this needs to be used in a lock statement before adding or removing entries to ByID and ByPosition.
++	/// </summary>
  	public static object EntityCreationLock = new object();
  	public static List<TileEntity> UpdateEntities = new List<TileEntity>();
 +	/// <summary> Maps <see cref="ID"/> to TileEntity instances. </summary>
