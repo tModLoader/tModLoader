@@ -461,6 +461,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		RefreshUI();
 	}
 
+	public void OnServerAcceptedChanges()
+	{
+		OnSaveRevertRestore(); // In case we are in a sub-page
+		RefreshUI();
+	}
+
 	// Exists to avoid breaking mods that depended on this method signature, will be removed in the future
 	public void SetPendingChanges(bool changes = true)
 	{
