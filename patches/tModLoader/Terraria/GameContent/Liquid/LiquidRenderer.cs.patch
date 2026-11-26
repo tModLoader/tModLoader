@@ -1,12 +1,17 @@
 --- src/TerrariaNetCore/Terraria/GameContent/Liquid/LiquidRenderer.cs
 +++ src/tModLoader/Terraria/GameContent/Liquid/LiquidRenderer.cs
-@@ -1,4 +_,5 @@
+@@ -1,16 +_,18 @@
  using System;
 +using System.Collections.Generic;
  using Microsoft.Xna.Framework;
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Content;
-@@ -10,7 +_,7 @@
+ using Terraria.Graphics;
+ using Terraria.ID;
++using Terraria.ModLoader;
+ using Terraria.Utilities;
+ 
+ namespace Terraria.GameContent.Liquid;
  
  public class LiquidRenderer
  {
@@ -301,6 +306,18 @@
  		}
  
  		if (this.WaveFilters != null)
+@@ -559,7 +_,11 @@
+ 						vertices.TopLeftColor *= num;
+ 						vertices.TopRightColor *= num;
+ 						Main.DrawTileInWater(drawOffset, i, j);
++						/*
+ 						Main.tileBatch.Draw(_liquidTextures[num2].Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
++						*/
++						var texture = ptr2->Type >= LiquidID.Count ? LiquidLoader.LiquidAssets[ptr2->Type] : _liquidTextures[num2];
++						Main.tileBatch.Draw(texture.Value, new Vector2(i << 4, j << 4) + drawOffset + liquidOffset, sourceRectangle, vertices, Vector2.Zero);
+ 					}
+ 
+ 					ptr2++;
 @@ -575,12 +_,27 @@
  	{
  		Rectangle drawArea = _drawArea;
