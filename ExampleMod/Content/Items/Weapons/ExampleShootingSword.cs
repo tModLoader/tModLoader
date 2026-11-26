@@ -14,9 +14,6 @@ namespace ExampleMod.Content.Items.Weapons
 	public class ExampleShootingSword : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 26;
-			Item.height = 42;
-
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.useTime = 20;
 			Item.useAnimation = 20;

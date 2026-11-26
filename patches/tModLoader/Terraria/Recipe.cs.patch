@@ -314,14 +314,17 @@
  				array[j].Refresh();
  			}
  		}
-@@ -501,6 +_,7 @@
+@@ -501,8 +_,10 @@
  
  	public static void SetupRecipes()
  	{
 +		Recipe.SetupRecipeGroups(); // TML
  		Array.Clear(TileUsedInRecipes, 0, TileUsedInRecipes.Length);
  		SetupTileInheritance();
++		SetupModdedTileInheritance(); // TML
  		int num = 5;
+ 		int stack = 2;
+ 		currentRecipe.createItem.SetDefaults(8);
 @@ -15153,11 +_,19 @@
  		AddRecipe();
  		CreateReverseWallRecipes();
