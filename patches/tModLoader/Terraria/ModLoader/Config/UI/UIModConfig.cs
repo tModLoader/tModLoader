@@ -16,7 +16,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
-using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -212,7 +211,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		configSideIndicatorPanel.SetPadding(0);
 		listHeaderContainer.Append(configSideIndicatorPanel);
 
-		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, Rectangle.Empty) {
+		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, new Rectangle(0, 0, 22, 22)) {
 			HAlign = 0.5f,
 			VAlign = 0.5f,
 		};
@@ -225,7 +224,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 			}
 		};
 
-		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Mod.PlaceholderSmallModIcon, null);
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Asset<Texture2D>.Empty, new Rectangle(0, 0, 30, 30));
 		modNamePanel.MaxWidth.Set(330, 0);
 		modNamePanel.MinWidth.Set(0, 0);
 		modNamePanel.VAlign = 0.5f;
@@ -413,13 +412,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
 	{
-		if (configPageStack.Count <= 1) {
-			return;
-		}
-
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		configPageStack.Pop();
-		RefreshUI();
+		if (TryGoBackConfigPage())
+			SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
 	#endregion
@@ -464,6 +458,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	public void OnConfigModified()
 	{
+		RefreshUI();
+	}
+
+	public void OnServerAcceptedChanges()
+	{
+		OnSaveRevertRestore(); // In case we are in a sub-page
 		RefreshUI();
 	}
 
@@ -546,10 +546,20 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		RefreshUI();
 	}
 
+	public bool TryGoBackConfigPage()
+	{
+		if (configPageStack.Count <= 1)
+			return false;
+
+		configPageStack.Pop();
+		RefreshUI();
+		return true;
+	}
+
 	public void SetMessage(string text, Color color)
 	{
 		var notification = new ConfigNotification(text, color);
-		InGameNotificationsTracker.AddMenuNotification(notification);
+		MenuNotificationsTracker.AddNotification(notification);
 	}
 
 	public void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
@@ -579,14 +589,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 		base.Draw(spriteBatch);
 
-		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
+		if (!string.IsNullOrEmpty(ConfigElementTooltip))
 			UICommon.TooltipMouseText(ConfigElementTooltip);
-		}
 
 		// Draw the "Menu notifications" if we are in game, since they aren't drawn otherwise
-		if (!Main.gameMenu) {
-			InGameNotificationsTracker.DrawInMenu(spriteBatch);
-		}
+		if (!Main.gameMenu)
+			MenuNotificationsTracker.DrawInMenu(spriteBatch);
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}
@@ -599,6 +607,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		var configSideTexture = UICommon.ConfigSideIndicatorTexture;
 		var configSideFrame = configSideTexture.Frame(2, 1, pendingConfig.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 		configSideIndicator.SetImage(configSideTexture, configSideFrame);
+		configSideIndicator.MarginLeft = Main.gameMenu ? -2 : 0; // Main.UIScaleMatrix messes with the icon alignment
 		configSideIndicator.Recalculate();
 
 		headerTextPanel.SetText(modConfig.DisplayName);
@@ -610,7 +619,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		modNamePanel.Recalculate();
 		modNamePanel.ResetScroll();
 
-		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
+		var iconTexture = modConfig.Mod.SmallModIcon;
 		smallModIcon.SetImage(iconTexture, Utils.CornerRectangle(Vector2.Zero, iconTexture.Size()));
 
 		configPageStack.Clear();
@@ -627,7 +636,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 
 		if (!Main.gameMenu) {
-			InGameNotificationsTracker.ClearMenuNotifications();
+			MenuNotificationsTracker.Clear();
 		}
 	}
 
@@ -638,6 +647,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 			scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
 			header = true;
 		}
+
 		// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
 		var desiredElement = configElementList._items.Find(x => {
 			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {

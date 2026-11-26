@@ -23,8 +23,6 @@ namespace ExampleMod.Content.Items.Weapons
 		public override void SetDefaults() {
 			Item.damage = 130;
 			Item.DamageType = DamageClass.Magic;
-			Item.width = 38;
-			Item.height = 38;
 			Item.useTime = 16;
 			Item.useAnimation = 16;
 			Item.useStyle = ItemUseStyleID.Shoot;

@@ -8,8 +8,6 @@ namespace ExampleMod.Content.Items.Placeable.Furniture
 	{
 		public override void SetDefaults() {
 			Item.DefaultToPlaceableTile(ModContent.TileType<ExampleDoorClosed>());
-			Item.width = 14;
-			Item.height = 28;
 			Item.value = 150;
 		}
 

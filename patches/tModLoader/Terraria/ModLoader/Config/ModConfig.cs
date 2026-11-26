@@ -106,11 +106,22 @@ public abstract class ModConfig : ILocalizedModType
 		return false;
 	}
 
+	/// <summary>
+	/// Returns true if the config has changes when compared to <paramref name="otherConfig"/>.
+	/// <br/><br/> Uses JSON serialization instead of <see cref="object.Equals(object?)"/> to avoid issues with reference types.
+	/// </summary>
+	/// <param name="otherConfig">The config being compared to.</param>
+	/// <returns></returns>
 	public bool HasChanges(ModConfig otherConfig)
 	{
 		return !ConfigManager.AreConfigsEqual(this, otherConfig);
 	}
 
+	/// <summary>
+	/// Returns true if the config has it's default values set.
+	/// <br/><br/> Uses JSON serialization instead of <see cref="object.Equals(object?)"/> to avoid issues with reference types.
+	/// </summary>
+	/// <returns></returns>
 	public bool HasDefaultValues()
 	{
 		return ConfigManager.AreConfigsEqual(this, ConfigManager.GetDefaultValuesConfig(Mod, Name));

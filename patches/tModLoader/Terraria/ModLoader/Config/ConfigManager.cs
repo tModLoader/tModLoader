@@ -400,8 +400,7 @@ public static class ConfigManager
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
 				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(null);
-					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
+					ConfigManager.CurrentConfigUI.OnServerAcceptedChanges();
 					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
