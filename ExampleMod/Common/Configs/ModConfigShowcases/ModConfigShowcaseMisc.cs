@@ -30,7 +30,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
 
-		// Here, we can return our custom UI
+		// Here, we can return our custom UI that was loaded through ILoadable
 		public override IConfigUI ProvideCustomUI() {
 			return ModContent.GetInstance<ExampleConfigUIState>();
 		}

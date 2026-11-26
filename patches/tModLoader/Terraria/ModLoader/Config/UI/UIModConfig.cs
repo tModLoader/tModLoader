@@ -915,7 +915,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	#region Input Blocking
 
-	internal void BlockInput(UIElement dialog)
+	public void BlockInput(UIElement dialog)
 	{
 		blockInput = new BlockInputElement(configElementList);
 		blockInput.OnLeftMouseDown += UnblockInput;
@@ -926,7 +926,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		innerList.Append(activeDialog = dialog);
 	}
 
-	internal void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
+	public void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
 	{
 		blockInput?.Remove();
 		activeDialog?.Remove();
@@ -935,7 +935,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 	#endregion
 }
 
-internal class BlockInputElement : UIElement
+public class BlockInputElement : UIElement
 {
 	private UIElement elementToBlock;
 
