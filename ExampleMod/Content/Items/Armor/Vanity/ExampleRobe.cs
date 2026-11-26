@@ -36,8 +36,6 @@ namespace ExampleMod.Content.Items.Armor.Vanity
 		}
 
 		public override void SetDefaults() {
-			Item.width = 18;
-			Item.height = 14;
 			Item.rare = ItemRarityID.Blue;
 			Item.vanity = true;
 		}
