@@ -39,10 +39,6 @@ public static class ConfigManager
 	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
 	private static readonly IDictionary<Mod, List<ModConfig>> defaultValuesConfigs = new Dictionary<Mod, List<ModConfig>>();
 
-	// The IConfigUI are also checked that they are a UIState when they are added.
-	// Configs without custom UI are not added.
-	private static readonly IDictionary<Mod, IDictionary<ModConfig, IConfigUI>> customConfigUIs = new Dictionary<Mod, IDictionary<ModConfig, IConfigUI>>();
-
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
@@ -99,17 +95,6 @@ public static class ConfigManager
 
 		var instanceField = config.GetType().GetField("Instance", BindingFlags.Static | BindingFlags.Public);
 		instanceField?.SetValue(null, config);
-
-		var customUI = config.CreateCustomUI();
-		if (customUI is not null) {
-			if (customUI is not UIState)
-				throw new InvalidOperationException($"Cannot add custom config UI for {config.Name} in mod {config.Mod.Name} because it does not extend UIState");
-
-			if (!customConfigUIs.TryGetValue(config.Mod, out var customConfigUIList))
-				customConfigUIs[config.Mod] = customConfigUIList = new Dictionary<ModConfig, IConfigUI>();
-
-			customConfigUIList.Add(config, customUI);
-		}
 
 		config.OnLoaded();
 		config.OnChanged();
@@ -302,7 +287,6 @@ public static class ConfigManager
 		Configs.Clear();
 		loadTimeConfigs.Clear();
 		defaultValuesConfigs.Clear();
-		customConfigUIs.Clear();
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
@@ -375,10 +359,15 @@ public static class ConfigManager
 
 	public static IConfigUI? GetConfigUI(ModConfig config)
 	{
-		if (customConfigUIs.TryGetValue(config.Mod, out var configs) && configs.TryGetValue(config, out var customUI))
-			return customUI;
+		var customUI = config.ProvideCustomUI(); // Only accessing once is important to let modders override the getter to the UI
 
-		return null;
+		if (customUI is null)
+			return null;
+
+		if (customUI is not UIState)
+			throw new InvalidOperationException($"Cannot use custom config UI for {config.Name} in mod {config.Mod.Name} because it does not extend UIState");
+
+		return customUI;
 	}
 
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)

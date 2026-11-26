@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria.Audio;
@@ -258,12 +259,12 @@ public abstract class ModConfig : ILocalizedModType
 	}
 
 	/// <summary>
-	/// Called during loading to create a custom <see cref="IConfigUI"/>.
-	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want UI similar to vanilla, you can extend <see cref="UIModConfig"/>.
+	/// Override to return an <see cref="IConfigUI"/> to give this config custom UI.
+	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want a modified <see cref="UIModConfig"/>, you can extend <see cref="UIModConfig"/>.
 	/// <br/><br/> Defaults to returning null, which uses the default config UI.
+	/// <br/><br/> Only called once by tML when opening the config UI. This lets the UI get recreated before opening to aid with debugging speed.
 	/// </summary>
-	/// <returns></returns>
-	public virtual IConfigUI CreateCustomUI()
+	public virtual IConfigUI ProvideCustomUI()
 	{
 		return null;
 	}

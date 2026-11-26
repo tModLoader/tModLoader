@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework;
 namespace Terraria.ModLoader.Config.UI;
 
 // TODO: consider what else should be "public APIs" -- will be hard to change later because all impls are required (unless we supply default impls?)
-// - refresh UI? isnt that just OnConfigModified?...
 // - getting config elements? might make sense if SetupConfigPage or WrapIt are made virtual + non-static
 // - save/revert/restore
 // - back subpage

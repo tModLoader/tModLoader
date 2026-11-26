@@ -6,6 +6,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
 using Terraria.ModLoader.Config.UI;
 
@@ -28,6 +29,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Header("CustomElements")]
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
+
+		// Here, we can return our custom UI
+		public override IConfigUI ProvideCustomUI() {
+			return ModContent.GetInstance<ExampleConfigUIState>();
+		}
 
 		/*
 		// Here are some more examples, showing a complex JsonDefaultListValue and a initializer overriding the defaults of the constructor.
@@ -114,10 +120,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 				ListOfInts.AddRange(OldListOfInts);
 			}
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
-		}
-
-		public override IConfigUI CreateCustomUI() {
-			return new ExampleConfigUIState();
 		}
 	}
 }
