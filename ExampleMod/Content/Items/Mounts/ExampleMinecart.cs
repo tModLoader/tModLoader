@@ -9,8 +9,6 @@ namespace ExampleMod.Content.Items.Mounts
 	{
 		public override void SetDefaults() {
 			Item.mountType = ModContent.MountType<ExampleMinecartMount>();
-			Item.width = 34;
-			Item.height = 22;
 			Item.value = Item.sellPrice(0, 1, 0, 0);
 			Item.rare = ItemRarityID.Blue;
 		}

@@ -5506,6 +5506,15 @@
  		List<Item[]> list = new List<Item[]>();
  		Dictionary<int, List<int>> dictionary = new Dictionary<int, List<int>>();
  		List<Point> list2 = new List<Point>();
+@@ -29404,6 +_,8 @@
+ 		if (tileType == 355 || tileType == 699)
+ 			alchemyTable = true;
+ 
++		TileLoader.AdjTiles(this, tileType);
++
+ 		List<int> list = Recipe.TileCountsAs[tileType];
+ 		if (list == null)
+ 			return;
 @@ -29416,12 +_,17 @@
  	public void AdjTiles()
  	{
@@ -7743,6 +7752,22 @@
  		if (Main.tile[x, y].type == 470) {
  			TEDisplayDoll.TryChangePose(x, y);
  		}
+@@ -38329,6 +_,7 @@
+ 
+ 	public bool IsTargetTileInItemRange(Item sItem) => IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost);
+ 
++	/* Reimplemented in Player.TML.cs
+ 	private void ItemCheck_UseBuckets(Item sItem)
+ 	{
+ 		if (((sItem.type < 205 || sItem.type > 207) && sItem.type != 1128 && sItem.type != 3031 && sItem.type != 3032 && sItem.type != 4820 && sItem.type != 4872 && sItem.type != 5302 && sItem.type != 5303 && sItem.type != 5304 && sItem.type != 5364) || noBuilding || !IsInTileInteractionRange(tileTargetX, tileTargetY, TileReachCheckSettings.Simple, sItem.tileBoost))
+@@ -38476,6 +_,7 @@
+ 			}
+ 		}
+ 	}
++	*/
+ 
+ 	private void ItemCheck_PlayInstruments(Item sItem)
+ 	{
 @@ -38707,7 +_,9 @@
  			}
  
