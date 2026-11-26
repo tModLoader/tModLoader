@@ -211,7 +211,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		configSideIndicatorPanel.SetPadding(0);
 		listHeaderContainer.Append(configSideIndicatorPanel);
 
-		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, Rectangle.Empty) {
+		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, new Rectangle(0, 0, 22, 22)) {
 			HAlign = 0.5f,
 			VAlign = 0.5f,
 		};
@@ -224,7 +224,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 		};
 
-		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", TextureAssets.MagicPixel, new Rectangle(0, 0, 30, 30));
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Asset<Texture2D>.Empty, new Rectangle(0, 0, 30, 30));
 		modNamePanel.MaxWidth.Set(330, 0);
 		modNamePanel.MinWidth.Set(0, 0);
 		modNamePanel.VAlign = 0.5f;
@@ -590,14 +590,12 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		base.Draw(spriteBatch);
 
-		if (!string.IsNullOrEmpty(ConfigElementTooltip)) {
+		if (!string.IsNullOrEmpty(ConfigElementTooltip))
 			UICommon.TooltipMouseText(ConfigElementTooltip);
-		}
 
 		// Draw the "Menu notifications" if we are in game, since they aren't drawn otherwise
-		if (!Main.gameMenu) {
+		if (!Main.gameMenu)
 			MenuNotificationsTracker.DrawInMenu(spriteBatch);
-		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
 	}
@@ -610,6 +608,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		var configSideTexture = UICommon.ConfigSideIndicatorTexture;
 		var configSideFrame = configSideTexture.Frame(2, 1, pendingConfig.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
 		configSideIndicator.SetImage(configSideTexture, configSideFrame);
+		configSideIndicator.MarginLeft = Main.gameMenu ? -2 : 0; // Main.UIScaleMatrix messes with the icon alignment
 		configSideIndicator.Recalculate();
 
 		headerTextPanel.SetText(modConfig.DisplayName);
@@ -649,6 +648,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
 			header = true;
 		}
+
 		// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
 		var desiredElement = configElementList._items.Find(x => {
 			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
