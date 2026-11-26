@@ -16,7 +16,6 @@ using Terraria.Localization;
 using Terraria.ModLoader.UI;
 using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
-using Terraria.UI.Chat;
 using Terraria.UI.Gamepad;
 
 namespace Terraria.ModLoader.Config.UI;
@@ -413,13 +412,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
 	{
-		if (configPageStack.Count <= 1) {
-			return;
-		}
-
-		SoundEngine.PlaySound(SoundID.MenuClose);
-		configPageStack.Pop();
-		RefreshUI();
+		if (TryGoBackConfigPage())
+			SoundEngine.PlaySound(SoundID.MenuClose);
 	}
 
 	#endregion
@@ -553,10 +547,20 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		RefreshUI();
 	}
 
+	public bool TryGoBackConfigPage()
+	{
+		if (configPageStack.Count <= 1)
+			return false;
+
+		configPageStack.Pop();
+		RefreshUI();
+		return true;
+	}
+
 	public void SetMessage(string text, Color color)
 	{
 		var notification = new ConfigNotification(text, color);
-		InGameNotificationsTracker.AddMenuNotification(notification);
+		MenuNotificationsTracker.AddNotification(notification);
 	}
 
 	internal void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
@@ -592,7 +596,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// Draw the "Menu notifications" if we are in game, since they aren't drawn otherwise
 		if (!Main.gameMenu) {
-			InGameNotificationsTracker.DrawInMenu(spriteBatch);
+			MenuNotificationsTracker.DrawInMenu(spriteBatch);
 		}
 
 		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
@@ -617,7 +621,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		modNamePanel.Recalculate();
 		modNamePanel.ResetScroll();
 
-		var iconTexture = modConfig.Mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon;
+		var iconTexture = modConfig.Mod.SmallModIcon;
 		smallModIcon.SetImage(iconTexture, Utils.CornerRectangle(Vector2.Zero, iconTexture.Size()));
 
 		configPageStack.Clear();
