@@ -576,4 +576,14 @@ public partial class Recipe
 			}
 		}
 	}
+
+	// Added by TML. Must run after SetupTileInheritance, which clears the table.
+	private static void SetupModdedTileInheritance()
+	{
+		foreach (ModTile modTile in TileLoader.tiles) {
+			foreach (int adjTile in modTile.AdjTiles) {
+				AddTileCountsAs(modTile.Type, adjTile);
+			}
+		}
+   }
 }

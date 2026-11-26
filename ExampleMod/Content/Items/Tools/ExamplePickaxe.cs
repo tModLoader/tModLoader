@@ -13,8 +13,6 @@ namespace ExampleMod.Content.Items.Tools
 		public override void SetDefaults() {
 			Item.damage = 20;
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 40;
-			Item.height = 40;
 			// On the official wiki, https://terraria.wiki.gg/wiki/Pickaxes, the "Use time" column corresponds to Item.useAnimation and the "Mining speed" column corresponds to Item.useTime.
 			Item.useTime = 10;
 			Item.useAnimation = 10;
