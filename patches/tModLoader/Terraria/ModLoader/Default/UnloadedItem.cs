@@ -16,8 +16,6 @@ public sealed class UnloadedItem : ModLoaderModItem
 
 	public override void SetDefaults()
 	{
-		Item.width = 20;
-		Item.height = 20;
 		Item.rare = 1;
 
 		// Needs to be  > 1 for vanilla maxStack changes in 1.4.4,

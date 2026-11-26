@@ -53,12 +53,10 @@ partial class Mod
 		// The embedded mod for tModLoader doesn't have File initialized
 		if (File != null && !Main.dedServ) {
 			ModIcon = ModLoader.GetModIcon(File, out string modIconError)
-				   ?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
+				?? throw new MissingResourceException($"Failed to load icon.png. Reason: {modIconError}.");
 
-			SmallModIcon = ModLoader.GetModIcon(File, out string smallIconError, "icon_small.png", 30);
-			if (SmallModIcon is null) {
-				Logger.Warn($"Failed to load icon_small.png. Reason: {smallIconError}.");
-			}
+			SmallModIcon = ModLoader.GetModIcon(File, out string smallIconError, "icon_small.png", 30)
+				?? throw new MissingResourceException($"Failed to load icon_small.png. Reason: {smallIconError}.");
 		}
 
 		LocalizationLoader.Autoload(this);

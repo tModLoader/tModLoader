@@ -10,8 +10,6 @@ namespace ExampleMod.Content.Items.Accessories
 	public class ExampleShield : ModItem
 	{
 		public override void SetDefaults() {
-			Item.width = 24;
-			Item.height = 28;
 			Item.value = Item.buyPrice(10);
 			Item.rare = ItemRarityID.Green;
 			Item.accessory = true;

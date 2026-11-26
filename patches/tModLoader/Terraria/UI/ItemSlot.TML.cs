@@ -174,13 +174,13 @@ public partial class ItemSlot
 		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
 
-	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context, bool vanity)
+	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context)
 	{
 		if (!checkItem.accessory)
 			return false;
 
 		AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, vanity)
+		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, accessorySlotLoader.ContextToEnum(context))
 			&& accessorySlotLoader.ModSlotCheck(checkItem, slot, context);
 	}
 
