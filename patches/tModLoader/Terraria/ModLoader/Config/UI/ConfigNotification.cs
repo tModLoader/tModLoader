@@ -77,7 +77,7 @@ public class ConfigNotification : IInGameNotification
 
 		Utils.DrawInvBG(c: new Color(64, 109, 164) * (isHovering ? 0.75f : 0.5f), sb: spriteBatch, R: panelSize);
 		spriteBatch.Draw(Icon.Value, vector, null, Color.White * Opacity, 0f, new Vector2(0f, iconSize.Y / 2), iconScale * iconScaleAdjustment, SpriteEffects.None, 0f);
-		Utils.DrawBorderString(color: new Color(Main.mouseTextColor, Main.mouseTextColor, (int)Main.mouseTextColor / 5, Main.mouseTextColor) * Opacity, sb: spriteBatch, text: message, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
+		Utils.DrawBorderString(color: color.MultiplyRGBA(Main.MouseTextColorReal) * Opacity, sb: spriteBatch, text: message, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
 
 		if (isHovering) {
 			OnMouseOver();
@@ -90,6 +90,10 @@ public class ConfigNotification : IInGameNotification
 		}
 
 		Main.LocalPlayer.mouseInterface = true;
+
+		if (timeLeft <= 60 * 2 && timeLeft > 30) {
+			timeLeft = 60 * 2;
+		}
 
 		if (!Main.mouseLeft || !Main.mouseLeftRelease) {
 			return;
