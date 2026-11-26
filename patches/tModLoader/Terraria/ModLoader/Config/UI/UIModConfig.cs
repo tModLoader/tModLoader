@@ -224,8 +224,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 		};
 
-		var placeholderIcon = null; // TODO: set
-		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", placeholderIcon, null);
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", TextureAssets.MagicPixel, new Rectangle(0, 0, 30, 30));
 		modNamePanel.MaxWidth.Set(330, 0);
 		modNamePanel.MinWidth.Set(0, 0);
 		modNamePanel.VAlign = 0.5f;
