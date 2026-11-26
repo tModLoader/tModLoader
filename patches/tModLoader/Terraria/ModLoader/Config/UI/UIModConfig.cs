@@ -224,7 +224,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 		};
 
-		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Mod.PlaceholderSmallModIcon, null);
+		var placeholderIcon = null; // TODO: set
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", placeholderIcon, null);
 		modNamePanel.MaxWidth.Set(330, 0);
 		modNamePanel.MinWidth.Set(0, 0);
 		modNamePanel.VAlign = 0.5f;
@@ -638,7 +639,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand
 		}
 
 		if (!Main.gameMenu) {
-			InGameNotificationsTracker.ClearMenuNotifications();
+			MenuNotificationsTracker.Clear();
 		}
 	}
 
