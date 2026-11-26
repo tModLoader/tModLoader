@@ -33,7 +33,7 @@ public abstract class GlobalTile : GlobalBlockType
 	public sealed override void SetupContent() => SetStaticDefaults();
 
 	/// <summary>
-	/// Allows you to modify the chance the tile at the given coordinates has of spawning a certain critter when the tile is killed.
+	/// Allows you to modify the chances of spawning certain critters or dropping certain items when the tile at the given coordinates is killed.
 	/// </summary>
 	/// <param name="i">The x position in tile coordinates.</param>
 	/// <param name="j">The y position in tile coordinates.</param>
@@ -41,7 +41,9 @@ public abstract class GlobalTile : GlobalBlockType
 	/// <param name="wormChance">Chance for a worm to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-400, Plants-200, Various Piles-6</param>
 	/// <param name="grassHopperChance">Chance for a grass hopper to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: Grass-100, Plants-50</param>
 	/// <param name="jungleGrubChance">Chance for a jungle grub to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: JungleVines-250, JunglePlants2-40, PlantDetritus-10</param>
-	public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+	/// <param name="luckyCloverChance">Chance for a Lucky Clover to drop. Value corresponds to a chance of 1 in X. Vanilla values include: Plants2-1000</param>
+	/// <param name="lavaCritterChance">Chance for a lava critter to spawn. Value corresponds to a chance of 1 in X. Vanilla values include: AshPlants-100</param>
+	public virtual void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance)
 	{
 	}
 

@@ -2764,7 +2764,7 @@
  		if (Main.player[num6].ZoneGraveyard)
  			num7 = 606;
  
-+		TileLoader.DropCritterChance(i, j, tileCache.type, ref num, ref num2, ref num4);
++		TileLoader.DropCritterChance(i, j, tileCache.type, ref num, ref num2, ref num4, ref num3, ref num5);
 +
  		if (num > 0 && NPC.CountNPCS(num7) < 5 && genRand.Next(num) == 0) {
  			int type = num7;

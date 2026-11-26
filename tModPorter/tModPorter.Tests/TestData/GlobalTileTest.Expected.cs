@@ -33,4 +33,9 @@ public class GlobalTileTest : GlobalTile {
 	public override void Drop(int i, int j, int type)/* tModPorter Suggestion: Use CanDrop to decide if items can drop, use this method to drop additional items. See documentation. */ { /* Empty */ }
 
 	public override void RandomUpdate(int i, int j, int type, bool underground) { /* Empty */ }
+
+	public override void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance) {
+		base.DropCritterChance(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance, ref luckyCloverChance, ref lavaCritterChance);
+		wormChance = 10;
+	}
 }

@@ -111,6 +111,12 @@ public class ModTileTest : ModTile
 #endif
 
 	public override void RandomUpdate(int i, int j, bool underground) { /* Empty */ }
+
+	public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance) {
+		wormChance = 10;
+		grassHopperChance = 20;
+		jungleGrubChance = 30;
+	}
 }
 
 public static class TileHelpers

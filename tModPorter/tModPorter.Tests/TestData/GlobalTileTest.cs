@@ -24,4 +24,9 @@ public class GlobalTileTest : GlobalTile {
 	public override bool Drop(int i, int j, int type) { /* Empty */ }
 
 	public override void RandomUpdate(int i, int j, int type) { /* Empty */ }
+
+	public override void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+		base.DropCritterChance(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+		wormChance = 10;
+	}
 }

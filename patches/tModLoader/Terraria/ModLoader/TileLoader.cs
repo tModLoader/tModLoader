@@ -52,7 +52,7 @@ public static class TileLoader
 	private static DelegateNumDust[] HookNumDust;
 	private delegate bool DelegateCreateDust(int i, int j, int type, ref int dustType);
 	private static DelegateCreateDust[] HookCreateDust;
-	private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance);
+	private delegate void DelegateDropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance);
 	private static DelegateDropCritterChance[] HookDropCritterChance;
 	private static Func<int, int, int, bool>[] HookCanDrop;
 	private static Action<int, int, int>[] HookDrop;
@@ -544,12 +544,12 @@ public static class TileLoader
 		return GetTile(type)?.CreateDust(i, j, ref dustType) ?? true;
 	}
 
-	public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance)
+	public static void DropCritterChance(int i, int j, int type, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance)
 	{
-		GetTile(type)?.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+		GetTile(type)?.DropCritterChance(i, j, ref wormChance, ref grassHopperChance, ref jungleGrubChance, ref luckyCloverChance, ref lavaCritterChance);
 
 		foreach (var hook in HookDropCritterChance) {
-			hook(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance);
+			hook(i, j, type, ref wormChance, ref grassHopperChance, ref jungleGrubChance, ref luckyCloverChance, ref lavaCritterChance);
 		}
 	}
 
