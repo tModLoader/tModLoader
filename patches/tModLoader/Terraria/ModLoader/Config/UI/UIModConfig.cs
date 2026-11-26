@@ -364,7 +364,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 	}
 
-	public void HandleOnCloseCallback()
+	internal void HandleOnCloseCallback()
 	{
 		if (modderOnClose != null) {
 			modderOnClose.Invoke();
@@ -562,9 +562,9 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		MenuNotificationsTracker.AddNotification(notification);
 	}
 
-	public void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
+	public void SetConfig(ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
-		this.mod = mod;
+		this.mod = config.Mod;
 		this.modConfig = config;
 		this.pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		this.openedFromModder = openedFromModder;

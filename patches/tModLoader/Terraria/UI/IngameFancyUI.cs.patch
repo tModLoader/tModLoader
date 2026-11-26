@@ -52,15 +52,16 @@
  				break;
  		}
  
-@@ -154,8 +_,11 @@
+@@ -154,8 +_,12 @@
  			Main.playerInventory = true;
  
  		Main.LocalPlayer.releaseInventory = false;
-+		bool currentStateWasModConfig = ConfigManager.CurrentConfigUI is not null;
++		bool currentStateWasModConfig = Main.InGameUI.CurrentState is UIModConfig;
  		Main.InGameUI.SetState(null);
  		UILinkPointNavigator.Shortcuts.FANCYUI_SPECIAL_INSTRUCTIONS = 0;
++		// Intentionally doesn't support IConfigUI (config API should not handle custom escape key behaviour, should be done in UI)
 +		if (currentStateWasModConfig)
-+			ConfigManager.CurrentConfigUI.HandleOnCloseCallback();
++			((UIModConfig)Main.InGameUI.CurrentState).HandleOnCloseCallback();
  	}
  
  	public static bool Draw(SpriteBatch spriteBatch, GameTime gameTime)

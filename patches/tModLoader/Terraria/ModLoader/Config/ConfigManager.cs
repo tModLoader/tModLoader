@@ -399,7 +399,7 @@ public static class ConfigManager
 
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
+				if (ConfigManager.CurrentConfigUI is not null) {
 					ConfigManager.CurrentConfigUI.OnServerAcceptedChanges();
 					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
@@ -410,7 +410,7 @@ public static class ConfigManager
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
+				if (ConfigManager.CurrentConfigUI is not null) {
 					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 				}
 			}

@@ -17,9 +17,11 @@ public interface IConfigUI
 	int UpdateCount { get; }
 	string ConfigElementTooltip { get; set; }
 
-	void SetMod(Mod mod, ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true);
+	void SetConfig(ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true);
+
 	void OnConfigModified();
+	void OnServerAcceptedChanges();
+
 	void PushConfigPage(UIModConfig.ConfigPage configPage);
 	void SetMessage(string text, Color color);
-	void HandleOnCloseCallback();
 }

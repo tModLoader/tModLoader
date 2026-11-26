@@ -235,7 +235,7 @@ public abstract class ModConfig : ILocalizedModType
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
 		var customUI = ConfigManager.GetConfigUI(this);
-		(customUI ?? Interface.modConfig).SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
+		(customUI ?? Interface.modConfig).SetConfig(this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
 			if (customUI is not null) {
