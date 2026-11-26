@@ -192,7 +192,7 @@ internal class UIModConfigList : UIState
 			if (mod.Name == "ModLoader")
 				continue;
 
-			var (modPanel, _) = CreatePanel(mod.DisplayName, mod.SmallModIcon ?? Mod.PlaceholderSmallModIcon, null);
+			var (modPanel, _) = CreatePanel(mod.DisplayName, mod.SmallModIcon, null);
 
 			if (ConfigManager.Configs.ContainsKey(mod)) {
 				modPanel.UseAlternateState = () => selectedMod == mod;
