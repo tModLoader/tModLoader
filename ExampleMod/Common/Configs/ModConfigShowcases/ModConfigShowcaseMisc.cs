@@ -22,6 +22,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	/// It also showcases how to create a custom UIState for the config.
 	/// </summary>
 	[SortConfig(after: true, nameof(ModConfigShowcaseAccessibility))]
+	[BackgroundColor(255, 105, 180, (int)(255 * 0.3f))] // RGB values for Color.HotPink
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -29,11 +30,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		[Header("CustomElements")]
 		[CustomModConfigItem(typeof(GradientElement))]
 		public Gradient gradient = new Gradient();
-
-		// Here, we can return our custom UI that was loaded through ILoadable
-		public override IConfigUI ProvideCustomUI() {
-			return ModContent.GetInstance<ExampleConfigUIState>();
-		}
 
 		/*
 		// Here are some more examples, showing a complex JsonDefaultListValue and a initializer overriding the defaults of the constructor.
@@ -120,6 +116,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 				ListOfInts.AddRange(OldListOfInts);
 			}
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
+		}
+
+		// Here, we can return our custom UI that was loaded through ILoadable
+		public override IConfigUI ProvideCustomUI() {
+			return ModContent.GetInstance<ExampleConfigUIState>();
 		}
 	}
 }
