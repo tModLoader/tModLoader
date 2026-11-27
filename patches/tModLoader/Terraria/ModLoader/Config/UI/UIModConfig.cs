@@ -28,14 +28,14 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 	public bool HasUnsavedChanges { get; private set; }
 	public bool HasDefaultValues { get; private set; }
 
-	private Mod mod;
-	private ModConfig modConfig; // This is from ConfigManager.Configs
-	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
+	protected Mod mod;
+	protected ModConfig modConfig; // This is from ConfigManager.Configs
+	protected ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
 
-	private ConfigPage rootConfigPage;
-	private ConfigPage CurrentConfigPage => configPageStack.Peek();
-	private bool InSubPage => configPageStack.Count > 1;
-	private readonly Stack<ConfigPage> configPageStack = new();
+	protected ConfigPage rootConfigPage;
+	protected ConfigPage CurrentConfigPage => configPageStack.Peek();
+	protected bool InSubPage => configPageStack.Count > 1;
+	protected readonly Stack<ConfigPage> configPageStack = new();
 
 	public class ConfigPage(object name)
 	{
@@ -44,40 +44,40 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
-	private BlockInputElement blockInput;
-	private UIElement activeDialog;
+	protected BlockInputElement blockInput;
+	protected UIElement activeDialog;
 
-	private bool openedFromModder = false;
-	private Action modderOnClose = null;
-	private string scrollToOption = null;
-	private bool centerScrolledOption = false;
+	protected bool openedFromModder = false;
+	protected Action modderOnClose = null;
+	protected string scrollToOption = null;
+	protected bool centerScrolledOption = false;
 
-	private bool refreshQueued = false;
+	protected bool refreshQueued = false;
 
-	private UIElement uiElement;
-	private UIPanel uiPanel;
-	private UIMarqueeTextPanel headerTextPanel;
+	protected UIElement uiElement;
+	protected UIPanel uiPanel;
+	protected UIMarqueeTextPanel headerTextPanel;
 
-	private UIButton backButton;
-	private UIButton saveConfigButton;
-	private UIButton revertConfigButton;
-	private UIButton restoreDefaultsConfigButton;
+	protected UIButton backButton;
+	protected UIButton saveConfigButton;
+	protected UIButton revertConfigButton;
+	protected UIButton restoreDefaultsConfigButton;
 
-	private UIElement listHeaderContainer;
-	private UIList configElementList;
-	private UIScrollbar scrollbar;
-	private UIFocusInputTextField filterTextField;
-	private UIImageFramed configSideIndicator;
+	protected UIElement listHeaderContainer;
+	protected UIList configElementList;
+	protected UIScrollbar scrollbar;
+	protected UIFocusInputTextField filterTextField;
+	protected UIPanel filterTextFieldBackground;
+	protected UIImageFramed configSideIndicator;
+	protected UIPanel configSideIndicatorPanel;
 	// These 2 use the same code as UIModConfigList
-	private UIButton modNamePanel;
-	private UIImageFramed smallModIcon;
+	protected UIButton modNamePanel;
+	protected UIImageFramed smallModIcon;
 
-	private UIButton subPageBackButton;
-	private UIPanel subPageBreadcrumbPanel;
-	private UIMarqueeText subPageBreadcrumbText;
-
-	private Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
-	private Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
+	protected UIButton subPageBackButton;
+	protected UIPanel subPageBreadcrumbPanel;
+	protected UIMarqueeText subPageBreadcrumbText;
+	protected UIText subPagePrompt;
 
 	#region UI Creation
 
@@ -86,11 +86,10 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		CreateMainPanel();
 		CreateButtons();
 		CreatePanelContents();
-		CreateHeaderPanel();
 		CreateSubPageUI();
 	}
 
-	private void CreateMainPanel()
+	protected virtual void CreateMainPanel()
 	{
 		uiElement = new UIElement {
 			Width = { Percent = 0.8f },
@@ -107,9 +106,17 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 			BackgroundColor = UICommon.MainPanelBackground,
 		};
 		uiElement.Append(uiPanel);
+
+		headerTextPanel = new UIMarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
+			MaxWidth = { Percent = 0.95f},
+			HAlign = 0.5f,
+			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
+			BackgroundColor = UICommon.DefaultUIBlue,
+		}.WithPadding(15f);
+		uiElement.Append(headerTextPanel);
 	}
 
-	private void CreateButtons()
+	protected virtual void CreateButtons()
 	{
 		var clickableState = UIButton.State.DefaultWithHover with {
 			TooltipText = true,
@@ -156,7 +163,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		uiElement.Append(restoreDefaultsConfigButton);
 	}
 
-	private static UIButton CreateButton(string localizationKey, float hAlign, MouseEvent onClick)
+	protected virtual UIButton CreateButton(string localizationKey, float hAlign, MouseEvent onClick)
 	{
 		var button = new UIButton(Language.GetText(localizationKey), 1f, false) {
 			MinWidth = { Pixels = -10, Percent = 0.25f },
@@ -172,7 +179,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		return button;
 	}
 
-	private void CreatePanelContents()
+	protected virtual void CreatePanelContents()
 	{
 		listHeaderContainer = new UIElement {
 			Width = { Percent = 1f },
@@ -180,13 +187,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		};
 		uiPanel.Append(listHeaderContainer);
 
-		var textBoxBackground = new UIPanel {
+		filterTextFieldBackground = new UIPanel {
 			Width = { Pixels = 180 },
 			Height = { Pixels = 30 },
 			HAlign = 1f,
 			VAlign = 0.5f,
 		}.WithPadding(0);
-		listHeaderContainer.Append(textBoxBackground);
+		listHeaderContainer.Append(filterTextFieldBackground);
 
 		filterTextField = new UIFocusInputTextField(Language.GetText("tModLoader.ModConfigFilterOptions")) {
 			Top = { Pixels = 5 },
@@ -197,14 +204,17 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		filterTextField.SetText("");
 		filterTextField.OnTextChange += (_, _) => RefreshUI();
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
-		textBoxBackground.Append(filterTextField);
+		filterTextFieldBackground.Append(filterTextField);
 
-		var configSideIndicatorPanel = new UIPanel {
+		var infoBadgeBackgroundColor = UICommon.DefaultUIBlueMouseOver * 0.5f;
+		var infoBadgeBorderColor = UICommon.DefaultUIBlueMouseOver;
+
+		configSideIndicatorPanel = new UIPanel {
 			Width = { Pixels = 40 },
 			Height = { Pixels = 40 },
 			VAlign = 0.5f,
-			BackgroundColor = InfoBadgeBackgroundColor,
-			BorderColor = InfoBadgeBorderColor,
+			BackgroundColor = infoBadgeBackgroundColor,
+			BorderColor = infoBadgeBorderColor,
 		};
 		configSideIndicatorPanel.SetPadding(0);
 		listHeaderContainer.Append(configSideIndicatorPanel);
@@ -228,8 +238,8 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		modNamePanel.VAlign = 0.5f;
 		modNamePanel.Left.Pixels = 50;
 		modNamePanel.DefaultState = UIButton.State.Default with {
-			PanelColor = InfoBadgeBackgroundColor,
-			BorderColor = InfoBadgeBorderColor,
+			PanelColor = infoBadgeBackgroundColor,
+			BorderColor = infoBadgeBorderColor,
 		};
 
 		listHeaderContainer.Append(modNamePanel);
@@ -251,18 +261,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		configElementList.SetScrollbar(scrollbar);
 	}
 
-	private void CreateHeaderPanel()
-	{
-		headerTextPanel = new UIMarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
-			MaxWidth = { Percent = 0.95f},
-			HAlign = 0.5f,
-			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
-			BackgroundColor = UICommon.DefaultUIBlue,
-		}.WithPadding(15f);
-		uiElement.Append(headerTextPanel);
-	}
-
-	private void CreateSubPageUI()
+	protected virtual void CreateSubPageUI()
 	{
 		subPageBackButton = new UIButton(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
 			MinWidth = { Pixels = 100 },
@@ -286,7 +285,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		subPageBreadcrumbPanel.PaddingRight = 10;
 		subPageBreadcrumbPanel.Top.Pixels = subPageBackButton.Top.Pixels + (subPageBackButton.Height.Pixels - subPageBreadcrumbPanel.Height.Pixels) / 2f;
 
-		var subPagePrompt = new UIText(Language.GetText("tModLoader.ModConfigSubPage"), 0.8f) {
+		subPagePrompt = new UIText(Language.GetText("tModLoader.ModConfigSubPage"), 0.8f) {
 			VAlign = 0.5f,
 			TextColor = Color.Gray,
 		};
@@ -309,15 +308,15 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
 
-	private bool isConfirmDiscardChangsPopupOpen = false;
+	protected bool isConfirmDiscardChangsPopupOpen = false;
 
-	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
+	protected virtual void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		HandleBackButtonUsage();
 	}
 
 	// Note that Escape key while in-game won't call this.
-	public void HandleBackButtonUsage()
+	public virtual void HandleBackButtonUsage()
 	{
 		if (HasUnsavedChanges) {
 			if (isConfirmDiscardChangsPopupOpen) {
@@ -374,7 +373,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	#region Button Actions
 
-	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
+	protected virtual void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		if (!HasUnsavedChanges)
 			return;
@@ -384,7 +383,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		RefreshUI();
 	}
 
-	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
+	protected virtual void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
 		if (!HasUnsavedChanges)
 			return;
@@ -396,7 +395,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		RefreshUI();
 	}
 
-	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
+	protected virtual void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
 	{
 		if (HasDefaultValues)
 			return;
@@ -408,7 +407,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		RefreshUI();
 	}
 
-	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
+	protected virtual void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
 	{
 		if (TryGoBackConfigPage())
 			SoundEngine.PlaySound(SoundID.MenuClose);
@@ -427,7 +426,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		pendingConfig = null;
 	}
 
-	private void ResetUI()
+	protected virtual void ResetUI()
 	{
 		rootConfigPage = null;
 		configPageStack?.Clear();
@@ -443,7 +442,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 			scrollbar.ViewPosition = 0f;
 	}
 
-	private void OnSaveRevertRestore()
+	protected virtual void OnSaveRevertRestore()
 	{
 		// This is a leftover from the previous config UI, since properly refreshing the config elements requires a lot of code changes and will probably break mods.
 		// Currently, it is easier and less bug prone to just recreate the config UI.
@@ -454,18 +453,18 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		configPageStack.Push(rootConfigPage);
 	}
 
-	public void OnConfigModified()
+	public virtual void OnConfigModified()
 	{
 		RefreshUI();
 	}
 
-	public void OnServerAcceptedChanges()
+	public virtual void OnServerAcceptedChanges()
 	{
 		OnSaveRevertRestore(); // In case we are in a sub-page
 		RefreshUI();
 	}
 
-	private void RefreshUI(bool delayRefresh = true)
+	protected virtual void RefreshUI(bool delayRefresh = true)
 	{
 		if (delayRefresh) {
 			refreshQueued = true;
@@ -483,7 +482,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		Recalculate();
 	}
 
-	private void RefreshSubPageUI()
+	protected virtual void RefreshSubPageUI()
 	{
 		subPageBackButton.Remove();
 		subPageBreadcrumbPanel.Remove();
@@ -505,13 +504,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		scrollbar.Height.Pixels = configElementList.Height.Pixels;
 	}
 
-	private void RefreshSaveAndRestoreConditions()
+	protected virtual void RefreshSaveAndRestoreConditions()
 	{
 		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
 		HasDefaultValues = pendingConfig.HasDefaultValues();
 	}
 
-	private void RefreshConfigElementList()
+	protected virtual void RefreshConfigElementList()
 	{
 		// TODO: allow filtering to look inside of subpages
 		// TODO: should a SearchFunction should be used instead to allow searching labels, tooltips, children, and "related phrases" that a modder can specify?
@@ -524,7 +523,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}).Select(x => x.Item1));
 	}
 
-	private void RefreshScrollbar()
+	protected virtual void RefreshScrollbar()
 	{
 		configElementList.Recalculate();
 		configElementList.Width.Pixels = 0;
@@ -538,13 +537,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		configElementList.Recalculate();
 	}
 
-	public void PushConfigPage(ConfigPage configPage)
+	public virtual void PushConfigPage(ConfigPage configPage)
 	{
 		configPageStack.Push(configPage);
 		RefreshUI();
 	}
 
-	public bool TryGoBackConfigPage()
+	public virtual bool TryGoBackConfigPage()
 	{
 		if (configPageStack.Count <= 1)
 			return false;
@@ -554,13 +553,13 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		return true;
 	}
 
-	public void SetMessage(string text, Color color)
+	public virtual void SetMessage(string text, Color color)
 	{
 		var notification = new ConfigNotification(text, color);
 		MenuNotificationsTracker.AddNotification(notification);
 	}
 
-	public void SetConfig(ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
+	public virtual void SetConfig(ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
 	{
 		this.mod = config.Mod;
 		this.modConfig = config;
@@ -638,7 +637,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 	}
 
-	public void ScrollTo(string scrollToOption, bool centerScrolledOption)
+	public virtual void ScrollTo(string scrollToOption, bool centerScrolledOption)
 	{
 		bool header = false;
 		if (scrollToOption.StartsWith("Header:")) {
@@ -677,7 +676,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	#region ConfigElement Handling
 
-	public void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
+	public virtual void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
 	{
 		BackgroundColorAttribute backgroundColorAttribute = memberInfo != null
 			? ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, config, null)
@@ -703,7 +702,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 	}
 
-	public Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	public virtual Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 	{
 		int elementHeight;
 		Type type = memberInfo.Type;
@@ -881,7 +880,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		return null;
 	}
 
-	internal static UIElement GetContainer(UIElement containee, int sortid)
+	public virtual UIElement GetContainer(UIElement containee, int sortid)
 	{
 		UIElement container = new UISortableElement(sortid);
 		container.Width.Set(0f, 1f);
@@ -891,7 +890,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		return container;
 	}
 
-	public Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	public virtual Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
@@ -907,7 +906,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	#region Input Blocking
 
-	public void BlockInput(UIElement dialog)
+	public virtual void BlockInput(UIElement dialog)
 	{
 		blockInput = new BlockInputElement(configElementList);
 		blockInput.OnLeftMouseDown += UnblockInput;
@@ -918,7 +917,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		innerList.Append(activeDialog = dialog);
 	}
 
-	public void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
+	public virtual void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
 	{
 		blockInput?.Remove();
 		activeDialog?.Remove();

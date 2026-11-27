@@ -7,10 +7,10 @@ using Terraria.UI;
 namespace Terraria.ModLoader.UI;
 
 // TODO Shouldn't this derive from UIInputTextField?
-internal class UIFocusInputTextField : UIElement
+public class UIFocusInputTextField : UIElement
 {
-	internal bool Focused = false;
-	internal string CurrentString = "";
+	public bool Focused = false;
+	public string CurrentString = "";
 
 	private readonly object _hintText;
 	private int _textBlinkerCount;

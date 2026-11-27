@@ -7,7 +7,7 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.UI;
 
-internal class UIInputTextField : UIElement
+public class UIInputTextField : UIElement
 {
 	private readonly string _hintText;
 	private string _currentString = string.Empty;
