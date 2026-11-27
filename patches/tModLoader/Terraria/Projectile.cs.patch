@@ -1666,6 +1666,26 @@
  			if (timeLeft > 3000)
  				timeLeft -= 60;
  
+@@ -19341,7 +_,18 @@
+ 		}
+ 	}
+ 
+-	private bool AI_DisplayDoll_ItemDisplay(Player doll, Item weapon, TEDisplayDoll.DisplayDollPose pose, float rotationAddon = 0f)
++	/// <summary>
++	/// This method set the location and rotation of the mannequin's held item. Used by several different types of items.
++	/// <para> The <c>Projectile.Center</c> is set to the mannequin's <see cref="Player.HandPosition"/>. </para>
++	/// <para> The <c>Projectile.Rotation</c> is determined by the mannequin's <see cref="TEDisplayDoll.DisplayDollPose.ItemAimRadians"/> if the use style that the item uses has aim values defined, the item's <see cref="Item.shootSpeed"/>, and the item's <see cref="Item.scale"/>. Otherwise, it will be 0. </para>
++	/// <para> If the mannequin is facing left, + Pi/2 will be added to the rotation. </para>
++	/// </summary>
++	/// <param name="doll"> The mannequin. </param>
++	/// <param name="weapon"> The associated item instance. </param>
++	/// <param name="pose"> The mannequin's current pose. </param>
++	/// <param name="rotationAddon"> An optional additional rotation that will be added at the end. </param>
++	/// <returns></returns>
++	public bool AI_DisplayDoll_ItemDisplay(Player doll, Item weapon, TEDisplayDoll.DisplayDollPose pose, float rotationAddon = 0f) // TML: Made public
+ 	{
+ 		spriteDirection = direction;
+ 		Vector2 spinningpoint = Vector2.UnitX * weapon.shootSpeed * weapon.scale;
 @@ -19381,7 +_,16 @@
  		if ((uint)(pose2 - 4) <= 4u)
  			flag = true;
@@ -1676,7 +1696,7 @@
 +			aiType = ModProjectile.AIType;
 +		}
  		int num = aiStyle;
-+		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, ref num, ref aiType))
++		if (!ProjectileLoader.DisplayDollSettings(this, doll, pose, weapon, ref num, ref aiType))
 +			goto SkipVanillaLogic;
 +		this.type = aiType;
 +

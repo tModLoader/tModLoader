@@ -257,6 +257,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of this item in its use animation.
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
@@ -265,6 +266,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to modify the location and rotation of this item when the player is holding it.
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player"> The player. </param>
@@ -273,6 +275,7 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 
 	/// <summary>
 	/// Allows you to make things happen when the player is holding this item (for example, torches make light and water candles increase spawn rate).
+	/// <para/> Use <see cref="Player.isDisplayDollOrInanimate"/> to check if the player is a Mannequin for logic that shouldn't run on Mannequins.
 	/// <para/> Called on local, server, and remote clients.
 	/// </summary>
 	/// <param name="player">The player.</param>

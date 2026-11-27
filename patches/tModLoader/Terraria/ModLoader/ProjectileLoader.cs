@@ -1,10 +1,10 @@
-using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.GameContent.Tile_Entities;
@@ -785,19 +785,19 @@ public static class ProjectileLoader
 		}
 	}
 
-	private delegate bool DelegateDisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType);
+	private delegate bool DelegateDisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, Item weapon, ref int aiStyle, ref int aiType);
 	private static HookList HookDisplayDollSettings = AddHook<DelegateDisplayDollSettings>(g => g.DisplayDollSettings);
 
-	internal static bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	internal static bool DisplayDollSettings(Projectile projectile, Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType)
 	{
 		bool result = true;
 
 		foreach (var g in HookDisplayDollSettings.Enumerate(projectile)) {
-			result &= g.DisplayDollSettings(projectile, doll, pose, ref aiStyle, ref aiType);
+			result &= g.DisplayDollSettings(projectile, doll, pose, item, ref aiStyle, ref aiType);
 		}
 
 		if (result && projectile.ModProjectile != null) {
-			return projectile.ModProjectile.DisplayDollSettings(doll, pose, ref aiStyle, ref aiType);
+			return projectile.ModProjectile.DisplayDollSettings(doll, pose, item, ref aiStyle, ref aiType);
 		}
 
 		return result;

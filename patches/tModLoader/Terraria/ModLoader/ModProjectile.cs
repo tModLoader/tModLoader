@@ -479,10 +479,11 @@ public abstract class ModProjectile : ModType<Projectile, ModProjectile>, ILocal
 	/// </summary>
 	/// <param name="doll"> The mannequin holding the projectile. </param>
 	/// <param name="pose"> The pose that the mannequin is in. </param>
+	/// <param name="item"> The associated item instance the mannequin is holding. </param>
 	/// <param name="aiType"> The Projectile.type of the projectile. Will be set to <see cref="AIType"/> if set. Can be changed to a supported type within the style. </param>
 	/// <param name="aiStyle"> The Projectile.aiStyle of the projectile. Can be changed to a supported style. </param>
 	/// <returns> Return false to skip the vanilla logic. Returns true by default. </returns>
-	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, ref int aiStyle, ref int aiType)
+	public virtual bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType)
 	{
 		return true;
 	}

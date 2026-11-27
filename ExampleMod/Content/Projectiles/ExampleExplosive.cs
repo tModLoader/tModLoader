@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using System;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent.Tile_Entities;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -224,6 +225,13 @@ namespace ExampleMod.Content.Projectiles
 			// This is already set by ProjectileID.Sets.Explosive, but for other projectiles we would need to set a similar flag to prevent certain logic in OnKill from running when the projectile is being despawned via right click.
 			//BeingPickedUp = true;
 
+			return true;
+		}
+
+		// This hook lets us change how the held projectile looks while a mannequin is holding it.
+		// We set aiStyle to Explosive to draw the projectile as if it had the vanilla explosive aiStyle.
+		public override bool DisplayDollSettings(Player doll, TEDisplayDoll.DisplayDollPose pose, Item item, ref int aiStyle, ref int aiType) {
+			aiStyle = ProjAIStyleID.Explosive;
 			return true;
 		}
 	}
