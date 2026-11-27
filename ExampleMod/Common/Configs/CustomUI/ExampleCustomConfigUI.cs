@@ -174,6 +174,8 @@ namespace ExampleMod.Common.Configs.CustomUI
 				return;
 			}
 
+			ClearMessage();
+
 			// Read UIModConfig.WrapIt to understand this code a bit better
 
 			foreach (var element in configElements) {
