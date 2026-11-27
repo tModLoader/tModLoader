@@ -129,17 +129,20 @@ public partial class WorkshopSocialModule
 			}
 		}
 
-		// Check mod icon
-		const string IconFileName = "icon.png";
-		using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{IconFileName}");
-		using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
-		defaultIconStream.CopyTo(defaultIconMemoryStream);
-		var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
-		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
+		// Check mod icons
+		string[] iconFileNames = ["icon.png", "icon_small.png"];
 
-		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
-			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", IconFileName));
-			return false;
+		foreach (var icon in iconFileNames) {
+			using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{icon}");
+			using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+			defaultIconStream.CopyTo(defaultIconMemoryStream);
+			var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+			var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(icon);
+
+			if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+				IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", icon));
+				return false;
+			}
 		}
 
 		// Check for Beta
