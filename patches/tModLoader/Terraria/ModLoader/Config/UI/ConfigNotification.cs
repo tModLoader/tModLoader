@@ -11,21 +11,28 @@ namespace Terraria.ModLoader.Config.UI;
 public class ConfigNotification : IInGameNotification
 {
 	public bool ShouldBeRemoved => timeLeft <= 0;
-	private Asset<Texture2D> Icon => UICommon.ButtonModConfigNotificationTexture;
 
 	private int timeLeft;
+	private Asset<Texture2D> icon;
 	private string message;
-	private Color color;
+	private Color textColor;
+	private Color panelColor;
+	private Color panelColorHover;
 
-	public ConfigNotification(string message, Color color, int timeLeft = 5 * 60)
+	public ConfigNotification(Asset<Texture2D> icon, string message, Color textColor, Color panelColor = default, Color panelColorHover = default, int timeLeft = 5 * 60)
 	{
-		this.message = message;
-		this.color = color;
-		this.timeLeft = timeLeft;
+		if (panelColor == default)
+			panelColor = new Color(64, 109, 164) * 0.5f;
 
-		// We don't want to change the colour that mods use, since they can always change the colour themselves this way if they want to
-		if (this.color == Color.Green)
-			this.color = new Color(255, 255, 255 / 5);
+		if (panelColorHover == default)
+			panelColorHover = new Color(64, 109, 164) * 0.75f;
+
+		this.icon = icon;
+		this.message = message;
+		this.textColor = textColor;
+		this.panelColor = panelColor;
+		this.panelColorHover = panelColorHover;
+		this.timeLeft = timeLeft;
 	}
 
 	private float Scale {
@@ -65,19 +72,19 @@ public class ConfigNotification : IInGameNotification
 			return;
 		}
 
-		var iconSize = Icon.Size();
+		var iconSize = icon.Size();
 		var targetIconSize = new Vector2(64, 64);
 		float effectiveScale = Scale * 1.1f;
 		Vector2 size = (FontAssets.ItemStack.Value.MeasureString(message) + new Vector2(58f, 10f)) * effectiveScale;
 		Rectangle panelSize = Utils.CornerRectangle(bottomAnchorPosition - size, bottomAnchorPosition);
 		bool isHovering = panelSize.Contains(Main.MouseScreen.ToPoint());
-		float iconScaleAdjustment = 64f / Icon.Width(); // Makes any icon take up the same area the achievement icons take up
+		float iconScaleAdjustment = targetIconSize.X / icon.Width(); // Makes any icon take up the same area the achievement icons take up
 		float iconScale = effectiveScale * 0.3f;
 		Vector2 vector = panelSize.Right() - Vector2.UnitX * effectiveScale * (12f + iconScale * targetIconSize.X);
 
-		Utils.DrawInvBG(c: new Color(64, 109, 164) * (isHovering ? 0.75f : 0.5f), sb: spriteBatch, R: panelSize);
-		spriteBatch.Draw(Icon.Value, vector, null, Color.White * Opacity, 0f, new Vector2(0f, iconSize.Y / 2), iconScale * iconScaleAdjustment, SpriteEffects.None, 0f);
-		Utils.DrawBorderString(color: color.MultiplyRGBA(Main.MouseTextColorReal) * Opacity, sb: spriteBatch, text: message, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
+		Utils.DrawInvBG(c: isHovering ? panelColorHover : panelColor, sb: spriteBatch, R: panelSize);
+		spriteBatch.Draw(icon.Value, vector, null, Color.White * Opacity, 0f, new Vector2(0f, iconSize.Y / 2), iconScale * iconScaleAdjustment, SpriteEffects.None, 0f);
+		Utils.DrawBorderString(color: textColor.MultiplyRGBA(Main.MouseTextColorReal) * Opacity, sb: spriteBatch, text: message, pos: vector - Vector2.UnitX * 10f, scale: effectiveScale * 0.9f, anchorx: 1f, anchory: 0.4f);
 
 		if (isHovering) {
 			OnMouseOver();

@@ -308,7 +308,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
 
-	protected bool isConfirmDiscardChangsPopupOpen = false;
+	protected UIConfirmDialog confirmDialog = null;
 
 	protected virtual void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
@@ -319,11 +319,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 	public virtual void HandleBackButtonUsage()
 	{
 		if (HasUnsavedChanges) {
-			if (isConfirmDiscardChangsPopupOpen) {
+			if (confirmDialog is not null) {
 				return;
 			}
 
-			var confirmDialog = new UIConfirmDialog(
+			confirmDialog = new UIConfirmDialog(
 				showYesDontShowAgainButton: false,
 				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopup"),
 				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopupSubText"),
@@ -332,12 +332,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 					HandleBackButtonUsage();
 				}
 			) {
-				OnClose = () => isConfirmDiscardChangsPopupOpen = false,
+				OnClose = () => confirmDialog = null,
 			};
 
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 			Append(confirmDialog);
-			isConfirmDiscardChangsPopupOpen = true;
 			return;
 		}
 
@@ -555,7 +554,11 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	public virtual void SetMessage(string text, Color color)
 	{
-		var notification = new ConfigNotification(text, color);
+		// We don't want to change the colour that mods use, since they can always change the colour themselves this way if they want to
+		if (color == Color.Green || color == Color.White)
+			color = new Color(255, 255, 255 / 5);
+
+		var notification = new ConfigNotification(UICommon.ButtonModConfigNotificationTexture, text, color);
 		MenuNotificationsTracker.AddNotification(notification);
 	}
 
