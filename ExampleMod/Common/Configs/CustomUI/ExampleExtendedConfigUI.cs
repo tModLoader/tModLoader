@@ -1,6 +1,11 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Linq;
+using System.Reflection;
+using Terraria;
 using Terraria.GameContent.UI.Elements;
+using Terraria.ModLoader;
 using Terraria.ModLoader.Config.UI;
 using Terraria.ModLoader.UI;
 using Terraria.UI;
@@ -47,9 +52,9 @@ namespace ExampleMod.Common.Configs.CustomUI
 			subPageBreadcrumbPanel.BackgroundColor = alternateColor;
 			subPageBreadcrumbPanel.BorderColor = fadedColor * 0.5f;
 
-			// Currently, not everything can be themed yet. These still need to be done:
-			// - scrollbar
-			// - config elements
+			var newScrollbarTexture = ModContent.Request<Texture2D>("ExampleMod/Common/Configs/CustomUI/PinkScrollbar");
+			var scrollbarTextureField = typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic);
+			scrollbarTextureField?.SetValue(scrollbar, newScrollbarTexture);
 		}
 
 		public override void HandleBackButtonUsage() {
@@ -73,6 +78,25 @@ namespace ExampleMod.Common.Configs.CustomUI
 
 			var notification = new ConfigNotification(UICommon.ButtonModConfigNotificationTexture, text, color, alternateColor * 0.5f, alternateColor * 0.75f);
 			MenuNotificationsTracker.AddNotification(notification);
+		}
+
+		public override Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
+			var element =  base.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
+			if (element.Item2 is not ConfigElement configElement) {
+				return element;
+			}
+
+			var field = typeof(ConfigElement).GetField("backgroundColor", BindingFlags.Instance | BindingFlags.NonPublic);
+			if (field is null) {
+				throw new Exception("Unable to get ConfigElement.backgroundColor");
+			}
+
+			var existingColor = field.GetValue(configElement);
+			if (existingColor is Color color && color == UICommon.DefaultUIBlue) {
+				field.SetValue(configElement, solidColor);;
+			}
+
+			return element;
 		}
 	}
 }
