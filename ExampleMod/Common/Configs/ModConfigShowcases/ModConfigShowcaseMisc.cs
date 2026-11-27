@@ -6,9 +6,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.Serialization;
-using Terraria.ModLoader;
 using Terraria.ModLoader.Config;
-using Terraria.ModLoader.Config.UI;
 
 // This file contains fake ModConfig class that showcase various attributes
 // that can be used to customize behavior config fields.
@@ -118,9 +116,9 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
 		}
 
-		// Here, we can return our custom UI that was loaded through ILoadable
-		public override IConfigUI ProvideCustomUI() {
-			return ModContent.GetInstance<ExampleConfigUIState>();
+		public override void OnLoaded() {
+			// Here, we can create our custom UI for the config
+			CustomUI = new ExampleConfigUIState();
 		}
 	}
 }

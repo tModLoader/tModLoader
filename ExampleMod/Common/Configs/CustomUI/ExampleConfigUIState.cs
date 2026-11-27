@@ -7,7 +7,7 @@ using Terraria.ModLoader.Config.UI;
 namespace ExampleMod.Common.Configs.CustomUI;
 
 // TODO: also demo a completely custom UI where IConfigUI is implemented
-public class ExampleConfigUIState : UIModConfig, ILoadable
+public class ExampleConfigUIState : UIModConfig
 {
 	private Color mainColor;
 	private Color fadedColor;

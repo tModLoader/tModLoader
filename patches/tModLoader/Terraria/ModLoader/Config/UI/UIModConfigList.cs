@@ -245,7 +245,7 @@ internal class UIModConfigList : UIState
 			};
 
 			configPanel.OnLeftClick += (_, _) => {
-				var customUI = ConfigManager.GetConfigUI(config);
+				var customUI = config.CustomUI; // Call getter once
 				(customUI ?? Interface.modConfig).SetConfig(config);
 
 				if (Main.gameMenu) {

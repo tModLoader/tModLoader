@@ -357,19 +357,6 @@ public static class ConfigManager
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
-	public static IConfigUI? GetConfigUI(ModConfig config)
-	{
-		var customUI = config.ProvideCustomUI(); // Only accessing once is important to let modders override the getter to the UI
-
-		if (customUI is null)
-			return null;
-
-		if (customUI is not UIState)
-			throw new InvalidOperationException($"Cannot use custom config UI for {config.Name} in mod {config.Mod.Name} because it does not extend UIState");
-
-		return customUI;
-	}
-
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {

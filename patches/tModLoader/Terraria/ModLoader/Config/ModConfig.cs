@@ -1,6 +1,5 @@
 using System;
 using System.Text.RegularExpressions;
-using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Terraria.Audio;
@@ -39,6 +38,23 @@ public abstract class ModConfig : ILocalizedModType
 
 	[JsonIgnore]
 	public abstract ConfigScope Mode { get; }
+
+	/// <summary>
+	/// Set to an <see cref="IConfigUI"/> to give this config custom UI.
+	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want a modified <see cref="UIModConfig"/>, you can extend <see cref="UIModConfig"/>.
+	/// <br/><br/> Defaults to null, which uses the default config UI.
+	/// <br/><br/> The getter is only once by tML when opening the config UI. This lets the UI get recreated before opening to aid with debugging speed.
+	/// </summary>
+	[JsonIgnore]
+	public virtual IConfigUI CustomUI {
+		get;
+		set {
+			if (value is not null and not UIState)
+				throw new InvalidOperationException($"Cannot use custom config UI for {Name} in mod {Mod.Name} because it does not extend UIState");
+
+			field = value;
+		}
+	}
 
 	// TODO: Does non-autoloaded ModConfigs have a use-case?
 	public virtual bool Autoload(ref string name) => Mod.ContentAutoloadingEnabled;
@@ -235,7 +251,7 @@ public abstract class ModConfig : ILocalizedModType
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		var customUI = ConfigManager.GetConfigUI(this);
+		var customUI = CustomUI; // Call getter once
 		(customUI ?? Interface.modConfig).SetConfig(this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
@@ -256,16 +272,5 @@ public abstract class ModConfig : ILocalizedModType
 			Main.InGameUI.SetState((UIState)customUI ?? Interface.modConfig);
 			// Same as IngameFancyUI.OpenUIState(...); except no ClearChat()
 		}
-	}
-
-	/// <summary>
-	/// Override to return an <see cref="IConfigUI"/> to give this config custom UI.
-	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want a modified <see cref="UIModConfig"/>, you can extend <see cref="UIModConfig"/>.
-	/// <br/><br/> Defaults to returning null, which uses the default config UI.
-	/// <br/><br/> Only called once by tML when opening the config UI. This lets the UI get recreated before opening to aid with debugging speed.
-	/// </summary>
-	public virtual IConfigUI ProvideCustomUI()
-	{
-		return null;
 	}
 }
