@@ -1,6 +1,8 @@
+using System;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Terraria.ModLoader;
 using Terraria.ModLoader.IO;
 using Terraria.Social;
 
@@ -146,5 +148,67 @@ public static partial class FileUtilities
 			throw new IOException($"Unable to save current progress.\nAborting to avoid {fileName} corruption.\nYour last successful save will be kept. ERROR: Stream Missing NBT Header.");
 
 		return true;
+	}
+
+	/// <summary>
+	/// Returns False if the File in Root Directory does not match the expected casing 
+	/// <param name="actualFullPath"></param>
+	/// <returns></returns>
+	internal static bool ValidateFileCasing(string rootDirectory, string fileToCheck, out string asFoundFullPath)
+	{
+		var fileInfo = new FileInfo(Path.Combine(rootDirectory, fileToCheck));
+		string expectedName = Path.GetFileName(fileToCheck);
+
+		asFoundFullPath = fileInfo.FullName;
+
+		// There are 4 possible states
+		//		File is found using FileInfo.Exists && the FileSystemInfo for it has the same casing (happy-path)
+		//		File is found using FileInfo.Exists && the FileSystemInfo for it has different casing (case insenstive read)
+		//		File is NOT found using FileInfo.Exists && file is NOT on the user system (missing file)
+		//		File is NOT found using FileInfo.Exists && file has the wrong casing (case sensitive read)
+
+		FileSystemInfo fileSystemInfo;
+
+		if (fileInfo.Exists) {
+			// likely case insensitive read OR happy-path 
+			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos(fileInfo.Name).First();
+
+			// Happy-path short-circuit
+			if (fileSystemInfo.Name == expectedName)
+				return true;
+		}
+		else {
+			// Case sensitive read OR missing
+			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos().FirstOrDefault(p => p.Name.Equals(expectedName, StringComparison.InvariantCultureIgnoreCase));
+
+			// file is missing short-circuit
+			if (fileSystemInfo == null) {
+				Logging.tML.Info($"WARNING: Attempted to check casing of {fileToCheck} and it is missing from {rootDirectory}");
+				return true;
+			}
+		}
+
+		asFoundFullPath = fileSystemInfo.FullName;
+		return false;
+	}
+
+	/// <summary>
+	/// In OS environments with both case insensitive and case sensitive you either allow or block having two files with different casing.
+	/// For example, Windows blocks NTFS and exFAT folders from having both client.log and Client.log normally.
+	/// However NTFS is case-sensitive itself so you can change how it handles in WSL using tools like https://learn.microsoft.com/en-us/windows/wsl/case-sensitivity
+	/// But exFAT is strictly case-insensitive.
+	/// Where this gets messy is if you try to 'Move' a file on a particular OS to force a capitalization rename.
+	/// If the OS is blocking, and it copies before deleting, then a singular 'move' is not enough to change capitalization. 
+	/// </summary>
+	internal static void FixFileCaseViaMove(string asFoundFullPath, string expectedFullPath)
+	{
+		// Programmatically & defensively move to force case change
+		try {
+			File.Move(asFoundFullPath, expectedFullPath);
+		}
+		catch {
+			File.Move(asFoundFullPath, asFoundFullPath + ".1");
+			File.Move(asFoundFullPath + ".1", expectedFullPath);
+		}
 	}
 }
