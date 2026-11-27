@@ -29,6 +29,10 @@ public static class ConfigManager
 	// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 	private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
 
+	// This copy of configs stores the default values of configs. It is used to detect if a config has it's default values.
+	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
+	private static readonly IDictionary<Mod, List<ModConfig>> defaultValuesConfigs = new Dictionary<Mod, List<ModConfig>>();
+
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
 		DefaultValueHandling = DefaultValueHandling.IgnoreAndPopulate,
@@ -68,6 +72,14 @@ public static class ConfigManager
 
 	internal static void Add(ModConfig config)
 	{
+		// Maintain list of default value configs
+		if (!defaultValuesConfigs.TryGetValue(config.Mod, out var defaultValuesConfigList))
+			defaultValuesConfigs[config.Mod] = defaultValuesConfigList = new List<ModConfig>();
+
+		var defaultValuesConfig = GeneratePopulatedClone(config);
+		Reset(defaultValuesConfig);
+		defaultValuesConfigList.Add(defaultValuesConfig);
+
 		Load(config);
 
 		if (!Configs.TryGetValue(config.Mod, out var configList))
@@ -268,6 +280,7 @@ public static class ConfigManager
 		});
 		Configs.Clear();
 		loadTimeConfigs.Clear();
+		defaultValuesConfigs.Clear();
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
@@ -325,6 +338,14 @@ public static class ConfigManager
 	internal static ModConfig GetLoadTimeConfig(Mod mod, string config)
 	{
 		if (loadTimeConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
+	}
+
+	internal static ModConfig GetDefaultValuesConfig(Mod mod, string config)
+	{
+		if (defaultValuesConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
 			return c;
 
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
@@ -452,6 +473,14 @@ public static class ConfigManager
 		ModConfig properClone = original.Clone();
 		JsonConvert.PopulateObject(json, properClone, ConfigManager.serializerSettings);
 		return properClone;
+	}
+
+	public static bool AreConfigsEqual(ModConfig a, ModConfig b)
+	{
+		if (a.GetType() != b.GetType())
+			return false;
+
+		return JsonConvert.SerializeObject(a, serializerSettingsCompact) == JsonConvert.SerializeObject(b, serializerSettingsCompact);
 	}
 
 	public static object? AlternateCreateInstance(Type type)
