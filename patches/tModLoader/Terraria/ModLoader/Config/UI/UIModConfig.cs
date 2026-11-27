@@ -22,20 +22,20 @@ namespace Terraria.ModLoader.Config.UI;
 
 public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 {
-	public int UpdateCount { get; protected set; }
+	public int UpdateCount { get; private set; }
 	public string ConfigElementTooltip { get; set; }
 
-	public bool HasUnsavedChanges { get; protected set; }
-	public bool HasDefaultValues { get; protected set; }
+	public bool HasUnsavedChanges { get; private set; }
+	public bool HasDefaultValues { get; private set; }
 
-	protected Mod mod;
-	protected ModConfig modConfig; // This is from ConfigManager.Configs
-	protected ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
+	private Mod mod;
+	private ModConfig modConfig; // This is from ConfigManager.Configs
+	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
 
-	protected ConfigPage rootConfigPage;
-	protected ConfigPage CurrentConfigPage => configPageStack.Peek();
-	protected bool InSubPage => configPageStack.Count > 1;
-	protected readonly Stack<ConfigPage> configPageStack = new();
+	private ConfigPage rootConfigPage;
+	private ConfigPage CurrentConfigPage => configPageStack.Peek();
+	private bool InSubPage => configPageStack.Count > 1;
+	private readonly Stack<ConfigPage> configPageStack = new();
 
 	public class ConfigPage(object name)
 	{
@@ -44,42 +44,40 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
-	protected BlockInputElement blockInput;
-	protected UIElement activeDialog;
+	private BlockInputElement blockInput;
+	private UIElement activeDialog;
 
-	protected bool openedFromModder = false;
-	protected Action modderOnClose = null;
-	protected internal string scrollToOption = null;
-	protected internal bool centerScrolledOption = false;
+	private bool openedFromModder = false;
+	private Action modderOnClose = null;
+	private string scrollToOption = null;
+	private bool centerScrolledOption = false;
 
-	protected bool refreshQueued = false;
+	private bool refreshQueued = false;
 
-	protected UIElement uiElement;
-	protected UIPanel uiPanel;
-	protected UIMarqueeTextPanel headerTextPanel;
+	private UIElement uiElement;
+	private UIPanel uiPanel;
+	private UIMarqueeTextPanel headerTextPanel;
 
-	protected UIButton backButton;
-	protected UIButton saveConfigButton;
-	protected UIButton revertConfigButton;
-	protected UIButton restoreDefaultsConfigButton;
+	private UIButton backButton;
+	private UIButton saveConfigButton;
+	private UIButton revertConfigButton;
+	private UIButton restoreDefaultsConfigButton;
 
-	protected UIElement listHeaderContainer;
-	protected UIList configElementList;
-	protected UIScrollbar scrollbar;
-	// TODO: make the input fields public
+	private UIElement listHeaderContainer;
+	private UIList configElementList;
+	private UIScrollbar scrollbar;
 	private UIFocusInputTextField filterTextField;
-	protected UIPanel configSideIndicatorPanel;
-	protected UIImageFramed configSideIndicator;
+	private UIImageFramed configSideIndicator;
 	// These 2 use the same code as UIModConfigList
-	protected UIButton modNamePanel;
-	protected UIImageFramed smallModIcon;
+	private UIButton modNamePanel;
+	private UIImageFramed smallModIcon;
 
-	protected UIButton subPageBackButton;
-	protected UIPanel subPageBreadcrumbPanel;
-	protected UIMarqueeText subPageBreadcrumbText;
+	private UIButton subPageBackButton;
+	private UIPanel subPageBreadcrumbPanel;
+	private UIMarqueeText subPageBreadcrumbText;
 
-	protected Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
-	protected Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
+	private Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
+	private Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
 
 	#region UI Creation
 
@@ -201,7 +199,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		configSideIndicatorPanel = new UIPanel {
+		var configSideIndicatorPanel = new UIPanel {
 			Width = { Pixels = 40 },
 			Height = { Pixels = 40 },
 			VAlign = 0.5f,
