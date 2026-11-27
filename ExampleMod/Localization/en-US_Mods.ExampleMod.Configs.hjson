@@ -699,7 +699,7 @@ ClassUsedAsKey: {
 
 ModConfigShowcaseAcceptClientChanges: {
 	RejectChangesDaytime: OnlyChangeableDuringNight can't be changed during the day.
-	DisplayName: ModConfig Showcase H: AcceptClientChanges
+	DisplayName: ModConfig Showcase I: AcceptClientChanges
 
 	OnlyChangeableDuringNight: {
 		Label: Only Changeable During Night
@@ -708,6 +708,20 @@ ModConfigShowcaseAcceptClientChanges: {
 
 	SomeNumber: {
 		Label: Some Number
+		Tooltip: ""
+	}
+}
+
+ModConfigShowcaseCustomUI: {
+	DisplayName: ModConfig Showcase H: Custom UI
+
+	SomeBool: {
+		Label: Some Bool
+		Tooltip: ""
+	}
+
+	SomeInt: {
+		Label: Some Int
 		Tooltip: ""
 	}
 }
