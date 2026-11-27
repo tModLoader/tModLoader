@@ -12,7 +12,7 @@
  	public static FlexibleTileWand RubblePlacementLarge = CreateRubblePlacerLarge();
  	public static FlexibleTileWand MiteyTitey = CreateMiteyTitey();
  	public static FlexibleTileWand SandCastleBucket = CreateSingleTileWand(169, 552, 0, 1, 2, 3).WithoutAmmoIcon();
-@@ -305,6 +_,14 @@
+@@ -305,6 +_,40 @@
  		flexibleTileWand.AddVariationsWithOffset(3086, tileIdToPlace, offset, 24, 25, 26);
  		flexibleTileWand.AddVariationsWithOffset(3081, tileIdToPlace, offset, 27, 28, 29);
  		return flexibleTileWand;
@@ -23,7 +23,33 @@
 +		RubblePlacementSmall = CreateRubblePlacerSmall();
 +		RubblePlacementMedium = CreateRubblePlacerMedium();
 +		RubblePlacementLarge = CreateRubblePlacerLarge();
-+		// TODO: Do we want to support modifying the other new wands?
++		MiteyTitey = CreateMiteyTitey();
++		SandCastleBucket = CreateSingleTileWand(169, 552, 0, 1, 2, 3).WithoutAmmoIcon();
++		GardenGnome = CreateSingleTileWand(4609, 567, 0, 1, 2, 3, 4).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Coral = CreateSingleTileWand(275, 81, 0, 1, 2, 3, 4, 5).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Seashell = CreateSingleTileWand(2625, 324, 0, 1, 2).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Starfish = CreateSingleTileWand(2626, 324, 3, 4, 5).WithoutAmmoIcon().WithoutAmmoConsumption();
++		LightningWhelkShell = CreateSingleTileWand(4072, 324, 6, 7, 8).WithoutAmmoIcon().WithoutAmmoConsumption();
++		TulipShell = CreateSingleTileWand(4073, 324, 9, 10, 11).WithoutAmmoIcon().WithoutAmmoConsumption();
++		JunoniaShell = CreateSingleTileWand(4071, 324, 12, 13, 14).WithoutAmmoIcon().WithoutAmmoConsumption();
++		JackoLantern = CreateSingleTileWand(1813, 35, 0, 1, 2, 3, 4, 5, 6, 7, 8).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Catacomb = CreateSingleTileWand(1417, 241, 0, 1, 2, 3, 4, 5, 6, 7, 8).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Present = CreateSingleTileWand(1869, 36, 0, 1, 2, 3, 4, 5, 6, 7).WithoutAmmoIcon().WithoutAmmoConsumption();
++		PartyPresent = CreateSingleTileWand(3749, 457, 0, 1, 2, 3, 4).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Book = CreateSingleTileWand(149, 50, 0, 1, 2, 3, 4).WithoutAmmoIcon().WithoutAmmoConsumption();
++		LawnFlamingo = CreateSingleTileWand(4420, 545, 0, 1).WithoutAmmoIcon().WithoutAmmoConsumption();
++		PortableKiln = CreatePortableKiln();
++		DeadCellsDisplayJar = CreateSingleTileWand(5472, 698, 1, 2, 0).WithoutAmmoIcon().WithoutAmmoConsumption();
++		Amethyst = ExposedGem(181, 0);
++		Topaz = ExposedGem(180, 1);
++		Sapphire = ExposedGem(177, 2);
++		Emerald = ExposedGem(179, 3);
++		Ruby = ExposedGem(178, 4);
++		Diamond = ExposedGem(182, 5);
++		Amber = ExposedGem(999, 6);
++		Explosives = CreateSingleTileWand(580, 141, 0, 1).WithoutAmmoIcon().WithoutAmmoConsumption();
++		CrystalShard = CreateSingleTileWand(502, 129, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17).WithoutAmmoIcon().WithoutAmmoConsumption();
++		GiantTiki = CreateSingleTileWand(6147, 753, 0, 1, 2).WithoutAmmoIcon().WithoutAmmoConsumption();
  	}
  
  	public static FlexibleTileWand CreatePortableKiln()
