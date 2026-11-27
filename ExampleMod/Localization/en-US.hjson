@@ -177,6 +177,8 @@ Mods: {
 					}
 				}
 			}
+
+			ExampleRegeneratingSlime.DisplayName: Example Regenerating Slime
 		}
 
 		Tiles: {
@@ -1310,6 +1312,9 @@ Mods: {
 				Tooltip: ""
 			}
 
+			ExampleDOTAccessory: {
+				DisplayName: Example Debuff Amplifier
+				Tooltip: Hits mark enemies for 5 seconds, doubling Poisoned, On Fire!, and the example poison and fire debuffs
 			ExampleGrassSeeds: {
 				DisplayName: Example Grass Seeds
 				Tooltip: ""
@@ -1507,6 +1512,19 @@ Mods: {
 				Description: You can't move your arms or legs
 			}
 
+			ExamplePoisonDebuff: {
+				DisplayName: Example Poison
+				Description: Losing life to poison
+			}
+
+			ExampleFireDebuff: {
+				DisplayName: Example Fire
+				Description: Losing life to fire
+			}
+
+			ExampleDOTAmplification: {
+				DisplayName: Example Debuff Amplification
+				Description: Certain damage-over-time debuffs deal double damage
 			ExampleFlyingTransformationBuff: {
 				DisplayName: Example Flying Transformation
 				Description: You turned into an Example Flying Transformation!
