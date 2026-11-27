@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 using System.Reflection;
-using Terraria;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ModLoader;
 using Terraria.ModLoader.Config.UI;
@@ -15,6 +14,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 	/// <summary>
 	/// This is a custom UIModConfig that we can modify.
 	/// See ModConfigShowcaseMisc.cs to see how to set custom UI.
+	/// This config is used to showcase changing the colour theme of the config UI.
 	/// </summary>
 	public class ExampleExtendedConfigUI : UIModConfig
 	{
@@ -24,8 +24,6 @@ namespace ExampleMod.Common.Configs.CustomUI
 
 		public override void OnActivate() {
 			base.OnActivate();
-
-			SetMessage("Hello from Example Mod!", Color.White);
 
 			// Theme the (almost) the entire UI (not just the main panel, which is still done with [BackgroundColor(r, g, b, a)])
 			headerTextPanel.BackgroundColor = solidColor;
@@ -52,11 +50,13 @@ namespace ExampleMod.Common.Configs.CustomUI
 			subPageBreadcrumbPanel.BackgroundColor = alternateColor;
 			subPageBreadcrumbPanel.BorderColor = fadedColor * 0.5f;
 
+			// Here, we use refelction to set the texture that UIScrollbar uses to a custom one
 			var newScrollbarTexture = ModContent.Request<Texture2D>("ExampleMod/Common/Configs/CustomUI/PinkScrollbar");
 			var scrollbarTextureField = typeof(UIScrollbar).GetField("_texture", BindingFlags.Instance | BindingFlags.NonPublic);
 			scrollbarTextureField?.SetValue(scrollbar, newScrollbarTexture);
 		}
 
+		// Theme the deialog panel
 		public override void HandleBackButtonUsage() {
 			base.HandleBackButtonUsage();
 
@@ -72,6 +72,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 			}
 		}
 
+		// Theme the config notifications
 		public override void SetMessage(string text, Color color) {
 			if (color == Color.Green || color == Color.White)
 				color = Color.Lerp(solidColor, Color.White, 0.75f);
@@ -80,15 +81,18 @@ namespace ExampleMod.Common.Configs.CustomUI
 			MenuNotificationsTracker.AddNotification(notification);
 		}
 
+		// Theme the config elements
 		public override Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) {
 			var element =  base.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
 			if (element.Item2 is not ConfigElement configElement) {
 				return element;
 			}
 
+			// Here, we use reflection to set ConfigElement.backgroundColor to avoid manually putting [BackgroundColor] on all of the config elements
+			// In the future, we won't have to do this if there is a proper API to do this
 			var field = typeof(ConfigElement).GetField("backgroundColor", BindingFlags.Instance | BindingFlags.NonPublic);
 			if (field is null) {
-				throw new Exception("Unable to get ConfigElement.backgroundColor");
+				return element;
 			}
 
 			var existingColor = field.GetValue(configElement);
