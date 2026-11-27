@@ -74,6 +74,10 @@ There should be almost no reason to send `MessageID.SyncItem` packets manually, 
 
 Armor, accessories and dyes can now be shared to other loadouts via favoriting, but the `Item` instances are not copied into `Player.[armor|dye]`. Use `Player.GetEffective[Armor|Dye](slot)` to find the equipment which is actually 'active'
 
+### Grappling Hook Limits
+
+Use `(ModProjectile|GlobalProjectile).ModifyGrappleLimits` to adjust the vanilla shared launch allowance and replacement threshold. These limits count all of the player's grappling hook types. `CanUseGrapple` keeps its existing override behavior, while `NumGrappleHooks` controls attachment limits. Keep custom counting when limits should apply only to a specific type.
+
 ### Projectile Draw Changes
 
 There have been several changes to projectile drawing in this update.
