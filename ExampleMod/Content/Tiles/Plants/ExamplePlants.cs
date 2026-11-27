@@ -49,7 +49,7 @@ namespace ExampleMod.Content.Tiles.Plants
 			hayStack = Main.rand.Next(1, 3); // This plant drops 1-2 hay when cut with a sickle, like other 1 tile tall plants.
 		}
 
-		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance) {
 			// This critter drop chance logic matches normal grass.
 			wormChance = 400;
 			grassHopperChance = 100;

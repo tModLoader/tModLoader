@@ -64,7 +64,7 @@ namespace ExampleMod.Content.Tiles
 			TileObjectData.GetTileData(Type, 0).LavaDeath = false;
 		}
 
-		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance) {
+		public override void DropCritterChance(int i, int j, ref int wormChance, ref int grassHopperChance, ref int jungleGrubChance, ref int luckyCloverChance, ref int lavaCritterChance) {
 			wormChance = 8;
 		}
 	}
