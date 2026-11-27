@@ -20,7 +20,6 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 	/// It also showcases how to create a custom UIState for the config.
 	/// </summary>
 	[SortConfig(after: true, nameof(ModConfigShowcaseAccessibility))]
-	[BackgroundColor(255, 105, 180, (int)(255 * 0.3f))] // RGB values for Color.HotPink
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
