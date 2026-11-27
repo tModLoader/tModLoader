@@ -44,8 +44,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		public Color BackgroundColor = UICommon.MainPanelBackground;
 	}
 
-	// TODO: make the input blocking API public
-	private BlockInputElement blockInput;
+	protected BlockInputElement blockInput;
 	protected UIElement activeDialog;
 
 	protected bool openedFromModder = false;
@@ -69,6 +68,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 	protected UIScrollbar scrollbar;
 	// TODO: make the input fields public
 	private UIFocusInputTextField filterTextField;
+	protected UIPanel configSideIndicatorPanel;
 	protected UIImageFramed configSideIndicator;
 	// These 2 use the same code as UIModConfigList
 	protected UIButton modNamePanel;
@@ -201,7 +201,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		var configSideIndicatorPanel = new UIPanel {
+		configSideIndicatorPanel = new UIPanel {
 			Width = { Pixels = 40 },
 			Height = { Pixels = 40 },
 			VAlign = 0.5f,
