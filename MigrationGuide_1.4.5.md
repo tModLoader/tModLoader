@@ -734,6 +734,7 @@ All classes are in the `Terraria` or `Terraria.ID` namespaces unless otherwise i
 * ⚙️: `Item.width`, `Item.height`, and `Item.Size` removed. No longer used. All assignments can be removed. Other code using these should likely reference `WorldItem.width`/`WorldItem.height` or the item texture dimensions instead.
 * 🤖: `Main.HasInteractibleObjectThatIsNotATile` -> `Main.HasInteractableObjectThatIsNotATile`
 * 🤖: `Main.CurrentFrameFlags.HadAnActiveInteractibleProjectile` -> `Main.HadAnActiveInteractableProjectile`
+* ⚙️: `NPC.strengthMultiplier` -> `NPC.difficulty` and `NPCSpawnParams.strengthMultiplierOverride` -> `difficultyOverride`. These now specify effective difficulty rather than a strength multiplier. Review old values and calculations; `1f` now means Classic difficulty. Leave `difficultyOverride` `null` to use `Main.Difficulty`.
 * ⚙️: `NPC.netSkip` removed. No longer necessary when setting `life <= 0` and was never necessary when setting `active = false`.
 * 🤖: `Player.adjWater` -> `Player.adjWaterSource`
 * 🤖: `Player.oldAdjWater` -> `Player.oldAdjWaterSource`

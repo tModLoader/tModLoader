@@ -384,6 +384,8 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Projectile", "identity", Removed("Use Projectile.key instead."));
 		RefactorStaticMember("Terraria.Projectile", "projUUID", Removed("Use Projectile.key instead."));
 
+		RefactorInstanceMember("Terraria.NPC", "strengthMultiplier", Removed("Use difficulty instead. It records effective difficulty, not a strength multiplier. Review old values and calculations manually."));
+		RefactorInstanceMember("Terraria.NPCSpawnParams", "strengthMultiplierOverride", Removed("Use difficultyOverride instead. It specifies effective difficulty, not a strength multiplier. Review old values and calculations manually."));
 		RefactorInstanceMember("Terraria.Item", "width", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.Item", "height", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.Item", "Size", Removed("No longer used."));

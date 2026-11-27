@@ -5,7 +5,6 @@ Once all patches are fixed, these items need to be fixed or double checked:
 - ModdedGrass --> Player.cs else if (inventory[selectedItem].createTile == 633) needs to be determined if this should be kept or commented out
 - UIModItem Double Click logic needs verification relative to https://github.com/tModLoader/tModLoader/commit/5968e3d72650ac6ea067add1390984b5f33c0e2f
 - NPCSpawnParams.gameModeData no longer exists. This was potentially used in IBestiaryInfoElement.
-- NPCSpawnParams.strengthMultiplierOverride renamed to difficultyOverride. Investigate if behavior changed.
 - NPCHitCount = 58 --> (and others) needs comment explaining what the value should be. Why is it 1 more when no sound 0?
 - Remove all Obsolete methods, including hooks and vanilla changes.
 - ItemSourceID is now static readonly, not a const. Do any other IDs change?
