@@ -37,3 +37,15 @@
  	public static void BroadcastChatMessage(NetworkText text, Color color, int excludedPlayer = -1)
  	{
  		BroadcastChatMessageAs(byte.MaxValue, text, color, excludedPlayer);
+@@ -71,8 +_,11 @@
+ 	{
+ 		string text2 = text.ToString();
+ 		if (messageAuthor < byte.MaxValue) {
++			Main.player[messageAuthor].chatOverhead.color = color; // Move before so NewMessage can use the color for the message.
+ 			Main.player[messageAuthor].chatOverhead.NewMessage(text2, Main.PlayerOverheadChatMessageDisplayTime);
++			/*
+ 			Main.player[messageAuthor].chatOverhead.color = color;
++			*/
+ 			text2 = NameTagHandler.GenerateTag(Main.player[messageAuthor].name) + " " + text2;
+ 		}
+ 

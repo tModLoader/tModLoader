@@ -21,7 +21,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// </summary>
 	public ModProjectile ModProjectile { get; internal set; }
 
-#region Globals
+	#region Globals
 	int IEntityWithGlobals<GlobalProjectile>.Type => type;
 	internal GlobalProjectile[] _globals;
 	public RefReadOnlyArray<GlobalProjectile> EntityGlobals => _globals;
@@ -47,7 +47,7 @@ public partial class Projectile : IEntityWithGlobals<GlobalProjectile>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalProjectile<T>(T baseInstance, out T result) where T : GlobalProjectile
 		=> GlobalProjectile.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	/// <summary>
 	/// <inheritdoc cref="Projectile.NewProjectile(IEntitySource, float, float, float, float, int, int, float, int, float, float, float, NewProjectileModifier)"/>

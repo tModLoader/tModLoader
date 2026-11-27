@@ -56,7 +56,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
-			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
+			if (checkItem.wingSlot > 0 || context == AccessorySlotType.DyeSlot) // if is Wing or dye slot, then can go in slot
 				return true;
 
 			return false; // Otherwise nothing in slot
@@ -71,6 +71,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool IsEnabled() {
+			// GetEffectiveArmor includes helmets shared from another loadout, even when Player.armor[0] is empty.
 			if (Player.GetEffectiveArmor(0).headSlot >= 0) // if player is wearing a helmet, because flight safety
 				return true; // Then can use Slot
 

@@ -1,4 +1,4 @@
-﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework;
 using Terraria.DataStructures;
 using Terraria.ID;
 
@@ -29,7 +29,6 @@ internal class Tantamount_Head : PatreonItem
 		base.SetDefaults();
 
 		Item.accessory = true;
-		Item.Size = new Vector2(26);
 	}
 }
 
@@ -45,23 +44,11 @@ internal class Tantamount_Body : PatreonItem
 		ArmorIDs.Body.Sets.HidesTopSkin[Item.bodySlot] = false;
 		ArmorIDs.Body.Sets.shouldersAreAlwaysInTheBack[Item.bodySlot] = true;
 	}
-
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-
-		Item.Size = new Vector2(26, 24);
-	}
 }
 
 [AutoloadEquip(EquipType.Legs)]
 internal class Tantamount_Legs : PatreonItem
 {
-	public override void SetDefaults()
-	{
-		base.SetDefaults();
-		Item.Size = new Vector2(22, 18);
-	}
 }
 
 [AutoloadEquip(EquipType.Wings)]
@@ -79,7 +66,6 @@ internal class Tantamount_Wings : PatreonItem
 		base.SetDefaults();
 
 		Item.vanity = false;
-		Item.Size = new Vector2(24, 26);
 		Item.accessory = true;
 	}
 }

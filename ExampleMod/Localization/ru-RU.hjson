@@ -1309,6 +1309,58 @@ Mods: {
 				// DisplayName: Example Special Glide Wings
 				// Tooltip: ""
 			}
+
+			ExampleGrassSeeds: {
+				// DisplayName: Example Grass Seeds
+				// Tooltip: ""
+			}
+
+			ExampleFlyingTransformationItem: {
+				// DisplayName: Example Flying Transformation Charm
+				// Tooltip: Transforms the user into an Example Flying Transformation
+			}
+
+			ExampleBeastTransformationItem: {
+				// DisplayName: Example Beast Transformation Skull
+				// Tooltip: Transforms the user into an Example Beast Transformation
+			}
+
+			ExampleBottomlessBucket: {
+				// DisplayName: Example Bottomless Bucket
+				/* Tooltip:
+					'''
+					Contains an endless amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidBucket: {
+				// DisplayName: Example Liquid Bucket
+				/* Tooltip:
+					'''
+					Contains a small amount of example liquid
+					Can be poured out
+					''' */
+			}
+
+			ExampleLiquidSponge: {
+				// DisplayName: Example Liquid Sponge
+				// Tooltip: Capable of soaking up an endless amount of example liquid
+			}
+
+			ExampleBoomerang: {
+				// DisplayName: Example Boomerang
+				// Tooltip: ""
+			}
+
+			ExampleFlamethrower: {
+				// DisplayName: Example Flamethrower
+				/* Tooltip:
+					'''
+					Uses gel for ammo
+					Ignores 15 points of enemy Defense
+					''' */
+			}
 		}
 
 		# Projectile display names mainly show in chat when a player dies from it.
@@ -1360,6 +1412,8 @@ Mods: {
 			// ExampleSentry.DisplayName: Example Sentry
 			// ExampleSentryShot.DisplayName: Example Sentry Shot
 			// ExampleHeldProjectileWeaponProjectile.DisplayName: Example Held Projectile Weapon Projectile
+			// ExampleBoomerangProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleBoomerang.DisplayName}"
+			// ExampleFlamethrowerProjectile.DisplayName: "{$Mods.ExampleMod.Items.ExampleFlamethrower.DisplayName}"
 		}
 
 		Buffs: {
@@ -1451,6 +1505,16 @@ Mods: {
 			ExampleCrowdControlledDebuff: {
 				// DisplayName: Example Crowd Controlled Debuff
 				// Description: You can't move your arms or legs
+			}
+
+			ExampleFlyingTransformationBuff: {
+				// DisplayName: Example Flying Transformation
+				// Description: You turned into an Example Flying Transformation!
+			}
+
+			ExampleBeastTransformationBuff: {
+				// DisplayName: Example Beast Transformation
+				// Description: You turned into an Example Beast Transformation!
 			}
 		}
 
@@ -1569,6 +1633,7 @@ Mods: {
 		UI: {
 			// ExampleResource: Example Resource: {0} / {1}
 			// InGameNotificationTitle: Welcome to the world, you are using Example Mod!
+			// MenuNotificationTitle: Goodbye from the world, you are using Example Mod!
 			// ExampleCoinsUIState.Reset: Reset Coins Per Minute Counter
 
 			ExampleFullscreenUI: {
@@ -1710,6 +1775,14 @@ Mods: {
 			// NounE: fish
 			// NounE$Collective: School
 		}
+
+		# We use "{0}\n" to add an additional line to an existing armor set bonus description
+		/* ArmorSetTweaks.MagicHatAdditionalEffectText:
+			'''
+			{0}
+			{$CommonItemTooltip.IncreasesMaxExampleResourceBy@1}
+			''' */
+		// Liquids.ExampleLiquid.DisplayName: Example Liquid
 	}
 }
 

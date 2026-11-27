@@ -153,6 +153,9 @@ public class SimpleRenamedVanillaMembersTest
 #if COMPILE_ERROR
 		player.oldAdjTile/* tModPorter Note: Removed. No longer used. */[0] = false;
 #endif
+#if COMPILE_ERROR
+		int nonTorch = player.nonTorch/* tModPorter Note: Removed. Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead */;
+#endif
 
 		// not-yet-implemented
 		Main.PlayerRenderer.DrawPlayer(Main.Camera, player, Vector2.Zero, 0f, Vector2.Zero, 1f);
@@ -175,6 +178,11 @@ public class SimpleRenamedVanillaMembersTest
 #endif
 		var vanity = item.hasVanityEffects;
 		item.DefaultToPlaceableWall(0);
+#if COMPILE_ERROR
+		item.width/* tModPorter Note: Removed. No longer used. */ = 20;
+		item.height/* tModPorter Note: Removed. No longer used. */ = 30;
+		item.Size/* tModPorter Note: Removed. No longer used. */ = new Vector2(20, 30);
+#endif
 
 		var item2 = new Item();
 		// not-yet-implemented

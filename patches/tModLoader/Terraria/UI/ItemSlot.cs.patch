@@ -89,6 +89,15 @@
  				return AlternateClickAction.GetSellOrTrash(item);
  		}
  		else if (ShiftInUse) {
+@@ -503,7 +_,7 @@
+ 					return shiftClickAction;
+ 			}
+ 
+-			switch (context) {
++			switch (Math.Abs(context)) {
+ 				case 0:
+ 				case 1:
+ 				case 2:
 @@ -566,6 +_,12 @@
  			return true;
  
@@ -299,11 +308,14 @@
  					if (Main.mouseItem.stack == 1) {
  						MouseItemSwap(ref inv[slot], context);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -950,9 +_,12 @@
+@@ -950,9 +_,15 @@
  						inv[slot].SetDefaults(Main.mouseItem.type);
  						SoundEngine.PlaySound(7);
  					}
 +					*/
++					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
++						break;
++
 +					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
 +					SoundEngine.PlaySound(7);
  
@@ -362,43 +374,34 @@
  			slot.favorited = false;
  			Main.mouseItem.favorited = false;
  		}
-@@ -1072,6 +_,19 @@
+@@ -1072,6 +_,15 @@
  				case 12:
  					result = Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) && checkItem.dye > 0;
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
 +					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					result = checkItem.vanity == vanity && CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
-+				case Context.ModdedDyeSlot: {
-+					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-+					result = checkItem.dye > 0
-+						&& accessorySlotLoader.ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer)
-+						&& accessorySlotLoader.CanAcceptItem(slot, checkItem, context);
++				case Context.ModdedDyeSlot:
++					result = CanEquipInModdedDyeSlot(Main.LocalPlayer, checkItem, slot);
 +					break;
-+				}
  				case 25:
  				case 27:
  				case 33:
-@@ -1130,6 +_,19 @@
+@@ -1130,6 +_,14 @@
  				case 12:
  					flag = !Main.LocalPlayer.IsItemSlotUnlockedAndUsable(slot) || checkItem.dye <= 0;
  					break;
 +				case Context.ModdedAccessorySlot:
 +				case Context.ModdedVanityAccessorySlot: {
-+					bool vanity = context == Context.ModdedVanityAccessorySlot;
-+					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context, vanity);
++					flag = !CanEquipInModdedAccessorySlot(checkItem, slot, context);
 +					break;
 +				}
-+				case Context.ModdedDyeSlot: {
-+					AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-+					flag = checkItem.dye <= 0
-+						|| !accessorySlotLoader.ModdedIsItemSlotUnlockedAndUsable(slot, Main.LocalPlayer)
-+						|| !accessorySlotLoader.CanAcceptItem(slot, checkItem, context);
++				case Context.ModdedDyeSlot:
++					flag = !CanEquipInModdedDyeSlot(Main.LocalPlayer, checkItem, slot);
 +					break;
-+				}
  				case 25:
  				case 27:
  				case 33:
@@ -759,6 +762,15 @@
  			if (num18 != -1) {
  				float num25 = 0.7f;
  				int num26 = (int)MathHelper.Clamp(310 + num18, 310f, 312f);
+@@ -2357,7 +_,7 @@
+ 			return false;
+ 
+ 		int num = -1;
+-		switch (context) {
++		switch (Math.Abs(context)) {
+ 			case 8:
+ 			case 10:
+ 				num = 0;
 @@ -2383,6 +_,14 @@
  
  	public static Item GetSharedLoadoutItem(int context, int slot, out int? sharedFromLoadout)
@@ -834,6 +846,30 @@
  			item = GetSharedLoadoutItem(context, slot, out var _);
  
  		if (!item.IsAir) {
+@@ -2709,6 +_,7 @@
+ 					break;
+ 				case 9:
+ 				case 11:
++				case Context.ModdedVanityAccessorySlot:
+ 					Main.HoverItem.social = true;
+ 					break;
+ 				case 15:
+@@ -2789,12 +_,15 @@
+ 
+ 		bool success;
+ 		if (inv[slot].dye > 0) {
++			/*
+ 			inv[slot] = DyeSwap(inv[slot], out success, out var targetSlot);
+ 			if (success) {
+ 				Main.EquipPageSelected = 0;
+ 				AchievementsHelper.HandleOnEquip(player, inv[slot], 12);
+ 				DisplayTransfer_TwoWay(inv, context, slot, player.dye, 12, targetSlot);
+ 			}
++			*/
++			SwapDyeEquip_TML(player, inv, context, slot);
+ 		}
+ 		else if (Main.projHook[inv[slot].shoot]) {
+ 			inv[slot] = EquipSwap(inv[slot], player.miscEquips, 4, out success);
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
@@ -847,10 +883,18 @@
  		return true;
  	}
  
-+	//TML: I (Solxan), have not been able to get this to ever run in-game. I suspect this code path is deprecated.
++	/*
  	private static Item DyeSwap(Item item, out bool success, out int targetSlot)
  	{
  		targetSlot = -1;
+@@ -3013,6 +_,7 @@
+ 		success = true;
+ 		return item;
+ 	}
++	*/
+ 
+ 	private static Item ArmorSwap(Item item, out bool success, out int targetSlot)
+ 	{
 @@ -3181,7 +_,7 @@
  
  	public static Color GetItemLight(ref Color currentColor, ref float scale, int type, bool outInTheWorld = false, float lightScalar = 1f)

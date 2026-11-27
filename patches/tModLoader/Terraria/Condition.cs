@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using Terraria.Enums;
 using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.Localization;
+using Terraria.ModLoader;
 
 namespace Terraria;
 
@@ -12,11 +13,7 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public bool IsMet() => Predicate();
 
-	// Near Liquids
-	public static readonly Condition NearWater =			new("Conditions.NearWater",				() => Main.LocalPlayer.adjWaterSource || Main.LocalPlayer.adjTile[TileID.Sinks]);
-	public static readonly Condition NearLava =				new("Conditions.NearLava",				() => Main.LocalPlayer.adjLava);
-	public static readonly Condition NearHoney =			new("Conditions.NearHoney",				() => Main.LocalPlayer.adjHoney);
-	public static readonly Condition NearShimmer =			new("Conditions.NearShimmer",			() => Main.LocalPlayer.adjShimmer);
+#pragma warning disable format
 	// Time
 	public static readonly Condition TimeDay =				new("Conditions.TimeDay",				() => Main.dayTime);
 	public static readonly Condition TimeNight =			new("Conditions.TimeNight",				() => !Main.dayTime);
@@ -242,13 +239,15 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 	public static readonly Condition MoonPhases12 =				new("Conditions.MoonPhases12",				() => Main.moonPhase == 1 || Main.moonPhase == 2);
 	public static readonly Condition MoonPhases35 =				new("Conditions.MoonPhases35",				() => Main.moonPhase == 3 || Main.moonPhase == 5);
 	public static readonly Condition MoonPhases67 =				new("Conditions.MoonPhases67",				() => Main.moonPhase == 6 || Main.moonPhase == 7);
+#pragma warning restore format
 
-	// Parameters
-	public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
+    // Parameters
+    public static Condition PlayerCarriesItem(int itemId) => new(Language.GetText("Conditions.PlayerCarriesItem").WithFormatArgs(Lang.GetItemName(itemId)), () => Main.LocalPlayer.HasItem(itemId));
 	public static Condition GolfScoreOver(int score) => new(Language.GetText("Conditions.GolfScoreOver").WithFormatArgs(score), () => Main.LocalPlayer.golferScoreAccumulated >= score);
 	public static Condition NpcIsPresent(int npcId) => new(Language.GetText("Conditions.NpcIsPresent").WithFormatArgs(Lang.GetNPCName(npcId)), () => NPC.AnyNPCs(npcId));
 	public static Condition AnglerQuestsFinishedOver(int quests) => new(Language.GetText("Conditions.AnglerQuestsFinishedOver").WithFormatArgs(quests), () => Main.LocalPlayer.anglerQuestsFinished >= quests);
-	public static Condition BestiaryFilledPercent(int percent) {
+	public static Condition BestiaryFilledPercent(int percent)
+	{
 		if (percent >= 100)
 			return new Condition("Conditions.BestiaryFull", () => Main.GetBestiaryProgressReport().CompletionPercent >= 1f);
 
@@ -257,4 +256,22 @@ public sealed record Condition(LocalizedText Description, Func<bool> Predicate)
 
 	public static Condition CurrentPriceAdjustmentUnder(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentUnder").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment <= priceModifier);
 	public static Condition CurrentPriceAdjustmentOver(float priceModifier) => new(Language.GetText("Conditions.CurrentPriceAdjustmentOver").WithFormatArgs(priceModifier), () => Main.LocalPlayer.currentShoppingSettings.PriceAdjustment >= priceModifier);
+
+	public static Condition NearLiquid(int liquidID)
+	{
+		LocalizedText text;
+		if (liquidID == LiquidID.Water)
+			text = Language.GetText("Conditions.NearWater");
+		else if (liquidID == LiquidID.Lava)
+			text = Language.GetText("Conditions.NearLava");
+		else if (liquidID == LiquidID.Honey)
+			text = Language.GetText("Conditions.NearHoney");
+		else if (liquidID == LiquidID.Shimmer)
+			text = Language.GetText("Conditions.NearShimmer");
+		else
+			// We intentionally use localized text for this line
+			text = Language.GetText("Conditions.NearLiquid").WithFormatArgs(LiquidLoader.GetLiquid(liquidID).DisplayName);
+
+		return new Condition(text, () => Main.LocalPlayer.adjLiquid[liquidID]);
+	}
 }

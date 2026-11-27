@@ -48,7 +48,7 @@ namespace ExampleMod.Content.Tiles.Furniture
 			// Because beds have special smart interaction, this splits up the left and right side into the necessary 2x2 sections
 			width = 2; // Default to the Width defined for TileObjectData.newTile
 			height = 2; // Default to the Height defined for TileObjectData.newTile
-			//extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
+						//extraY = 0; // Depends on how you set up frameHeight and CoordinateHeights and CoordinatePaddingFix.Y
 		}
 
 		public override void ModifySleepingTargetInfo(int i, int j, ref TileRestingInfo info) {

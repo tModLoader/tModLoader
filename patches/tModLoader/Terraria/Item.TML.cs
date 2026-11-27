@@ -29,17 +29,6 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// </summary>
 	public ModItem ModItem { get; internal set; }
 
-	/// <summary>
-	/// The item <see cref="width"/> and <see cref="height"/> values as a vector.
-	/// </summary>
-	public Vector2 Size {
-		get => new Vector2(width, height);
-		set {
-			width = (int)value.X;
-			height = (int)value.Y;
-		}
-	}
-
 	#region Globals
 	int IEntityWithGlobals<GlobalItem>.Type => type;
 	internal GlobalItem[] _globals;
@@ -66,7 +55,7 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// <returns> Whether or not the requested instance has been found. </returns>
 	public bool TryGetGlobalItem<T>(T baseInstance, out T result) where T : GlobalItem
 		=> GlobalItem.TryGetGlobal(type, EntityGlobals, baseInstance, out result);
-#endregion
+	#endregion
 
 	public List<Mod> StatsModifiedBy { get; private set; } = new();
 
@@ -152,13 +141,12 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 		set => _damageClass = value ?? throw new ArgumentException("An item's DamageType cannot be null.");
 	}
 
-	private int _armorPenetration = 0;
 	/// <summary>
 	/// The number of defense points that this item can ignore on its own. Cannot be set to negative values. Defaults to 0.
 	/// </summary>
 	public int ArmorPenetration {
-		get => _armorPenetration;
-		set => _armorPenetration = Math.Max(0, value);
+		get => armorPenetration;
+		set => armorPenetration = Math.Max(0, value);
 	}
 
 	public TagCompound SerializeData() => ItemIO.Save(this);
@@ -359,9 +347,11 @@ public partial class Item : TagSerializable, IEntityWithGlobals<GlobalItem>
 	/// Determines the <see cref="PrefixCategory">prefix categories</see> of this <see cref="Item"/>.
 	/// </summary>
 	/// <returns>A <see cref="List{PrefixCategory}"/> of every category this <see cref="Item"/> matches, the <see cref="List{PrefixCategory}"/> will be empty if this <see cref="Item"/> doesn't have any categories.</returns>
-	public List<PrefixCategory> GetPrefixCategories() {
+	public List<PrefixCategory> GetPrefixCategories()
+	{
 		ref List<PrefixCategory> categories = ref PrefixLoader.itemPrefixesByType[type];
-		if (categories is not null) return categories;
+		if (categories is not null)
+			return categories;
 		categories = [];
 		if (PrefixLegacy.ItemSets.SwordsHammersAxesPicks[type] || ItemLoader.MeleePrefix(this))
 			categories.Add(PrefixCategory.Melee);

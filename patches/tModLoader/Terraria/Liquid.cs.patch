@@ -1,0 +1,79 @@
+--- src/TerrariaNetCore/Terraria/Liquid.cs
++++ src/tModLoader/Terraria/Liquid.cs
+@@ -4,6 +_,8 @@
+ using Terraria.GameContent.NetModules;
+ using Terraria.ID;
+ using Terraria.Localization;
++using Terraria.ModLoader;
++using Terraria.ModLoader.Default;
+ using Terraria.ObjectData;
+ using Terraria.Testing;
+ using Terraria.WorldBuilding;
+@@ -115,6 +_,12 @@
+ 	private static void SettleWaterAt(int originX, int originY)
+ 	{
+ 		Tile tile = Main.tile[originX, originY];
++		bool settleLiquid = LiquidLoader.SettleLiquidMovement(originX, originY, tile.LiquidType);
++		if (!settleLiquid) {
++			tilesIgnoreWater(ignoreSolids: false);
++			return;
++		}
++
+ 		tilesIgnoreWater(ignoreSolids: true);
+ 		if (tile.liquid == 0 || (tile.active() && tile.type == 379))
+ 			return;
+@@ -343,6 +_,9 @@
+ 			return;
+ 		}
+ 
++		if (!LiquidLoader.PreLiquidMovement(x, y, tile5.LiquidType, this))
++			return;
++
+ 		byte liquid = tile5.liquid;
+ 		float num = 0f;
+ 		if (y > Main.UnderworldLayer && tile5.liquidType() == 0 && tile5.liquid > 0) {
+@@ -975,6 +_,15 @@
+ 		Tile tile3 = Main.tile[x, y - 1];
+ 		Tile tile4 = Main.tile[x, y + 1];
+ 		Tile tile5 = Main.tile[x, y];
++
++		// tML: Hardcode for unloaded liquid so that it doesn't interact with other liquids until a permanent solution is in place
++		// Unfortunately, this has a side-effect that if have 3 different liquids nearby (water + honey + unloaded) then the water+honey won't merge in that tile, but instead one over if possible.
++		// Without a larger rewrite, this side-effect is not easily avoidable, so it will wait for official merge solution.
++		int unloadedLiquidType = ModContent.GetInstance<UnloadedLiquid>().Type;
++		bool unloadedLiquidNearby = tile.LiquidType == unloadedLiquidType || tile2.LiquidType == unloadedLiquidType || tile3.LiquidType == unloadedLiquidType || tile4.LiquidType == unloadedLiquidType;
++		if (unloadedLiquidNearby || thisLiquidType == unloadedLiquidType)
++			return;
++
+ 		if ((tile.liquid > 0 && tile.liquidType() != thisLiquidType) || (tile2.liquid > 0 && tile2.liquidType() != thisLiquidType) || (tile3.liquid > 0 && tile3.liquidType() != thisLiquidType)) {
+ 			bool waterNearby = tile.anyWater() || tile2.anyWater() || tile3.anyWater();
+ 			bool lavaNearby = tile.anyLava() || tile2.anyLava() || tile3.anyLava();
+@@ -1243,14 +_,28 @@
+ 						if (!tile5.active())
+ 							continue;
+ 
++						/*
+ 						if (tile5.type == 2 || tile5.type == 23 || tile5.type == 109 || tile5.type == 199 || tile5.type == 477 || tile5.type == 492) {
++						*/
++						if (TileID.Sets.Grass[tile5.type]) {
+ 							tile5.type = 0;
+ 							WorldGen.SquareTileFrame(i, j);
+ 							if (Main.netMode == 2)
+ 								NetMessage.SendTileSquare(-1, num, num2, 3);
+ 						}
++						/*
+ 						else if (tile5.type == 60 || tile5.type == 70 || tile5.type == 661 || tile5.type == 662) {
++						*/
++						else if (TileID.Sets.GrassSpecial[tile5.type]) {
+ 							tile5.type = 59;
++							WorldGen.SquareTileFrame(i, j);
++							if (Main.netMode == 2)
++								NetMessage.SendTileSquare(-1, num, num2, 3);
++						}
++						// TML: Add support for any other "dirt" tile.
++						// Note that AshGrass specifically doesn't revert to Ash, so this check excludes those grass tiles. Main.tileLavaDeath isn't true for grasses, probably because that would call KillTile without the fail parameter to turn it into dirt, but maybe a separate set will be needed to allow mods to have a tile that doesn't revert to a non-ash "dirt" tile in lava.
++						else if (TileID.Sets.NeedsGrassFraming[tile5.type] && TileID.Sets.NeedsGrassFramingDirt[tile5.type] != TileID.Ash) {
++							tile5.type = (ushort)TileID.Sets.NeedsGrassFramingDirt[tile5.type];
+ 							WorldGen.SquareTileFrame(i, j);
+ 							if (Main.netMode == 2)
+ 								NetMessage.SendTileSquare(-1, num, num2, 3);

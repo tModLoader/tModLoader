@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics.Metrics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using tModPorter.Rewriters;
 using static tModPorter.Rewriters.AddComment;
+using static tModPorter.Rewriters.EventHandlerRewriter;
 using static tModPorter.Rewriters.MemberTypeRewriter;
 using static tModPorter.Rewriters.InvokeRewriter;
 using static tModPorter.Rewriters.MemberUseRewriter;
@@ -269,6 +270,12 @@ public static partial class Config
 		RenameInstanceField("Terraria.DataStructures.EntitySource_OnHit", "EntityStruck", "Victim");
 
 		// 1.4.5
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryEntityToPlayerInventorySettings", to: "QuickTransferFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "NPCEntityToPlayerInventorySettings", to: "GiftRecieved");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettings", to: "LootAllFromBank");
+		RenameStaticField("Terraria.GetItemSettings", from: "LootAllSettingsRegularChest", to: "LootAllFromChest");
+		RenameStaticField("Terraria.GetItemSettings", from: "GetItemInDropItemCheck", to: "ReturnItemFromSlot");
+		RenameStaticField("Terraria.GetItemSettings", from: "InventoryUIToInventorySettingsShowAsNew", to: "ReturnItemShowAsNew");
 		RenameStaticField("Terraria.ID.BuffID.Sets", from: "LongerExpertDebuff", to: "BuffTimeIsExtendedWithGameDifficulty");
 		RenameStaticField("Terraria.ID.GoreID.Sets", from: "LiquidDroplet", to: "IsDrip");
 		RenameStaticField("Terraria.ID.ImmunityCooldownID", from: "Bosses", to: "BossNoCheese");
@@ -377,9 +384,14 @@ public static partial class Config
 		RefactorStaticMember("Terraria.Projectile", "identity", Removed("Use Projectile.key instead."));
 		RefactorStaticMember("Terraria.Projectile", "projUUID", Removed("Use Projectile.key instead."));
 
+		RefactorInstanceMember("Terraria.Item", "width", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "height", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Item", "Size", Removed("No longer used."));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorX", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.NPC.Spawner", "PlayerFloorY", Removed("Player floor coordinates are no longer tracked by NPC.Spawner"));
 		RefactorInstanceMember("Terraria.Player", "oldAdjTile", Removed("No longer used."));
+		RefactorInstanceMember("Terraria.Player", "nonTorch", Removed("Use Player.selectedItemState.Hotbar or Player.selectedItemState.HasActiveOverride instead"));
+		RefactorInstanceMember("Terraria.Player", "selectedItem", RewriteSelectedItemAssignment);
 
 		RefactorStaticMethodCall("Terraria.Item", "NewItem", RewriteNewItem);
 		RefactorStaticMethodCall("Terraria.Chest", "FindChestByGuessing", Removed("Use Chest.FindChest with the top left tile coordinate"));
@@ -404,6 +416,8 @@ public static partial class Config
 
 		ChangeStaticFieldType("Terraria.Main", "item",        from: "Terraria.Item", to: "Terraria.WorldItem");
 		ChangeStaticFieldType("Terraria.Main", "ActiveItems", from: "Terraria.Item", to: "Terraria.WorldItem");
+
+		AppendEventHandlerParameters("Terraria.UI.UIElement", "OnDraw");
 
 		RenameType("Terraria.ID.RecipeGroupID", "Terraria.ID.RecipeGroups");
 	}

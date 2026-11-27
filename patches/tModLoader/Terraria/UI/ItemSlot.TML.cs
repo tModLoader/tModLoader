@@ -1,5 +1,6 @@
 using System;
 using Terraria.Audio;
+using Terraria.GameContent.Achievements;
 using Terraria.ModLoader;
 
 namespace Terraria.UI;
@@ -96,36 +97,64 @@ public partial class ItemSlot
 	}
 	*/
 
-	/// <summary>
-	/// Alters the ItemSlot.DyeSwap method for modded slots;
-	/// Unfortunately, I (Solxan) couldn't ever get ItemSlot.DyeSwap invoked so pretty sure this and its vanilla code is defunct.
-	/// Here in case someone proves my statement wrong later.
-	/// </summary>
-	private static Item ModSlotDyeSwap(Item item, out bool success)
+	private static void SwapDyeEquip_TML(Player player, Item[] inventory, int context, int slot)
 	{
-		Item item2 = item;
-		var msPlayer = AccessorySlotLoader.ModSlotPlayer(Main.LocalPlayer);
-		int dyeSlotCount = 0;
-		var dyes = msPlayer.exDyesAccessory;
+		inventory[slot] = DyeSwap_TML(player, inventory[slot], out var targetDyes, out var targetSlot);
+		if (targetSlot < 0)
+			return;
 
-		for (int i = 0; i < dyeSlotCount; i++) {
-			if (dyes[i].type == 0) {
-				dyeSlotCount = i;
+		Main.EquipPageSelected = 0;
+		AchievementsHelper.HandleOnEquip(player, targetDyes[targetSlot], Context.EquipDye);
+		int targetContext = targetDyes == player.dye ? Context.EquipDye : Context.ModdedDyeSlot;
+		DisplayTransfer_TwoWay(inventory, context, slot, targetDyes, targetContext, targetSlot);
+	}
+
+	private static Item DyeSwap_TML(Player player, Item item, out Item[] targetDyes, out int targetSlot)
+	{
+		Item[] moddedDyes = AccessorySlotLoader.ModSlotPlayer(player).exDyesAccessory;
+		int vanillaSlotCount = player.dye.Length;
+		int slotCount = vanillaSlotCount + moddedDyes.Length;
+		int candidate = -1;
+
+		// Fill an empty slot before replacing an equipped dye.
+		for (int i = 0; i < slotCount; i++) {
+			Item dye = i < vanillaSlotCount ? player.dye[i] : moddedDyes[i - vanillaSlotCount];
+			if (dye.IsAir && CanSwapDye(player, item, i)) {
+				candidate = i;
 				break;
 			}
 		}
 
-		if (dyeSlotCount >= msPlayer.SlotCount) {
-			success = false;
-			return item2;
+		if (candidate < 0) {
+			for (int i = 0; i < slotCount; i++) {
+				int index = (dyeSwapCounter + i) % slotCount;
+				if (CanSwapDye(player, item, index)) {
+					candidate = index;
+					break;
+				}
+			}
 		}
 
-		item2 = dyes[dyeSlotCount].Clone();
-		dyes[dyeSlotCount] = item.Clone();
+		if (candidate < 0) {
+			targetDyes = player.dye;
+			targetSlot = -1;
+			return item;
+		}
 
+		bool modded = candidate >= vanillaSlotCount;
+		targetDyes = modded ? moddedDyes : player.dye;
+		targetSlot = modded ? candidate - vanillaSlotCount : candidate;
 		SoundEngine.PlaySound(7);
-		success = true;
-		return item2;
+		SwapClearFavorite(ref item, ref targetDyes[targetSlot]);
+		dyeSwapCounter = (candidate + 1) % slotCount;
+		return item;
+	}
+
+	private static bool CanSwapDye(Player player, Item item, int slot)
+	{
+		return slot < player.dye.Length
+			? player.IsItemSlotUnlockedAndUsable(slot)
+			: CanEquipInModdedDyeSlot(player, item, slot - player.dye.Length);
 	}
 
 	// Copy of Acc check, but runs hooks which take the local player as a context.
@@ -174,14 +203,22 @@ public partial class ItemSlot
 		return !ItemLoader.CanEquipAccessory(player, item, slot >= 20 ? slot - 20 : slot, slot >= 20);
 	}
 
-	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context, bool vanity)
+	private static bool CanEquipInModdedAccessorySlot(Item checkItem, int slot, int context)
 	{
 		if (!checkItem.accessory)
 			return false;
 
 		AccessorySlotLoader accessorySlotLoader = LoaderManager.Get<AccessorySlotLoader>();
-		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, vanity)
+		return accessorySlotLoader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, Main.LocalPlayer, accessorySlotLoader.ContextToEnum(context))
 			&& accessorySlotLoader.ModSlotCheck(checkItem, slot, context);
+	}
+
+	private static bool CanEquipInModdedDyeSlot(Player player, Item item, int slot)
+	{
+		AccessorySlotLoader loader = LoaderManager.Get<AccessorySlotLoader>();
+		return item.dye > 0
+			&& loader.ModdedIsSpecificItemSlotUnlockedAndUsable(slot, player, AccessorySlotType.DyeSlot)
+			&& loader.CanPlayerAcceptItem(player, slot, item, Context.ModdedDyeSlot);
 	}
 
 	private static int GetSlotColorContext(int context) => context switch {

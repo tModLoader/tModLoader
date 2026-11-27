@@ -129,17 +129,20 @@ public partial class WorkshopSocialModule
 			}
 		}
 
-		// Check mod icon
-		const string IconFileName = "icon.png";
-		using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{IconFileName}");
-		using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
-		defaultIconStream.CopyTo(defaultIconMemoryStream);
-		var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
-		var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(IconFileName);
+		// Check mod icons
+		string[] iconFileNames = ["icon.png", "icon_small.png"];
 
-		if (modIconBytes.SequenceEqual(defaultIconBytes)) {
-			IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", IconFileName));
-			return false;
+		foreach (var icon in iconFileNames) {
+			using var defaultIconStream = typeof(ModLoader.ModLoader).Assembly.GetManifestResourceStream($"Terraria/ModLoader/Templates/{icon}");
+			using var defaultIconMemoryStream = new MemoryStream((int)defaultIconStream.Length);
+			defaultIconStream.CopyTo(defaultIconMemoryStream);
+			var defaultIconBytes = (ReadOnlySpan<byte>)defaultIconMemoryStream.GetBuffer();
+			var modIconBytes = (ReadOnlySpan<byte>)modFile.GetBytes(icon);
+
+			if (modIconBytes.SequenceEqual(defaultIconBytes)) {
+				IssueReporter.ReportInstantUploadProblemFromValue(Language.GetTextValue("tModLoader.ModUsesDefaultIcon", icon));
+				return false;
+			}
 		}
 
 		// Check for Beta
@@ -520,7 +523,8 @@ public partial class WorkshopSocialModule
 	{
 		private string publisherkey;
 
-		private string GetMetadataWeb(string webKey, string publishFileId) {
+		private string GetMetadataWeb(string webKey, string publishFileId)
+		{
 			// https://steamapi.xpaw.me/#IPublishedFileService/GetDetails
 
 			string webRequest = $"https://api.steampowered.com/IPublishedFileService/GetDetails/v1/?key={webKey}&publishedfileids%5B0%5D={publishFileId}&includetags=false&includeadditionalpreviews=false&includechildren=false&includekvtags=true&includevotes=false&short_description=true&includeforsaledata=false&includemetadata=true&return_playtime_stats=0&appid=1281930&strip_description_bbcode=false&admin_query=true";

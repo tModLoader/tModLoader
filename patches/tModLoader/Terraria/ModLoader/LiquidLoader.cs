@@ -1,12 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader;
+
 public static class LiquidLoader
 {
 	private static int nextLiquid = LiquidID.Count;
@@ -61,6 +63,12 @@ public static class LiquidLoader
 
 		LoaderUtils.ResetStaticMembers(typeof(LiquidID));
 
+		TileID.Sets.ApplyResizeTileLiquidSourceForCraftingSet();
+
+		ModLoader.BuildGlobalHook(ref HookModifyLight, globalLiquids, (GlobalLiquid g) => g.ModifyLight);
+		//ModLoader.BuildGlobalHook(ref HookSettleLiquidMovement, globalLiquids, (GlobalLiquid g) => g.SettleLiquidMovement);
+		//ModLoader.BuildGlobalHook(ref HookOnPump, globalLiquids, (GlobalLiquid g) => g.CanPump);
+
 		if (!unloading) {
 			loaded = true;
 		}
@@ -72,5 +80,75 @@ public static class LiquidLoader
 		liquids.Clear();
 		nextLiquid = LiquidID.Count;
 		globalLiquids.Clear();
+	}
+
+	private delegate void DelegateModifyLight(int i, int j, int type, ref float r, ref float g, ref float b);
+	private static DelegateModifyLight[] HookModifyLight;
+	public static void ModifyLight(int i, int j, int type, ref float r, ref float g, ref float b)
+	{
+		GetLiquid(type)?.ModifyLight(i, j, ref r, ref g, ref b);
+		foreach (var hook in HookModifyLight) {
+			hook(i, j, type, ref r, ref g, ref b);
+		}
+	}
+
+	private static Func<int, int, int, bool>[] HookSettleLiquidMovement;
+	public static bool SettleLiquidMovement(int i, int j, int type)
+	{
+		/*
+		foreach (var hook in HookSettleLiquidMovement) {
+			bool result = hook(i, j, type);
+			if (!result) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.SettleLiquidMovement(i, j) ?? true;
+		*/
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).SettleLiquidMovement(i, j);
+		}
+
+		return true;
+	}
+
+	private static Func<int, int, int, int, int, bool>[] HookCanPump;
+	public static bool CanPump(int type, int inletX, int inletY, int outletX, int outletY)
+	{
+		/*
+		foreach (var hook in HookCanPump) {
+			if (!hook(type, x, y, x2, y2)) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.CanPump(x, y, x2, y2) ?? true;
+		*/
+
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).CanPump(inletX, inletX, outletX, outletY);
+		}
+
+		return true;
+	}
+
+	private static Func<int, int, int, Liquid, bool>[] HookPreLiquidMovement;
+	public static bool PreLiquidMovement(int x, int y, int type, Liquid liquidCache)
+	{
+		/*
+		foreach (var hook in HookPreLiquidMovement) {
+			if (!hook(i, j, type, liquid)) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.PreLiquidMovment(i, j, liquid) ?? true;
+		*/
+
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).PreLiquidMovement(x, y, liquidCache);
+		}
+
+		return true;
 	}
 }
