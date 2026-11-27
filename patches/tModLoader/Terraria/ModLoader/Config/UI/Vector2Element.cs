@@ -98,7 +98,7 @@ internal class Vector2Element : ConfigElement
 
 		int order = 0;
 		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(c)) {
-			var wrapped = UIModConfig.WrapIt(this, ref height, variable, c, order++);
+			var wrapped = ConfigManager.CurrentConfigUI.WrapIt(this, ref height, variable, c, order++);
 
 			// Can X and Y inherit range and increment automatically? Pass in "fake PropertyFieldWrapper" to achieve? Real one desired for label.
 			if (wrapped.Item2 is FloatElement floatElement) {

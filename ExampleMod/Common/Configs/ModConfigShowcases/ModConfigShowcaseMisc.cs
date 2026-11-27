@@ -118,7 +118,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 
 		public override void OnLoaded() {
 			// Here, we can create our custom UI for the config
-			CustomUI = new ExampleConfigUIState();
+			CustomUI = new ExampleExtendedConfigUI();
 		}
 	}
 }

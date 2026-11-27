@@ -679,7 +679,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 
 	#region ConfigElement Handling
 
-	internal static void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
+	public void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
 	{
 		BackgroundColorAttribute backgroundColorAttribute = memberInfo != null
 			? ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, config, null)
@@ -696,7 +696,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
 				continue;
 
-			var header = HandleAndGetHeader(null, ref top, ref order, variable);
+			var header = HandleHeader(null, ref top, ref order, variable);
 			if (header is not null) {
 				configPage.ConfigElements.Add(header);
 			}
@@ -705,7 +705,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		}
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	public Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 	{
 		int elementHeight;
 		Type type = memberInfo.Type;
@@ -893,13 +893,7 @@ public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 		return container;
 	}
 
-	// For API compat
-	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
-	{
-		HandleAndGetHeader(parent, ref top, ref order, variable);
-	}
-
-	public static Tuple<UIElement, UIElement> HandleAndGetHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	public Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 

@@ -247,7 +247,7 @@ internal class ObjectElement : ConfigElement<object>
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
 				separateConfigPage.ConfigElements.Clear();
-				UIModConfig.SetupConfigPage(separateConfigPage, data, MemberInfo);
+				ConfigManager.CurrentConfigUI.SetupConfigPage(separateConfigPage, data, MemberInfo);
 			}
 			else {
 				int order = 0;
@@ -257,9 +257,9 @@ internal class ObjectElement : ConfigElement<object>
 
 					int top = 0;
 
-					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
+					ConfigManager.CurrentConfigUI.HandleHeader(dataList, ref top, ref order, variable);
 
-					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
+					var wrapped = ConfigManager.CurrentConfigUI.WrapIt(dataList, ref top, variable, data, order++);
 
 					if (List != null) {
 						//wrapped.Item1.Left.Pixels -= 20;

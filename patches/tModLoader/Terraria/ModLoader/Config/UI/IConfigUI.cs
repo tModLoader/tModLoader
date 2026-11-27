@@ -4,9 +4,6 @@ using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
-// TODO: in future, should include:
-// - save, revert, restore
-// - ConfigElement API
 public interface IConfigUI
 {
 	int UpdateCount { get; }
@@ -18,9 +15,13 @@ public interface IConfigUI
 	void OnServerAcceptedChanges() { }
 
 	void PushConfigPage(UIModConfig.ConfigPage configPage) { }
-	bool TryGoBackConfigPage() { return false; }
+	bool TryGoBackConfigPage() => false;
 	void SetMessage(string text, Color color) { }
 	void ScrollTo(string scrollToOption, bool centerScrolledOption) { }
 	void BlockInput(UIElement dialog) { }
 	void UnblockInput() { }
+
+	void SetupConfigPage(UIModConfig.ConfigPage configPage, object config, PropertyFieldWrapper memberInfo) { }
+	Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1) => null;
+	Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable) => null;
 }
