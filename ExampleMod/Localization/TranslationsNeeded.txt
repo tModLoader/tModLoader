@@ -1,3 +1,3 @@
-en-US, 821/821, 100%, missing 0
-ru-RU, 6/821, 1%, missing 815
-zh-Hans, 2/821, 0%, missing 819
+en-US, 822/822, 100%, missing 0
+ru-RU, 6/822, 1%, missing 816
+zh-Hans, 2/822, 0%, missing 820

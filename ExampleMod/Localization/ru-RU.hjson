@@ -1656,6 +1656,8 @@ Mods: {
 				// DynamicWidthMarqueeText: Dynamic Width: {0}
 				// ConstantWidthMarqueeText: Constant Width: {0}
 			}
+
+			// ExampleCustomConfigUI.ClearNotification: Clear Message
 		}
 
 		WorldGen: {

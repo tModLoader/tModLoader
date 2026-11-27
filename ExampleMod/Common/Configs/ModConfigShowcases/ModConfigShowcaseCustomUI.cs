@@ -17,6 +17,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 		public override ConfigScope Mode => ConfigScope.ClientSide;
 
 		public bool SomeBool;
+		[Slider]
 		public int SomeInt;
 
 		public override void OnLoaded() {
