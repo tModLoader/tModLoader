@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+# Regenerate all of part of src/ when a branch checkout changes patches/.
+#
+# src/ is gitignored and generated from patches/ in a chain:
+#
+#   src/decompiled + patches/Terraria --> src/Terraria
+#                  + patches/TerrariaNetCore --> src/TerrariaNetCore
+#                  + patches/tModLoader --> src/tModLoader
+#
+# Each layer's base is the previous layer's output, so a change to an upstream
+# layer invalidates every layer below it. Find the shallowest layer whose
+# patches changed and regenerate from there down.
+#
+# Patching runs with --safe-mode, so setup aborts a layer whose source has edits
+# newer than its last patch/diff and uncommitted work is never silently
+# discarded.
+
+# previous HEAD
+prev=$1
+# new HEAD
+new=$2
+# 0 for file checkout, 1 for branch checkout
+is_branch=$3
+
+# abort on file checkouts
+[ "$is_branch" = "1" ] || exit 0
+
+root=$(git rev-parse --show-toplevel) || {
+	echo "post-checkout: not inside a work tree; src/ not regenerated" >&2
+	exit 0
+}
+cd "$root" || {
+	echo "post-checkout: cannot cd to '$root'; src/ not regenerated" >&2
+	exit 0
+}
+
+# did $1 file/directory change in this checkout?
+changed() { ! git diff --quiet "$prev" "$new" -- "$1" 2>/dev/null; }
+
+# the first layer that changed requires regenerating all later layers
+if changed patches/Terraria; then
+	layer=terraria
+elif changed patches/TerrariaNetCore; then
+	layer=netcore
+elif changed patches/tModLoader; then
+	layer=tml
+else
+	exit 0
+fi
+
+# Nothing generated yet, or no decompile present: leave it to the user.
+if [ ! -d src/decompiled ]; then
+	echo "post-checkout: src/decompiled missing; run './setup-cli.sh setup' to build src/" >&2
+	exit 0
+fi
+
+case $layer in
+	terraria) layers="terraria, netcore, tml" ;;
+	netcore)  layers="netcore, tml" ;;
+	tml)      layers="tml" ;;
+esac
+
+echo "post-checkout: patches/ changed; regenerating src/ for $layers"
+
+# exit 0 even on failure: the checkout already happened, and a post-checkout
+# hook's exit status becomes git checkout's, so failing here would misreport a
+# successful checkout as failed.
+run() {
+	./setup-cli.sh "$@" --safe-mode --no-prompts --plain-progress > /dev/null || {
+		echo "post-checkout: '$*' failed; src/ may be out of sync with patches/" >&2
+		exit 0
+	}
+}
+
+case $layer in
+	terraria) run patch terraria; run patch netcore; run patch tml ;;
+	netcore)  run patch netcore; run patch tml ;;
+	tml)      run patch tml ;;
+esac

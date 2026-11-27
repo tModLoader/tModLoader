@@ -29,10 +29,12 @@ public sealed class SetupCommand : CancellableAsyncCommand<SetupCommandSettings>
 {
 	private readonly IServiceProvider serviceProvider;
 	private readonly TaskRunner taskRunner;
+	private readonly ProgramSettings programSettings;
 
-	public SetupCommand(TaskRunner taskRunner, IServiceProvider serviceProvider)
+	public SetupCommand(TaskRunner taskRunner, ProgramSettings programSettings, IServiceProvider serviceProvider)
 	{
 		this.taskRunner = taskRunner;
+		this.programSettings = programSettings;
 		this.serviceProvider = serviceProvider;
 	}
 
@@ -41,6 +43,10 @@ public sealed class SetupCommand : CancellableAsyncCommand<SetupCommandSettings>
 		SetupCommandSettings settings,
 		CancellationToken cancellationToken)
 	{
+		if (!settings.CheckSafeMode(PatchTaskParameters.All(programSettings))) {
+			return 1;
+		}
+
 		var setupTask = new SetupTask(DecompileTaskParameters.CreateDefault(settings.TerrariaSteamDir, settings.TMLDevSteamDir), serviceProvider);
 
 		return await taskRunner.Run(setupTask, settings, settings.NoPrompts, cancellationToken: cancellationToken);
