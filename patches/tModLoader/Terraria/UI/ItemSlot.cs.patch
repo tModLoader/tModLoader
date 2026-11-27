@@ -308,11 +308,14 @@
  					if (Main.mouseItem.stack == 1) {
  						MouseItemSwap(ref inv[slot], context);
  						if (inv[slot].type == 0 || inv[slot].stack < 1)
-@@ -950,9 +_,12 @@
+@@ -950,9 +_,15 @@
  						inv[slot].SetDefaults(Main.mouseItem.type);
  						SoundEngine.PlaySound(7);
  					}
 +					*/
++					if (context < 0 && !LoaderManager.Get<AccessorySlotLoader>().CanAcceptItem(slot, Main.mouseItem, context))
++						break;
++
 +					inv[slot] = ItemLoader.TransferWithLimit(Main.mouseItem, 1);
 +					SoundEngine.PlaySound(7);
  
@@ -851,7 +854,7 @@
  					Main.HoverItem.social = true;
  					break;
  				case 15:
-@@ -2789,11 +_,14 @@
+@@ -2789,12 +_,15 @@
  
  		bool success;
  		if (inv[slot].dye > 0) {
@@ -866,6 +869,7 @@
 +			SwapDyeEquip_TML(player, inv, context, slot);
  		}
  		else if (Main.projHook[inv[slot].shoot]) {
+ 			inv[slot] = EquipSwap(inv[slot], player.miscEquips, 4, out success);
 @@ -2839,7 +_,7 @@
  			if (success) {
  				Main.EquipPageSelected = 0;
