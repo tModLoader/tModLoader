@@ -5,6 +5,7 @@ using ReLogic.Content;
 using Terraria.GameContent.Liquid;
 using Terraria.ID;
 using Terraria.ModLoader.Core;
+using Terraria.ModLoader.Default;
 
 namespace Terraria.ModLoader;
 
@@ -65,6 +66,8 @@ public static class LiquidLoader
 		TileID.Sets.ApplyResizeTileLiquidSourceForCraftingSet();
 
 		ModLoader.BuildGlobalHook(ref HookModifyLight, globalLiquids, (GlobalLiquid g) => g.ModifyLight);
+		//ModLoader.BuildGlobalHook(ref HookSettleLiquidMovement, globalLiquids, (GlobalLiquid g) => g.SettleLiquidMovement);
+		//ModLoader.BuildGlobalHook(ref HookOnPump, globalLiquids, (GlobalLiquid g) => g.CanPump);
 
 		if (!unloading) {
 			loaded = true;
@@ -87,5 +90,65 @@ public static class LiquidLoader
 		foreach (var hook in HookModifyLight) {
 			hook(i, j, type, ref r, ref g, ref b);
 		}
+	}
+
+	private static Func<int, int, int, bool>[] HookSettleLiquidMovement;
+	public static bool SettleLiquidMovement(int i, int j, int type)
+	{
+		/*
+		foreach (var hook in HookSettleLiquidMovement) {
+			bool result = hook(i, j, type);
+			if (!result) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.SettleLiquidMovement(i, j) ?? true;
+		*/
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).SettleLiquidMovement(i, j);
+		}
+
+		return true;
+	}
+
+	private static Func<int, int, int, int, int, bool>[] HookCanPump;
+	public static bool CanPump(int type, int inletX, int inletY, int outletX, int outletY)
+	{
+		/*
+		foreach (var hook in HookCanPump) {
+			if (!hook(type, x, y, x2, y2)) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.CanPump(x, y, x2, y2) ?? true;
+		*/
+
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).CanPump(inletX, inletX, outletX, outletY);
+		}
+
+		return true;
+	}
+
+	private static Func<int, int, int, Liquid, bool>[] HookPreLiquidMovement;
+	public static bool PreLiquidMovement(int x, int y, int type, Liquid liquidCache)
+	{
+		/*
+		foreach (var hook in HookPreLiquidMovement) {
+			if (!hook(i, j, type, liquid)) {
+				return false;
+			}
+		}
+		return GetLiquid(type)?.PreLiquidMovment(i, j, liquid) ?? true;
+		*/
+
+		var liquid = GetLiquid(type);
+		if (liquid is UnloadedLiquid) {
+			return (liquid as UnloadedLiquid).PreLiquidMovement(x, y, liquidCache);
+		}
+
+		return true;
 	}
 }
