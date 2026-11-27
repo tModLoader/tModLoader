@@ -72,6 +72,7 @@ Mods: {
 		Keybinds: {
 			RandomBuff.DisplayName: 随机增益
 			// LearningExample.DisplayName: Learning Example
+			// UnboundDefault.DisplayName: Unbound Default
 		}
 
 		NPCs: {
