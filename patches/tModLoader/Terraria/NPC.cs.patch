@@ -2606,6 +2606,16 @@
  		}
  
  		if (type == 1) {
+@@ -68041,6 +_,9 @@
+ 					SoundEngine.PlaySound(SoundID.VampireHurt, position);
+ 					break;
+ 				default:
++					// type == slime, ai[1] == the item the slime is carrying.
++					if (ai[1] > 0 && ai[1] < ItemLoader.ItemCount && !ItemLoader.VoiceItemHurtSoundOverride(this, position, ContentSamples.ItemsByType[(int)ai[1]].voiceSlot)) { }
++					else
+ 					if (HitSound != null)
+ 						SoundEngine.PlaySound(HitSound, position);
+ 					break;
 @@ -68131,7 +_,29 @@
  		}
  	}

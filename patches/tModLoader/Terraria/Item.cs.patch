@@ -481,7 +481,7 @@
  	public sbyte handOnSlot = -1;
  	public sbyte handOffSlot = -1;
  	public sbyte backSlot = -1;
-@@ -135,48 +_,279 @@
+@@ -135,48 +_,284 @@
  	public sbyte balloonSlot = -1;
  	public sbyte beardSlot = -1;
  	public sbyte voiceSlot;
@@ -514,8 +514,13 @@
 +	public int balloonSlot = -1;
 +	/// <inheritdoc cref="handOnSlot"/>
 +	public int beardSlot = -1;
-+	/// <inheritdoc cref="handOnSlot"/>
-+	public int voiceSlot = -1;
++	/// <summary>
++	/// The slot ID for voice accessories. When this item is equipped, the <seealso cref="Player.voiceOverride"/> field will be set to this value.
++	/// <br/><br/>For <see cref="ModItem"/>, this is set automatically using <see cref="AutoloadEquip"/> with the corresponding <see cref="EquipType"/> value.
++	/// <br/> After adding the <c>[AutoloadEquip(EquipType.Voice)]</c> attribute, use the overrides <seealso cref="ModItem.VoiceItemHurtSoundOverride(Entity, Vector2)"/> and/or <seealso cref="ModItem.VoiceItemDeathSoundOverride(Entity)"/> to play the sounds.
++	/// <br/><br/> Defaults to 0, indicating that this item does not have a specific voice ID for slot.
++	/// </summary>
++	public int voiceSlot = PlayerVoiceOverrideID.NoOverride;
  	public int stringColor;
  	public ItemTooltip ToolTip;
  	public string BestiaryNotes;
@@ -1317,6 +1322,15 @@
  				break;
  			case 6153:
  				SetShopValues(ItemRarityColor.Blue1, sellPrice(0, 0, 40));
+@@ -47258,7 +_,7 @@
+ 		noMelee = true;
+ 	}
+ 
+-	public void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID)
++	private void DefaultToVoiceOverrideAccessory(sbyte voiceOverrideID) // TML: Made private. Public version without voiceSlot in Item.TML.cs
+ 	{
+ 		useStyle = 4;
+ 		UseSound = null;
 @@ -47272,6 +_,17 @@
  		voiceSlot = voiceOverrideID;
  	}
@@ -1912,7 +1926,7 @@
  	public static bool MechSpawn(float x, float y, int type)
  	{
  		int num = 0;
-@@ -48775,7 +_,18 @@
+@@ -48775,11 +_,26 @@
  		return true;
  	}
  
@@ -1931,6 +1945,22 @@
  	public static int sellPrice(int platinum = 0, int gold = 0, int silver = 0, int copper = 0) => (copper + silver * 100 + gold * 100 * 100 + platinum * 100 * 100 * 100) * 5;
  
  	public static int GetRandomVoiceItem()
+ 	{
++		// Randomly select an item from the list. Unless the list is empty, in which case, return 0;
++		return ItemID.Sets.VoiceChangeItemForChestLootAndSlimes.Count == 0 ? 0 : ItemID.Sets.VoiceChangeItemForChestLootAndSlimes[WorldGen.genRand.Next(ItemID.Sets.VoiceChangeItemForChestLootAndSlimes.Count)];
++
++		/*
+ 		switch (WorldGen.genRand.Next(14)) {
+ 			default:
+ 				return 5499;
+@@ -48810,6 +_,7 @@
+ 			case 13:
+ 				return 5534;
+ 		}
++		*/
+ 	}
+ 
+ 	public bool CanShimmer()
 @@ -48821,7 +_,7 @@
  		if (shimmerEquivalentType == 560 && Main.slimeRain)
  			return false;

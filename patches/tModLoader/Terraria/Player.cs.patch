@@ -6167,6 +6167,38 @@
  	}
  
  	public void PlayHurtSound()
+@@ -31957,6 +_,15 @@
+ 				return;
+ 		}
+ 
++		// Run ModItem.VoiceItemHurtSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemHurtSoundOverride returning false will return.
++		if (voiceOverride >= PlayerVoiceOverrideID.Count && !ItemLoader.VoiceItemHurtSoundOverride(this, vector, voiceOverride)) {
++			return;
++		}
++
++		if (!PlayerLoader.PlayerHurtSound(this, vector)) {
++			return;
++		}
++
+ 		if (mount.Active) {
+ 			if (mount.Type == 52) {
+ 				SoundEngine.PlaySound(3, vector, 6);
+@@ -32043,6 +_,15 @@
+ 				return;
+ 		}
+ 
++		// Run ModItem.VoiceItemDeathSoundOverride to override the hurt sound if voiceOverride == ModItem.Type. VoiceItemDeathSoundOverride returning false will return.
++		if (voiceOverride >= PlayerVoiceOverrideID.Count && !ItemLoader.VoiceItemDeathSoundOverride(this, voiceOverride)) {
++			return;
++		}
++
++		if (!PlayerLoader.PlayerDeathSound(this)) {
++			return;
++		}
++
+ 		if (Main.dontStarveWorld || Main.tenthAnniversaryWorld)
+ 			SoundEngine.PlaySound(Male ? SoundID.DSTMaleHurt : SoundID.DSTFemaleHurt, position);
+ 		else
 @@ -32057,6 +_,10 @@
  		if (cooldownCounter == 1)
  			return false;

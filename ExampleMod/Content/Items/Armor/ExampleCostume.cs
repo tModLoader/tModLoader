@@ -1,6 +1,8 @@
 using ExampleMod.Common.Players;
 using ExampleMod.Content.Dusts;
+using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.Audio;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -20,6 +22,7 @@ namespace ExampleMod.Content.Items.Armor
 	// ExampleCostumePlayer.FrameEffects is most important. It overrides the drawn equipment slots and sets them to our Blocky EquipTextures.
 	// ExampleCostumePlayer.ModifyDrawInfo is for some fun effects for our costume.
 	// Remember that the visuals and the effects of Costumes must be kept separate. Follow this example for best results.
+	[AutoloadEquip(EquipType.Voice)] // This lets this accessory have a unique hurt and/or death sound using the ModItem hooks. See ExampleCostumePlayer for other ways to modify the hurt/death sounds.
 	public class ExampleCostume : ModItem
 	{
 		public override void Load() {
@@ -83,6 +86,15 @@ namespace ExampleMod.Content.Items.Armor
 			var p = player.GetModPlayer<ExampleCostumePlayer>();
 			p.BlockyHideVanity = false;
 			p.BlockyForceVanity = true;
+		}
+
+		// Give this accessory a unique hurt sound.
+		// Note: This hook will only run if Item.voiceSlot has been assigned with the [AutoloadEquip(EquipType.Voice)] attribute and the item is in a social accessory slot.
+		// For a more generic player hurt hook, use ModPlayer.PlayerHurtSound().
+		public override bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition) {
+			// SoundID.Frog is actually SoundType.Ambient, so we need to change it to play at the correct SoundType.Sound master volume.
+			SoundEngine.PlaySound(SoundID.Frog with { Type = SoundType.Sound }, soundPosition);
+			return false; // Return false to prevent vanilla from playing other sounds.
 		}
 	}
 

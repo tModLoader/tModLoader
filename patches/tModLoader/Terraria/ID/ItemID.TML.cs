@@ -239,5 +239,18 @@ partial class ItemID
 		/// Whether or not the item counts as a bottomless bucket for purposes of <see cref="LiquidPlacedByBucket"/>
 		/// </summary>
 		public static bool[] IsBottomlessBucket = Factory.CreateBoolSet(false, BottomlessBucket, BottomlessLavaBucket, BottomlessHoneyBucket, BottomlessShimmerBucket);
+
+		/// <summary>
+		/// Contains voice accessories that can randomly generated in chests and lets slimes in Skyblock spawn carrying this item.
+		/// <para/>Additionally set <see cref="ItemID.Sets.IsAVoiceChangeItem"/> to boost the HP of slimes with this item.
+		/// <para/>If this list is empty, no voice change items will be generated in chests and slimes will not spawn carrying voice change items.
+		/// </summary>
+		public static List<int> VoiceChangeItemForChestLootAndSlimes = [
+			PlayerVoiceFrogItem, PlayerVoiceGoatItem, PlayerVoiceRetroItem, PlayerVoiceCatItem,
+			PlayerVoiceDogItem, PlayerVoiceTurkeyItem, PlayerVoiceGoblinItem, PlayerVoiceCrowItem,
+			PlayerVoiceBalloonItem, PlayerVoiceUndeadItem, PlayerVoiceVampireItem,
+			PlayerVoiceCowbellItem, PlayerVoiceChickenFeetItem, PlayerVoiceFairyItem
+			// Does not contain WhoopieCushion like ItemID.Sets.IsAVoiceChangeItem
+		];
 	}
 }

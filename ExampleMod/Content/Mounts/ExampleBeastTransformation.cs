@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Terraria;
+using Terraria.Audio;
 using Terraria.DataStructures;
 using Terraria.GameContent;
 using Terraria.ID;
@@ -486,6 +487,16 @@ namespace ExampleMod.Content.Mounts
 				shader = drawInfo.drawPlayer.cMount; // Set the shader (dye).
 				position += new Vector2(-2 * drawInfo.drawPlayer.direction, 0); // Move the eye to the match the spot on the mount's sprite.
 			}
+		}
+
+		public override bool PlayerHurtSound(Vector2 soundPosition) {
+			// Here we can modify the player's hurt sound when using the Example Beast Transformation.
+			// A similar thing can be done with the death sound using the PlayerDeathSound hook.
+			if (Player.mount.Active && Player.mount.Type == ModContent.MountType<ExampleBeastTransformation>()) {
+				SoundEngine.PlaySound(SoundID.NPCHit41 with { Pitch = 0.25f }, soundPosition);
+				return false; // Return false to prevent vanilla from playing other sounds.
+			}
+			return true;
 		}
 	}
 

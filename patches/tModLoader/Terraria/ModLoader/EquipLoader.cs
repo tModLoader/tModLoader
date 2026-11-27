@@ -148,6 +148,7 @@ public static class EquipLoader
 			EquipType.Face => ArmorIDs.Face.Count,
 			EquipType.Beard => ArmorIDs.Beard.Count,
 			EquipType.Balloon => ArmorIDs.Balloon.Count,
+			EquipType.Voice => PlayerVoiceOverrideID.Count,
 			_ => 0,
 		};
 
@@ -168,6 +169,7 @@ public static class EquipLoader
 			EquipType.Face => ArmorIDs.Face.Search,
 			EquipType.Beard => ArmorIDs.Beard.Search,
 			EquipType.Balloon => ArmorIDs.Balloon.Search,
+			EquipType.Voice => PlayerVoiceOverrideID.Search,
 			_ => throw new ArgumentOutOfRangeException(nameof(type)),
 		};
 
@@ -245,6 +247,9 @@ public static class EquipLoader
 				case EquipType.Balloon:
 					item.balloonSlot = slot;
 					break;
+				case EquipType.Voice:
+					item.voiceSlot = slot;
+					break;
 			}
 		}
 	}
@@ -266,6 +271,7 @@ public static class EquipLoader
 			EquipType.Face => player.face,
 			EquipType.Beard => player.beard,
 			EquipType.Balloon => player.balloon,
+			EquipType.Voice => player.voiceOverride,
 			_ => 0,
 		};
 
@@ -318,6 +324,26 @@ public static class EquipLoader
 
 			if (type == EquipType.Head || type == EquipType.Body || type == EquipType.Legs)
 				slotToId[type][slot] = item.Type;
+		}
+
+		return slot;
+	}
+
+	public static int AddVoiceSlot(Mod mod, ModItem item = null)
+	{
+		if (!mod.loading)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorNotLoading"));
+
+		if (item == null)
+			throw new Exception(Language.GetTextValue("tModLoader.LoadErrorEquipTextureMissingParameters"));
+
+		int slot = ReserveEquipID(EquipType.Voice);
+
+		if (item != null) {
+			if (!idToSlot.TryGetValue(item.Type, out var slots))
+				idToSlot[item.Type] = slots = new Dictionary<EquipType, int>();
+
+			slots[EquipType.Voice] = slot;
 		}
 
 		return slot;

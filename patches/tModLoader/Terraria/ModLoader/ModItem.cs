@@ -108,7 +108,10 @@ public abstract class ModItem : ModType<Item, ModItem>, ILocalizedModType
 		var autoloadEquip = GetType().GetAttribute<AutoloadEquip>();
 		if (autoloadEquip != null) {
 			foreach (var equip in autoloadEquip.equipTypes) {
-				EquipLoader.AddEquipTexture(Mod, $"{Texture}_{equip}", equip, this);
+				if (equip == EquipType.Voice)
+					EquipLoader.AddVoiceSlot(Mod, this);
+				else
+					EquipLoader.AddEquipTexture(Mod, $"{Texture}_{equip}", equip, this);
 			}
 		}
 
@@ -1625,5 +1628,31 @@ ref float maxCanAscendMultiplier, ref float maxAscentMultiplier, ref float const
 	/// <param name="overrideCanPlace">Indicates if the tile can be placed</param>
 	public virtual void OverridePlacementTile(int i, int j, ref int tileToCreate, ref int previewPlaceStyle, ref int? forcedRandom, ref bool? overrideCanPlace)
 	{
+	}
+
+	/// <summary>
+	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when taking damage can be overridden.
+	/// <br/> Return <see langword="false"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerHurtSound"/>.
+	/// </summary>
+	/// <param name="entity"> The entity that created the sound. </param>
+	/// <param name="soundPosition"> The position that the sound should be played at.
+	/// <br/> If the sound is emanating from ourselves (aka local client), play the sound "globally" for us so it doesn't pan while we are moving.</param>
+	/// <returns>Returns <see langword="true"/> by default.</returns>
+	public virtual bool VoiceItemHurtSoundOverride(Entity entity, Vector2 soundPosition)
+	{
+		return true;
+	}
+
+	/// <summary>
+	/// If set with <c><see cref="Item.voiceSlot"/> <see langword="="/> <see cref="Type"/></c>, then the sound the player makes when dying can be overridden.
+	/// <br/> Return <see langword="false"/> to prevent other hurt sounds from playing.
+	/// <br/><br/> For a more generic hook, use <seealso cref="ModPlayer.PlayerDeathSound"/>.
+	/// </summary>
+	/// <param name="entity"> The entity that created the sound. </param>
+	/// <returns><see langword="true"/> by default.</returns>
+	public virtual bool VoiceItemDeathSoundOverride(Entity entity)
+	{
+		return true;
 	}
 }
