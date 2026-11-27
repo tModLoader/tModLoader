@@ -165,7 +165,7 @@ internal class EnumElement2 : ConfigElement
 			ChooserPanel.HAlign = 0f;
 		}
 
-		Interface.modConfig.BlockInput(ChooserPanel);
+		ConfigManager.CurrentConfigUI.BlockInput(ChooserPanel);
 
 		if (Options == null) {
 			Options = CreateDefinitionOptionElementList();
@@ -223,7 +223,7 @@ internal class EnumElement2 : ConfigElement
 				if (!DropDown)
 					SelectionExpanded = false;
 				else
-					Interface.modConfig.UnblockInput(a, b);
+					ConfigManager.CurrentConfigUI.UnblockInput();
 			};
 			optionElement.OnUpdate += (a) => {
 				if (a.IsMouseHovering)
