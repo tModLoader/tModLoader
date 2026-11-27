@@ -506,7 +506,6 @@ public partial class Main
 			}
 		}
 
-
 		if (!Directory.Exists(vanillaContentFolder)) {
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.ContentFolderNotFound"));
 		}
@@ -523,6 +522,7 @@ public partial class Main
 			ErrorReporting.FatalExit(Language.GetTextValue("tModLoader.TerrariaOutOfDateMessage"));
 		}
 
+		TMLContentManager.TryFixFileCasingsForVanillaAssets(vanillaContentFolder);
 
 		TMLContentManager localOverrideContentManager = null;
 		if (Directory.Exists(Path.Combine("Content", "Images")))

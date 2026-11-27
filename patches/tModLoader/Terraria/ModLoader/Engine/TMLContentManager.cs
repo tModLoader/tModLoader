@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Terraria.Utilities;
 
 namespace Terraria.ModLoader.Engine;
 
@@ -25,10 +26,6 @@ internal class TMLContentManager : ContentManager
 
 	public TMLContentManager(IServiceProvider serviceProvider, string rootDirectory, TMLContentManager overrideContentManager) : base(serviceProvider, rootDirectory)
 	{
-		//Solxan for discussion: this only runs if tModLoader has a Content/Images folder based on the Main.tml.cs call site.
-		if (overrideContentManager != null) // Only need to check vanilla content directory. 
-			TryFixFileCasings(rootDirectory);
-
 		this.overrideContentManager = overrideContentManager;
 
 		//Fill cache for ImageExists() lookup.
@@ -99,7 +96,7 @@ internal class TMLContentManager : ContentManager
 
 	public bool ImageExists(string assetName) => ExistingImages.Contains(assetName);
 
-	private static void TryFixFileCasings(string rootDirectory)
+	internal static void TryFixFileCasingsForVanillaAssets(string rootDirectory)
 	{
 		// The file listed below will be checked and fixed for case on disk
 		// this method does not work on UNC paths (don't think remote path Terraria
@@ -117,14 +114,9 @@ internal class TMLContentManager : ContentManager
 			"Images/Item_2648.xnb"
 		};
 
-		bool? thisOsIsMoveProtected = null;
-
 		foreach (string problematicAsset in problematicAssets) {
-			if (ValidateFileCasing(rootDirectory, problematicAsset, out string actualFullPath))
+			if (FileUtilities.ValidateFileCasing(rootDirectory, problematicAsset, out string actualFullPath))
 				continue;
-
-			if (thisOsIsMoveProtected == null)
-				thisOsIsMoveProtected = IsThisOSMoveProtectedForCaseChange();
 
 			// The asset is wrongfully cased, fix that,
 			// changing a vanilla file name is something to log for sure
@@ -132,87 +124,7 @@ internal class TMLContentManager : ContentManager
 
 			Logging.tML.Info($"Found vanilla asset with wrong case, renaming: (from {rootDirectory}) {relativeActualPath} -> {problematicAsset}");
 
-			string expectedFullPath = Path.Combine(rootDirectory, problematicAsset);
-
-			// Programmatically & defensively move to force case change
-			if (thisOsIsMoveProtected is true) {
-				File.Move(actualFullPath, actualFullPath + ".1");
-				File.Move(actualFullPath + ".1", expectedFullPath);
-			}
-			else {
-				File.Move(actualFullPath, expectedFullPath);
-			}
+			FileUtilities.FixFileCaseViaMove(actualFullPath, Path.Combine(rootDirectory, problematicAsset));
 		}
-	}
-
-	/// <summary>
-	/// In OS environments with both case insensitive and case sensitive you either allow or block having two files with different casing.
-	/// For example, Windows blocks NTFS and exFAT folders from having both client.log and Client.log normally.
-	/// However NTFS is case-sensitive itself so you can change how it handles in WSL using tools like https://learn.microsoft.com/en-us/windows/wsl/case-sensitivity
-	/// But exFAT is strictly case-insensitive.
-	/// Where this gets messy is if you try to 'Move' a file on a particular OS to force a capitalization rename.
-	/// If the OS is blocking, and it copies before deleting, then a singular 'move' is not enough to change capitalization. 
-	/// </summary>
-	/// <returns>True if the OS blocks using move directly to rename files to fix casing</returns>
-	private static bool IsThisOSMoveProtectedForCaseChange()
-	{
-		string canaryFile = "LaunchUtils/canaryfile.txt";
-		bool moveCaseProtected = false;
-
-		var fileStream = File.Create(canaryFile);
-		fileStream.Close();
-
-		try {
-			File.Move(canaryFile, "LaunchUtils/cAnAryfile.txt");
-		}
-		catch (Exception) {
-			moveCaseProtected = true;
-		}
-		finally {
-			File.Delete(canaryFile);
-		}
-		return moveCaseProtected;
-	}
-
-	/// <summary>
-	/// Returns False if the File in Root Directory does not match the expected casing 
-	/// <param name="actualFullPath"></param>
-	/// <returns></returns>
-	private static bool ValidateFileCasing(string rootDirectory, string fileToCheck, out string asFoundFullPath)
-	{
-		var fileInfo = new FileInfo(Path.Combine(rootDirectory, fileToCheck));
-		string expectedName = Path.GetFileName(fileToCheck);
-
-		asFoundFullPath = fileInfo.FullName;
-
-		// There are 4 possible states
-		//		File is found using FileInfo.Exists && the FileSystemInfo for it has the same casing (happy-path)
-		//		File is found using FileInfo.Exists && the FileSystemInfo for it has different casing (case insenstive read)
-		//		File is NOT found using FileInfo.Exists && file is NOT on the user system (missing file)
-		//		File is NOT found using FileInfo.Exists && file has the wrong casing (case sensitive read)
-
-		FileSystemInfo fileSystemInfo;
-
-		if (fileInfo.Exists) {
-			// likely case insensitive read OR happy-path 
-			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos(fileInfo.Name).First();
-
-			// Happy-path short-circuit
-			if (fileSystemInfo.Name == expectedName)
-				return true;
-		}
-		else {
-			// Case sensitive read OR missing
-			fileSystemInfo = fileInfo.Directory.EnumerateFileSystemInfos().FirstOrDefault(p => p.Name.Equals(expectedName, StringComparison.InvariantCultureIgnoreCase));
-
-			// file is missing short-circuit
-			if (fileSystemInfo == null) {
-				Logging.tML.Info($"An expected vanilla asset is missing: (from {rootDirectory}) {fileToCheck}");
-				return true;
-			}
-		}
-
-		asFoundFullPath = fileSystemInfo.FullName;
-		return false;
 	}
 }
