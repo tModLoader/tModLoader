@@ -56,7 +56,7 @@ namespace ExampleMod.Common.Players
 		}
 
 		public override bool CanAcceptItem(Item checkItem, AccessorySlotType context) {
-			if (checkItem.wingSlot > 0) // if is Wing, then can go in slot
+			if (checkItem.wingSlot > 0 || context == AccessorySlotType.DyeSlot) // if is Wing or dye slot, then can go in slot
 				return true;
 
 			return false; // Otherwise nothing in slot
