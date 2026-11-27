@@ -295,7 +295,30 @@
  	public bool accFishingLine;
  	public bool accFishingBobber;
  	public bool accTackleBox;
-@@ -882,8 +_,20 @@
+@@ -877,13 +_,43 @@
+ 	public PlayerAmmoCyclingMode ammoCyclingMode;
+ 	public int ammoCyclingCooldown;
+ 	public int ammoCyclingOffset;
++
++	/// <summary>
++	/// If <see langword="true"/>, this player can pick up sentries.
++	/// <para> Used by the <see cref="ItemID.HeavySling"/>.</para>
++	/// </summary>
+ 	public bool accSentryBackpack;
++
++	/// <summary>
++	/// If <see langword="true"/>, it allows sentries to crit at a fixed 10% chance.
++	/// <br/>The projectile must be either <see cref="Projectile.sentry"/> or in <see cref="ProjectileID.Sets.SentryShot"/> to get crit chance.
++	/// <para><strong>Note: This does not allow the player to pickup sentries.</strong> <see cref="Player.accSentryBackpack"/> needs to be set for that.</para>
++	/// <para> Used by the <see cref="ItemID.TemplarSling"/>.</para>
++	/// </summary>
+ 	public bool accGolemSentryBackpack;
++
++	/// <summary>
++	/// If above 0, the player cannot pickup a sentry. When a sentry is picked up, this value will be set to 2.
++	/// <br/> This value is decreased by 1 every tick until it reaches 0.
++	/// <para> Use <see cref="Player.accSentryBackpack"/> for the player's ability to pick up sentries in the first place.</para>
++	/// </summary>
  	public int accSentryBackpackGrabCooldown;
  	public bool accTimerCrit;
  	public float accTimerCritCharge;
