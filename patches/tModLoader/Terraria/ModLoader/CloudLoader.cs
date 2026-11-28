@@ -23,6 +23,9 @@ public static class CloudLoader
 	/// </summary>
 	public static bool AddCloudFromTexture<TCloud>(Mod mod, string texture, float spawnChance = 1f, bool rareCloud = false) where TCloud : ModCloud, new()
 	{
+		if (Main.dedServ)
+			return false;
+
 		if (mod == null)
 			throw new ArgumentNullException(nameof(mod));
 
