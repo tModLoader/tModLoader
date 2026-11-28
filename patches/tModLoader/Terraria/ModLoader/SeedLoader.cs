@@ -359,4 +359,11 @@ public static class SeedLoader
 		return option != null;
 	}
 
+	internal static string GetSecretSeedOriginHeader(SecretSeed seed)
+	{
+		if (SecretSeedsTracker.SeedsForInterface.Count((SecretSeed s) => s.Code == seed.Code) <= 1) {
+			return "";
+		}
+		return $"{seed.ModSecretSeed?.Mod.Name ?? "Terraria"}: ";
+	}
 }

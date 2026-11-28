@@ -8,6 +8,15 @@
  using Terraria.Social;
  using Terraria.Testing;
  using Terraria.UI;
+@@ -22,7 +_,7 @@
+ 
+ namespace Terraria.GameContent.UI.States;
+ 
+-public class UIWorldCreation : UIState, IHaveBackButtonCommand
++public partial class UIWorldCreation : UIState, IHaveBackButtonCommand
+ {
+ 	private enum WorldSizeId
+ 	{
 @@ -118,6 +_,12 @@
  		ResetSpecialSeedRing();
  	}
@@ -40,7 +49,7 @@
  		if (_isSpecialSeedText) {
  			_optionSeed = string.Empty;
  			_isSpecialSeedText = false;
-@@ -793,6 +_,9 @@
+@@ -793,11 +_,15 @@
  				WorldGenerationOptions.SelectOption(optionFromSeedText);
  				SoundEngine.PlaySound(24);
  			}
@@ -50,6 +59,13 @@
  
  			if (WorldGen.SecretSeed.CheckInputForSecretSeed(_optionSeed, out var secretSeed)) {
  				if (!secretSeed.Enabled) {
+ 					_secretSeedTextsEntered.Add(_optionSeed);
+-					WorldGen.SecretSeed.Enable(secretSeed);
++					//WorldGen.SecretSeed.Enable(secretSeed);
++					EnableAllHomonymSeeds(secretSeed);
+ 					EnableSecretSeedOptions(enabled: true);
+ 					CalculatedStyle dimensions = _advancedSeedButton.GetDimensions();
+ 					if (_goBackTarget != this && _goBackTarget is UIWorldCreationAdvanced uIWorldCreationAdvanced) {
 @@ -942,6 +_,8 @@
  			Main.ActiveWorldFileData.SetSeed(seed);
  		}

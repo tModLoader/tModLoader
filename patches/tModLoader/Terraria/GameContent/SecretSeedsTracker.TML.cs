@@ -18,6 +18,20 @@ public static partial class SecretSeedsTracker
 		return $"{seed.FullName}::{seed.SecretSeed.TextThatWasUsedToUnlock}";
 	}
 
+	internal static void AddSeedToTrackDirect(SecretSeed seed)
+	{
+		if (_seedsForInterface.Contains(seed))
+			return;
+
+		if (seed.ModSecretSeed == null)
+			_seedsForConfig.Add(seed.TextThatWasUsedToUnlock);
+		else
+			_seedsForConfig.Add(ModSeedToString(seed.ModSecretSeed));
+
+		_seedsForInterface.Add(seed);
+		Main.SaveSettings();
+	}
+
 	public static void ResetConfig()
 	{
 		_processedConfig = false;
