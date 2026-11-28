@@ -52,7 +52,7 @@ internal class IntInputElement : ConfigElement
 				SetValue(val);
 			}
 			//else /{
-			//	Interface.modConfig.SetMessage($"{uIInputTextField.currentString} isn't a valid value.", Color.Green);
+			//	ConfigManager.CurrentConfigUI.SetMessage($"{uIInputTextField.currentString} isn't a valid value.", Color.Green);
 			//}
 		};
 		uIInputTextField.OnUnfocus += (a, b) => uIInputTextField.SetText(GetValue().ToString());

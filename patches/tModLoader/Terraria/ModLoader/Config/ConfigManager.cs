@@ -21,6 +21,12 @@ namespace Terraria.ModLoader.Config;
 #nullable enable
 public static class ConfigManager
 {
+	/// <summary>
+	/// The currently open <see cref="IConfigUI"/>.
+	/// <br/><br/> Is <see langword="null"/> if there is no config UI open.
+	/// </summary>
+	public static IConfigUI? CurrentConfigUI => (Main.gameMenu ? Main.MenuUI : Main.InGameUI).CurrentState as IConfigUI;
+
 	// These are THE active configs.
 	internal static readonly IDictionary<Mod, List<ModConfig>> Configs = new Dictionary<Mod, List<ModConfig>>();
 	// Configs should never violate reload required.
@@ -28,6 +34,10 @@ public static class ConfigManager
 
 	// This copy of Configs stores instances present during load. Its only use in detecting if a reload is needed.
 	private static readonly IDictionary<Mod, List<ModConfig>> loadTimeConfigs = new Dictionary<Mod, List<ModConfig>>();
+
+	// This copy of configs stores the default values of configs. It is used to detect if a config has it's default values.
+	// TODO: in the future, configs with default values (including objects) should correctly serialize to "{}", so this will be redundant
+	private static readonly IDictionary<Mod, List<ModConfig>> defaultValuesConfigs = new Dictionary<Mod, List<ModConfig>>();
 
 	public static readonly JsonSerializerSettings serializerSettings = new() {
 		Formatting = Formatting.Indented,
@@ -68,6 +78,14 @@ public static class ConfigManager
 
 	internal static void Add(ModConfig config)
 	{
+		// Maintain list of default value configs
+		if (!defaultValuesConfigs.TryGetValue(config.Mod, out var defaultValuesConfigList))
+			defaultValuesConfigs[config.Mod] = defaultValuesConfigList = new List<ModConfig>();
+
+		var defaultValuesConfig = GeneratePopulatedClone(config);
+		Reset(defaultValuesConfig);
+		defaultValuesConfigList.Add(defaultValuesConfig);
+
 		Load(config);
 
 		if (!Configs.TryGetValue(config.Mod, out var configList))
@@ -268,6 +286,7 @@ public static class ConfigManager
 		});
 		Configs.Clear();
 		loadTimeConfigs.Clear();
+		defaultValuesConfigs.Clear();
 
 		Interface.modConfig.Unload();
 		Interface.modConfigList.Unload();
@@ -330,6 +349,14 @@ public static class ConfigManager
 		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
 	}
 
+	internal static ModConfig GetDefaultValuesConfig(Mod mod, string config)
+	{
+		if (defaultValuesConfigs.TryGetValue(mod, out var configs) && configs.SingleOrDefault(x => x.Name == config) is { } c)
+			return c;
+
+		throw new KeyNotFoundException($"Missing config named {config} in mod {mod.Name}");
+	}
+
 	internal static void HandleInGameChangeConfigPacket(BinaryReader reader, int whoAmI)
 	{
 		if (Main.netMode == NetmodeID.MultiplayerClient) {
@@ -348,10 +375,9 @@ public static class ConfigManager
 
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigSharedConfigChanged", message, modname, configname));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Main.InGameUI.SetState(null);
-					Main.InGameUI.SetState(Interface.modConfig); // Refresh with changes from server, config might have been tweaked.
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
+				if (ConfigManager.CurrentConfigUI is not null) {
+					ConfigManager.CurrentConfigUI.OnServerAcceptedChanges();
+					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerResponse", message), Color.Green);
 				}
 			}
 			else {
@@ -360,8 +386,8 @@ public static class ConfigManager
 				activeConfig.HandleAcceptClientChangesReply(success, requestor, message);
 				if (broadcast)
 					Main.NewText(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message));
-				if (Main.InGameUI.CurrentState == Interface.modConfig) {
-					Interface.modConfig.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
+				if (ConfigManager.CurrentConfigUI is not null) {
+					ConfigManager.CurrentConfigUI.SetMessage(Language.GetTextValue("tModLoader.ModConfigServerRejectedChanges", message), Color.Red);
 				}
 			}
 		}
@@ -454,6 +480,14 @@ public static class ConfigManager
 		return properClone;
 	}
 
+	public static bool AreConfigsEqual(ModConfig a, ModConfig b)
+	{
+		if (a.GetType() != b.GetType())
+			return false;
+
+		return JsonConvert.SerializeObject(a, serializerSettingsCompact) == JsonConvert.SerializeObject(b, serializerSettingsCompact);
+	}
+
 	public static object? AlternateCreateInstance(Type type)
 	{
 		if (type == typeof(string))
@@ -476,18 +510,6 @@ public static class ConfigManager
 		return
 			(T?)Attribute.GetCustomAttribute(memberInfo, typeof(T)) ?? // on the member itself
 			(T?)Attribute.GetCustomAttribute(elementType, typeof(T), true); // on a provided fallback type
-	}
-
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object? list = null, Type? arrayType = null, int index = -1)
-	{
-		// public api for modders.
-		return UIModConfig.WrapIt(parent, ref top, memberInfo, item, order, list, arrayType, index);
-	}
-
-	public static void SetPendingChanges(bool changes = true)
-	{
-		// public api for modders.
-		Interface.modConfig.SetPendingChanges(changes);
 	}
 
 	// TODO: better home?

@@ -1,4 +1,4 @@
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -88,7 +88,7 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 				buffTexture = TextureAssets.Buff[type].Value;
 			}
 
-			int frameCounter = Interface.modConfig.UpdateCount / 4;
+			int frameCounter = ConfigManager.CurrentConfigUI.UpdateCount / 4;
 			//int frames = Main.projFrames[type];
 			int frames = 1;
 
@@ -123,6 +123,6 @@ internal class BuffDefinitionOptionElement : DefinitionOptionElement<BuffDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 	}
 }

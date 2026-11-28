@@ -134,7 +134,7 @@ internal class ItemDefinitionOptionElement : DefinitionOptionElement<ItemDefinit
 		}
 
 		if (IsMouseHovering)
-			UIModConfig.Tooltip = Tooltip;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = Tooltip;
 	}
 }
 

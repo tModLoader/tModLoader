@@ -1,6 +1,6 @@
 --- src/TerrariaNetCore/Terraria/GameContent/UI/Elements/UITextPanel.cs
 +++ src/tModLoader/Terraria/GameContent/UI/Elements/UITextPanel.cs
-@@ -2,6 +_,7 @@
+@@ -2,9 +_,13 @@
  using Microsoft.Xna.Framework.Graphics;
  using ReLogic.Graphics;
  using Terraria.UI;
@@ -8,7 +8,22 @@
  
  namespace Terraria.GameContent.UI.Elements;
  
-@@ -101,7 +_,13 @@
++// tML: non-generic version
++public class UITextPanel(object text, float textScale = 1, bool large = false) : UITextPanel<object>(text, textScale, large);
++
+ public class UITextPanel<T> : UIPanel
+ {
+ 	protected T _text;
+@@ -16,6 +_,8 @@
+ 	public float TextHAlign = 0.5f;
+ 	public bool HideContents;
+ 	private string _asterisks;
++	// Added by tML
++	protected virtual bool SetTextUsesMinSize => true; // Can't be a field because the ctor calls SetText() before we can set any fields
+ 
+ 	public bool IsLarge => _isLarge;
+ 
+@@ -101,7 +_,19 @@
  		_text = text;
  		_textScale = textScale;
  		_isLarge = large;
@@ -19,6 +34,22 @@
 +		_textSize = ChatManager.GetStringSize(Font, text.ToString(), new Vector2(textScale));
 +		_textSize.Y = (large ? 32f : 16f) * textScale;
 +
++		if (!SetTextUsesMinSize) {
++			Width.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
++			Height.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
++			return;
++		}
++
  		MinWidth.Set(_textSize.X + PaddingLeft + PaddingRight, 0f);
  		MinHeight.Set(_textSize.Y + PaddingTop + PaddingBottom, 0f);
  	}
+@@ -127,7 +_,8 @@
+ 		DrawText(spriteBatch, text, TextDrawPosition, _color);
+ 	}
+ 
++	// tML: Made virtual
+-	protected void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
++	protected virtual void DrawText(SpriteBatch spriteBatch, string text, Vector2 position, Color color)
+ 	{
+ 		if (_isLarge)
+ 			Utils.DrawBorderStringBig(spriteBatch, text, position, color, _textScale);

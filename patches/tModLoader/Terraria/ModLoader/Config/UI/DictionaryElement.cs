@@ -123,7 +123,7 @@ internal class DictionaryElement : CollectionElement
 			((IDictionary)Data).Add(keyValue, CreateCollectionElementInstance(valueType));
 		}
 		catch (Exception e) {
-			Interface.modConfig.SetMessage("Error: " + e.Message, Color.Red);
+			ConfigManager.CurrentConfigUI.SetMessage("Error: " + e.Message, Color.Red);
 		}
 	}
 
@@ -154,7 +154,7 @@ internal class DictionaryElement : CollectionElement
 
 		//foreach (var item in ((IDictionary)data))
 		//{
-		//	//var wrapped = UIModConfig.WrapIt(dataList, ref top, memberInfo, item, ref sliderID, keys, keyType, i2);
+		//	//var wrapped = ConfigManager.CurrentConfigUI.WrapIt(dataList, ref top, memberInfo, item, ref sliderID, keys, keyType, i2);
 		//	keyList.Add(item);
 		//	//i2++;
 		//}
@@ -216,8 +216,8 @@ internal class DictionaryElement : CollectionElement
 				var wrappermemberInfo = ConfigManager.GetFieldsAndProperties(this).ToList()[0];
 				int index = i;
 				//TODO: Sometime key is below value for some reason. IntFloatDictionary.
-				var wrapped = UIModConfig.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
-				//var wrapped = UIModConfig.WrapIt(dataList, ref top, wrappermemberInfo, wrapperwrapper, ref sliderID);
+				var wrapped = ConfigManager.CurrentConfigUI.WrapIt(DataList, ref top, wrappermemberInfo, this, 0, dataWrapperList, genericType, i);
+				//var wrapped = ConfigManager.CurrentConfigUI.WrapIt(dataList, ref top, wrappermemberInfo, wrapperwrapper, ref sliderID);
 
 				// Save wrap, pre save check?
 				wrapped.Item2.Left.Pixels += 24;
@@ -233,7 +233,7 @@ internal class DictionaryElement : CollectionElement
 				deleteButton.OnLeftClick += (a, b) => {
 					((IDictionary)Data).Remove(o);
 					SetupList();
-					Interface.modConfig.SetPendingChanges();
+					ConfigManager.CurrentConfigUI.OnConfigModified();
 				};
 
 				wrapped.Item1.Append(deleteButton);

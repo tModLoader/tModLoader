@@ -1,12 +1,14 @@
 --- src/TerrariaNetCore/Terraria/UI/IngameFancyUI.cs
 +++ src/tModLoader/Terraria/UI/IngameFancyUI.cs
-@@ -4,11 +_,18 @@
+@@ -4,11 +_,20 @@
  using Terraria.Audio;
  using Terraria.GameContent.UI.States;
  using Terraria.GameInput;
 +using Terraria.ID;
  using Terraria.Localization;
 +using Terraria.ModLoader;
++using Terraria.ModLoader.Config;
++using Terraria.ModLoader.Config.UI;
 +using Terraria.ModLoader.UI;
  using Terraria.UI.Gamepad;
  
@@ -50,15 +52,16 @@
  				break;
  		}
  
-@@ -154,8 +_,11 @@
+@@ -154,8 +_,12 @@
  			Main.playerInventory = true;
  
  		Main.LocalPlayer.releaseInventory = false;
-+		bool currentStateWasModConfig = Main.InGameUI.CurrentState == Interface.modConfig;
++		bool currentStateWasModConfig = Main.InGameUI.CurrentState is UIModConfig;
  		Main.InGameUI.SetState(null);
  		UILinkPointNavigator.Shortcuts.FANCYUI_SPECIAL_INSTRUCTIONS = 0;
++		// Intentionally doesn't support IConfigUI (config API should not handle custom escape key behaviour, should be done in UI)
 +		if (currentStateWasModConfig)
-+			Interface.modConfig.HandleOnCloseCallback();
++			((UIModConfig)Main.InGameUI.CurrentState).HandleOnCloseCallback();
  	}
  
  	public static bool Draw(SpriteBatch spriteBatch, GameTime gameTime)

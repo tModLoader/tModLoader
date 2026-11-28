@@ -17,8 +17,10 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
+	/// It also showcases how to create a custom UIState for the config.
 	/// </summary>
 	[SortConfig(after: true, nameof(ModConfigShowcaseAccessibility))]
+	[BackgroundColor((int)(255 * 0.8f), (int)(105 * 0.8f), (int)(180 * 0.8f), (int)(255 * 0.8f))] // RGB values for Color.HotPink with 0.8f opacity
 	public class ModConfigShowcaseMisc : ModConfig
 	{
 		public override ConfigScope Mode => ConfigScope.ClientSide;
@@ -112,6 +114,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 				ListOfInts.AddRange(OldListOfInts);
 			}
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
+		}
+
+		public override void OnLoaded() {
+			// Here, we can create our custom UI for the config
+			CustomUI = new ExampleExtendedConfigUI();
 		}
 	}
 }
