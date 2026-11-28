@@ -61,6 +61,7 @@ namespace ExampleMod.Common.Configs.CustomUI
 			UpdateCount = 0;
 			pendingConfig = (ModConfigShowcaseCustomUI)ConfigManager.GeneratePopulatedClone(config);
 
+			ClearMessage();
 			RefreshUI(refreshNow: true);
 		}
 
@@ -173,8 +174,6 @@ namespace ExampleMod.Common.Configs.CustomUI
 				refreshQueued = true;
 				return;
 			}
-
-			ClearMessage();
 
 			// Read UIModConfig.WrapIt to understand this code a bit better
 
