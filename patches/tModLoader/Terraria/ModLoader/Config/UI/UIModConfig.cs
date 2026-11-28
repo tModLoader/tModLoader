@@ -1,516 +1,709 @@
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Newtonsoft.Json;
+using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.ModLoader.UI.Elements;
 using Terraria.UI;
 using Terraria.UI.Gamepad;
-using Terraria.Localization;
-using tModPorter;
 
 namespace Terraria.ModLoader.Config.UI;
 
-// TODO: Revert individual button.
-// TODO: Collapse All button, or default to collapsed?
-// TODO: Localization support
-internal class UIModConfig : UIState, IHaveBackButtonCommand
+public class UIModConfig : UIState, IHaveBackButtonCommand, IConfigUI
 {
-	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
-	public int UpdateCount { get; set; }
+	public int UpdateCount { get; private set; }
+	public string ConfigElementTooltip { get; set; }
 
-	private UIElement uIElement;
-	private UITextPanel<string> headerTextPanel;
-	private UITextPanel<string> message;
-	private UITextPanel<string> previousConfigButton;
-	private UITextPanel<string> nextConfigButton;
-	private UITextPanel<string> saveConfigButton;
-	private UITextPanel<string> backButton;
-	private UITextPanel<string> revertConfigButton;
-	private UITextPanel<string> restoreDefaultsConfigButton;
-	private UIPanel uIPanel;
-	private readonly List<Tuple<UIElement, UIElement>> mainConfigItems = new();
-	private UIList mainConfigList;
-	private UIScrollbar uIScrollbar;
+	public bool HasUnsavedChanges { get; private set; }
+	public bool HasDefaultValues { get; private set; }
+
+	private Mod mod;
+	private ModConfig modConfig; // This is from ConfigManager.Configs
+	private ModConfig pendingConfig; // The clone we modify, so we can revert changes easily
+
+	private ConfigPage rootConfigPage;
+	private ConfigPage CurrentConfigPage => configPageStack.Peek();
+	private bool InSubPage => configPageStack.Count > 1;
+	private readonly Stack<ConfigPage> configPageStack = new();
+
+	public class ConfigPage(object name)
+	{
+		public object Name = name;
+		public readonly List<Tuple<UIElement, UIElement>> ConfigElements = new();
+		public Color BackgroundColor = UICommon.MainPanelBackground;
+	}
+
 	private BlockInputElement blockInput;
 	private UIElement activeDialog;
-	private readonly Stack<UIPanel> configPanelStack = new();
-	private readonly Stack<string> subPageStack = new();
-	//private UIList currentConfigList;
-	private Mod mod;
-	private List<ModConfig> sortedModConfigs; // NOT in load order. Don't use for anything other than navigation
-	private ModConfig modConfig; // This is from ConfigManager.Configs
-	internal ModConfig pendingConfig; // the clone we modify.
-	private bool updateNeeded;
-	private bool preserveNotificationMessage;
-	private UIFocusInputTextField filterTextField;
-	internal string scrollToOption = null;
-	internal bool centerScrolledOption = false;
 
 	private bool openedFromModder = false;
 	private Action modderOnClose = null;
+	private string scrollToOption = null;
+	private bool centerScrolledOption = false;
+
+	private bool refreshQueued = false;
+
+	private UIElement uiElement;
+	private UIPanel uiPanel;
+	private UIMarqueeTextPanel headerTextPanel;
+
+	private UIButton backButton;
+	private UIButton saveConfigButton;
+	private UIButton revertConfigButton;
+	private UIButton restoreDefaultsConfigButton;
+
+	private UIElement listHeaderContainer;
+	private UIList configElementList;
+	private UIScrollbar scrollbar;
+	private UIFocusInputTextField filterTextField;
+	private UIImageFramed configSideIndicator;
+	// These 2 use the same code as UIModConfigList
+	private UIButton modNamePanel;
+	private UIImageFramed smallModIcon;
+
+	private UIButton subPageBackButton;
+	private UIPanel subPageBreadcrumbPanel;
+	private UIMarqueeText subPageBreadcrumbText;
+
+	private Color InfoBadgeBackgroundColor => UICommon.DefaultUIBlueMouseOver * 0.5f;
+	private Color InfoBadgeBorderColor => UICommon.DefaultUIBlueMouseOver;
+
+	#region UI Creation
 
 	public override void OnInitialize()
 	{
-		uIElement = new UIElement();
-		uIElement.Width.Set(0f, 0.8f);
-		uIElement.MaxWidth.Set(600f, 0f);
-		uIElement.Top.Set(160f, 0f);
-		uIElement.Height.Set(-180f, 1f);
-		uIElement.HAlign = 0.5f;
+		CreateMainPanel();
+		CreateButtons();
+		CreatePanelContents();
+		CreateHeaderPanel();
+		CreateSubPageUI();
+	}
 
-		uIPanel = new UIPanel();
-		uIPanel.Width.Set(0f, 1f);
-		uIPanel.Height.Set(-140f, 1f);
-		uIPanel.Top.Set(30f, 0f);
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-		uIElement.Append(uIPanel);
+	private void CreateMainPanel()
+	{
+		uiElement = new UIElement {
+			Width = { Percent = 0.8f },
+			MaxWidth = UICommon.MaxPanelWidth,
+			Top = { Pixels = 220 },
+			Height = { Pixels = -220, Percent = 1f },
+			HAlign = 0.5f,
+		};
+		Append(uiElement);
 
-		UIPanel textBoxBackground = new UIPanel();
-		textBoxBackground.SetPadding(0);
-		filterTextField = new UIFocusInputTextField(Language.GetTextValue("tModLoader.ModConfigFilterOptions"));//"Filter Options"
-		textBoxBackground.Top.Set(2f, 0f);
-		textBoxBackground.Left.Set(-190, 1f);
-		textBoxBackground.Width.Set(180, 0f);
-		textBoxBackground.Height.Set(30, 0f);
-		uIElement.Append(textBoxBackground);
+		uiPanel = new UIPanel {
+			Width = { Percent = 1f },
+			Height = { Pixels = -65, Percent = 1f },
+			BackgroundColor = UICommon.MainPanelBackground,
+		};
+		uiElement.Append(uiPanel);
+	}
 
+	private void CreateButtons()
+	{
+		var clickableState = UIButton.State.DefaultWithHover with {
+			TooltipText = true,
+		};
+
+		var backButtonUnsavedChanges = clickableState with {
+			PanelColor = Color.Red * 0.7f,
+			HoverPanelColor = Color.Red,
+			HoverText = Language.GetText("tModLoader.ModConfigBackUnsavedChanges"),
+		};
+
+		var disabledState = UIButton.State.Default with {
+			TooltipText = true,
+			PanelColor = Color.Gray,
+		};
+
+		backButton = CreateButton("tModLoader.ModConfigBack", 0, BackClick);
+		backButton.DefaultState = clickableState;
+		backButton.AlternateState = backButtonUnsavedChanges;
+		backButton.UseAlternateState = () => HasUnsavedChanges;
+		uiElement.Append(backButton);
+
+		saveConfigButton = CreateButton("tModLoader.ModConfigSaveConfig", 1f / 3f, SaveConfig);
+		saveConfigButton.DefaultState = disabledState;
+		saveConfigButton.AlternateState = clickableState;
+		saveConfigButton.UseAlternateState = () => HasUnsavedChanges;
+		saveConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigSaveConfigNoUnsavedChanges");
+		uiElement.Append(saveConfigButton);
+
+		revertConfigButton = CreateButton("tModLoader.ModConfigRevertChanges", 2f / 3f, RevertConfig);
+		revertConfigButton.DefaultState = disabledState;
+		revertConfigButton.AlternateState = clickableState;
+		revertConfigButton.UseAlternateState = () => HasUnsavedChanges;
+		revertConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigRevertChangesNoUnsavedChanges");
+		revertConfigButton.AlternateState.HoverText = Language.GetText("tModLoader.ModConfigRevertChangesTooltip");
+		uiElement.Append(revertConfigButton);
+
+		restoreDefaultsConfigButton = CreateButton("tModLoader.ModConfigRestoreDefaults", 1f, RestoreDefaults);
+		restoreDefaultsConfigButton.DefaultState = disabledState;
+		restoreDefaultsConfigButton.AlternateState = clickableState;
+		restoreDefaultsConfigButton.UseAlternateState = () => !HasDefaultValues;
+		restoreDefaultsConfigButton.DefaultState.HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsAlreadyDefault");
+		restoreDefaultsConfigButton.AlternateState.HoverText = Language.GetText("tModLoader.ModConfigRestoreDefaultsTooltip");
+		uiElement.Append(restoreDefaultsConfigButton);
+	}
+
+	private static UIButton CreateButton(string localizationKey, float hAlign, MouseEvent onClick)
+	{
+		var button = new UIButton(Language.GetText(localizationKey), 1f, false) {
+			MinWidth = { Pixels = -10, Percent = 0.25f },
+			Height = { Pixels = 40 },
+			Top = { Pixels = -20 },
+			VAlign = 1f,
+			HAlign = hAlign,
+		};
+
+		button.MaxWidth = button.MinWidth;
+		button.OnLeftClick += onClick;
+
+		return button;
+	}
+
+	private void CreatePanelContents()
+	{
+		listHeaderContainer = new UIElement {
+			Width = { Percent = 1f },
+			Height = { Pixels = 40 },
+		};
+		uiPanel.Append(listHeaderContainer);
+
+		var textBoxBackground = new UIPanel {
+			Width = { Pixels = 180 },
+			Height = { Pixels = 30 },
+			HAlign = 1f,
+			VAlign = 0.5f,
+		}.WithPadding(0);
+		listHeaderContainer.Append(textBoxBackground);
+
+		filterTextField = new UIFocusInputTextField(Language.GetText("tModLoader.ModConfigFilterOptions")) {
+			Top = { Pixels = 5 },
+			Left = { Pixels = 10 },
+			Width = { Pixels = -20, Percent = 1f },
+			Height = { Pixels = 20 },
+		};
 		filterTextField.SetText("");
-		filterTextField.Top.Set(5, 0f);
-		filterTextField.Left.Set(10, 0f);
-		filterTextField.Width.Set(-20, 1f);
-		filterTextField.Height.Set(20, 0);
-		filterTextField.OnTextChange += (a, b) => {
-			updateNeeded = true;
-		};
-		filterTextField.OnRightClick += (a, b) => {
-			filterTextField.SetText("");
-		};
+		filterTextField.OnTextChange += (_, _) => RefreshUI();
+		filterTextField.OnRightClick += (_, _) => filterTextField.SetText("");
 		textBoxBackground.Append(filterTextField);
 
-		// TODO: ModConfig Localization support
-		message = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigNotification"));//"Notification: "
-		message.Width.Set(-80f, 1f);
-		message.Height.Set(20f, 0f);
-		message.HAlign = 0.5f;
-		message.VAlign = 1f;
-		message.Top.Set(-65f, 0f);
-		uIElement.Append(message);
-
-		mainConfigList = new UIList();
-		mainConfigList.Width.Set(-25f, 1f);
-		mainConfigList.Height.Set(0f, 1f);
-		//mainConfigList.Top.Set(40f, 0f);
-		mainConfigList.ListPadding = 5f;
-		uIPanel.Append(mainConfigList);
-		configPanelStack.Push(uIPanel);
-		//currentConfigList = mainConfigList;
-
-		uIScrollbar = new UIScrollbar();
-		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(0f, 1f);
-		uIScrollbar.HAlign = 1f;
-		uIPanel.Append(uIScrollbar);
-		mainConfigList.SetScrollbar(uIScrollbar);
-
-		headerTextPanel = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigModConfig"), 0.8f, true);//"Mod Config"
-		headerTextPanel.HAlign = 0.5f;
-		headerTextPanel.Top.Set(-50f, 0f);
-		headerTextPanel.SetPadding(15f);
-		headerTextPanel.BackgroundColor = UICommon.DefaultUIBlue;
-		uIElement.Append(headerTextPanel);
-
-		previousConfigButton = new UITextPanel<string>("<", 1f, false);
-		previousConfigButton.Width.Set(25f, 0);
-		previousConfigButton.Height.Set(25f, 0f);
-		previousConfigButton.VAlign = 1f;
-		previousConfigButton.Top.Set(-65f, 0f);
-		previousConfigButton.HAlign = 0f;
-		previousConfigButton.WithFadedMouseOver();
-		previousConfigButton.OnLeftClick += PreviousConfig;
-		//uIElement.Append(previousConfigButton);
-
-		nextConfigButton = new UITextPanel<string>(">", 1f, false);
-		nextConfigButton.CopyStyle(previousConfigButton);
-		nextConfigButton.WithFadedMouseOver();
-		nextConfigButton.HAlign = 1f;
-		nextConfigButton.OnLeftClick += NextConfig;
-		//uIElement.Append(nextConfigButton);
-
-		saveConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigSaveConfig"), 1f, false);//"Save Config"
-		saveConfigButton.Width.Set(-10f, 1f / 4f);
-		saveConfigButton.Height.Set(25f, 0f);
-		saveConfigButton.Top.Set(-20f, 0f);
-		saveConfigButton.WithFadedMouseOver();
-		saveConfigButton.HAlign = 0.33f;
-		saveConfigButton.VAlign = 1f;
-		saveConfigButton.OnLeftClick += SaveConfig;
-		//uIElement.Append(saveConfigButton);
-
-		backButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack"), 1f, false);//"Back"
-		backButton.CopyStyle(saveConfigButton);
-		backButton.HAlign = 0;
-		backButton.WithFadedMouseOver();
-		backButton.OnMouseOver += (a, b) => {
-			if (pendingChanges)
-				backButton.BackgroundColor = Color.Red;
+		var configSideIndicatorPanel = new UIPanel {
+			Width = { Pixels = 40 },
+			Height = { Pixels = 40 },
+			VAlign = 0.5f,
+			BackgroundColor = InfoBadgeBackgroundColor,
+			BorderColor = InfoBadgeBorderColor,
 		};
-		backButton.OnMouseOut += (a, b) => {
-			if (pendingChanges)
-				backButton.BackgroundColor = Color.Red * 0.7f;
+		configSideIndicatorPanel.SetPadding(0);
+		listHeaderContainer.Append(configSideIndicatorPanel);
+
+		configSideIndicator = new UIImageFramed(Asset<Texture2D>.Empty, new Rectangle(0, 0, 22, 22)) {
+			HAlign = 0.5f,
+			VAlign = 0.5f,
 		};
-		backButton.OnLeftClick += BackClick;
-		uIElement.Append(backButton);
+		configSideIndicatorPanel.Append(configSideIndicator);
 
-		revertConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRevertChanges"), 1f, false);//"Revert Changes"
-		revertConfigButton.CopyStyle(saveConfigButton);
-		revertConfigButton.WithFadedMouseOver();
-		revertConfigButton.HAlign = 0.66f;
-		revertConfigButton.OnLeftClick += RevertConfig;
-		//uIElement.Append(revertConfigButton);
+		configSideIndicatorPanel.OnDraw += delegate {
+			if (configSideIndicatorPanel.IsMouseHovering) {
+				string hoverText = Language.GetTextValue(pendingConfig.Mode == ConfigScope.ServerSide ? "tModLoader.ModConfigServerSide" : "tModLoader.ModConfigClientSide");
+				UICommon.TooltipMouseText(hoverText);
+			}
+		};
 
-		//float scale = Math.Min(1f, 130f/FontAssets.MouseText.Value.MeasureString("Restore Defaults").X);
-		restoreDefaultsConfigButton = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigRestoreDefaults"), 1f, false);//"Restore Defaults"
-		restoreDefaultsConfigButton.CopyStyle(saveConfigButton);
-		restoreDefaultsConfigButton.WithFadedMouseOver();
-		restoreDefaultsConfigButton.HAlign = 1f;
-		restoreDefaultsConfigButton.OnLeftClick += RestoreDefaults;
-		uIElement.Append(restoreDefaultsConfigButton);
+		(modNamePanel, smallModIcon) = UIModConfigList.CreatePanel("", Asset<Texture2D>.Empty, new Rectangle(0, 0, 30, 30));
+		modNamePanel.MaxWidth.Set(330, 0);
+		modNamePanel.MinWidth.Set(0, 0);
+		modNamePanel.VAlign = 0.5f;
+		modNamePanel.Left.Pixels = 50;
+		modNamePanel.DefaultState = UIButton.State.Default with {
+			PanelColor = InfoBadgeBackgroundColor,
+			BorderColor = InfoBadgeBorderColor,
+		};
 
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
+		listHeaderContainer.Append(modNamePanel);
 
-		Append(uIElement);
+		configElementList = new UIList {
+			Width =  { Percent = 1f },
+			Height = { Pixels = -listHeaderContainer.Height.Pixels - 5, Percent = 1f },
+			VAlign = 1f,
+			ListPadding = 5f,
+		};
+		uiPanel.Append(configElementList);
+
+		scrollbar = new UIScrollbar {
+			Height = { Pixels = configElementList.Height.Pixels, Percent = 1f },
+			HAlign = 1f,
+			VAlign = 1f,
+		}.WithView(100f, 1000f);
+		uiPanel.Append(scrollbar);
+		configElementList.SetScrollbar(scrollbar);
 	}
+
+	private void CreateHeaderPanel()
+	{
+		headerTextPanel = new UIMarqueeTextPanel("[Unknown Config Name]", 0.8f, true) {
+			MaxWidth = { Percent = 0.95f},
+			HAlign = 0.5f,
+			Top = { Pixels = -46 }, // -35 is common for most UIs, but UIWorkshopHub uses -46 to fit more content
+			BackgroundColor = UICommon.DefaultUIBlue,
+		}.WithPadding(15f);
+		uiElement.Append(headerTextPanel);
+	}
+
+	private void CreateSubPageUI()
+	{
+		subPageBackButton = new UIButton(Language.GetText("tModLoader.ModConfigBack"), 1f, false) {
+			MinWidth = { Pixels = 100 },
+			Height = { Pixels = 40 },
+			HAlign = 1f,
+			Top = { Pixels = listHeaderContainer.Height.Pixels + 5 },
+		};
+
+		subPageBackButton.MaxWidth = subPageBackButton.MinWidth;
+		subPageBackButton.DefaultState = UIButton.State.DefaultWithHover;
+		subPageBackButton.OnLeftClick += BackSubPage;
+
+		subPageBreadcrumbPanel = new UIPanel {
+			Height = { Pixels = 24 },
+			Width = { Percent = 1f, Pixels = -(subPageBackButton.MaxWidth.Pixels + 10) },
+			BackgroundColor = new Color(35, 40, 83),
+			BorderColor = UICommon.DefaultUIBlueMouseOver * 0.5f,
+		}.WithPadding(0);
+
+		subPageBreadcrumbPanel.PaddingLeft = 10;
+		subPageBreadcrumbPanel.PaddingRight = 10;
+		subPageBreadcrumbPanel.Top.Pixels = subPageBackButton.Top.Pixels + (subPageBackButton.Height.Pixels - subPageBreadcrumbPanel.Height.Pixels) / 2f;
+
+		var subPagePrompt = new UIText(Language.GetText("tModLoader.ModConfigSubPage"), 0.8f) {
+			VAlign = 0.5f,
+			TextColor = Color.Gray,
+		};
+		subPageBreadcrumbPanel.Append(subPagePrompt);
+
+		float leftPadding = subPagePrompt.MinWidth.Pixels + 5;
+		subPageBreadcrumbText = new UIMarqueeText("", 0.8f) {
+			MaxWidth = { Percent = 1f, Pixels = -leftPadding },
+			Left = { Pixels = leftPadding },
+			VAlign = 0.5f,
+			TextOriginX = 0f,
+		};
+
+		subPageBreadcrumbPanel.Append(subPageBreadcrumbText);
+	}
+
+	#endregion
+
+	#region Back Button
+
+	public UIState PreviousUIState { get; set; } // Unused interface property, manual logic in HandleBackButtonUsage instead
+
+	private bool isConfirmDiscardChangsPopupOpen = false;
 
 	private void BackClick(UIMouseEvent evt, UIElement listeningElement)
 	{
 		HandleBackButtonUsage();
-		return;
 	}
 
 	// Note that Escape key while in-game won't call this.
 	public void HandleBackButtonUsage()
 	{
+		if (HasUnsavedChanges) {
+			if (isConfirmDiscardChangsPopupOpen) {
+				return;
+			}
+
+			var confirmDialog = new UIConfirmDialog(
+				showYesDontShowAgainButton: false,
+				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopup"),
+				Language.GetText("tModLoader.ModConfigBackUnsavedChangesPopupSubText"),
+				(_, _) => {
+					HasUnsavedChanges = false;
+					HandleBackButtonUsage();
+				}
+			) {
+				OnClose = () => isConfirmDiscardChangsPopupOpen = false,
+			};
+
+			SoundEngine.PlaySound(SoundID.MenuOpen);
+			Append(confirmDialog);
+			isConfirmDiscardChangsPopupOpen = true;
+			return;
+		}
+
 		if (Main.gameMenu || !openedFromModder)
 			SoundEngine.PlaySound(SoundID.MenuClose);
 
 		if (Main.gameMenu) {
+			Interface.modConfigList.ModToSelectOnOpen = mod;
 			Main.menuMode = Interface.modConfigListID;
 			HandleOnCloseCallback();
 		}
 		else {
-			if (openedFromModder)
+			if (openedFromModder) {
+				// HandleOnCloseCallback() called within because pressing escape in game calls IngameFancyUI.Close()
 				IngameFancyUI.Close();
-			else
+			}
+			else {
+				Interface.modConfigList.ModToSelectOnOpen = mod;
 				Main.InGameUI.SetState(Interface.modConfigList);
+			}
 		}
 	}
 
-	internal void Unload()
+	internal void HandleOnCloseCallback()
 	{
-		mainConfigList?.Clear();
-		mainConfigItems?.Clear();
-		mod = null;
-		sortedModConfigs = null;
-		modConfig = null;
-		pendingConfig = null;
-
-		while (configPanelStack.Count > 1)
-			uIElement.RemoveChild(configPanelStack.Pop());
-	}
-
-	// TODO: with in-game version, disable ConfigScope.ServerSide configs (View Only maybe?)
-	private void PreviousConfig(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		//DiscardChanges();
-
-		int index = sortedModConfigs.IndexOf(modConfig);
-		modConfig = sortedModConfigs[index - 1 < 0 ? sortedModConfigs.Count - 1 : index - 1];
-
-		//modConfigClone = modConfig.Clone();
-
-		DoMenuModeState();
-	}
-
-	private void NextConfig(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		//DiscardChanges();
-
-		int index = sortedModConfigs.IndexOf(modConfig);
-		modConfig = sortedModConfigs[index + 1 > sortedModConfigs.Count ? 0 : index + 1];
-
-		//modConfigClone = modConfig.Clone();
-
-		DoMenuModeState();
-	}
-
-	// Refreshes the UI to refresh recent changes such as Save/Discard/Restore Defaults/Cycle to next config
-	private void DoMenuModeState(bool preserveNotificationMessage = false)
-	{
-		this.preserveNotificationMessage = preserveNotificationMessage;
-		if (Main.gameMenu) {
-			Main.MenuUI.SetState(null);
-			Main.menuMode = Interface.modConfigID;
-		}
-		else {
-			Main.InGameUI.SetState(null);
-			Main.InGameUI.SetState(Interface.modConfig);
+		if (modderOnClose != null) {
+			modderOnClose.Invoke();
+			modderOnClose = null;
 		}
 	}
+
+	#endregion
+
+	#region Button Actions
 
 	private void SaveConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		var result = modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
-		if (result == ConfigSaveResult.Success) // Don't clear out pending changes for needs reload or sent to server
-			DoMenuModeState(preserveNotificationMessage: true);
-	}
+		if (!HasUnsavedChanges)
+			return;
 
-	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
-	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		pendingRevertDefaults = true;
-		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
-		DoMenuModeState(preserveNotificationMessage: true);
+		modConfig.SaveChanges(pendingConfig, status: SetMessage, silent: false);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
+		RefreshUI();
 	}
 
 	private void RevertConfig(UIMouseEvent evt, UIElement listeningElement)
 	{
-		SoundEngine.PlaySound(SoundID.MenuOpen);
-		DiscardChanges();
-	}
-
-	private void DiscardChanges()
-	{
-		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
-		DoMenuModeState(preserveNotificationMessage: true);
-	}
-
-	private bool pendingChanges;
-	private bool pendingChangesUIUpdate;
-
-	public void SetPendingChanges(bool changes = true)
-	{
-		pendingChangesUIUpdate |= changes;
-		pendingChanges |= changes;
-	}
-
-	public void SetMessage(string text, Color color)
-	{
-		message.TextScale = 1f;
-		message.SetText(Language.GetText("tModLoader.ModConfigNotification") + text);
-		float width = FontAssets.MouseText.Value.MeasureString(text).X;
-		if (width > 400) {
-			message.TextScale = 400 / width;
-			message.Recalculate();
-		}
-		message.TextColor = color;
-	}
-
-	private bool netUpdate;
-
-	public override void Update(GameTime gameTime)
-	{
-		base.Update(gameTime);
-
-		if (scrollToOption != null) {
-			bool header = false;
-			if (scrollToOption.StartsWith("Header:")) {
-				scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
-				header = true;
-			}
-			// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
-			var desiredElement = mainConfigList._items.Find(x => {
-				if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
-					if (configElement is ObjectElement objectElement && objectElement.separatePagePanel != null) {
-						SwitchToSubConfig(objectElement.separatePagePanel);
-						return true;
-					}
-					configElement.Flashing = true;
-					return true;
-				}
-				return false;
-			});
-
-			if (header) {
-				int index = mainConfigList._items.IndexOf(desiredElement);
-				for (int i = index - 1; i >= 0; i--) {
-					if (mainConfigList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
-						desiredElement = sortableElement;
-						break;
-					}
-				}
-			}
-			mainConfigList.Goto(delegate (UIElement element) {
-				return element == desiredElement;
-			}, center: centerScrolledOption);
-
-			scrollToOption = null;
-			centerScrolledOption = false;
-		}
-
-		UpdateCount++;
-
-		if (pendingChangesUIUpdate) {
-			uIElement.Append(saveConfigButton);
-			uIElement.Append(revertConfigButton);
-			backButton.BackgroundColor = Color.Red * 0.7f;
-			pendingChangesUIUpdate = false;
-		}
-
-		if (netUpdate) {
-			DoMenuModeState();
-			netUpdate = false;
-		}
-
-		if (!updateNeeded)
+		if (!HasUnsavedChanges)
 			return;
 
-		updateNeeded = false;
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigChangesReverted"), Color.Green);
+		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
+		RefreshUI();
+	}
 
-		mainConfigList.Clear();
+	private void RestoreDefaults(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (HasDefaultValues)
+			return;
 
-		mainConfigList.AddRange(mainConfigItems.Where(item => {
-			if (item.Item2 is ConfigElement configElement) {
-				return configElement.TextDisplayFunction().IndexOf(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase) != -1;
-			}
-			return true;
-		}).Select(x => x.Item1));
+		SoundEngine.PlaySound(SoundID.MenuOpen);
+		SetMessage(Language.GetTextValue("tModLoader.ModConfigDefaultsRestored"), Color.Green);
+		ConfigManager.Reset(pendingConfig);
+		OnSaveRevertRestore(); // Temporary, read the comment inside OnSaveRevertRestore
+		RefreshUI();
+	}
+
+	private void BackSubPage(UIMouseEvent evt, UIElement listeningElement)
+	{
+		if (TryGoBackConfigPage())
+			SoundEngine.PlaySound(SoundID.MenuClose);
+	}
+
+	#endregion
+
+	#region UI Updating
+
+	internal void Unload()
+	{
+		ResetUI();
+
+		mod = null;
+		modConfig = null;
+		pendingConfig = null;
+	}
+
+	private void ResetUI()
+	{
+		rootConfigPage = null;
+		configPageStack?.Clear();
+		configElementList?.Clear();
+		filterTextField?.SetText("");
+		headerTextPanel?.ResetScroll();
+		modNamePanel?.ResetScroll();
+		subPageBreadcrumbText?.ResetScroll();
+		UnblockInput(null, null);
+		UpdateCount = 0;
+
+		if (scrollbar is not null)
+			scrollbar.ViewPosition = 0f;
+	}
+
+	private void OnSaveRevertRestore()
+	{
+		// This is a leftover from the previous config UI, since properly refreshing the config elements requires a lot of code changes and will probably break mods.
+		// Currently, it is easier and less bug prone to just recreate the config UI.
+		// This (unfortunately) preserves the legacy behaviour of configs going back to the main config page on save/revert/restore.
+		configPageStack.Clear();
+		rootConfigPage = new ConfigPage(modConfig.DisplayName);
+		SetupConfigPage(rootConfigPage, pendingConfig, null);
+		configPageStack.Push(rootConfigPage);
+	}
+
+	public void OnConfigModified()
+	{
+		RefreshUI();
+	}
+
+	public void OnServerAcceptedChanges()
+	{
+		OnSaveRevertRestore(); // In case we are in a sub-page
+		RefreshUI();
+	}
+
+	private void RefreshUI(bool delayRefresh = true)
+	{
+		if (delayRefresh) {
+			refreshQueued = true;
+			return;
+		}
+
+		refreshQueued = false;
+
+		RefreshSubPageUI();
+		RefreshSaveAndRestoreConditions();
+		RefreshConfigElementList();
+		RefreshScrollbar();
+		uiPanel.BackgroundColor = CurrentConfigPage.BackgroundColor;
 
 		Recalculate();
 	}
 
-	public static string Tooltip { get; set; }
-
-	public override void Draw(SpriteBatch spriteBatch)
+	private void RefreshSubPageUI()
 	{
-		Tooltip = null;
+		subPageBackButton.Remove();
+		subPageBreadcrumbPanel.Remove();
 
-		base.Draw(spriteBatch);
+		configElementList.Height.Pixels = -listHeaderContainer.Height.Pixels - 5;
 
-		if (!string.IsNullOrEmpty(Tooltip)) {
-			UICommon.TooltipMouseText(Tooltip);
+		if (InSubPage) {
+			uiPanel.Append(subPageBackButton);
+			uiPanel.Append(subPageBreadcrumbPanel);
+
+			subPageBackButton.OnActivate(); // Refresh colors
+			subPageBreadcrumbText.SetText(string.Join($" [c/{Color.DarkGray.Hex3()}:>] ", configPageStack.Reverse().Skip(1).Select(p => p.Name)));
+			subPageBreadcrumbText.ResetScroll();
+			subPageBreadcrumbText.MarqueeText.SetScrollDelay(60);
+
+			configElementList.Height.Pixels -= subPageBackButton.Height.Pixels + 10;
 		}
 
-		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+		scrollbar.Height.Pixels = configElementList.Height.Pixels;
 	}
 
-	// do we need 2 copies? We can discard changes by reloading.
-	// We can save pending changes by saving file then loading/reloading mods.
-	// when we get new server configs from server...replace, don't save?
-	// reload manually, reload fresh server config?
-	// need some CopyTo method to preserve references....hmmm
-	internal void SetMod(Mod mod, ModConfig config = null, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
+	private void RefreshSaveAndRestoreConditions()
 	{
-		this.mod = mod;
+		HasUnsavedChanges = pendingConfig.HasChanges(modConfig);
+		HasDefaultValues = pendingConfig.HasDefaultValues();
+	}
+
+	private void RefreshConfigElementList()
+	{
+		// TODO: allow filtering to look inside of subpages
+		// TODO: should a SearchFunction should be used instead to allow searching labels, tooltips, children, and "related phrases" that a modder can specify?
+		configElementList.Clear();
+		configElementList.AddRange(CurrentConfigPage.ConfigElements.Where(item => {
+			if (item.Item2 is ConfigElement configElement) {
+				return configElement.TextDisplayFunction().Contains(filterTextField.CurrentString, StringComparison.OrdinalIgnoreCase);
+			}
+			return true;
+		}).Select(x => x.Item1));
+	}
+
+	private void RefreshScrollbar()
+	{
+		configElementList.Recalculate();
+		configElementList.Width.Pixels = 0;
+		scrollbar.Remove();
+
+		if (scrollbar.CanScroll) {
+			configElementList.Width.Pixels -= 25;
+			uiPanel.Append(scrollbar);
+		}
+
+		configElementList.Recalculate();
+	}
+
+	public void PushConfigPage(ConfigPage configPage)
+	{
+		configPageStack.Push(configPage);
+		RefreshUI();
+	}
+
+	public bool TryGoBackConfigPage()
+	{
+		if (configPageStack.Count <= 1)
+			return false;
+
+		configPageStack.Pop();
+		RefreshUI();
+		return true;
+	}
+
+	public void SetMessage(string text, Color color)
+	{
+		var notification = new ConfigNotification(text, color);
+		MenuNotificationsTracker.AddNotification(notification);
+	}
+
+	public void SetConfig(ModConfig config, bool openedFromModder = false, Action onClose = null, string scrollToOption = null, bool centerScrolledOption = true)
+	{
+		this.mod = config.Mod;
+		this.modConfig = config;
+		this.pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
 		this.openedFromModder = openedFromModder;
 		this.modderOnClose = onClose;
 		this.scrollToOption = scrollToOption;
 		this.centerScrolledOption = centerScrolledOption;
-		if (ConfigManager.Configs.ContainsKey(mod)) {
-			sortedModConfigs = ConfigManager.Configs[mod].ToList(); // Copy to avoid accidental mutation
-			modConfig = sortedModConfigs[0];
-			if (config != null) {
-				modConfig = ConfigManager.Configs[mod].First(x => x == config);
-				// TODO, decide which configs to show in game: modConfigs = ConfigManager.Configs[mod].Where(x => x.Mode == ConfigScope.ClientSide).ToList();
-			}
-			//modConfigClone = modConfig.Clone();
-
-			// if in game, maybe have all configs open
-
-		}
-		else {
-			throw new Exception($"There are no ModConfig for {mod.DisplayNameClean}, how did this happen?");
-		}
 	}
 
-	private static bool pendingRevertDefaults;
+	public override void Update(GameTime gameTime)
+	{
+		if (refreshQueued)
+			RefreshUI(delayRefresh: false);
+
+		base.Update(gameTime);
+
+		UpdateCount++;
+	}
+
+	public override void Draw(SpriteBatch spriteBatch)
+	{
+		ConfigElementTooltip = null;
+
+		base.Draw(spriteBatch);
+
+		if (!string.IsNullOrEmpty(ConfigElementTooltip))
+			UICommon.TooltipMouseText(ConfigElementTooltip);
+
+		// Draw the "Menu notifications" if we are in game, since they aren't drawn otherwise
+		if (!Main.gameMenu)
+			MenuNotificationsTracker.DrawInMenu(spriteBatch);
+
+		UILinkPointNavigator.Shortcuts.BackButtonCommand = 7;
+	}
 
 	public override void OnActivate()
 	{
-		Interface.modConfigList.ModToSelectOnOpen = mod;
-		filterTextField.SetText("");
+		ResetUI();
 
-		updateNeeded = false;
+		// From UIModConfigList
+		var configSideTexture = UICommon.ConfigSideIndicatorTexture;
+		var configSideFrame = configSideTexture.Frame(2, 1, pendingConfig.Mode == ConfigScope.ServerSide ? 1 : 0, 0, -2);
+		configSideIndicator.SetImage(configSideTexture, configSideFrame);
+		configSideIndicator.MarginLeft = Main.gameMenu ? -2 : 0; // Main.UIScaleMatrix messes with the icon alignment
+		configSideIndicator.Recalculate();
 
-		if (!preserveNotificationMessage)
-			SetMessage("", Color.White);
-		preserveNotificationMessage = false;
+		headerTextPanel.SetText(modConfig.DisplayName);
+		headerTextPanel.Recalculate();
+		headerTextPanel.ResetScroll();
+		headerTextPanel.MarqueeText.SetScrollDelay(60);
 
-		string configDisplayName = modConfig.DisplayName.Value;
+		modNamePanel.SetText(modConfig.Mod.DisplayName);
+		modNamePanel.Recalculate();
+		modNamePanel.ResetScroll();
 
-		headerTextPanel.SetText(string.IsNullOrEmpty(configDisplayName) ? modConfig.Mod.DisplayName : modConfig.Mod.DisplayName + ": " + configDisplayName);
-		pendingConfig = ConfigManager.GeneratePopulatedClone(modConfig);
-		pendingChanges = pendingRevertDefaults;
+		var iconTexture = modConfig.Mod.SmallModIcon;
+		smallModIcon.SetImage(iconTexture, Utils.CornerRectangle(Vector2.Zero, iconTexture.Size()));
 
-		if (pendingRevertDefaults) {
-			pendingRevertDefaults = false;
-			ConfigManager.Reset(pendingConfig);
-			pendingChangesUIUpdate = true;
+		configPageStack.Clear();
+		rootConfigPage = new ConfigPage(modConfig.DisplayName);
+		SetupConfigPage(rootConfigPage, pendingConfig, null);
+		PushConfigPage(rootConfigPage);
+
+		RefreshUI(delayRefresh: false);
+
+		if (scrollToOption != null) {
+			ScrollTo(scrollToOption, centerScrolledOption);
+			scrollToOption = null;
+			centerScrolledOption = false;
 		}
 
-		int index = sortedModConfigs.IndexOf(modConfig);
-		int count = sortedModConfigs.Count;
-		//pendingChanges = false;
-
-		backButton.BackgroundColor = UICommon.DefaultUIBlueMouseOver;
-		uIElement.RemoveChild(saveConfigButton);
-		uIElement.RemoveChild(revertConfigButton);
-		uIElement.RemoveChild(previousConfigButton);
-		uIElement.RemoveChild(nextConfigButton);
-
-		if (index + 1 < count)
-			uIElement.Append(nextConfigButton);
-
-		if (index - 1 >= 0)
-			uIElement.Append(previousConfigButton);
-
-		uIElement.RemoveChild(configPanelStack.Peek());
-		uIElement.Append(uIPanel);
-		mainConfigItems.Clear();
-		mainConfigList.Clear();
-		configPanelStack.Clear();
-		configPanelStack.Push(uIPanel);
-		subPageStack.Clear();
-
-		//currentConfigList = mainConfigList;
-		int top = 0;
-		// load all mod config options into UIList
-		// TODO: Inheritance with ModConfig? DeclaredOnly?
-
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-
-		var backgroundColorAttribute = (BackgroundColorAttribute)Attribute.GetCustomAttribute(pendingConfig.GetType(), typeof(BackgroundColorAttribute));
-
-		if (backgroundColorAttribute != null) {
-			uIPanel.BackgroundColor = backgroundColorAttribute.Color;
-		}
-
-		int order = 0;
-
-		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(pendingConfig)) {
-			if (variable.IsProperty && variable.Name == "Mode")
-				continue;
-
-			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-				continue;
-
-			HandleHeader(mainConfigList, ref top, ref order, variable);
-
-			WrapIt(mainConfigList, ref top, variable, pendingConfig, order++);
+		if (!Main.gameMenu) {
+			MenuNotificationsTracker.Clear();
 		}
 	}
 
-	public static Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
+	public void ScrollTo(string scrollToOption, bool centerScrolledOption)
+	{
+		bool header = false;
+		if (scrollToOption.StartsWith("Header:")) {
+			scrollToOption = scrollToOption.Split("Header:", StringSplitOptions.RemoveEmptyEntries)[0];
+			header = true;
+		}
+
+		// Potential future support: ModConfigShowcaseDataTypes@SomeClassA/Header:enabled, ModConfigShowcaseDataTypes@SomeList/3, ModConfigShowcaseMisc@collapsedList
+		var desiredElement = configElementList._items.Find(x => {
+			if (x is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is ConfigElement configElement && configElement.MemberInfo.Name == scrollToOption) {
+				if (configElement is ObjectElement objectElement && objectElement.separateConfigPage != null) {
+					PushConfigPage(objectElement.separateConfigPage);
+					return true;
+				}
+				configElement.Flashing = true;
+				return true;
+			}
+			return false;
+		});
+
+		if (header) {
+			int index = configElementList._items.IndexOf(desiredElement);
+			for (int i = index - 1; i >= 0; i--) {
+				if (configElementList._items[i] is UISortableElement sortableElement && sortableElement.Children.FirstOrDefault() is HeaderElement headerElement) {
+					desiredElement = sortableElement;
+					break;
+				}
+			}
+		}
+		configElementList.Goto(delegate (UIElement element) {
+			return element == desiredElement;
+		}, center: centerScrolledOption);
+	}
+
+	#endregion
+
+	#region ConfigElement Handling
+
+	public void SetupConfigPage(ConfigPage configPage, object config, PropertyFieldWrapper memberInfo)
+	{
+		BackgroundColorAttribute backgroundColorAttribute = memberInfo != null
+			? ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, config, null)
+			: (BackgroundColorAttribute)Attribute.GetCustomAttribute(config.GetType(), typeof(BackgroundColorAttribute));
+
+		if (backgroundColorAttribute is not null) {
+			configPage.BackgroundColor = backgroundColorAttribute.Color;
+		}
+
+		int top = 0;
+		int order = 0;
+		// ReSharper disable once LoopCanBePartlyConvertedToQuery
+		foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(config)) {
+			if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
+				continue;
+
+			var header = HandleHeader(null, ref top, ref order, variable);
+			if (header is not null) {
+				configPage.ConfigElements.Add(header);
+			}
+
+			configPage.ConfigElements.Add(WrapIt(null, ref top, variable, config, order++));
+		}
+	}
+
+	public Tuple<UIElement, UIElement> WrapIt(UIElement parent, ref int top, PropertyFieldWrapper memberInfo, object item, int order, object list = null, Type arrayType = null, int index = -1)
 	{
 		int elementHeight;
 		Type type = memberInfo.Type;
@@ -523,6 +716,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 
 		// TODO: Other common structs? -- Rectangle, Point
 		var customUI = ConfigManager.GetCustomAttributeFromMemberThenMemberType<CustomModConfigItemAttribute>(memberInfo, null, null);
+
+		#region Big if statement
 
 		if (customUI != null) {
 			Type customUIType = customUI.Type;
@@ -611,7 +806,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 				e = new UIText($"{memberInfo.Name} not handled yet ({type.Name}).");
 			else {
 				SliderAttribute sliderAttribute = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SliderAttribute>(memberInfo, item, list);
-				bool useNewElements = (Interface.modConfig == null || Interface.modConfig.mod.TModLoaderVersion.MajorMinor() >= new Version(2025, 9)) && sliderAttribute == null;
+				bool useNewElements = sliderAttribute == null;
 				if (useNewElements)
 					e = new EnumElement2();
 				else
@@ -650,6 +845,8 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			e.Left.Pixels += 4;
 		}
 
+		#endregion
+
 		if (e != null) {
 			if (e is ConfigElement configElement) {
 				configElement.Bind(memberInfo, item, (IList)list, index);
@@ -667,7 +864,7 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 				uiList.Add(container);
 				uiList.GetTotalHeight();
 			}
-			else {
+			else if (parent is not null) {
 				// Only Vector2 and Color use this I think, but modders can use the non-UIList approach for custom UI and layout.
 				container.Top.Pixels = top;
 				container.Width.Pixels = -20;
@@ -678,10 +875,6 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 			}
 
 			var tuple = new Tuple<UIElement, UIElement>(container, e);
-
-			if (parent == Interface.modConfig.mainConfigList) {
-				Interface.modConfig.mainConfigItems.Add(tuple);
-			}
 
 			return tuple;
 		}
@@ -698,180 +891,43 @@ internal class UIModConfig : UIState, IHaveBackButtonCommand
 		return container;
 	}
 
-	internal static UIPanel MakeSeparateListPanel(object item, object subitem, PropertyFieldWrapper memberInfo, IList array, int index, Func<string> AbridgedTextDisplayFunction)
-	{
-		UIPanel uIPanel = new UIPanel();
-		uIPanel.CopyStyle(Interface.modConfig.uIPanel);
-		uIPanel.BackgroundColor = UICommon.MainPanelBackground;
-
-		BackgroundColorAttribute bca = ConfigManager.GetCustomAttributeFromMemberThenMemberType<BackgroundColorAttribute>(memberInfo, subitem, null);
-
-		if (bca != null) {
-			uIPanel.BackgroundColor = bca.Color;
-		}
-
-		//uIElement.Append(uIPanel);
-
-		UIList separateList = new UIList();
-		separateList.CopyStyle(Interface.modConfig.mainConfigList);
-		separateList.Height.Set(-40f, 1f);
-		separateList.Top.Set(40f, 0f);
-		uIPanel.Append(separateList);
-		int i = 0;
-		int top = 0;
-
-		UIScrollbar uIScrollbar = new UIScrollbar();
-		uIScrollbar.SetView(100f, 1000f);
-		uIScrollbar.Height.Set(-40f, 1f);
-		uIScrollbar.Top.Set(40f, 0f);
-		uIScrollbar.HAlign = 1f;
-		uIPanel.Append(uIScrollbar);
-		separateList.SetScrollbar(uIScrollbar);
-
-		string name = ConfigManager.GetLocalizedLabel(memberInfo);
-		if (index != -1)
-			name = name + " #" + (index + 1);
-		Interface.modConfig.subPageStack.Push(name);
-		//UIPanel heading = new UIPanel();
-		//UIText headingText = new UIText(name);
-
-		name = string.Join(" > ", Interface.modConfig.subPageStack.Reverse()); //.Aggregate((current, next) => current + "/" + next);
-
-		UITextPanel<string> heading = new UITextPanel<string>(name); // TODO: ToString as well. Separate label?
-		heading.HAlign = 0f;
-		//heading.Width.Set(-10, 0.5f);
-		//heading.Left.Set(60, 0f);
-		heading.Top.Set(-6, 0);
-		heading.Height.Set(40, 0);
-		//var headingContainer = GetContainer(heading, i++);
-		//headingContainer.Height.Pixels = 40;
-		uIPanel.Append(heading);
-		//headingText.Top.Set(6, 0);
-		//headingText.Left.Set(0, .5f);
-		//headingText.HAlign = .5f;
-		//uIPanel.Append(headingText);
-		//top += 40;
-
-		UITextPanel<string> back = new UITextPanel<string>(Language.GetTextValue("tModLoader.ModConfigBack")) {
-			HAlign = 1f
-		};
-
-		back.Width.Set(50, 0f);
-		back.Top.Set(-6, 0);
-
-		//top += 40;
-		//var capturedCurrent = Interface.modConfig.currentConfigList;
-
-		back.OnLeftClick += (a, c) => {
-			Interface.modConfig.uIElement.RemoveChild(uIPanel);
-			Interface.modConfig.configPanelStack.Pop();
-			Interface.modConfig.uIElement.Append(Interface.modConfig.configPanelStack.Peek());
-			//Interface.modConfig.configPanelStack.Peek().SetScrollbar(Interface.modConfig.uIScrollbar);
-			//Interface.modConfig.currentConfigList = capturedCurrent;
-		};
-		back.WithFadedMouseOver();
-		//var backContainer = GetContainer(back, i++);
-		//backContainer.Height.Pixels = 40;
-		uIPanel.Append(back);
-
-		//var b = new UIText("Test");
-		//separateList.Add(b);
-		// Make rest of list
-
-		// load all mod config options into UIList
-		// TODO: Inheritance with ModConfig? DeclaredOnly?
-
-		if (true) {
-			int order = 0;
-			bool hasToString = false;
-
-			if (array != null) {
-				var listType = memberInfo.Type.GetGenericArguments()[0];
-				hasToString = listType.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
-			}
-			else {
-				hasToString = memberInfo.Type.GetMethod("ToString", new Type[0]).DeclaringType != typeof(object);
-			}
-
-			if (AbridgedTextDisplayFunction != null) {
-				var display = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(AbridgedTextDisplayFunction)) { DrawPanel = true };
-				display.Recalculate();
-				var container = GetContainer(display, order++);
-				container.Height.Pixels = (int)display.GetOuterDimensions().Height;
-				separateList.Add(container);
-			}
-
-			//if (hasToString)
-			//	_TextDisplayFunction = () => index + 1 + ": " + (array[index]?.ToString() ?? "null");
-
-			foreach (PropertyFieldWrapper variable in ConfigManager.GetFieldsAndProperties(subitem)) {
-				if (Attribute.IsDefined(variable.MemberInfo, typeof(JsonIgnoreAttribute)) && !Attribute.IsDefined(variable.MemberInfo, typeof(ShowDespiteJsonIgnoreAttribute)))
-					continue;
-
-				HandleHeader(separateList, ref top, ref order, variable);
-
-				WrapIt(separateList, ref top, variable, subitem, order++);
-			}
-		}
-		else {
-			//ignoreSeparatePage just to simplify ToString label--> had some issues.
-			//WrapIt(separateList, ref top, memberInfo, item, 1, ignoreSeparatePage: true);
-		}
-
-		Interface.modConfig.subPageStack.Pop();
-		return uIPanel;
-	}
-
-	public static void HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
+	public Tuple<UIElement, UIElement> HandleHeader(UIElement parent, ref int top, ref int order, PropertyFieldWrapper variable)
 	{
 		HeaderAttribute header = ConfigManager.GetLocalizedHeader(variable.MemberInfo);
 
 		if (header != null) {
 			var wrapper = new PropertyFieldWrapper(typeof(HeaderAttribute).GetProperty(nameof(HeaderAttribute.Header)));
-			WrapIt(parent, ref top, wrapper, header, order++);
+			return WrapIt(parent, ref top, wrapper, header, order++);
 		}
+
+		return null;
 	}
 
-	internal static void SwitchToSubConfig(UIPanel separateListPanel)
-	{
-		Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-		Interface.modConfig.uIElement.Append(separateListPanel);
-		Interface.modConfig.configPanelStack.Push(separateListPanel);
-	}
+	#endregion
 
-	//public override void Recalculate()
-	//{
-	//	base.Recalculate();
-	//	mainConfigList?.Recalculate();
-	//}
+	#region Input Blocking
 
-	internal void HandleOnCloseCallback()
+	public void BlockInput(UIElement dialog)
 	{
-		if (modderOnClose != null) {
-			modderOnClose.Invoke();
-			modderOnClose = null;
-		}
-	}
-
-	internal void BlockInput(UIElement dialog)
-	{
-		blockInput = new BlockInputElement(mainConfigList);
+		blockInput = new BlockInputElement(configElementList);
 		blockInput.OnLeftMouseDown += UnblockInput;
-		UIElement innerList = mainConfigList.Children.First();
+		UIElement innerList = configElementList.Children.First();
 		innerList.Append(blockInput);
 
 		// Append to UIList.UIInnerList, this is necessary so it moves when scrolled
 		innerList.Append(activeDialog = dialog);
 	}
 
-	internal void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
+	public void UnblockInput(UIMouseEvent evt, UIElement listeningElement)
 	{
 		blockInput?.Remove();
 		activeDialog?.Remove();
 	}
+
+	#endregion
 }
 
-internal class BlockInputElement : UIElement
+public class BlockInputElement : UIElement
 {
 	private UIElement elementToBlock;
 

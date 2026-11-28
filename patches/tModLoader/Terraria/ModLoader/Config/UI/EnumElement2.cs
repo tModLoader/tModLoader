@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -144,9 +144,9 @@ internal class EnumElement2 : ConfigElement
 	{
 		base.Draw(spriteBatch);
 		if (ChooserPanel.IsMouseHovering)
-			UIModConfig.Tooltip = "";
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = "";
 		if (hoveredIndex != -2)
-			UIModConfig.Tooltip = hoveredIndex != -1 ? tooltips[hoveredIndex] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = hoveredIndex != -1 ? tooltips[hoveredIndex] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
 	}
 
 	private void ShowDropdown()
@@ -165,7 +165,7 @@ internal class EnumElement2 : ConfigElement
 			ChooserPanel.HAlign = 0f;
 		}
 
-		Interface.modConfig.BlockInput(ChooserPanel);
+		ConfigManager.CurrentConfigUI.BlockInput(ChooserPanel);
 
 		if (Options == null) {
 			Options = CreateDefinitionOptionElementList();
@@ -223,7 +223,7 @@ internal class EnumElement2 : ConfigElement
 				if (!DropDown)
 					SelectionExpanded = false;
 				else
-					Interface.modConfig.UnblockInput(a, b);
+					ConfigManager.CurrentConfigUI.UnblockInput();
 			};
 			optionElement.OnUpdate += (a) => {
 				if (a.IsMouseHovering)
@@ -241,7 +241,7 @@ internal class EnumElement2 : ConfigElement
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.SetPendingChanges();
+		ConfigManager.CurrentConfigUI.OnConfigModified();
 	}
 
 	private object DefaultGetValue()

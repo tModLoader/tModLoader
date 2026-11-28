@@ -54,7 +54,7 @@ internal class EnumElement : RangeElement
 		/*
 		if (array != null) {
 			_GetValue = () => array[index];
-			_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); Interface.modConfig.SetPendingChanges(); };
+			_SetValue = (int valueIndex) => { array[index] = (Enum)Enum.GetValues(memberInfo.Type).GetValue(valueIndex); ConfigManager.CurrentConfigUI.OnConfigModified(); };
 			_TextDisplayFunction = () => index + 1 + ": " + _GetValueString();
 		}
 		*/
@@ -70,7 +70,7 @@ internal class EnumElement : RangeElement
 			return;
 
 		MemberInfo.SetValue(Item, Enum.GetValues(MemberInfo.Type).GetValue(index));
-		Interface.modConfig.SetPendingChanges();
+		ConfigManager.CurrentConfigUI.OnConfigModified();
 	}
 
 	private object DefaultGetValue()
@@ -97,7 +97,7 @@ internal class EnumElement : RangeElement
 
 		if (IngameOptions.inBar) {
 			int index = _getIndex();
-			UIModConfig.Tooltip = index != -1 ? tooltips[index] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = index != -1 ? tooltips[index] : Language.GetTextValue("tModLoader.ModConfigUnknownEnum");
 		}
 	}
 }

@@ -3,11 +3,14 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using ReLogic.Content;
 using System;
+using System.Collections.Generic;
 using Terraria.Audio;
 using Terraria.GameContent.UI.Elements;
 using Terraria.GameContent.UI.States;
+using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader.UI;
+using Terraria.UI;
 
 namespace Terraria.ModLoader.Config.UI;
 
@@ -16,8 +19,6 @@ internal class ObjectElement : ConfigElement<object>
 	protected Func<string> AbridgedTextDisplayFunction { get; set; }
 
 	private readonly bool ignoreSeparatePage;
-	//private SeparatePageAttribute separatePageAttribute;
-	//private object data;
 	private bool separatePage;
 	private bool pendingChanges;
 	private bool expanded = true;
@@ -25,7 +26,7 @@ internal class ObjectElement : ConfigElement<object>
 	private UIModConfigHoverImage initializeButton;
 	private UIModConfigHoverImage deleteButton;
 	private UIModConfigHoverImage expandButton;
-	internal UIPanel separatePagePanel;
+	internal UIModConfig.ConfigPage separateConfigPage;
 	private UITextPanel<FuncStringWrapper> separatePageButton;
 
 	// Label:
@@ -82,34 +83,16 @@ internal class ObjectElement : ConfigElement<object>
 
 		separatePage = ConfigManager.GetCustomAttributeFromMemberThenMemberType<SeparatePageAttribute>(MemberInfo, Item, List) != null;
 
-		//separatePage = separatePage && !ignoreSeparatePage;
-		//separatePage = (SeparatePageAttribute)Attribute.GetCustomAttribute(memberInfo.MemberInfo, typeof(SeparatePageAttribute)) != null;
-
 		if (separatePage && !ignoreSeparatePage) {
+			separateConfigPage = new UIModConfig.ConfigPage(Language.GetText(Label));
+
 			// TODO: UITextPanel doesn't update...
 			separatePageButton = new UITextPanel<FuncStringWrapper>(new FuncStringWrapper(TextDisplayFunction));
 			separatePageButton.HAlign = 0.5f;
-			//e.Recalculate();
-			//elementHeight = (int)e.GetOuterDimensions().Height;
 			separatePageButton.OnLeftClick += (a, c) => {
-				UIModConfig.SwitchToSubConfig(this.separatePagePanel);
-				/*	Interface.modConfig.uIElement.RemoveChild(Interface.modConfig.configPanelStack.Peek());
-					Interface.modConfig.uIElement.Append(separateListPanel);
-					Interface.modConfig.configPanelStack.Push(separateListPanel);*/
-				//separateListPanel.SetScrollbar(Interface.modConfig.uIScrollbar);
-
-				//UIPanel panel = new UIPanel();
-				//panel.Width.Set(200, 0);
-				//panel.Height.Set(200, 0);
-				//panel.Left.Set(200, 0);
-				//panel.Top.Set(200, 0);
-				//Interface.modConfig.Append(panel);
-
-				//Interface.modConfig.subMenu.Enqueue(subitem);
-				//Interface.modConfig.DoMenuModeState();
+				SoundEngine.PlaySound(SoundID.MenuOpen);
+				ConfigManager.CurrentConfigUI.PushConfigPage(separateConfigPage);
 			};
-			//e = new UIText($"{memberInfo.Name} click for more ({type.Name}).");
-			//e.OnLeftClick += (a, b) => { };
 		}
 
 		//data = _GetValue();// memberInfo.GetValue(this.item);
@@ -168,16 +151,14 @@ internal class ObjectElement : ConfigElement<object>
 
 			Value = data;
 
-			//SeparatePageAttribute here?
-
 			pendingChanges = true;
 			//RemoveChild(initializeButton);
 			//Append(deleteButton);
 			//Append(expandButton);
 
 			SetupList();
-			Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+			ConfigManager.CurrentConfigUI.OnConfigModified();
 		};
 
 		expandButton = new UIModConfigHoverImage(expanded ? ExpandedTexture : CollapsedTexture, expanded ? Language.GetTextValue("tModLoader.ModConfigCollapse") : Language.GetTextValue("tModLoader.ModConfigExpand"));
@@ -196,8 +177,8 @@ internal class ObjectElement : ConfigElement<object>
 			pendingChanges = true;
 
 			SetupList();
-			//Interface.modConfig.RecalculateChildren();
-			Interface.modConfig.SetPendingChanges();
+			//((UIState)ConfigManager.CurrentConfigUI).RecalculateChildren();
+			ConfigManager.CurrentConfigUI.OnConfigModified();
 		};
 
 		if (Value != null) {
@@ -265,7 +246,8 @@ internal class ObjectElement : ConfigElement<object>
 
 		if (data != null) {
 			if (separatePage && !ignoreSeparatePage) {
-				separatePagePanel = UIModConfig.MakeSeparateListPanel(Item, data, MemberInfo, List, Index, AbridgedTextDisplayFunction);
+				separateConfigPage.ConfigElements.Clear();
+				ConfigManager.CurrentConfigUI.SetupConfigPage(separateConfigPage, data, MemberInfo);
 			}
 			else {
 				int order = 0;
@@ -275,9 +257,9 @@ internal class ObjectElement : ConfigElement<object>
 
 					int top = 0;
 
-					UIModConfig.HandleHeader(dataList, ref top, ref order, variable);
+					ConfigManager.CurrentConfigUI.HandleHeader(dataList, ref top, ref order, variable);
 
-					var wrapped = UIModConfig.WrapIt(dataList, ref top, variable, data, order++);
+					var wrapped = ConfigManager.CurrentConfigUI.WrapIt(dataList, ref top, variable, data, order++);
 
 					if (List != null) {
 						//wrapped.Item1.Left.Pixels -= 20;
@@ -321,7 +303,7 @@ internal class UIModConfigHoverImage : UIImage
 		base.DrawSelf(spriteBatch);
 
 		if (IsMouseHovering) {
-			UIModConfig.Tooltip = HoverText;
+			ConfigManager.CurrentConfigUI.ConfigElementTooltip = HoverText;
 		}
 	}
 }
@@ -345,10 +327,10 @@ internal class UIModConfigHoverImageSplit : UIImage
 
 		if (IsMouseHovering) {
 			if (Main.mouseY < r.Y + r.Height / 2) {
-				UIModConfig.Tooltip = HoverTextUp;
+				ConfigManager.CurrentConfigUI.ConfigElementTooltip = HoverTextUp;
 			}
 			else {
-				UIModConfig.Tooltip = HoverTextDown;
+				ConfigManager.CurrentConfigUI.ConfigElementTooltip = HoverTextDown;
 			}
 		}
 	}

@@ -17,6 +17,7 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 {
 	/// <summary>
 	/// This config is just a showcase of various attributes and their effects in the UI window.
+	/// It also showcases how to create a custom UIState for the config.
 	/// </summary>
 	[SortConfig(after: true, nameof(ModConfigShowcaseAccessibility))]
 	public class ModConfigShowcaseMisc : ModConfig
@@ -112,6 +113,11 @@ namespace ExampleMod.Common.Configs.ModConfigShowcases
 				ListOfInts.AddRange(OldListOfInts);
 			}
 			_additionalData.Clear(); // make sure to clear this or it'll crash.
+		}
+
+		public override void OnLoaded() {
+			// Here, we can create our custom UI for the config
+			CustomUI = new ExampleExtendedConfigUI();
 		}
 	}
 }

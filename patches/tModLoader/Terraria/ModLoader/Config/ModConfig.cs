@@ -39,6 +39,23 @@ public abstract class ModConfig : ILocalizedModType
 	[JsonIgnore]
 	public abstract ConfigScope Mode { get; }
 
+	/// <summary>
+	/// Set to an <see cref="IConfigUI"/> to give this config custom UI.
+	/// <br/><br/> The custom UI must extend <see cref="UIState"/>. If you want a modified <see cref="UIModConfig"/>, you can extend <see cref="UIModConfig"/>.
+	/// <br/><br/> Defaults to null, which uses the default config UI.
+	/// <br/><br/> The getter is only once by tML when opening the config UI. This lets the UI get recreated before opening to aid with debugging speed.
+	/// </summary>
+	[JsonIgnore]
+	public virtual IConfigUI CustomUI {
+		get;
+		set {
+			if (value is not null and not UIState)
+				throw new InvalidOperationException($"Cannot use custom config UI for {Name} in mod {Mod.Name} because it does not extend UIState");
+
+			field = value;
+		}
+	}
+
 	// TODO: Does non-autoloaded ModConfigs have a use-case?
 	public virtual bool Autoload(ref string name) => Mod.ContentAutoloadingEnabled;
 
@@ -104,6 +121,29 @@ public abstract class ModConfig : ILocalizedModType
 		}
 
 		return false;
+	}
+
+	/// <summary>
+	/// Returns true if the config has changes when compared to <paramref name="otherConfig"/>.
+	/// <br/><br/> Uses JSON serialization instead of <see cref="object.Equals(object?)"/> to avoid issues with reference types.
+	/// </summary>
+	/// <param name="otherConfig">The config being compared to.</param>
+	/// <returns></returns>
+	public bool HasChanges(ModConfig otherConfig)
+	{
+		return !ConfigManager.AreConfigsEqual(this, otherConfig);
+	}
+
+	/// <summary>
+	/// Returns true if the config has it's default values set.
+	/// <br/><br/> Uses JSON serialization instead of <see cref="object.Equals(object?)"/> to avoid issues with reference types.
+	/// </summary>
+	/// <returns></returns>
+	public bool HasDefaultValues()
+	{
+		return ConfigManager.AreConfigsEqual(this, ConfigManager.GetDefaultValuesConfig(Mod, Name));
+		// TODO: below line doesn't work with object elements (and probably nullables) very well because of how objects serialized. Needs changes to the contract resolver to be fixed.
+		// return JsonConvert.SerializeObject(this, ConfigManager.serializerSettingsCompact) == "{}";
 	}
 
 	/// <summary>
@@ -211,10 +251,17 @@ public abstract class ModConfig : ILocalizedModType
 		if (playSound)
 			SoundEngine.PlaySound(SoundID.MenuOpen);
 
-		Interface.modConfig.SetMod(Mod, this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
+		var customUI = CustomUI; // Call getter once
+		(customUI ?? Interface.modConfig).SetConfig(this, openedFromModder: true, onClose, scrollToOption, centerScrolledOption);
 
 		if (Main.gameMenu) {
-			Main.menuMode = Interface.modConfigID;
+			if (customUI is not null) {
+				Main.menuMode = MenuID.FancyUI;
+				Main.MenuUI.SetState((UIState)customUI);
+			}
+			else {
+				Main.menuMode = Interface.modConfigID;
+			}
 		}
 		else {
 			IngameFancyUI.CoverNextFrame();
@@ -222,8 +269,8 @@ public abstract class ModConfig : ILocalizedModType
 			Main.editChest = false;
 			Main.npcChatText = "";
 			Main.inFancyUI = true;
-			Main.InGameUI.SetState(Interface.modConfig);
-			// Same as IngameFancyUI.OpenUIState(Interface.modConfig); except no ClearChat()
+			Main.InGameUI.SetState((UIState)customUI ?? Interface.modConfig);
+			// Same as IngameFancyUI.OpenUIState(...); except no ClearChat()
 		}
 	}
 }
