@@ -1,0 +1,34 @@
+--- src/TerrariaNetCore/Terraria/WorldBuilding/AWorldGenerationOption.cs
++++ src/tModLoader/Terraria/WorldBuilding/AWorldGenerationOption.cs
+@@ -3,6 +_,7 @@
+ using ReLogic.Content;
+ using Terraria.GameContent.UI.Elements;
+ using Terraria.Localization;
++using Terraria.ModLoader;
+ using Terraria.UI;
+ 
+ namespace Terraria.WorldBuilding;
+@@ -25,6 +_,8 @@
+ 		}
+ 	}
+ 
++	public ModSpecialSeed ModSpecialSeed { get; internal set; }
++
+ 	protected abstract string KeyName { get; }
+ 
+ 	public abstract string ServerConfigName { get; }
+@@ -33,11 +_,11 @@
+ 
+ 	public int[] SpecialSeedValues { get; protected set; }
+ 
+-	public LocalizedText Description { get; private set; }
++	public LocalizedText Description { get; protected set; }
+ 
+-	public LocalizedText Title { get; private set; }
++	public LocalizedText Title { get; protected set; }
+ 
+-	protected Asset<Texture2D> Texture { get; private set; }
++	protected Asset<Texture2D> Texture { get; set; }
+ 
+ 	protected static event Action<AWorldGenerationOption> OnOptionStateChanged;
+ 

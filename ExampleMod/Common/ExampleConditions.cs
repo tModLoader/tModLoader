@@ -1,6 +1,8 @@
-﻿using ExampleMod.Common.Systems;
+﻿using ExampleMod.Common.SecretSeeds;
+using ExampleMod.Common.Systems;
 using ExampleMod.Content.Biomes;
 using Terraria;
+using Terraria.ModLoader;
 
 namespace ExampleMod.Common
 {
@@ -13,5 +15,6 @@ namespace ExampleMod.Common
 	{
 		public static Condition InExampleBiome = new Condition("Mods.ExampleMod.Conditions.InExampleBiome", () => Main.LocalPlayer.InModBiome<ExampleSurfaceBiome>() || Main.LocalPlayer.InModBiome<ExampleUndergroundBiome>());
 		public static Condition DownedMinionBoss = new("Mods.ExampleMod.Conditions.DownedMinionBoss", () => DownedBossSystem.downedMinionBoss);
+		public static Condition ExampleSecretWorld = new Condition("Mods.ExampleMod.Conditions.ExampleSecretWorld", () => SeedLoader.SeedEnabled<ExampleSecretSeed>());
 	}
 }
